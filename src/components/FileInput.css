@@ -1,0 +1,11 @@
+.file-input .input-group-addon .glyphicon {
+  opacity: 0.25;
+}
+
+.file-input .input-group-addon.valid {
+  cursor: pointer;
+}
+
+.file-input .input-group-addon.valid .glyphicon {
+  opacity: 1;
+}

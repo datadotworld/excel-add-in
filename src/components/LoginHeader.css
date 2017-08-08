@@ -1,0 +1,36 @@
+.login-header {
+  background-color: #335c8c;
+  height: 50px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.login-header .title {
+  font-size: 18px;
+}
+
+.login-header img {
+  height: 40px;
+  width: 40px;
+  background-color: #9ec8ee;
+  border-radius: 50%;
+  padding-top: 3px;
+  margin-right: 10px;
+}
+
+.login-header .dropdown {
+  margin-left: auto;
+}
+
+.login-header .dropdown.btn-group button {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  line-height: 1;
+  height: auto;
+  font-size: 16px;
+  color: #fff !important;
+  background-image: none;
+}
