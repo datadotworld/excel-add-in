@@ -1,0 +1,40 @@
+.file {
+  background-color: #fff;
+  position: relative;
+  border-bottom: 1px solid #dfe3e9;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+
+.file .center-info {
+  margin-left: 15px;
+  max-width: 230px;
+}
+
+.file .title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file .info {
+  font-size: 12px;
+  color: #8c9caf;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file button, .file a.btn {
+  justify-self: flex-end;
+  margin-left: auto;
+}
+
+.file .file-type-icon {
+  width: 25px;
+}
