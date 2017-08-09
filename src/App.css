@@ -13,3 +13,9 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #dfe3e9;
 }
+
+.dataset-schema-icon {
+  fill: #5bc0de;
+  width: 15px;
+  height: 15px;
+}

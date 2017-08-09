@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {FormattedDate} from 'react-intl';
+
 
 import { 
   Button,
@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 
 import './DatasetsView.css';
-import DatasetSchema from './icons/DatasetSchema';
+import DatasetItem from './DatasetItem';
 
 class DatasetsView extends Component {
 
@@ -69,16 +69,7 @@ class DatasetsView extends Component {
     const sortedDatasets = this.sortDatasets();
 
     const datasetEntries = sortedDatasets.map((d) =>{
-      return (<div className='dataset' key={`${d.owner}/${d.id}`}>
-        <DatasetSchema />
-        <div className='center-info'>
-          <div className='title'>{d.title}</div>
-          <div className='info'>@{d.owner} &middot; Updated <FormattedDate value={d.updated} year='numeric' month='short' day='2-digit' /></div>
-        </div>
-        <Button
-          bsSize='small'
-          onClick={() => this.linkDataset(d)}>Link</Button>
-      </div>)
+      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={this.linkDataset} />);
     });
 
     return (

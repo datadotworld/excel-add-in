@@ -222,7 +222,7 @@ class App extends Component {
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
-        {dataset && <BindingsPage 
+        {!showStartPage && dataset && <BindingsPage 
           bindings={bindings}
           loggedIn={loggedIn}
           dataset={dataset}
@@ -232,7 +232,7 @@ class App extends Component {
           sync={this.sync}
         />}
 
-        {!dataset && <DatasetsView 
+        {!showStartPage && !dataset && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}

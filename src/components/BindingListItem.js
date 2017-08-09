@@ -16,7 +16,8 @@ class BindingsListItem extends Component {
   }
 
   render () {
-    const { file, binding, getFilename } = this.props;
+    const { file, binding } = this.props;
+    console.log(file);
     return (
       <div className='file' key={file.id}>
         <div className='center-info'>
