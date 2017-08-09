@@ -1,0 +1,14 @@
+svg.add-icon .stroke {
+  stroke: #5bc0de;
+  stroke-width: 2px;
+}
+
+svg.close-icon .stroke-medium {
+  stroke: #dfe3e9;
+  stroke-width: 3px;
+}
+
+svg.check-icon .stroke {
+  stroke: #000;
+  fill: #fff;
+}

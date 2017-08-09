@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 import { 
   Button,
   DropdownButton,
-  Glyphicon,
   Grid,
   MenuItem,
   Row
@@ -13,6 +11,8 @@ import {
 
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
+
+import Icon from './icons/Icon';
 
 class DatasetsView extends Component {
 
@@ -78,21 +78,21 @@ class DatasetsView extends Component {
           <Row className='center-block section-header'>
             <div className='title'>
               Select a dataset to link
-              <Glyphicon className='add-dataset-button' glyph='plus' onClick={this.props.createDataset}/>
+              <Icon icon='add' onClick={this.props.createDataset} />
             </div>
           </Row>
           {!!datasets.length && 
             <Row className='center-block'>
-              <div className='dataset-info'>
+              <div className='list-info'>
                 {datasets.length} datasets
-                <div className='pull-right'>
+                <div className='pull-right sort-dropdown'>
                   <DropdownButton title='Sort' pullRight bsSize='small' onSelect={this.sortChanged} id='dropdown-sort-datasets'>
-                    <MenuItem eventKey='updated' active={sortKey === 'updated'}>Updated: Newest</MenuItem>
-                    <MenuItem eventKey='-updated' active={sortKey === '-updated'}>Updated: Oldest</MenuItem>
-                    <MenuItem eventKey='created' active={sortKey === 'created'}>Created: Newest</MenuItem>
-                    <MenuItem eventKey='-created' active={sortKey === '-created'}>Created: Oldest</MenuItem>
-                    <MenuItem eventKey='title' active={sortKey === 'title'}>Name: A - Z</MenuItem>
-                    <MenuItem eventKey='-title' active={sortKey === '-title'}>Name: Z - A</MenuItem>
+                    <MenuItem eventKey='updated' active={sortKey === 'updated'}><Icon icon='check' />Updated: Newest</MenuItem>
+                    <MenuItem eventKey='-updated' active={sortKey === '-updated'}><Icon icon='check' />Updated: Oldest</MenuItem>
+                    <MenuItem eventKey='created' active={sortKey === 'created'}><Icon icon='check' />Created: Newest</MenuItem>
+                    <MenuItem eventKey='-created' active={sortKey === '-created'}><Icon icon='check' />Created: Oldest</MenuItem>
+                    <MenuItem eventKey='title' active={sortKey === 'title'}><Icon icon='check' />Name: A - Z</MenuItem>
+                    <MenuItem eventKey='-title' active={sortKey === '-title'}><Icon icon='check' />Name: Z - A</MenuItem>
                   </DropdownButton>
                 </div>
               </div>

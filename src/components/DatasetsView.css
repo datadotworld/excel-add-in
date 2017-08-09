@@ -1,48 +1,11 @@
-#dropdown-sort-datasets {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  line-height: 1;
-  height: auto;
-  font-size: 16px;
-  color: #9d9d9d;
-}
-
-.datasets-view .dropdown li {
-  position: relative;
-}
-
-.datasets-view .dropdown li.active:before {
-  content: '✔';
-  position: absolute;
-  left: 0.9rem;
-  top: 4px;
-  color: #333d49;
-}
-
-.datasets-view .dropdown li.active a {
-  background-color: #fff;
-  color: #333d49;
-}
-
-.datasets-view .dropdown li a {
-  padding-left: 2rem;
-}
-
-.datasets-view .dataset-info {
-  background-color: #f7f7f7;
-  padding: 5px 15px;
-  color: #9d9d9d;
-}
-
 .datasets-view .dataset-selector .section-header {
   padding: 15px;
 }
 
-.datasets-view .dataset-selector .section-header .add-dataset-button {
+.datasets-view .dataset-selector .section-header .add-icon {
   float: right;
-  font-size: 1rem;
-  color: #5bc0de;
+  width: 20px;
+  margin-top: 2px;
   cursor: pointer;
 }
 

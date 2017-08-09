@@ -5,6 +5,7 @@
   padding: 10px 15px;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .file .center-info {
@@ -37,4 +38,30 @@
 
 .file .file-type-icon {
   width: 25px;
+}
+
+.file .add-button {
+  border-radius: 50%;
+  padding: 0;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.file .add-button .svg-icon {
+  line-height: 1;
+}
+.file .add-icon {
+  width: 1rem;
+}
+
+.file .unlink-button {
+  border: none;
+  box-shadow: none;
+  padding: none;
+}
+
+.file .unlink-button span {
+  display: block;
+  float: none;
 }

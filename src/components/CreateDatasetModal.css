@@ -17,8 +17,6 @@
 
 .create-dataset-modal .header .close-button {
   float: right;
-  font-size: 1rem;
-  color: #dfe3e9;
   cursor: pointer;
 }
 

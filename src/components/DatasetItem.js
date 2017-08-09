@@ -4,7 +4,7 @@ import {FormattedDate} from 'react-intl';
 import {Button} from 'react-bootstrap';
 
 import './DatasetItem.css';
-import DatasetSchema from './icons/DatasetSchema';
+import Icon from './icons/Icon';
 
 class DatasetItem extends Component {
 
@@ -24,7 +24,7 @@ class DatasetItem extends Component {
   render () {
     const {dataset, buttonText, buttonLink} = this.props;
     return (<div className='dataset'>
-      <DatasetSchema />
+      <Icon icon='dataset-schema' />
       <div className='center-info'>
         <div className='title'>{dataset.title}</div>
         <div className='info'>@{dataset.owner} &middot; Updated <FormattedDate value={dataset.updated} year='numeric' month='short' day='2-digit' /></div>

@@ -14,6 +14,8 @@ import {
   Row
 } from 'react-bootstrap';
 
+import Icon from './icons/Icon';
+
 import './CreateDatasetModal.css';
 
 class CreateDatasetModal extends Component {
@@ -69,7 +71,7 @@ class CreateDatasetModal extends Component {
       <Grid className='create-dataset-modal'>
         <Row className='center-block header'>
           <div className='title'>
-            Create a new dataset <Glyphicon className='close-button' glyph='remove' onClick={close}/>
+            Create a new dataset <Icon icon='close' className='close-button' onClick={close} />
           </div>
         </Row>
         <Row className='center-block'>

@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {FormattedDate} from 'react-intl';
+import { FormattedDate } from 'react-intl';
 
-import {Button} from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 import './BindingListItem.css';
 import FileTypeIcon from './icons/FileTypeIcon';
+import Icon from './icons/Icon';
 
 class BindingsListItem extends Component {
 
   static propTypes = {
+    addBinding: PropTypes.func,
     file: PropTypes.object,
     binding: PropTypes.object,
-    removeBinding: PropTypes.func,
-    addBinding: PropTypes.func,
-    getFilename: PropTypes.func
+    removeBinding: PropTypes.func
   }
 
   remove = () => {
@@ -22,10 +22,11 @@ class BindingsListItem extends Component {
   }
 
   render () {
-    const { addBinding, file, binding } = this.props;
-    console.log(file);
+    const { addBinding, file, binding, removeBinding } = this.props;
+    let dotPos = file ? file.name.lastIndexOf('.') : -1;
+    let extension = dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
 
-    const isBindable = true;
+    const isBindable = !binding && extension === 'CSV';
 
     return (
       <div className='file' key={file.id}>
@@ -36,7 +37,12 @@ class BindingsListItem extends Component {
         </div>
         {isBindable && <Button
           bsSize='small'
-          onClick={() => addBinding(file)}></Button>}
+          className='add-button'
+          onClick={() => addBinding(file)}><Icon icon='add' /></Button>}
+        {!!binding && <Button
+          bsSize='small'
+          className='unlink-button'
+          onClick={() => removeBinding(binding)}><Glyphicon glyph='remove' /><span className='label'>Unlink</span></Button>}
       </div>
     );
   }
