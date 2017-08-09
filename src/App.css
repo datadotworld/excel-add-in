@@ -1,3 +1,15 @@
 body {
   background-color: #f7f7f7;
 }
+
+.bottom-button {
+  width: calc(100% - 30px);
+  display: block;
+  margin: 1rem 15px 0;
+}
+
+.section-header {
+  padding: 15px 15px 0;
+  background-color: #fff;
+  border-bottom: 1px solid #dfe3e9;
+}

@@ -9,6 +9,7 @@ import './static/css/dw-bootstrap.min.css';
 import CreateDatasetModal from './components/CreateDatasetModal';
 import WelcomePage from './components/WelcomePage';
 import BindingsPage from './components/BindingsPage';
+import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import OfficeConnector from './OfficeConnector';
@@ -221,18 +222,20 @@ class App extends Component {
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
-        {showBindingsPage && <BindingsPage 
-          datasets={datasets}
+        {dataset && <BindingsPage 
           bindings={bindings}
           loggedIn={loggedIn}
           dataset={dataset}
-          officeConnector={this.office}
           createBinding={this.createBinding}
-          createDataset={this.showCreateDataset}
           removeBinding={this.removeBinding}
-          linkDataset={this.linkDataset}
           unlinkDataset={this.unlinkDataset}
           sync={this.sync}
+        />}
+
+        {!dataset && <DatasetsView 
+          datasets={datasets}
+          createDataset={this.showCreateDataset}
+          linkDataset={this.linkDataset}
         />}
         {showCreateDataset && <CreateDatasetModal user={user} linkNewDataset={this.linkNewDataset} createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} />}
       </div>

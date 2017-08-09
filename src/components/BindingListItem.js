@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {FormattedDate} from 'react-intl';
 
-import { 
-  FormControl,
-  Glyphicon,
-  InputGroup
-} from 'react-bootstrap'
-
 class BindingsListItem extends Component {
 
   static propTypes = {
@@ -23,7 +17,6 @@ class BindingsListItem extends Component {
 
   render () {
     const { file, binding, getFilename } = this.props;
-    console.log(file);
     return (
       <div className='file' key={file.id}>
         <div className='center-info'>

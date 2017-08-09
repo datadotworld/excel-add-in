@@ -1,5 +1,11 @@
-.bindings-page {
-  
+#dropdown-dataset-options {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  line-height: 1;
+  height: auto;
+  font-size: 16px;
+  color: #9d9d9d;
 }
 
 .bindings-page .input-group {
@@ -17,148 +23,6 @@
   color: #9d9d9d;
 }
 
-.bindings-page .dropdown.btn-group button {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  line-height: 1;
-  height: auto;
-  font-size: 16px;
-  color: #9d9d9d;
-}
-
-.bindings-page .dropdown li {
-  position: relative;
-}
-
-.bindings-page .dropdown li.active:before {
-  content: '✔';
-  position: absolute;
-  left: 0.9rem;
-  top: 4px;
-  color: #333d49;
-}
-
-.bindings-page .dropdown li.active a {
-  background-color: #fff;
-  color: #333d49;
-}
-
-.bindings-page .dropdown li a {
-  padding-left: 2rem;
-}
-
-.bindings-page .dataset {
-  background-color: #fff;
-  position: relative;
-  border-bottom: 1px solid #dfe3e9;
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-}
-
-.bindings-page .dataset .center-info {
-  margin-left: 15px;
-  max-width: 230px;
-}
-
-.bindings-page .dataset .dataset-schema-icon {
-  fill: #5bc0de;
-  width: 15px;
-  height: 15px;
-}
-
-.bindings-page .dataset .title {
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bindings-page .dataset .info {
-  font-size: 12px;
-  color: #8c9caf;
-  white-space: nowrap;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bindings-page .dataset button {
-  justify-self: flex-end;
-  margin-left: auto;
-}
-
-.bindings-page .dataset-header {
-  padding: 15px 15px 0;
-  background-color: #fff;
-  border-bottom: 1px solid #dfe3e9;
-}
-
-.bindings-page .dataset-selector .dataset-header {
-  padding: 15px;
-}
-
-.bindings-page .dataset-selector .dataset-header .add-dataset-button {
-  float: right;
-  font-size: 1rem;
-  color: #5bc0de;
-  cursor: pointer;
-}
-
-.bindings-page .dataset-header .button-group {
-  width: 100%;
-  padding: 5px 0;
-  border-top: 1px solid #dfe3e9;
-}
-
-.bindings-page .dataset-header .button-group button {
-  width: 50%;
-  border: none;
-  box-shadow: none;
-  padding: 0 1.5rem;
-  height: 2rem;
-}
-
-.bindings-page .dataset-header .button-group button:disabled {
-  background-color: transparent;
-}
-
-.bindings-page .dataset-header .button-group button .glyphicon {
-  float: none;
-  font-size: 0.75rem;
-}
-
-.bindings-page .dataset-header .button-group button:first-child {
-  border-right: 1px solid #dfe3e9;
-}
-
-.bindings-page .dataset-header .title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.bindings-page .dataset-link {
-  margin-bottom: 1rem;
-}
-
-.bindings-page .dataset-header a {
-  font-size: 14px;
-  color: #8c9caf;
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  white-space: nowrap;
-}
-
-.bindings-page .bottom-button {
-  width: calc(100% - 30px);
-  display: block;
-  margin: 1rem 15px 0;
-}
 .bindings-page .default.bottom-button {
   color: #8c9caf;
   box-shadow: inset 0 0 0 1px #8c9caf, inset 0 1px rgba(255,255,255,.875);
@@ -172,4 +36,45 @@
   font-size: 18px;
   padding: 0 3rem 1rem;
   text-align: center;
+}
+
+.bindings-page .section-header .button-group {
+  width: 100%;
+  padding: 5px 0;
+  border-top: 1px solid #dfe3e9;
+}
+
+.bindings-page .section-header .button-group button {
+  width: 50%;
+  border: none;
+  box-shadow: none;
+  padding: 0 1.5rem;
+  height: 2rem;
+}
+
+.bindings-page .section-header .button-group button:disabled {
+  background-color: transparent;
+}
+
+.bindings-page .section-header .button-group button .glyphicon {
+  float: none;
+  font-size: 0.75rem;
+}
+
+.bindings-page .section-header .button-group button:first-child {
+  border-right: 1px solid #dfe3e9;
+}
+
+.bindings-page .dataset-link {
+  margin-bottom: 1rem;
+}
+
+.bindings-page .section-header a {
+  font-size: 14px;
+  color: #8c9caf;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
 }
