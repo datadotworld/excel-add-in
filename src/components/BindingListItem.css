@@ -55,13 +55,50 @@
   width: 1rem;
 }
 
-.file .unlink-button {
+.file .link-button {
   border: none;
   box-shadow: none;
-  padding: none;
+  padding: 0;
+  width: 2rem;
 }
 
-.file .unlink-button span {
+.file .link-button span {
   display: block;
   float: none;
+}
+
+.file .link-button .label {
+  padding: 0;
+}
+
+.file .link-button .link .label {
+  color: #65c16d;
+}
+
+.file .link-button .unlink {
+  display: none;
+}
+
+.file .link-button .unlink .label {
+  color: #ff6666;
+}
+
+.file .link-button svg.check-icon .stroke {
+  stroke: #65c16d;
+  fill: #fff;
+}
+.file .link-button svg.close-icon {
+  width: 12px;
+}
+
+.file .link-button svg.close-icon .stroke-medium {
+  stroke: #ff6666;
+}
+
+.file .link-button:hover .unlink {
+  display: block;
+}
+
+.file .link-button:hover .link {
+  display: none;
 }

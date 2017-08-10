@@ -33,7 +33,7 @@ class BindingsListItem extends Component {
         <FileTypeIcon filename={file.name} />
         <div className='center-info'>
           <div className='title'>{file.name}</div>
-          <div className='info'>{binding && `${binding.rangeAddress}&middot; `}Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' /></div>
+          <div className='info'>{binding && `${binding.rangeAddress} · `}Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' /></div>
         </div>
         {isBindable && <Button
           bsSize='small'
@@ -41,8 +41,17 @@ class BindingsListItem extends Component {
           onClick={() => addBinding(file)}><Icon icon='add' /></Button>}
         {!!binding && <Button
           bsSize='small'
-          className='unlink-button'
-          onClick={() => removeBinding(binding)}><Glyphicon glyph='remove' /><span className='label'>Unlink</span></Button>}
+          className='link-button'
+          onClick={() => removeBinding(binding)}>
+            <div className='link'>
+              <Icon className='check' icon='check' />
+              <span className='label'>Linked</span>
+            </div>
+            <div className='unlink'>
+              <Icon icon='close' />
+              <span className='label'>Unlink</span>
+            </div>
+          </Button>}
       </div>
     );
   }
