@@ -57,7 +57,7 @@ class WelcomePage extends Component {
             className='center-block login-button'
             onClick={this.startAuthFlow}
             bsStyle='primary'>Sign in</Button>
-          <div>New to data.world? <a href='https://data.world/' target='_blank'> Sign up now</a></div>
+          <div>New to data.world? <a href='https://data.world/' target='_blank' rel='noopener noreferrer'> Sign up now</a></div>
         </Row>
       </Grid>
     );

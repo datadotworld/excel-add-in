@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedDate } from 'react-intl';
 
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import './BindingListItem.css';
 import FileTypeIcon from './icons/FileTypeIcon';

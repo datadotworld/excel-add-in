@@ -1,4 +1,5 @@
 let Office, Excel;
+
 export default class OfficeConnector {
   initialize () {
     Office = window.Office;
@@ -9,6 +10,7 @@ export default class OfficeConnector {
             return reject('Need Office 2016 or greater');
           }
           Excel = window.Excel;
+
           resolve();
         }
       } else {
@@ -52,7 +54,7 @@ export default class OfficeConnector {
 
   createBinding (name) {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.addFromPromptAsync(Office.BindingType.Matrix, { id: `dw::${name}` }, (result) => {
+      Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Matrix, { id: `dw::${name}` }, (result) => {
         if (result.status === Office.AsyncResultStatus.Failed) {
           return reject(result.error.message);
         }
@@ -102,6 +104,27 @@ export default class OfficeConnector {
 
   listenForChanges (binding, callback) {
     Office.select(`bindings#${binding.id}`).addHandlerAsync(Office.EventType.BindingDataChanged, callback);
+  }
+
+  listenForSelectionChanges (callback) {
+    Office.context.document.addHandlerAsync('documentSelectionChanged', () => {
+      this.getCurrentlySelectedRange().then(callback);
+    });
+  }
+
+  stopListeningForSelectionChanges () {
+    Office.context.document.removeHandlerAsync('documentSelectionChanged', {}, () => {});
+  }
+
+  getCurrentlySelectedRange () {
+    return new Promise((resolve, reject) => {
+      Excel.run((ctx) => {
+        const range = ctx.workbook.getSelectedRange().load('address');;
+        return ctx.sync().then(() => {
+          resolve(range.address);
+        });
+      });
+    });
   }
 
   getData (binding) {

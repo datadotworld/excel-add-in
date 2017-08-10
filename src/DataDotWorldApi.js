@@ -57,7 +57,9 @@ export default class DataDotWorldApi {
   }
 
   uploadFile (options) {
-    const {datasetSlug, filename} = options;
+    const {dataset, filename} = options;
+    const datasetSlug = `${dataset.owner}/${dataset.id}`;
+
     const csv = options.data.map((row) => {
       return row.join(',');
     }).join('\n');
@@ -68,6 +70,6 @@ export default class DataDotWorldApi {
     const blob = new Blob([csv]);
     formData.append('file', blob, filename);
 
-    return axios.post(`/uploads/${datasetSlug}/files`, formData);
+    return this.api.post(`/uploads/${datasetSlug}/files`, formData);
   }
 }

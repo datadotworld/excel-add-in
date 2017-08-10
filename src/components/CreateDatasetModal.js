@@ -68,7 +68,7 @@ class CreateDatasetModal extends Component {
     }
 
     return (
-      <Grid className='create-dataset-modal'>
+      <Grid className='create-dataset-modal modal show'>
         <Row className='center-block header'>
           <div className='title'>
             Create a new dataset <Icon icon='close' className='close-button' onClick={close} />

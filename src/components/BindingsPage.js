@@ -25,6 +25,7 @@ class BindingsPage extends Component {
     dataset: PropTypes.object,
     loggedIn: PropTypes.bool,
     removeBinding: PropTypes.func,
+    showAddData: PropTypes.func,
     sync: PropTypes.func
   }
 
@@ -38,9 +39,7 @@ class BindingsPage extends Component {
   }
 
   addFile = () => {
-    this.setState({
-      showFileInput: true
-    });
+    this.props.showAddData();
   }
 
   createBinding = (filename) => {
@@ -90,7 +89,6 @@ class BindingsPage extends Component {
   }
 
   findBindingForFile = (file) => {
-    console.log(this.props.bindings);
     return this.props.bindings.find((binding) => {
       return binding.id === `dw::${file.name}`;
     });
@@ -98,7 +96,7 @@ class BindingsPage extends Component {
 
   render () {
     const { showFileInput, sortKey } = this.state;
-    const { dataset, bindings, removeBinding } = this.props;
+    const { dataset, removeBinding } = this.props;
 
     let bindingEntries;
     if (dataset && dataset.files.length) {
@@ -106,7 +104,6 @@ class BindingsPage extends Component {
       
       bindingEntries = sortedFiles.map((file) => {
         const binding = this.findBindingForFile(file);
-        console.log(binding);
         return (<BindingListItem binding={binding} file={file}
           addBinding={this.addBindingToExistingFile}
           removeBinding={removeBinding} />);

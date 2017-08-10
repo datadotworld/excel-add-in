@@ -33,6 +33,7 @@ class DatasetItem extends Component {
         bsSize='small'
         href={buttonLink}
         target='_blank'
+        rel='noopener noreferrer'
         onClick={this.buttonClick}>{buttonText}</Button>}
       {!buttonLink && <Button
         bsSize='small'

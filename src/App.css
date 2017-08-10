@@ -58,3 +58,51 @@ body {
 .sort-dropdown .dropdown li a {
   padding-left: 1rem;
 }
+
+.modal {
+  background-color: #fff;
+}
+
+.modal .header {
+  padding: 15px;
+  border-bottom: 1px solid #dfe3e9;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal .header .close-button {
+  float: right;
+  cursor: pointer;
+}
+
+.modal form {
+  padding: 15px;
+}
+
+.modal form .form-group {
+  position: relative;
+}
+
+.modal form .input-group {
+  width: 100%;
+}
+
+.modal form .titleLimit {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  line-height: 1.5rem;
+  padding-right: 0;
+}
+
+.modal form .button-group {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal form button {
+  width: 47%;
+}

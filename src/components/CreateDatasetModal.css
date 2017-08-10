@@ -1,45 +1,5 @@
 .create-dataset-modal {
-  position: fixed;
   top: 50px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  background-color: #fff;
-}
-
-.create-dataset-modal .header {
-  padding: 15px;
-  border-bottom: 1px solid #dfe3e9;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.create-dataset-modal .header .close-button {
-  float: right;
-  cursor: pointer;
-}
-
-.create-dataset-modal form {
-  padding: 15px;
-}
-
-.create-dataset-modal form .form-group {
-  position: relative;
-}
-
-.create-dataset-modal form .input-group {
-  width: 100%;
-}
-
-.create-dataset-modal form .titleLimit {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: right;
-  line-height: 1.5rem;
-  padding-right: 0;
 }
 
 .create-dataset-modal form .radio-option-description {
@@ -56,14 +16,4 @@
 
 .create-dataset-modal form .radio.checked .radio-label {
   color: #608fc5;
-}
-
-.create-dataset-modal form .button-group {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.create-dataset-modal form button {
-  width: 47%;
 }

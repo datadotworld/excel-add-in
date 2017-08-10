@@ -7,6 +7,7 @@ import './App.css';
 import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
+import AddDataModal from './components/AddDataModal';
 import WelcomePage from './components/WelcomePage';
 import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
@@ -153,8 +154,11 @@ class App extends Component {
   async unlinkDataset () {
     try {
       await this.office.setDataset();
-      this.setState({ dataset: null });
+      this.state.bindings.forEach((binding) => {
+        this.office.removeBinding(binding);
+      });
       this.getDatasets();
+      this.setState({ dataset: null, bindings: [] });
     } catch (error) {
       this.setState({error});
     }
@@ -173,19 +177,51 @@ class App extends Component {
     this.setState({ error: null });
   }
 
-  sync = () => {
-    const {bindings} = this.state;
-    bindings.forEach((binding) => {
-      this.office.getData(binding).then((data) => {
-        console.log(data);
-      }).catch((error) => {
-        this.setState({error});
+  sync = (binding) => {
+    return new Promise((resolve, reject) => {
+      const bindings = binding ? [binding] : this.state.bindings;
+      const promises = [];
+      bindings.forEach((binding) => {
+        
+        const promise = this.office.getData(binding).then((data) => {
+          console.log(data);
+          return this.api.uploadFile({
+            data,
+            dataset: this.state.dataset,
+            filename: binding.id.replace('dw::', '')
+          });
+        }).catch((error) => {
+          this.setState({error});
+          reject();
+        });
+
+        promises.push(promise);
+        Promise.all(promises).then(resolve);
       });
     });
   }
 
   showCreateDataset = () => {
     this.setState({showCreateDataset: true});
+  }
+
+  showAddData = () => {
+    // Listen for changes to the selected range
+    this.office.listenForSelectionChanges((currentSelectedRange) => {
+      this.setState({currentSelectedRange});
+    });
+
+    // But also grab the current selection
+    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+      this.setState({currentSelectedRange});
+    });
+
+    this.setState({showAddDataModal: true});
+  }
+
+  closeAddData = () => {
+    this.office.stopListeningForSelectionChanges();
+    this.setState({showAddDataModal: false});
   }
 
   async createDataset (dataset) {
@@ -199,11 +235,13 @@ class App extends Component {
   render () {
     const {
       bindings,
+      currentSelectedRange,
       dataset,
       datasets,
       error,
       loggedIn,
       officeInitialized,
+      showAddDataModal,
       showCreateDataset,
       user
     } = this.state;
@@ -214,7 +252,6 @@ class App extends Component {
     }
 
     const showStartPage = officeInitialized && !loggedIn;
-    const showBindingsPage = officeInitialized && !showStartPage && loggedIn;
 
     return (
       <div>
@@ -229,6 +266,7 @@ class App extends Component {
           createBinding={this.createBinding}
           removeBinding={this.removeBinding}
           unlinkDataset={this.unlinkDataset}
+          showAddData={this.showAddData}
           sync={this.sync}
         />}
 
@@ -237,7 +275,19 @@ class App extends Component {
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
         />}
-        {showCreateDataset && <CreateDatasetModal user={user} linkNewDataset={this.linkNewDataset} createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} />}
+
+        {showCreateDataset && <CreateDatasetModal 
+          user={user}
+          linkNewDataset={this.linkNewDataset}
+          createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} 
+        />}
+
+        {showAddDataModal && <AddDataModal 
+          sync={this.sync}
+          range={currentSelectedRange}
+          close={this.closeAddData}
+          createBinding={this.createBinding} 
+        />}
       </div>
     );
   }

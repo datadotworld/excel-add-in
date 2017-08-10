@@ -37,10 +37,7 @@ See the section about [deployment](#deployment) for more information.
 
 # Open Questions
 
-1. How to determine if someone has write access to the dataset?
-1. No simple way to show what the bound area is, ie 'Sheet2'!A17
-https://dev.office.com/reference/add-ins/excel/range
-1. Are we creating a new dataset via the API? Or just opening a new window to data.world if possible.
+1. How to determine if someone has write access to the dataset?  Waiting on changes to public API.
 1. It does not appear that icons/text on the ribbon buttons can be dynamic.
 
 # Useful Links
