@@ -19,17 +19,23 @@ import './AddDataModal.css';
 const filenameRegex = /^[^/]+$/;
 const MAX_FILENAME_LENGTH = 128;
 
+const getFilenameWithoutExtension = function (filename) {
+  const dotPos = filename.lastIndexOf('.');
+  return dotPos > -1 ? filename.slice(0, dotPos) : filename;
+}
+
 class AddDataModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createBinding: PropTypes.func,
+    file: PropTypes.string,
     range: PropTypes.string,
-    sync: PropTypes.string
+    sync: PropTypes.func
   }
 
   state = {
     isSubmitting: false,
-    name: ''
+    name: this.props.file ? getFilenameWithoutExtension(this.props.file) : ''
   }
 
   isFormValid = () => {
@@ -47,7 +53,6 @@ class AddDataModal extends Component {
     createBinding(`${this.state.name}.csv`).then((binding) => {
       // Binding has been created, but the file does not exist yet, sync the file
       sync(binding).then(() => {
-        console.log('sync complete');
         close();
       });
     });
@@ -55,7 +60,7 @@ class AddDataModal extends Component {
 
   render () {
     const { name } = this.state;
-    const { close, range } = this.props;
+    const { close, file, range } = this.props;
 
     let validState;
 
@@ -81,6 +86,9 @@ class AddDataModal extends Component {
                   placeholder='Click to select range'
                   type='text' />
               </InputGroup>
+              <HelpBlock>
+                Select the area to bind in the worksheet, it will be reflected here.
+              </HelpBlock>  
             </FormGroup>
 
             <FormGroup validationState={validState}>
@@ -89,12 +97,13 @@ class AddDataModal extends Component {
                 <FormControl
                   onChange={(event) => this.setState({name: event.target.value})}
                   value={name}
+                  disabled={!!file}
                   type='text' />
               </InputGroup>
               <HelpBlock>
-                Must not include slashes
+                Must not include slashes, your file will be named <strong>{name}.csv</strong>
                 <div className='titleLimit'>max. 128</div>
-              </HelpBlock>  
+              </HelpBlock>
             </FormGroup>
             <div className='button-group'>
               <Button onClick={close}>Cancel</Button>

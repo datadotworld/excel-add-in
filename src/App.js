@@ -182,9 +182,7 @@ class App extends Component {
       const bindings = binding ? [binding] : this.state.bindings;
       const promises = [];
       bindings.forEach((binding) => {
-        
         const promise = this.office.getData(binding).then((data) => {
-          console.log(data);
           return this.api.uploadFile({
             data,
             dataset: this.state.dataset,
@@ -205,7 +203,7 @@ class App extends Component {
     this.setState({showCreateDataset: true});
   }
 
-  showAddData = () => {
+  showAddData = (file) => {
     // Listen for changes to the selected range
     this.office.listenForSelectionChanges((currentSelectedRange) => {
       this.setState({currentSelectedRange});
@@ -216,7 +214,7 @@ class App extends Component {
       this.setState({currentSelectedRange});
     });
 
-    this.setState({showAddDataModal: true});
+    this.setState({showAddDataModal: true, addDataModalFile: file});
   }
 
   closeAddData = () => {
@@ -234,6 +232,7 @@ class App extends Component {
   
   render () {
     const {
+      addDataModalFile,
       bindings,
       currentSelectedRange,
       dataset,
@@ -252,6 +251,7 @@ class App extends Component {
     }
 
     const showStartPage = officeInitialized && !loggedIn;
+    const modalViewOpened = showAddDataModal || showCreateDataset;
 
     return (
       <div>
@@ -259,7 +259,7 @@ class App extends Component {
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
-        {!showStartPage && dataset && <BindingsPage 
+        {!showStartPage && !modalViewOpened && dataset && <BindingsPage
           bindings={bindings}
           loggedIn={loggedIn}
           dataset={dataset}
@@ -286,6 +286,7 @@ class App extends Component {
           sync={this.sync}
           range={currentSelectedRange}
           close={this.closeAddData}
+          file={addDataModalFile}
           createBinding={this.createBinding} 
         />}
       </div>

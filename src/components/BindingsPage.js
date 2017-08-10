@@ -42,12 +42,6 @@ class BindingsPage extends Component {
     this.props.showAddData();
   }
 
-  createBinding = (filename) => {
-    this.props.createBinding(filename).then(() => {
-      this.setState({showFileInput: false});
-    });
-  }
-
   datasetMenuOptionChange = () => {
     this.props.unlinkDataset();
   }
@@ -85,7 +79,7 @@ class BindingsPage extends Component {
   }
 
   addBindingToExistingFile = (file) => {
-    this.props.createBinding(file.name);
+    this.props.showAddData(file.name);
   }
 
   findBindingForFile = (file) => {
@@ -133,7 +127,7 @@ class BindingsPage extends Component {
               <Glyphicon glyph='plus' />
               Add File
             </Button>
-            <Button onClick={this.props.sync} disabled={!bindingEntries.length}>
+            <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
               <Glyphicon glyph='refresh' />
               Sync Now
             </Button>
