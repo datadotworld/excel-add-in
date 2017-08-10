@@ -26,6 +26,7 @@ class BindingsPage extends Component {
     loggedIn: PropTypes.bool,
     removeBinding: PropTypes.func,
     showAddData: PropTypes.func,
+    syncing: PropTypes.bool,
     sync: PropTypes.func
   }
 
@@ -89,7 +90,7 @@ class BindingsPage extends Component {
   }
 
   render () {
-    const { showFileInput, sortKey } = this.state;
+    const { showFileInput, sortKey, syncing } = this.state;
     const { dataset, removeBinding } = this.props;
 
     let bindingEntries;
@@ -124,13 +125,17 @@ class BindingsPage extends Component {
           <div className='button-group'>
             <Button onClick={this.addFile}
               disabled={showFileInput}>
-              <Glyphicon glyph='plus' />
+              <Icon icon='add' />
               Add File
             </Button>
-            <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
-              <Glyphicon glyph='refresh' />
-              Sync Now
-            </Button>
+            {!syncing && <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
+              <Icon icon='sync' />
+              Sync Files
+            </Button>}
+            {syncing && <Button className='syncing-button'>
+              <div className='loader-icon'></div>
+              Syncing…
+              </Button>}
           </div>
         </Row>
         {!!bindingEntries.length && 

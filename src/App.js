@@ -178,6 +178,7 @@ class App extends Component {
   }
 
   sync = (binding) => {
+    this.setState({syncing: true});
     return new Promise((resolve, reject) => {
       const bindings = binding ? [binding] : this.state.bindings;
       const promises = [];
@@ -190,11 +191,19 @@ class App extends Component {
           });
         }).catch((error) => {
           this.setState({error});
+          this.setState({syncing: false});
           reject();
         });
 
         promises.push(promise);
-        Promise.all(promises).then(resolve);
+        Promise.all(promises).then(() => {
+          this.setState({syncing: false});
+          resolve();
+        }).catch((error) => {
+          this.setState({error});
+          this.setState({syncing: false});
+          reject();
+        });
       });
     });
   }
@@ -242,6 +251,7 @@ class App extends Component {
       officeInitialized,
       showAddDataModal,
       showCreateDataset,
+      syncing,
       user
     } = this.state;
 
@@ -268,6 +278,7 @@ class App extends Component {
           unlinkDataset={this.unlinkDataset}
           showAddData={this.showAddData}
           sync={this.sync}
+          syncing={syncing}
         />}
 
         {!showStartPage && !dataset && <DatasetsView 
