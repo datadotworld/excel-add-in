@@ -100,12 +100,12 @@ class App extends Component {
         throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
       }
 
-      this.state.bindings.push(binding);
-      this.setState({ bindings: this.state.bindings });
-      
-      this.listenForChangesToBinding(binding);
       await this.office.getBindingRange(binding);
 
+      this.state.bindings.push(binding);
+      this.listenForChangesToBinding(binding);
+      this.setState({ bindings: this.state.bindings });
+      
       return binding;
     } catch (error) {
       this.setState({error});
