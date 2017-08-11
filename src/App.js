@@ -33,6 +33,7 @@ class App extends Component {
     this.unlinkDataset = this.unlinkDataset.bind(this);
     this.createDataset = this.createDataset.bind(this);
     this.linkNewDataset = this.linkNewDataset.bind(this);
+    this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -67,9 +68,11 @@ class App extends Component {
       await this.office.initialize();
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
-      const dataset = settings.dataset;
+      let dataset = settings.dataset;
       if (! dataset && this.state.loggedIn) {
         this.getDatasets();
+      } else if (this.state.loggedIn) {
+        dataset = await this.refreshLinkedDataset(dataset);
       }
       if (! syncStatus) {
         syncStatus = {};
@@ -93,7 +96,6 @@ class App extends Component {
         officeInitialized: true
       });
 
-      this.setState({dataset});
       bindings.forEach(this.listenForChangesToBinding);
     } catch (error) {
       this.setState({error});
@@ -126,9 +128,19 @@ class App extends Component {
 
       await this.office.getBindingRange(binding);
 
+      const syncStatus = this.state.syncStatus;
+      syncStatus[binding.id] = {
+        synced: false,
+        lastSync: null,
+        changes: 1
+      };
+
       this.state.bindings.push(binding);
       this.listenForChangesToBinding(binding);
-      this.setState({ bindings: this.state.bindings });
+      this.setState({
+        syncStatus,
+        bindings: this.state.bindings
+      });
       
       return binding;
     } catch (error) {
@@ -151,6 +163,18 @@ class App extends Component {
     try {
       const datasets = await this.api.getDatasets();
       this.setState({datasets});
+    } catch (error) {
+      this.setState({error});
+    }
+  }
+
+  async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
+    try {
+      const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
+      this.office.setDataset(dataset);
+      this.setState({ dataset });
+
+      return dataset;
     } catch (error) {
       this.setState({error});
     }
@@ -334,7 +358,8 @@ class App extends Component {
           range={currentSelectedRange}
           close={this.closeAddData}
           file={addDataModalFile}
-          createBinding={this.createBinding} 
+          createBinding={this.createBinding}
+          refreshLinkedDataset={this.refreshLinkedDataset}
         />}
       </div>
     );

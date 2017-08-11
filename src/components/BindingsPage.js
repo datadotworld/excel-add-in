@@ -96,7 +96,7 @@ class BindingsPage extends Component {
 
     const { dataset, removeBinding, syncing, syncStatus } = this.props;
 
-    let bindingEntries;
+    let bindingEntries = [];
     let unsyncedFileCount = 0;
     if (dataset && dataset.files.length) {
       const sortedFiles = this.sortFiles();

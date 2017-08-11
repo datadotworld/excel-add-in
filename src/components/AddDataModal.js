@@ -30,6 +30,7 @@ class AddDataModal extends Component {
     createBinding: PropTypes.func,
     file: PropTypes.string,
     range: PropTypes.string,
+    refreshLinkedDataset: PropTypes.func,
     sync: PropTypes.func
   }
 
@@ -49,12 +50,14 @@ class AddDataModal extends Component {
 
   submit = (event) => {
     event.preventDefault();
-    const { close, createBinding, sync } = this.props;
+    const { close, createBinding, refreshLinkedDataset, sync } = this.props;
     createBinding(`${this.state.name}.csv`).then((binding) => {
-      // Binding has been created, but the file does not exist yet, sync the file
-      sync(binding).then(() => {
+      if (! this.props.file) {
+        // Binding has been created, but the file does not exist yet, sync the file
+        sync(binding).then(refreshLinkedDataset).then(close);
+      } else {
         close();
-      });
+      }
     });
   }
 
