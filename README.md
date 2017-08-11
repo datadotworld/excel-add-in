@@ -18,7 +18,25 @@ For testing locally, https must be enabled and the OAuth properties must be set 
 
 `HTTPS=true REACT_APP_OAUTH_CLIENT_ID="datadotworld-excel-addon-test" REACT_APP_OAUTH_REDIRECT_URI="https://excel-addon-oauth.herokuapp.com/callback" yarn start`
 
-This client is setup to redirect back to localhost:3000 after successful authentication.
+This client is setup to redirect back to `https://localhost:3000` after successful authentication.
+
+#### Testing against Office Online
+
+1. Open `https://localhost:3000` in the browser and accept the self-signed cert
+1. Open a spreadsheet in Excel Online
+1. Click INSERT > Office Add-ins
+1. Click Upload My Add-in
+1. Click Browse... and browse to the `excel-add-in.xml` file located in this repo
+1. Click Upload
+
+#### Testing against Desktop Office for OSX
+
+1. Open `https://localhost:3000` in Safari browser and accept the self-signed cert
+1. Close Excel if it is open
+1. Open a terminal and from the root of this repo, run `cp ./excel-add-in.xml ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/`
+1. Open a spreadsheet in Excel
+1. Click Insert
+1. Click on the dropdown by the My Add-ins.  The add-in will only be available via the dropdown, not via the button which launches a new window to select an add-in.
 
 ### `npm test`
 
