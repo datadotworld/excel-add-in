@@ -90,8 +90,9 @@ class BindingsPage extends Component {
   }
 
   render () {
-    const { showFileInput, sortKey, syncing } = this.state;
-    const { dataset, removeBinding } = this.props;
+    const { showFileInput, sortKey } = this.state;
+
+    const { dataset, removeBinding, syncing } = this.props;
 
     let bindingEntries;
     if (dataset && dataset.files.length) {
@@ -100,6 +101,7 @@ class BindingsPage extends Component {
       bindingEntries = sortedFiles.map((file) => {
         const binding = this.findBindingForFile(file);
         return (<BindingListItem binding={binding} file={file}
+          key={file.name}
           addBinding={this.addBindingToExistingFile}
           removeBinding={removeBinding} />);
       });

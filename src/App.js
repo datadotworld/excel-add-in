@@ -183,27 +183,26 @@ class App extends Component {
       const bindings = binding ? [binding] : this.state.bindings;
       const promises = [];
       bindings.forEach((binding) => {
-        const promise = this.office.getData(binding).then((data) => {
-          return this.api.uploadFile({
-            data,
-            dataset: this.state.dataset,
-            filename: binding.id.replace('dw::', '')
-          });
-        }).catch((error) => {
-          this.setState({error});
-          this.setState({syncing: false});
-          reject();
+        const promise = new Promise((resolve, reject) => {
+          this.office.getData(binding).then((data) => {
+            return this.api.uploadFile({
+              data,
+              dataset: this.state.dataset,
+              filename: binding.id.replace('dw::', '')
+            });
+          }).then(resolve);
         });
 
         promises.push(promise);
-        Promise.all(promises).then(() => {
-          this.setState({syncing: false});
-          resolve();
-        }).catch((error) => {
-          this.setState({error});
-          this.setState({syncing: false});
-          reject();
-        });
+      });
+
+      Promise.all(promises).then(() => {
+        this.setState({syncing: false});
+        resolve();
+      }).catch((error) => {
+        this.setState({error});
+        this.setState({syncing: false});
+        reject();
       });
     });
   }
