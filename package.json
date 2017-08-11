@@ -24,5 +24,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/datadotworld/excel-add-in.git"
-  }
+  },
+  "license" : "SEE LICENSE IN LICENSE.txt"
 }
