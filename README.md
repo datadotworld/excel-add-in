@@ -57,6 +57,7 @@ See the section about [deployment](#deployment) for more information.
 
 1. How to determine if someone has write access to the dataset?  Waiting on changes to public API.
 1. It does not appear that icons/text on the ribbon buttons can be dynamic.
+1. Can the bound section be highlighted or selected when a user hovers over the file it is linked to?
 
 # Useful Links
 
