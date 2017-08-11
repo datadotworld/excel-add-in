@@ -129,3 +129,11 @@ body {
   width: 1.25rem;
   height: 1.25rem;
 }
+
+.btn .badge.badge-danger {
+  background-color: #ff6666;
+  color: #fff;
+  font-size: 0.75em;
+  border-radius: 10px;
+  padding: 0.25em 0.75em;
+}

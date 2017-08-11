@@ -48,11 +48,20 @@
   display: flex;
   justify-content: center;
 }
+
 .file .add-button .svg-icon {
   line-height: 1;
+  height: 14px;
 }
+
 .file .add-icon {
   width: 1rem;
+}
+
+.file .loader-icon {
+  justify-self: flex-end;
+  margin-left: auto;
+  margin-right: 0.375rem;
 }
 
 .file .link-button {
@@ -101,4 +110,26 @@
 
 .file .link-button:hover .link {
   display: none;
+}
+
+.file .file-icon {
+  position: relative;
+}
+
+.file .file-icon:after {
+  content: ' ';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 0.2rem;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+}
+
+.file .file-icon.needs-sync:after {
+  background-color: #ff6666;
+}
+
+.file .file-icon.syncing:after {
+  background-color: #f6be61;
 }

@@ -130,12 +130,16 @@ const insides = {
 class FileTypeIcon extends Component {
 
   static propTypes = {
+    className: PropTypes.string,
     filename: PropTypes.string
   }
+  static defaultProps = {
+    className: ''
+  };
 
   render () {
 
-    const { filename } = this.props;
+    const { className, filename } = this.props;
     let dotPos = filename ? filename.lastIndexOf('.') : -1;
     let extension = dotPos > -1 ? filename.slice(dotPos + 1).toUpperCase() : '';
 
@@ -155,7 +159,7 @@ class FileTypeIcon extends Component {
     const showType = dotPos !== -1 && extension.length < 5;
 
     return (
-      <svg className='file-type-icon' viewBox='0 0 45 58'>
+      <svg className={`file-type-icon ${className}`} viewBox='0 0 45 58'>
         <g className={`${insideType}Type`}>
           <g id='file'>
             <path className='bg' d='M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z' />

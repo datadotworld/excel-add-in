@@ -53,6 +53,10 @@
   color: #4376b2;
 }
 
+.bindings-page .section-header .button-group button .badge {
+  margin-left: 0.5rem;
+}
+
 .bindings-page .section-header .button-group button:disabled {
   background-color: transparent;
 }
@@ -75,7 +79,7 @@
   white-space: nowrap;
 }
 
-.bindings-page button .svg-icon {
+.bindings-page .button-group button .svg-icon {
   vertical-align: middle;
   margin-right: 0.25rem;
 }

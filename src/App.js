@@ -49,7 +49,8 @@ class App extends Component {
       token,
       bindings: [],
       datasets: [],
-      loggedIn: !!token
+      loggedIn: !!token,
+      syncStatus: {}
     };
 
     if (token) {
@@ -64,17 +65,35 @@ class App extends Component {
     this.office = new OfficeConnector();
     try {
       await this.office.initialize();
-      const { dataset } = this.office.getSettings();
+      const settings = this.office.getSettings();
+      let syncStatus = settings.syncStatus;
+      const dataset = settings.dataset;
       if (! dataset && this.state.loggedIn) {
         this.getDatasets();
       }
-      this.setState({dataset});
+      if (! syncStatus) {
+        syncStatus = {};
+      }
+
       const bindings = await this.office.getBindings();
+      bindings.forEach((binding) => {
+        if (!syncStatus[binding.id]) {
+          syncStatus[binding.id] = {
+            synced: false,
+            changes: 1,
+            lastSync: null
+          };
+        }
+      });
+
       this.setState({
         bindings,
+        dataset,
+        syncStatus,
         officeInitialized: true
       });
 
+      this.setState({dataset});
       bindings.forEach(this.listenForChangesToBinding);
     } catch (error) {
       this.setState({error});
@@ -87,9 +106,13 @@ class App extends Component {
   }
 
   listenForChangesToBinding = (binding) => {
-    console.log('listen for changes to binding %s', binding.id);
     this.office.listenForChanges(binding, (event) => {
-      console.log(event.binding.id);
+      const { syncStatus } = this.state;
+      syncStatus[binding.id].changes += 1;
+      syncStatus[binding.id].synced = false;
+
+      this.office.setSyncStatus(syncStatus);
+      this.setState({ syncStatus });
     });
   }
 
@@ -154,11 +177,16 @@ class App extends Component {
   async unlinkDataset () {
     try {
       await this.office.setDataset();
+      await this.office.setSyncStatus({});
       this.state.bindings.forEach((binding) => {
         this.office.removeBinding(binding);
       });
       this.getDatasets();
-      this.setState({ dataset: null, bindings: [] });
+      this.setState({
+        dataset: null,
+        bindings: [],
+        syncStatus: {}
+      });
     } catch (error) {
       this.setState({error});
     }
@@ -190,7 +218,14 @@ class App extends Component {
               dataset: this.state.dataset,
               filename: binding.id.replace('dw::', '')
             });
-          }).then(resolve);
+          }).then(() => {
+            const syncStatus = this.state.syncStatus;
+            syncStatus[binding.id].synced = true;
+            syncStatus[binding.id].changes = 0;
+            syncStatus[binding.id].lastSync = new Date();
+            this.setState({ syncStatus });
+            resolve();
+          });
         });
 
         promises.push(promise);
@@ -251,6 +286,7 @@ class App extends Component {
       showAddDataModal,
       showCreateDataset,
       syncing,
+      syncStatus,
       user
     } = this.state;
 
@@ -278,6 +314,7 @@ class App extends Component {
           showAddData={this.showAddData}
           sync={this.sync}
           syncing={syncing}
+          syncStatus={syncStatus}
         />}
 
         {!showStartPage && !dataset && <DatasetsView 

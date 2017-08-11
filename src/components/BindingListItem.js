@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedDate } from 'react-intl';
+import cx from 'classnames';
 
 import { Button } from 'react-bootstrap';
 
@@ -14,7 +15,9 @@ class BindingsListItem extends Component {
     addBinding: PropTypes.func,
     file: PropTypes.object,
     binding: PropTypes.object,
-    removeBinding: PropTypes.func
+    removeBinding: PropTypes.func,
+    syncing: PropTypes.bool,
+    syncStatus: PropTypes.object
   }
 
   remove = () => {
@@ -22,24 +25,30 @@ class BindingsListItem extends Component {
   }
 
   render () {
-    const { addBinding, file, binding, removeBinding } = this.props;
+    const { addBinding, file, binding, removeBinding, syncing, syncStatus } = this.props;
+
     let dotPos = file ? file.name.lastIndexOf('.') : -1;
     let extension = dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
 
     const isBindable = !binding && extension === 'CSV';
+    const isSyncing = syncing && syncStatus && !syncStatus.synced;
+    const hasPendingChanges = syncStatus && !!syncStatus.changes;
 
     return (
       <div className='file' key={file.id}>
-        <FileTypeIcon filename={file.name} />
+        <span className={cx('file-icon', {syncing: isSyncing, 'needs-sync': hasPendingChanges})}>
+          <FileTypeIcon filename={file.name} />
+        </span>
         <div className='center-info'>
           <div className='title'>{file.name}</div>
-          <div className='info'>{binding && `${binding.rangeAddress} · `}Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' /></div>
+          {!hasPendingChanges && <div className='info'>{binding && `${binding.rangeAddress} · `}Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' /></div>}
+          {hasPendingChanges && <div className='info'>{syncStatus.changes} pending changes</div>}
         </div>
         {isBindable && <Button
           bsSize='small'
           className='add-button'
           onClick={() => addBinding(file)}><Icon icon='add' /></Button>}
-        {!!binding && <Button
+        {!!binding && !isSyncing && <Button
           bsSize='small'
           className='link-button'
           onClick={() => removeBinding(binding)}>
@@ -52,6 +61,7 @@ class BindingsListItem extends Component {
               <span className='label'>Unlink</span>
             </div>
           </Button>}
+          {!!binding && isSyncing && <div className='loader-icon'></div>}
       </div>
     );
   }

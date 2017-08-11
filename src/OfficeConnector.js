@@ -103,7 +103,10 @@ export default class OfficeConnector {
   }
 
   listenForChanges (binding, callback) {
-    Office.select(`bindings#${binding.id}`).addHandlerAsync(Office.EventType.BindingDataChanged, callback);
+    const bindingId = `bindings#${binding.id}`;
+    Office.select(bindingId).removeHandlerAsync(Office.EventType.BindingDataChanged, () => {
+      Office.select(bindingId).addHandlerAsync(Office.EventType.BindingDataChanged, callback);
+    });
   }
 
   listenForSelectionChanges (callback) {

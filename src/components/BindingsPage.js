@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
+import {
+  Badge,
   Button,
   Dropdown,
   DropdownButton,
@@ -26,8 +27,9 @@ class BindingsPage extends Component {
     loggedIn: PropTypes.bool,
     removeBinding: PropTypes.func,
     showAddData: PropTypes.func,
+    sync: PropTypes.func,
     syncing: PropTypes.bool,
-    sync: PropTypes.func
+    syncStatus: PropTypes.object
   }
 
   state = {
@@ -92,16 +94,22 @@ class BindingsPage extends Component {
   render () {
     const { showFileInput, sortKey } = this.state;
 
-    const { dataset, removeBinding, syncing } = this.props;
+    const { dataset, removeBinding, syncing, syncStatus } = this.props;
 
     let bindingEntries;
+    let unsyncedFileCount = 0;
     if (dataset && dataset.files.length) {
       const sortedFiles = this.sortFiles();
       
       bindingEntries = sortedFiles.map((file) => {
         const binding = this.findBindingForFile(file);
+        if (binding && !syncStatus[binding.id].synced) {
+          unsyncedFileCount += 1;
+        }
         return (<BindingListItem binding={binding} file={file}
           key={file.name}
+          syncing={syncing}
+          syncStatus={binding && syncStatus[binding.id]}
           addBinding={this.addBindingToExistingFile}
           removeBinding={removeBinding} />);
       });
@@ -133,6 +141,7 @@ class BindingsPage extends Component {
             {!syncing && <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
               <Icon icon='sync' />
               Sync Files
+              {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
             </Button>}
             {syncing && <Button className='syncing-button'>
               <div className='loader-icon'></div>
