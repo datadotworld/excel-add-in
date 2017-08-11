@@ -45,13 +45,12 @@
   padding: 0;
   height: 2rem;
   width: 2rem;
-  display: flex;
-  justify-content: center;
 }
 
 .file .add-button .svg-icon {
   line-height: 1;
   height: 14px;
+  display: block;
 }
 
 .file .add-icon {
