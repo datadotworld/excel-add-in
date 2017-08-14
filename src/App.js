@@ -243,6 +243,10 @@ class App extends Component {
     }
   }
 
+  select = (address) => {
+    this.office.select(address);
+  }
+
   dismissError = () => {
     this.setState({ error: null });
   }
@@ -354,6 +358,7 @@ class App extends Component {
           removeBinding={this.removeBinding}
           unlinkDataset={this.unlinkDataset}
           showAddData={this.showAddData}
+          select={this.select}
           sync={this.sync}
           syncing={syncing}
           syncStatus={syncStatus}

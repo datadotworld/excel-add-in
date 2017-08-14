@@ -148,6 +148,19 @@ export default class OfficeConnector {
     });
   }
 
+  select (address) {
+    const addressSections = address.split('!');
+    return new Promise((resolve, reject) => {
+      Excel.run(function (ctx) {
+        const sheetName = addressSections[0];
+        const rangeAddress = addressSections[1];
+        const range = ctx.workbook.worksheets.getItem(sheetName).getRange(rangeAddress);
+        range.select();
+        return ctx.sync().then(resolve);
+      });;
+    });
+  }
+
   getData (binding) {
     return new Promise((resolve, reject) => {
       const {columnCount, rowCount} = binding;

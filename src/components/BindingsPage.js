@@ -44,6 +44,7 @@ class BindingsPage extends Component {
     dataset: PropTypes.object,
     loggedIn: PropTypes.bool,
     removeBinding: PropTypes.func,
+    select: PropTypes.func,
     showAddData: PropTypes.func,
     sync: PropTypes.func,
     syncing: PropTypes.bool,
@@ -112,7 +113,7 @@ class BindingsPage extends Component {
   render () {
     const { showFileInput, sortKey } = this.state;
 
-    const { dataset, removeBinding, syncing, syncStatus } = this.props;
+    const { dataset, removeBinding, select, syncing, syncStatus } = this.props;
 
     let bindingEntries = [];
     let unsyncedFileCount = 0;
@@ -126,6 +127,7 @@ class BindingsPage extends Component {
         }
         return (<BindingListItem binding={binding} file={file}
           key={file.name}
+          select={select}
           syncing={syncing}
           syncStatus={binding && syncStatus[binding.id]}
           addBinding={this.addBindingToExistingFile}
