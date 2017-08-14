@@ -104,7 +104,6 @@ class AddDataModal extends Component {
                 <FormControl
                   value={range}
                   disabled
-                  placeholder='Click to select range'
                   type='text' />
               </InputGroup>
               <HelpBlock>
