@@ -31,6 +31,7 @@ import {
   Radio,
   Row
 } from 'react-bootstrap';
+import { kebabCase } from 'lodash';
 
 import Icon from './icons/Icon';
 
@@ -104,7 +105,7 @@ class CreateDatasetModal extends Component {
                   type='text' />
               </InputGroup>
               <HelpBlock>
-                This will also be your dataset URL: data.world/{user.id}/<strong>cool-new-data</strong>
+                This will also be your dataset URL: data.world/{user.id}/<strong>{title ? kebabCase(title) : 'cool-new-data'}</strong>
                 <div className='titleLimit'>max. 60</div>
               </HelpBlock>  
             </FormGroup>

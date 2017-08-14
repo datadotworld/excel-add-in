@@ -52,3 +52,7 @@
   color: #fff !important;
   background-image: none;
 }
+
+.login-header .dropdown-menu {
+  z-index: 1060;
+}

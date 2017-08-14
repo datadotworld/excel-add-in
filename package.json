@@ -6,6 +6,7 @@
     "axios": "0.15.3",
     "classnames": "^2.2.5",
     "little-loader": "^0.2.0",
+    "lodash": "^4.17.4",
     "office-addin-validator": "^1.0.1",
     "office-ui-fabric-js": "^1.3.0",
     "query-string": "4.3.4",
@@ -25,5 +26,5 @@
     "type": "git",
     "url": "git+https://github.com/datadotworld/excel-add-in.git"
   },
-  "license" : "SEE LICENSE IN LICENSE.txt"
+  "license": "SEE LICENSE IN LICENSE.txt"
 }
