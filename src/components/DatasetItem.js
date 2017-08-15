@@ -42,7 +42,7 @@ class DatasetItem extends Component {
   render () {
     const {dataset, buttonText, buttonLink} = this.props;
     return (<div className='dataset'>
-      <Icon icon='dataset-schema' />
+      <Icon icon='datasetSchema' />
       <div className='center-info'>
         <div className='title'>{dataset.title}</div>
         <div className='info'>@{dataset.owner} &middot; Updated <FormattedDate value={dataset.updated} year='numeric' month='short' day='2-digit' /></div>

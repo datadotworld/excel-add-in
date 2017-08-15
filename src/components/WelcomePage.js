@@ -25,7 +25,7 @@ import {
 } from 'react-bootstrap';
 
 import './WelcomePage.css';
-import sparkle from '../static/img/new-sparkle-logo.png';
+import LogoStacked from './icons/LogoStacked';
 import DatasetItem from './DatasetItem';
 
 class WelcomePage extends Component {
@@ -60,8 +60,7 @@ class WelcomePage extends Component {
     return (
       <Grid className='welcome-page'>
         <Row className='center-block'>
-          <img src={sparkle} className='header-image center-block' alt='data.world sparkle logo' />
-          <h1 className='header'>data.world</h1>
+          <LogoStacked />
           {!dataset && <div>
             <div className='description'>Lorem ipsum dolor sit amet consecteur.</div>
           </div>}

@@ -44,7 +44,7 @@ export default class OfficeConnector {
         return ctx.sync().then(() => {
           binding.rangeAddress = range.address;
           resolve();
-        }).catch(reject);
+        }).catch(resolve);
       });
     });
   }
@@ -60,8 +60,6 @@ export default class OfficeConnector {
         result.value.forEach((binding) => {
           if (binding.id.indexOf('dw::') === 0) {
             bindings.push(binding);
-            // TODO: an error getting the binding range can cause things to fail
-            // further down the line
             promises.push(this.getBindingRange(binding));
           }
         });
