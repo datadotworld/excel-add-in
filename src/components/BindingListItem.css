@@ -28,7 +28,7 @@
 
 .file .center-info {
   margin-left: 15px;
-  max-width: 230px;
+  max-width: 210px;
 }
 
 .file .title {
@@ -63,6 +63,7 @@
   padding: 0;
   height: 2rem;
   width: 2rem;
+  min-width: 2rem;
 }
 
 .file .add-button .svg-icon {
