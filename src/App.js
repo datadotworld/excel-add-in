@@ -117,7 +117,6 @@ class App extends Component {
 
       bindings.forEach(this.listenForChangesToBinding);
     } catch (error) {
-      console.log(error);
       this.setState({
         error: {
           error,
@@ -386,7 +385,6 @@ class App extends Component {
         {showStartPage && <WelcomePage dataset={dataset} />}
         {!showStartPage && !modalViewOpened && dataset && <BindingsPage
           bindings={bindings}
-          loggedIn={loggedIn}
           dataset={dataset}
           createBinding={this.createBinding}
           removeBinding={this.removeBinding}

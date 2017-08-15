@@ -33,7 +33,6 @@ import {
 import './BindingsPage.css';
 import BindingListItem from './BindingListItem';
 import Icon from './icons/Icon'
-import FileInput from './FileInput';
 
 class BindingsPage extends Component {
 
@@ -42,7 +41,6 @@ class BindingsPage extends Component {
     bindings: PropTypes.array,
     createBinding: PropTypes.func,
     dataset: PropTypes.object,
-    loggedIn: PropTypes.bool,
     removeBinding: PropTypes.func,
     select: PropTypes.func,
     showAddData: PropTypes.func,
@@ -51,8 +49,11 @@ class BindingsPage extends Component {
     syncStatus: PropTypes.object
   }
 
+  static defaultProps = {
+    bindings: []
+  }
+
   state = {
-    showFileInput: false,
     sortKey: 'updated'
   }
 
@@ -111,7 +112,7 @@ class BindingsPage extends Component {
   }
 
   render () {
-    const { showFileInput, sortKey } = this.state;
+    const { sortKey } = this.state;
 
     const {
       dataset,
@@ -161,8 +162,7 @@ class BindingsPage extends Component {
             <a href={`https://data.world/${dataset.owner}/${dataset.id}`} target='_blank'>https://data.world/{dataset.owner}/{dataset.id}</a>
           </div>
           <div className='button-group'>
-            <Button onClick={this.addFile}
-              disabled={showFileInput}>
+            <Button onClick={this.addFile}>
               <Icon icon='add' />
               Add File
             </Button>
@@ -194,7 +194,6 @@ class BindingsPage extends Component {
             </div>
             <div>
               {bindingEntries}
-              {showFileInput && <FileInput createBinding={this.createBinding} />}
             </div>
           </Row>}
         {!bindingEntries.length && 

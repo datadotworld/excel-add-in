@@ -18,9 +18,27 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
+
+import WelcomePage from '../../components/WelcomePage';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<WelcomePage />, div);
+});
+
+it('renders welcome page - no dataset', () => {
+  expect(renderer.create(<WelcomePage />).toJSON()).toMatchSnapshot()
+});
+
+it('renders welcome page - with dataset', () => {
+  const dataset = {
+    owner: 'test',
+    id: 'test',
+    title: 'This is a test',
+    updated: '2017-07-20T14:24:51.762Z',
+    created: '2017-07-20T14:24:51.762Z'
+  };
+  expect(renderer.create(<IntlProvider locale='en'><WelcomePage dataset={dataset} /></IntlProvider>).toJSON()).toMatchSnapshot()
 });

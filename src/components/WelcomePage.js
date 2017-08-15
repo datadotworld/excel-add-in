@@ -43,16 +43,13 @@ class WelcomePage extends Component {
   componentWillMount = () => {
     document.body.style.backgroundColor = '#335c8c';
   }
+  
   componentWillUnmoun = () => {
     document.body.style.backgroundColor = null;
   }
 
   startAuthFlow = () => {
     window.location = `https://data.world/oauth/authorize?client_id=${this.oauthClientId}&redirect_uri=${this.oauthRedirectURI}`;
-  }
-
-  viewDataset = () => {
-
   }
 
   render () {
@@ -66,8 +63,7 @@ class WelcomePage extends Component {
           </div>}
           {dataset && <div>
             <div>This file is linked to a dataset on data.world:</div>
-            <DatasetItem dataset={dataset} buttonText='View' buttonLink={`https://data.world/${dataset.owner}/${dataset.id}`}
-              buttonHandler={this.viewDataset} />
+            <DatasetItem dataset={dataset} buttonText='View' buttonLink={`https://data.world/${dataset.owner}/${dataset.id}`} />
             <div className='message'>Sign in to data.world to save changes as they are made.</div>
           </div>}
           <Button

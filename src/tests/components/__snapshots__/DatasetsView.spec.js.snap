@@ -1,0 +1,483 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders datasets view - datasets 1`] = `
+<div
+  className="datasets-view container"
+>
+  <div
+    className="dataset-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <div
+        className="title"
+      >
+        Select a dataset to link
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      className="center-block row"
+    >
+      <div
+        className="list-info"
+      >
+        2
+         datasets
+        <div
+          className="pull-right sort-dropdown"
+        >
+          <div
+            className="dropdown btn-group btn-group-sm"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-sm btn-default"
+              disabled={false}
+              id="dropdown-sort-datasets"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+              type="button"
+            >
+              Sort
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="dropdown-sort-datasets"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="active"
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Updated: Newest
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Updated: Oldest
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Created: Newest
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Created: Oldest
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Name: A - Z
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+                style={undefined}
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="svg-icon "
+                    onClick={undefined}
+                  >
+                    <svg
+                      className="check-icon"
+                      height="16px"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="16px"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        stroke-width="2"
+                      >
+                        <polyline
+                          className="stroke"
+                          points="1 7.2 5.9 12.1 15 3"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  Name: Z - A
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          className="dataset"
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="dataset-schema-icon"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="fill"
+                d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
+              />
+            </svg>
+          </span>
+          <div
+            className="center-info"
+          >
+            <div
+              className="title"
+            >
+              This is a test too
+            </div>
+            <div
+              className="info"
+            >
+              @
+              test
+               · Updated 
+              <span>
+                Aug 20, 2017
+              </span>
+            </div>
+          </div>
+          <button
+            className="btn btn-sm btn-default"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Link
+          </button>
+        </div>
+        <div
+          className="dataset"
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="dataset-schema-icon"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="fill"
+                d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
+              />
+            </svg>
+          </span>
+          <div
+            className="center-info"
+          >
+            <div
+              className="title"
+            >
+              This is a test
+            </div>
+            <div
+              className="info"
+            >
+              @
+              test
+               · Updated 
+              <span>
+                Jul 20, 2017
+              </span>
+            </div>
+          </div>
+          <button
+            className="btn btn-sm btn-default"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Link
+          </button>
+        </div>
+        <button
+          className="bottom-button btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Create a new dataset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders datasets view - no datasets 1`] = `
+<div
+  className="datasets-view container"
+>
+  <div
+    className="dataset-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <div
+        className="title"
+      >
+        Select a dataset to link
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      className="center-block no-datasets row"
+    >
+      <div
+        className="message"
+      >
+        You haven't created any datasets to link data to.
+      </div>
+      <button
+        className="bottom-button btn btn-primary"
+        disabled={false}
+        onClick={undefined}
+        type="button"
+      >
+        Create a new dataset
+      </button>
+    </div>
+  </div>
+</div>
+`;

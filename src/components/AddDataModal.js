@@ -53,6 +53,10 @@ class AddDataModal extends Component {
     updateBinding: PropTypes.func
   }
 
+  static defaultProps = {
+    options: {}
+  }
+
   state = {
     isSubmitting: false,
     name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : ''

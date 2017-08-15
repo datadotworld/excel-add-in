@@ -16,6 +16,9 @@
     "react-intl": "^2.3.0",
     "react-scripts": "1.0.10"
   },
+  "devDependencies": {
+    "react-test-renderer": "^15.6.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

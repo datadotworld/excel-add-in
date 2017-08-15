@@ -40,6 +40,10 @@ class DatasetsView extends Component {
     linkDataset: PropTypes.func
   }
 
+  static defaultProps = {
+    datasets: []
+  }
+
   state = {
     sortKey: 'updated'
   }

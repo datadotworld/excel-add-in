@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders dataset - button text 1`] = `
+<div
+  className="dataset"
+>
+  <span
+    className="svg-icon "
+    onClick={undefined}
+  >
+    <svg
+      className="dataset-schema-icon"
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        className="fill"
+        d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
+      />
+    </svg>
+  </span>
+  <div
+    className="center-info"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+    </div>
+    <div
+      className="info"
+    >
+      @
+      test
+       · Updated 
+      <span>
+        Jul 20, 2017
+      </span>
+    </div>
+  </div>
+  <button
+    className="btn btn-sm btn-default"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    test
+  </button>
+</div>
+`;
+
+exports[`renders dataset - button text, link 1`] = `
+<div
+  className="dataset"
+>
+  <span
+    className="svg-icon "
+    onClick={undefined}
+  >
+    <svg
+      className="dataset-schema-icon"
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        className="fill"
+        d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
+      />
+    </svg>
+  </span>
+  <div
+    className="center-info"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+    </div>
+    <div
+      className="info"
+    >
+      @
+      test
+       · Updated 
+      <span>
+        Jul 20, 2017
+      </span>
+    </div>
+  </div>
+  <a
+    className="btn btn-sm btn-default"
+    href="https://data.world"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    test
+  </a>
+</div>
+`;
+
+exports[`renders dataset 1`] = `
+<div
+  className="dataset"
+>
+  <span
+    className="svg-icon "
+    onClick={undefined}
+  >
+    <svg
+      className="dataset-schema-icon"
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        className="fill"
+        d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
+      />
+    </svg>
+  </span>
+  <div
+    className="center-info"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+    </div>
+    <div
+      className="info"
+    >
+      @
+      test
+       · Updated 
+      <span>
+        Jul 20, 2017
+      </span>
+    </div>
+  </div>
+  <button
+    className="btn btn-sm btn-default"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  />
+</div>
+`;

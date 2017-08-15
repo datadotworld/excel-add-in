@@ -16,14 +16,23 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.file-input .input-group-addon .glyphicon {
-  opacity: 0.25;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
 
-.file-input .input-group-addon.valid {
-  cursor: pointer;
-}
+import AddDataModal from '../../components/AddDataModal';
 
-.file-input .input-group-addon.valid .glyphicon {
-  opacity: 1;
-}
+it('renders modal', () => {
+  expect(renderer.create(<AddDataModal />).toJSON()).toMatchSnapshot()
+});
+
+it('renders modal - with range', () => {
+  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' />).toJSON()).toMatchSnapshot()
+});
+
+it('renders modal - with options', () => {
+  const options = {
+    filename: 'test1.csv'
+  };
+  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' options={options} />).toJSON()).toMatchSnapshot()
+});
