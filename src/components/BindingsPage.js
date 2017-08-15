@@ -160,7 +160,7 @@ class BindingsPage extends Component {
             </Button>
             {!syncing && <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
               <Icon icon='sync' />
-              Sync Files
+              Save Files
               {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
             </Button>}
             {syncing && <Button className='syncing-button'>
