@@ -73,7 +73,7 @@ class BindingsListItem extends Component {
     const hasPendingChanges = syncStatus && !!syncStatus.changes;
 
     return (
-      <div className='file' key={file.id} onMouseEnter={this.hover}>
+      <div className={cx('file', extension)} key={file.id} onMouseEnter={this.hover}>
         <span className={cx('file-icon', {syncing: isSyncing, 'needs-sync': hasPendingChanges})}>
           <FileTypeIcon filename={file.name} />
         </span>

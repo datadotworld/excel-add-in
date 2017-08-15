@@ -26,6 +26,10 @@
   width: 100%;
 }
 
+.file:not(.CSV) {
+  opacity: 0.6;
+}
+
 .file .center-info {
   margin-left: 15px;
   max-width: 210px;
