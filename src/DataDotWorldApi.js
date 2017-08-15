@@ -47,8 +47,8 @@ export default class DataDotWorldApi {
     return new Promise((resolve, reject) => {
       let datasets = [];
       Promise.all([
-        this.api.get('/user/datasets/own'),
-        this.api.get('/user/datasets/contributing')
+        this.api.get('/user/datasets/own', {params: {limit: 500}}),
+        this.api.get('/user/datasets/contributing', {params: {limit: 500}})
       ]).then((results) => {
         results.forEach((result) => {
           datasets = datasets.concat(result.data.records);
