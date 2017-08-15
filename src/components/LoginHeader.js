@@ -24,7 +24,7 @@ import {
 } from 'react-bootstrap';
 
 import './LoginHeader.css';
-import sparkle from '../static/img/new-sparkle-logo.png';
+import LogoFull from './icons/LogoFull';
 
 class LoginHeader extends Component {
 
@@ -42,8 +42,7 @@ class LoginHeader extends Component {
 
     return (
       <div className='login-header'>
-        <img src={sparkle} alt='data.world sparkle logo' />
-        <span className='title'>data.world</span>
+        <LogoFull />
         {user && <DropdownButton title={user.id} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
           <MenuItem eventKey='signout'>Sign out</MenuItem>
         </DropdownButton>}
