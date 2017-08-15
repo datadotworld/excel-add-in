@@ -52,6 +52,7 @@ class App extends Component {
     this.createDataset = this.createDataset.bind(this);
     this.linkNewDataset = this.linkNewDataset.bind(this);
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
+    this.updateBinding = this.updateBinding.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -116,7 +117,13 @@ class App extends Component {
 
       bindings.forEach(this.listenForChangesToBinding);
     } catch (error) {
-      this.setState({error});
+      console.log(error);
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the Office connector, please try again.'
+        }
+      });
     }
   }
 
@@ -234,6 +241,9 @@ class App extends Component {
     }
   }
 
+  /**
+   * Gets the user from the data.world API and sets it on the state
+   */
   async getUser () {
     try {
       const user = await this.api.getUser();
@@ -243,6 +253,23 @@ class App extends Component {
     }
   }
 
+  /**
+   * Removes and then recreates a binding with the active selection.
+   * There is not currently a way to update the range for an existing binding
+   * in the office API.
+   */
+  async updateBinding (binding, filename) {
+    try {
+      await this.removeBinding(binding);
+      return this.createBinding(filename);
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
+
+  /**
+   * Highlights the address provided in the excel document
+   */
   select = (address) => {
     this.office.select(address);
   }
@@ -251,6 +278,10 @@ class App extends Component {
     this.setState({ error: null });
   }
 
+  /**
+   * Saves bindings to their associated files on data.world.  If a binding
+   * is provided, then only that binding is saved to data.world.
+   */
   sync = (binding) => {
     this.setState({syncing: true});
     return new Promise((resolve, reject) => {
@@ -292,7 +323,7 @@ class App extends Component {
     this.setState({showCreateDataset: true});
   }
 
-  showAddData = (file) => {
+  showAddData = (filename, binding) => {
     // Listen for changes to the selected range
     this.office.listenForSelectionChanges((currentSelectedRange) => {
       this.setState({currentSelectedRange});
@@ -303,12 +334,15 @@ class App extends Component {
       this.setState({currentSelectedRange});
     });
 
-    this.setState({showAddDataModal: true, addDataModalFile: file});
+    this.setState({
+      showAddDataModal: true,
+      addDataModalOptions: {binding, filename}
+    });
   }
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false});
+    this.setState({showAddDataModal: false, addDataModalOptions: {}});
   }
 
   async createDataset (dataset) {
@@ -321,7 +355,7 @@ class App extends Component {
   
   render () {
     const {
-      addDataModalFile,
+      addDataModalOptions,
       bindings,
       currentSelectedRange,
       dataset,
@@ -380,9 +414,10 @@ class App extends Component {
           sync={this.sync}
           range={currentSelectedRange}
           close={this.closeAddData}
-          file={addDataModalFile}
+          options={addDataModalOptions}
           createBinding={this.createBinding}
           refreshLinkedDataset={this.refreshLinkedDataset}
+          updateBinding={this.updateBinding}
         />}
       </div>
     );

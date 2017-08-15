@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 import { FormattedDate } from 'react-intl';
 import cx from 'classnames';
 
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { throttle } from 'lodash';
 
 import './BindingListItem.css';
@@ -37,7 +37,8 @@ class BindingsListItem extends Component {
     removeBinding: PropTypes.func,
     select: PropTypes.func,
     syncing: PropTypes.bool,
-    syncStatus: PropTypes.object
+    syncStatus: PropTypes.object,
+    editBinding: PropTypes.func
   }
 
   constructor () {
@@ -53,6 +54,12 @@ class BindingsListItem extends Component {
     if (this.props.binding) {
       this.props.select(this.props.binding.rangeAddress);
     }
+  }
+
+  onEditClick = (event) => {
+    const { binding, editBinding, file } = this.props;
+    event.preventDefault();
+    editBinding(file.name, binding);
   }
 
   render () {
@@ -72,7 +79,11 @@ class BindingsListItem extends Component {
         </span>
         <div className='center-info'>
           <div className='title'>{file.name}</div>
-          {!hasPendingChanges && <div className='info'>{binding && `${binding.rangeAddress} · `}Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' /></div>}
+          {!hasPendingChanges &&
+            <div className='info'>
+              {binding && <a onClick={this.onEditClick}>`${binding.rangeAddress}` <Glyphicon glyph='pencil' /> · </a>}
+              Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' />
+            </div>}
           {hasPendingChanges && <div className='info'>{syncStatus.changes} pending changes</div>}
         </div>
         {isBindable && <Button

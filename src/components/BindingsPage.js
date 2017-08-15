@@ -113,7 +113,14 @@ class BindingsPage extends Component {
   render () {
     const { showFileInput, sortKey } = this.state;
 
-    const { dataset, removeBinding, select, syncing, syncStatus } = this.props;
+    const {
+      dataset,
+      removeBinding,
+      select,
+      showAddData,
+      syncing,
+      syncStatus
+    } = this.props;
 
     let bindingEntries = [];
     let unsyncedFileCount = 0;
@@ -131,7 +138,8 @@ class BindingsPage extends Component {
           syncing={syncing}
           syncStatus={binding && syncStatus[binding.id]}
           addBinding={this.addBindingToExistingFile}
-          removeBinding={removeBinding} />);
+          removeBinding={removeBinding}
+          editBinding={showAddData} />);
       });
     }
 

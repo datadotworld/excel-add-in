@@ -46,15 +46,16 @@ class AddDataModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createBinding: PropTypes.func,
-    file: PropTypes.string,
+    options: PropTypes.object,
     range: PropTypes.string,
     refreshLinkedDataset: PropTypes.func,
-    sync: PropTypes.func
+    sync: PropTypes.func,
+    updateBinding: PropTypes.func
   }
 
   state = {
     isSubmitting: false,
-    name: this.props.file ? getFilenameWithoutExtension(this.props.file) : ''
+    name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : ''
   }
 
   isFormValid = () => {
@@ -68,15 +69,18 @@ class AddDataModal extends Component {
 
   submit = (event) => {
     event.preventDefault();
-    const { close, createBinding, refreshLinkedDataset, sync } = this.props;
-    createBinding(`${this.state.name}.csv`).then((binding) => {
-      if (! this.props.file) {
+    const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
+    if (options.binding) {
+      updateBinding(options.binding, options.filename)
+        .then(sync)
+        .then(refreshLinkedDataset)
+        .then(close);
+    } else {
+      createBinding(`${this.state.name}.csv`).then((binding) => {
         // Binding has been created, but the file does not exist yet, sync the file
         sync(binding).then(refreshLinkedDataset).then(close);
-      } else {
-        close();
-      }
-    });
+      });
+    }
   }
 
   render () {

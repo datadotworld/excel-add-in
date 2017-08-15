@@ -49,6 +49,15 @@
   text-overflow: ellipsis;
 }
 
+.file .info a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.file .info a .glyphicon {
+  margin-right: 0;
+}
+
 .file button, .file a.btn {
   justify-self: flex-end;
   margin-left: auto;
