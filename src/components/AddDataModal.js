@@ -85,7 +85,7 @@ class AddDataModal extends Component {
 
   render () {
     const { name } = this.state;
-    const { close, file, range } = this.props;
+    const { close, options, range } = this.props;
 
     let validState;
 
@@ -121,7 +121,7 @@ class AddDataModal extends Component {
                 <FormControl
                   onChange={(event) => this.setState({name: event.target.value})}
                   value={name}
-                  disabled={!!file}
+                  disabled={!!options.filename}
                   type='text' />
               </InputGroup>
               <HelpBlock>
