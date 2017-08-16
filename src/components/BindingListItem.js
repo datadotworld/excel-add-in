@@ -22,7 +22,6 @@ import { FormattedDate } from 'react-intl';
 import cx from 'classnames';
 
 import { Button, Glyphicon } from 'react-bootstrap';
-import { throttle } from 'lodash';
 
 import './BindingListItem.css';
 import FileTypeIcon from './icons/FileTypeIcon';
@@ -35,25 +34,13 @@ class BindingsListItem extends Component {
     file: PropTypes.object,
     binding: PropTypes.object,
     removeBinding: PropTypes.func,
-    select: PropTypes.func,
     syncing: PropTypes.bool,
     syncStatus: PropTypes.object,
     editBinding: PropTypes.func
   }
 
-  constructor () {
-    super();
-    this.hover = throttle(this.hover, 500);
-  }
-
   remove = () => {
     this.props.removeBinding(this.props.binding);
-  }
-
-  hover = () => {
-    if (this.props.binding) {
-      this.props.select(this.props.binding.rangeAddress);
-    }
   }
 
   onEditClick = (event) => {
@@ -73,7 +60,7 @@ class BindingsListItem extends Component {
     const hasPendingChanges = syncStatus && !!syncStatus.changes;
 
     return (
-      <div className={cx('file', extension)} key={file.id} onMouseEnter={this.hover}>
+      <div className={cx('file', extension)} key={file.id}>
         <span className={cx('file-icon', {syncing: isSyncing, 'needs-sync': hasPendingChanges})}>
           <FileTypeIcon filename={file.name} />
         </span>

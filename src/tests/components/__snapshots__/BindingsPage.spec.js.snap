@@ -406,7 +406,6 @@ exports[`renders bindings page - dataset with files 1`] = `
     <div>
       <div
         className="file CSV"
-        onMouseEnter={[Function]}
       >
         <span
           className="file-icon"
@@ -996,7 +995,6 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
     <div>
       <div
         className="file CSV"
-        onMouseEnter={[Function]}
       >
         <span
           className="file-icon"
@@ -1600,7 +1598,6 @@ exports[`renders bindings page - syncing 1`] = `
     <div>
       <div
         className="file CSV"
-        onMouseEnter={[Function]}
       >
         <span
           className="file-icon syncing needs-sync"

@@ -42,7 +42,6 @@ class BindingsPage extends Component {
     createBinding: PropTypes.func,
     dataset: PropTypes.object,
     removeBinding: PropTypes.func,
-    select: PropTypes.func,
     showAddData: PropTypes.func,
     sync: PropTypes.func,
     syncing: PropTypes.bool,
@@ -117,7 +116,6 @@ class BindingsPage extends Component {
     const {
       dataset,
       removeBinding,
-      select,
       showAddData,
       syncing,
       syncStatus
@@ -135,7 +133,6 @@ class BindingsPage extends Component {
         }
         return (<BindingListItem binding={binding} file={file}
           key={file.name}
-          select={select}
           syncing={syncing}
           syncStatus={binding && syncStatus[binding.id]}
           addBinding={this.addBindingToExistingFile}

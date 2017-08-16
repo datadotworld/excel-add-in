@@ -323,6 +323,11 @@ class App extends Component {
   }
 
   showAddData = (filename, binding) => {
+
+    if (binding) {
+      this.office.select(binding.rangeAddress);
+    }
+
     // Listen for changes to the selected range
     this.office.listenForSelectionChanges((currentSelectedRange) => {
       this.setState({currentSelectedRange});
