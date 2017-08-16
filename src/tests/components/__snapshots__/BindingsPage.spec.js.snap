@@ -1,5 +1,167 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renders binding page - insufficient access 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="sync-icon"
+            height="15"
+            viewBox="0 0 35 32"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              sync
+            </title>
+            <g
+              className="fill"
+              fill-rule="evenodd"
+              opacity=".8"
+            >
+              <path
+                d="M11.487 12.78c.104.047.215.07.325.07.187 0 .373-.067.52-.195l6.3-5.512c.17-.15.268-.366.268-.593 0-.227-.098-.443-.27-.593L12.33.445C12.1.242 11.77.193 11.488.32c-.282.128-.462.408-.462.718v3.937c-6.263 0-11.323 5.25-11.012 11.58.293 5.923 5.402 10.47 11.332 10.47h.467c.435 0 .788-.353.788-.787v-1.575c0-.435-.353-.788-.787-.788h-.788c-4.52 0-8.164-3.83-7.857-8.415.274-4.087 3.785-7.185 7.857-7.322v3.924c0 .31.18.59.462.717zM34.637 16.555c.31-6.33-4.75-11.58-11.012-11.58h-.788c-.434 0-.787.353-.787.788v1.575c0 .434.353.787.787.787h.788c4.52 0 8.164 3.83 7.857 8.415-.274 4.087-3.785 7.185-7.857 7.322v-3.924c0-.31-.18-.59-.462-.717-.28-.127-.612-.078-.844.125l-6.3 5.512c-.172.15-.27.366-.27.593 0 .227.098.443.27.593l6.3 5.512c.145.128.33.195.517.195.11 0 .222-.023.326-.07.282-.128.462-.408.462-.718V27.01c5.79-.16 10.724-4.64 11.012-10.455z"
+              />
+            </g>
+          </svg>
+        </span>
+        Save Files
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block no-datasets row"
+  >
+    <div
+      className="message"
+    >
+      You are not authorized to save changes to this dataset.
+    </div>
+    <a
+      className="bottom-button btn btn-primary"
+      href="https://data.world/test/test/contributors"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Request access
+    </a>
+  </div>
+</div>
+`;
+
 exports[`renders bindings page - dataset with files 1`] = `
 <div
   className="bindings-page container"

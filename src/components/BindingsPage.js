@@ -121,6 +121,8 @@ class BindingsPage extends Component {
       syncStatus
     } = this.props;
 
+    const canEdit = dataset.accessLevel === 'ADMIN' || dataset.accessLevel === 'WRITE';
+
     let bindingEntries = [];
     let unsyncedFileCount = 0;
     if (dataset && dataset.files.length) {
@@ -174,7 +176,7 @@ class BindingsPage extends Component {
               </Button>}
           </div>
         </Row>
-        {!!bindingEntries.length && 
+        {!!bindingEntries.length && canEdit &&
           <Row className='center-block'>
             <div className='list-info'>
               {dataset.files.length} files
@@ -193,12 +195,24 @@ class BindingsPage extends Component {
               {bindingEntries}
             </div>
           </Row>}
-        {!bindingEntries.length && 
+        {!bindingEntries.length && canEdit &&
           <Row className='center-block no-datasets'>
             <div className='message'>
               You haven't added any data to this dataset.
             </div>
             <Button className='bottom-button' bsStyle='primary' onClick={this.addFile}>Add data</Button>
+          </Row>}
+        {!canEdit &&
+          <Row className='center-block no-datasets'>
+            <div className='message'>
+              You are not authorized to save changes to this dataset.
+            </div>
+            <Button className='bottom-button' bsStyle='primary'
+              href={`https://data.world/${dataset.owner}/${dataset.id}/contributors`}
+              target='_blank'
+              rel='noopener noreferrer'>
+              Request access
+            </Button>
           </Row>}
       </Grid>
     );

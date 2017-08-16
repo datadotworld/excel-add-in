@@ -29,7 +29,8 @@ const dataset = {
   title: 'This is a test',
   updated: '2017-07-20T14:24:51.762Z',
   created: '2017-07-20T14:24:51.762Z',
-  files: []
+  files: [],
+  accessLevel: 'ADMIN'
 };
 
 it('renders bindings page', () => {
@@ -46,7 +47,7 @@ it('renders bindings page - dataset with files', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <BindingsPage dataset={dataset} />
+      <BindingsPage dataset={datasetWithFiles} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
 
@@ -69,7 +70,7 @@ it('renders bindings page - dataset with files, bindings', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <BindingsPage dataset={dataset} bindings={bindings} syncStatus={syncStatus} />
+      <BindingsPage dataset={datasetWithFiles} bindings={bindings} syncStatus={syncStatus} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
 
@@ -92,6 +93,16 @@ it('renders bindings page - syncing', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <BindingsPage dataset={dataset} bindings={bindings} syncStatus={syncStatus} syncing />
+      <BindingsPage dataset={datasetWithFiles} bindings={bindings} syncStatus={syncStatus} syncing />
+    </IntlProvider>).toJSON()).toMatchSnapshot()
+});
+
+it('renders binding page - insufficient access', () => {
+  const datasetWithoutAccess = Object.assign(dataset);
+  datasetWithoutAccess.accessLevel = 'READ';
+
+  expect(renderer.create(
+    <IntlProvider locale='en'>
+      <BindingsPage dataset={datasetWithoutAccess} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
