@@ -38,6 +38,12 @@ body {
   height: 15px;
 }
 
+.project-schema-icon {
+  fill: #f6be61;
+  width: 15px;
+  height: 15px;
+}
+
 .list-info {
   background-color: #f7f7f7;
   padding: 5px 15px;

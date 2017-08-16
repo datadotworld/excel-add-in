@@ -51,3 +51,13 @@ it('renders dataset - button text, link', () => {
       <DatasetItem dataset={dataset} buttonText='test' buttonLink='https://data.world' />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
+
+it('renders dataset - as project', () => {
+  const project = Object.assign(dataset);
+  project.isProject = true;
+
+  expect(renderer.create(
+    <IntlProvider locale='en'>
+      <DatasetItem dataset={project} />
+    </IntlProvider>).toJSON()).toMatchSnapshot()
+});

@@ -47,6 +47,14 @@ it('renders datasets view - datasets', () => {
       title: 'This is a test too',
       updated: '2017-08-20T14:24:51.762Z',
       created: '2017-08-20T14:24:51.762Z'
+    },
+    {
+      owner: 'test',
+      id: 'test3',
+      title: 'This is a test of a project',
+      updated: '2017-08-20T14:24:51.762Z',
+      created: '2017-08-20T14:24:51.762Z',
+      isProject: true
     }
   ];
 
