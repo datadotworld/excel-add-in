@@ -384,7 +384,7 @@ exports[`renders welcome page - no dataset 1`] = `
     <button
       className="center-block login-button btn btn-primary"
       disabled={false}
-      onClick={[Function]}
+      href={undefined}
       type="button"
     >
       Sign in
@@ -837,7 +837,7 @@ exports[`renders welcome page - with dataset 1`] = `
     <button
       className="center-block login-button btn btn-primary"
       disabled={false}
-      onClick={[Function]}
+      href={undefined}
       type="button"
     >
       Sign in

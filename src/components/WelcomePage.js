@@ -36,8 +36,7 @@ class WelcomePage extends Component {
 
   constructor () {
     super();
-    this.oauthClientId = process.env.REACT_APP_OAUTH_CLIENT_ID;
-    this.oauthRedirectURI = process.env.REACT_APP_OAUTH_REDIRECT_URI;
+    this.oauthURI = process.env.REACT_APP_OAUTH_URI;
   }
 
   componentWillMount = () => {
@@ -49,7 +48,7 @@ class WelcomePage extends Component {
   }
 
   startAuthFlow = () => {
-    window.location = `https://data.world/oauth/authorize?client_id=${this.oauthClientId}&redirect_uri=${this.oauthRedirectURI}`;
+    window.location = this.oauthURI;
   }
 
   render () {
@@ -68,7 +67,7 @@ class WelcomePage extends Component {
           </div>}
           <Button
             className='center-block login-button'
-            onClick={this.startAuthFlow}
+            href={this.oauthURI}
             bsStyle='primary'>Sign in</Button>
           <div>New to data.world? <a href='https://data.world/' target='_blank' rel='noopener noreferrer'> Sign up now</a></div>
         </Row>
