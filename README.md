@@ -16,9 +16,11 @@ The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
 React Front End Required Environment Variables:
+
 `REACT_APP_OAUTH_URI`: Endpoint for the OAuth authorization endpoint.  In production this should be `/authorize`
 
 Server Side Required Environment Variables
+
 `OAUTH_REDIRECT_URI`: Must match exactly the redirect setup on the data.world client
 `OAUTH_CLIENT_ID`: Client id for the data.world OAuth Client
 `OAUTH_CLIENT_SECRET`: Client secret for the data.world OAuth Client
@@ -43,6 +45,7 @@ When testing locally `HTTPS=true` must be set as the Office online site will not
 
 1. Open `https://localhost:3000`, and `https://localhost:3001` in Safari and accept the self-signed certificates
 1. Close Excel if it is open
+1. If the `wef` directory here `~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/` does not exist, then create it
 1. Open a terminal and from the root of this repo, run `cp ./excel-add-in.xml ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/`
 1. Open a spreadsheet in Excel
 1. Click Insert
