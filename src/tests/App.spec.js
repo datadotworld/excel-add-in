@@ -16,8 +16,11 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from '../App';
+
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<App />, div);
+});

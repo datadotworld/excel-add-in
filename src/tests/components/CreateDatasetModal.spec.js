@@ -16,8 +16,17 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
+
+import CreateDatasetModal from '../../components/CreateDatasetModal';
+
+it('renders modal', () => {
+  const user = {id: 'test'};
+  expect(renderer.create(
+    <IntlProvider locale='en'>
+      <CreateDatasetModal user={user} />
+    </IntlProvider>).toJSON()).toMatchSnapshot()
+});

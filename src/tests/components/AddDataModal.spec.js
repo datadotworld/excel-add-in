@@ -16,8 +16,23 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+
+import AddDataModal from '../../components/AddDataModal';
+
+it('renders modal', () => {
+  expect(renderer.create(<AddDataModal />).toJSON()).toMatchSnapshot()
+});
+
+it('renders modal - with range', () => {
+  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' />).toJSON()).toMatchSnapshot()
+});
+
+it('renders modal - with options', () => {
+  const options = {
+    filename: 'test1.csv'
+  };
+  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' options={options} />).toJSON()).toMatchSnapshot()
+});

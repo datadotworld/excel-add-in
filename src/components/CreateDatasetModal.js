@@ -1,0 +1,146 @@
+/*
+ * Copyright 2017 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { 
+  Button,
+  ControlLabel,
+  FormControl,
+  FormGroup,
+  Glyphicon,
+  Grid,
+  HelpBlock,
+  InputGroup,
+  Radio,
+  Row
+} from 'react-bootstrap';
+import { kebabCase } from 'lodash';
+
+import Icon from './icons/Icon';
+
+import './CreateDatasetModal.css';
+
+class CreateDatasetModal extends Component {
+
+  static propTypes = {
+    close: PropTypes.func,
+    createDataset: PropTypes.func,
+    linkNewDataset: PropTypes.func,
+    user: PropTypes.object
+  }
+
+  state = {
+    isSubmitting: false,
+    title: '',
+    visibility: 'OPEN'
+  }
+
+  submit = (event) => {
+    event.preventDefault();
+    this.setState({isSubmitting: true});
+    const dataset = {
+      title: this.state.title,
+      visibility: this.state.visibility
+    };
+    this.props.createDataset(dataset).then((createdDataset) => {
+      this.props.linkNewDataset(createdDataset.uri).then(() => {
+        this.props.close();
+      });
+    }).catch((error) => {
+
+    });
+  }
+
+  isDatasetValid = () => {
+    const {title} = this.state;
+    return title && title.length > 0 && title.length <= 60;
+  }
+
+  visibilityChanged = (event) => {
+    this.setState({visibility: event.target.value});
+  }
+
+  render () {
+    const {close, user} = this.props;
+    const {title, visibility} = this.state;
+    let datasetValidState;
+
+    if (title) {
+      datasetValidState = this.isDatasetValid() ? 'success' : 'warning'
+    }
+
+    return (
+      <Grid className='create-dataset-modal modal show'>
+        <Row className='center-block header'>
+          <div className='title'>
+            Create a new dataset <Icon icon='close' className='close-button' onClick={close} />
+          </div>
+        </Row>
+        <Row className='center-block'>
+          <form onSubmit={this.submit}>
+            <FormGroup validationState={datasetValidState}>
+              <ControlLabel>Dataset title</ControlLabel>
+              <InputGroup>
+                <FormControl
+                  onChange={(event) => this.setState({title: event.target.value})}
+                  value={title}
+                  autoFocus
+                  type='text' />
+              </InputGroup>
+              <HelpBlock>
+                This will also be your dataset URL: data.world/{user.id}/<strong>{title ? kebabCase(title) : 'cool-new-data'}</strong>
+                <div className='titleLimit'>max. 60</div>
+              </HelpBlock>  
+            </FormGroup>
+            <FormGroup>
+              <Radio
+                name='privacy'
+                onChange={this.visibilityChanged}
+                checked={visibility === 'OPEN'}
+                className={visibility === 'OPEN' ? 'checked' : ''}
+                value='OPEN'>
+                <div className='radio-label'>Open</div>
+                <div className='radio-option-description'>Publicly available data that anyone can view, query, or download.</div>
+              </Radio>
+              <Radio
+                name='privacy'
+                onChange={this.visibilityChanged}
+                checked={visibility === 'PRIVATE'}
+                className={visibility === 'PRIVATE' ? 'checked' : ''}
+                value='PRIVATE' >
+                <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
+                <div className='radio-option-description'>Will only be shared with others you invite. Use for personal or sensitive information.</div>
+              </Radio>
+            </FormGroup>
+            <div className='button-group'>
+              <Button onClick={close}>Cancel</Button>
+              <Button
+                type='submit'
+                disabled={this.state.isSubmitting || datasetValidState !== 'success'}
+                bsStyle='primary'>Create dataset</Button>
+            </div>
+          </form>
+        </Row>
+      </Grid>
+    )
+  }
+}
+
+export default CreateDatasetModal;

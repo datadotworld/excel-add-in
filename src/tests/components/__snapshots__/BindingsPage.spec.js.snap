@@ -1,0 +1,2069 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders binding page - insufficient access 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="sync-icon"
+            height="15"
+            viewBox="0 0 35 32"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              sync
+            </title>
+            <g
+              className="fill"
+              fill-rule="evenodd"
+              opacity=".8"
+            >
+              <path
+                d="M11.487 12.78c.104.047.215.07.325.07.187 0 .373-.067.52-.195l6.3-5.512c.17-.15.268-.366.268-.593 0-.227-.098-.443-.27-.593L12.33.445C12.1.242 11.77.193 11.488.32c-.282.128-.462.408-.462.718v3.937c-6.263 0-11.323 5.25-11.012 11.58.293 5.923 5.402 10.47 11.332 10.47h.467c.435 0 .788-.353.788-.787v-1.575c0-.435-.353-.788-.787-.788h-.788c-4.52 0-8.164-3.83-7.857-8.415.274-4.087 3.785-7.185 7.857-7.322v3.924c0 .31.18.59.462.717zM34.637 16.555c.31-6.33-4.75-11.58-11.012-11.58h-.788c-.434 0-.787.353-.787.788v1.575c0 .434.353.787.787.787h.788c4.52 0 8.164 3.83 7.857 8.415-.274 4.087-3.785 7.185-7.857 7.322v-3.924c0-.31-.18-.59-.462-.717-.28-.127-.612-.078-.844.125l-6.3 5.512c-.172.15-.27.366-.27.593 0 .227.098.443.27.593l6.3 5.512c.145.128.33.195.517.195.11 0 .222-.023.326-.07.282-.128.462-.408.462-.718V27.01c5.79-.16 10.724-4.64 11.012-10.455z"
+              />
+            </g>
+          </svg>
+        </span>
+        Save Files
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block no-datasets row"
+  >
+    <div
+      className="message"
+    >
+      You are not authorized to save changes to this dataset.
+    </div>
+    <a
+      className="bottom-button btn btn-primary"
+      href="https://data.world/test/test/contributors"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Request access
+    </a>
+  </div>
+</div>
+`;
+
+exports[`renders bindings page - dataset with files 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="sync-icon"
+            height="15"
+            viewBox="0 0 35 32"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              sync
+            </title>
+            <g
+              className="fill"
+              fill-rule="evenodd"
+              opacity=".8"
+            >
+              <path
+                d="M11.487 12.78c.104.047.215.07.325.07.187 0 .373-.067.52-.195l6.3-5.512c.17-.15.268-.366.268-.593 0-.227-.098-.443-.27-.593L12.33.445C12.1.242 11.77.193 11.488.32c-.282.128-.462.408-.462.718v3.937c-6.263 0-11.323 5.25-11.012 11.58.293 5.923 5.402 10.47 11.332 10.47h.467c.435 0 .788-.353.788-.787v-1.575c0-.435-.353-.788-.787-.788h-.788c-4.52 0-8.164-3.83-7.857-8.415.274-4.087 3.785-7.185 7.857-7.322v3.924c0 .31.18.59.462.717zM34.637 16.555c.31-6.33-4.75-11.58-11.012-11.58h-.788c-.434 0-.787.353-.787.788v1.575c0 .434.353.787.787.787h.788c4.52 0 8.164 3.83 7.857 8.415-.274 4.087-3.785 7.185-7.857 7.322v-3.924c0-.31-.18-.59-.462-.717-.28-.127-.612-.078-.844.125l-6.3 5.512c-.172.15-.27.366-.27.593 0 .227.098.443.27.593l6.3 5.512c.145.128.33.195.517.195.11 0 .222-.023.326-.07.282-.128.462-.408.462-.718V27.01c5.79-.16 10.724-4.64 11.012-10.455z"
+              />
+            </g>
+          </svg>
+        </span>
+        Save Files
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <div
+      className="list-info"
+    >
+      1
+       files
+      <div
+        className="pull-right sort-dropdown"
+      >
+        <div
+          className="dropdown btn-group btn-group-sm"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-sm btn-default"
+            disabled={false}
+            id="dropdown-sort-files"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+            Sort
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="dropdown-sort-files"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <li
+              className="active"
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: A - Z
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: Z - A
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        className="file CSV"
+      >
+        <span
+          className="file-icon"
+        >
+          <svg
+            className="file-type-icon "
+            viewBox="0 0 45 58"
+          >
+            <g
+              className="tabularType"
+            >
+              <g
+                id="file"
+              >
+                <path
+                  className="bg"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke textboxStroke"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+                <path
+                  className="fill fillTransparent"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="stroke fileCornerStroke"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="fill fillTransparent textboxFill"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+              </g>
+              <g>
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,30H38v4H17V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,30H38v4H17V30Z"
+                />
+              </g>
+              <text
+                className="text"
+                textAnchor="middle"
+                transform="translate(22.5 53)"
+              >
+                CSV
+              </text>
+            </g>
+          </svg>
+        </span>
+        <div
+          className="center-info"
+        >
+          <div
+            className="title"
+          >
+            test_file.csv
+          </div>
+          <div
+            className="info"
+          >
+            Updated 
+            <span>
+              Jul 20, 2017
+            </span>
+          </div>
+        </div>
+        <button
+          className="add-button btn btn-sm btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="add-icon"
+              version="1.1"
+              viewBox="0 0 16 16"
+              x="0px"
+              xmlns="http://www.w3.org/2000/svg"
+              y="0px"
+            >
+              <g>
+                <line
+                  className="stroke"
+                  x1="8"
+                  x2="8"
+                  y1="1"
+                  y2="15"
+                />
+                <line
+                  className="stroke"
+                  x1="15"
+                  x2="1"
+                  y1="8"
+                  y2="8"
+                />
+              </g>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders bindings page - dataset with files, bindings 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="sync-icon"
+            height="15"
+            viewBox="0 0 35 32"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              sync
+            </title>
+            <g
+              className="fill"
+              fill-rule="evenodd"
+              opacity=".8"
+            >
+              <path
+                d="M11.487 12.78c.104.047.215.07.325.07.187 0 .373-.067.52-.195l6.3-5.512c.17-.15.268-.366.268-.593 0-.227-.098-.443-.27-.593L12.33.445C12.1.242 11.77.193 11.488.32c-.282.128-.462.408-.462.718v3.937c-6.263 0-11.323 5.25-11.012 11.58.293 5.923 5.402 10.47 11.332 10.47h.467c.435 0 .788-.353.788-.787v-1.575c0-.435-.353-.788-.787-.788h-.788c-4.52 0-8.164-3.83-7.857-8.415.274-4.087 3.785-7.185 7.857-7.322v3.924c0 .31.18.59.462.717zM34.637 16.555c.31-6.33-4.75-11.58-11.012-11.58h-.788c-.434 0-.787.353-.787.788v1.575c0 .434.353.787.787.787h.788c4.52 0 8.164 3.83 7.857 8.415-.274 4.087-3.785 7.185-7.857 7.322v-3.924c0-.31-.18-.59-.462-.717-.28-.127-.612-.078-.844.125l-6.3 5.512c-.172.15-.27.366-.27.593 0 .227.098.443.27.593l6.3 5.512c.145.128.33.195.517.195.11 0 .222-.023.326-.07.282-.128.462-.408.462-.718V27.01c5.79-.16 10.724-4.64 11.012-10.455z"
+              />
+            </g>
+          </svg>
+        </span>
+        Save Files
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <div
+      className="list-info"
+    >
+      1
+       files
+      <div
+        className="pull-right sort-dropdown"
+      >
+        <div
+          className="dropdown btn-group btn-group-sm"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-sm btn-default"
+            disabled={false}
+            id="dropdown-sort-files"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+            Sort
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="dropdown-sort-files"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <li
+              className="active"
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: A - Z
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: Z - A
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        className="file CSV"
+      >
+        <span
+          className="file-icon"
+        >
+          <svg
+            className="file-type-icon "
+            viewBox="0 0 45 58"
+          >
+            <g
+              className="tabularType"
+            >
+              <g
+                id="file"
+              >
+                <path
+                  className="bg"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke textboxStroke"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+                <path
+                  className="fill fillTransparent"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="stroke fileCornerStroke"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="fill fillTransparent textboxFill"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+              </g>
+              <g>
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,30H38v4H17V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,30H38v4H17V30Z"
+                />
+              </g>
+              <text
+                className="text"
+                textAnchor="middle"
+                transform="translate(22.5 53)"
+              >
+                CSV
+              </text>
+            </g>
+          </svg>
+        </span>
+        <div
+          className="center-info"
+        >
+          <div
+            className="title"
+          >
+            test_file.csv
+          </div>
+          <div
+            className="info"
+          >
+            <a
+              onClick={[Function]}
+            >
+              \`$
+              \` 
+              <span
+                className="glyphicon glyphicon-pencil"
+              />
+               · 
+            </a>
+            Updated 
+            <span>
+              Jul 20, 2017
+            </span>
+          </div>
+        </div>
+        <button
+          className="link-button btn btn-sm btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="link"
+          >
+            <span
+              className="svg-icon check"
+              onClick={undefined}
+            >
+              <svg
+                className="check-icon"
+                height="16px"
+                version="1.1"
+                viewBox="0 0 16 16"
+                width="16px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  stroke-width="2"
+                >
+                  <polyline
+                    className="stroke"
+                    points="1 7.2 5.9 12.1 15 3"
+                  />
+                </g>
+              </svg>
+            </span>
+            <span
+              className="label"
+            >
+              Linked
+            </span>
+          </div>
+          <div
+            className="unlink"
+          >
+            <span
+              className="svg-icon "
+              onClick={undefined}
+            >
+              <svg
+                className="close-icon"
+                height="15"
+                viewBox="0 0 16 15"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  className="stroke stroke-medium"
+                  d="M15.222 14.222L1 0M1 14.222L15.222 0"
+                />
+              </svg>
+            </span>
+            <span
+              className="label"
+            >
+              Unlink
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders bindings page - syncing 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="syncing-button btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <div
+          className="loader-icon"
+        />
+        Syncing…
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <div
+      className="list-info"
+    >
+      1
+       files
+      <div
+        className="pull-right sort-dropdown"
+      >
+        <div
+          className="dropdown btn-group btn-group-sm"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-sm btn-default"
+            disabled={false}
+            id="dropdown-sort-files"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+            Sort
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="dropdown-sort-files"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <li
+              className="active"
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Updated: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Newest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Created: Oldest
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: A - Z
+              </a>
+            </li>
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
+            >
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
+              >
+                <span
+                  className="svg-icon "
+                  onClick={undefined}
+                >
+                  <svg
+                    className="check-icon"
+                    height="16px"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="16px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      stroke-width="2"
+                    >
+                      <polyline
+                        className="stroke"
+                        points="1 7.2 5.9 12.1 15 3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                Name: Z - A
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        className="file CSV"
+      >
+        <span
+          className="file-icon syncing needs-sync"
+        >
+          <svg
+            className="file-type-icon "
+            viewBox="0 0 45 58"
+          >
+            <g
+              className="tabularType"
+            >
+              <g
+                id="file"
+              >
+                <path
+                  className="bg"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke"
+                  d="M31.49,1h-29C1.65,1,1,1.65,1,2.93V56a1.51,1.51,0,0,0,1.46,1H42.54A1.51,1.51,0,0,0,44,56V14a1.38,1.38,0,0,0-.26-1.09L32.11,1.26A0.88,0.88,0,0,0,31.49,1h0Z"
+                />
+                <path
+                  className="stroke textboxStroke"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+                <path
+                  className="fill fillTransparent"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="stroke fileCornerStroke"
+                  d="M32,2.39V13H42.61A0.51,0.51,0,0,0,43,12.12L32.88,2a0.51,0.51,0,0,0-.88.36h0Z"
+                />
+                <path
+                  className="fill fillTransparent textboxFill"
+                  d="M42.54,57H2.46A1.46,1.46,0,0,1,1,55.54V40H44V55.54A1.46,1.46,0,0,1,42.54,57h0Z"
+                />
+              </g>
+              <g>
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,18H17v4H7V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,14H17v4H7V14Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,18H38v4H17V18Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,22H17v4H7V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,22H38v4H17V22Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,26H17v4H7V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,26H38v4H17V26Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M7,30H17v4H7V30Z"
+                />
+                <path
+                  className="fill, fillTransparent"
+                  d="M17,30H38v4H17V30Z"
+                />
+                <path
+                  className="stroke"
+                  d="M17,30H38v4H17V30Z"
+                />
+              </g>
+              <text
+                className="text"
+                textAnchor="middle"
+                transform="translate(22.5 53)"
+              >
+                CSV
+              </text>
+            </g>
+          </svg>
+        </span>
+        <div
+          className="center-info"
+        >
+          <div
+            className="title"
+          >
+            test_file.csv
+          </div>
+          <div
+            className="info"
+          >
+            3
+             pending changes
+          </div>
+        </div>
+        <div
+          className="loader-icon"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders bindings page 1`] = `
+<div
+  className="bindings-page container"
+>
+  <div
+    className="center-block section-header row"
+  >
+    <div
+      className="title"
+    >
+      This is a test
+      <div
+        className="pull-right dropdown btn-group"
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle btn btn-default"
+          disabled={false}
+          id="dropdown-dataset-options"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+          type="button"
+        >
+          <span
+            className="glyphicon glyphicon-option-vertical"
+          />
+        </button>
+        <ul
+          aria-labelledby="dropdown-dataset-options"
+          className="dropdown-menu dropdown-menu-sm dropdown-menu-right"
+          role="menu"
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="menuitem"
+              tabIndex="-1"
+            >
+              Unlink
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="dataset-link"
+    >
+      <a
+        href="https://data.world/test/test"
+        target="_blank"
+      >
+        https://data.world/
+        test
+        /
+        test
+      </a>
+    </div>
+    <div
+      className="button-group"
+    >
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+        Add File
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={true}
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="svg-icon "
+          onClick={undefined}
+        >
+          <svg
+            className="sync-icon"
+            height="15"
+            viewBox="0 0 35 32"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              sync
+            </title>
+            <g
+              className="fill"
+              fill-rule="evenodd"
+              opacity=".8"
+            >
+              <path
+                d="M11.487 12.78c.104.047.215.07.325.07.187 0 .373-.067.52-.195l6.3-5.512c.17-.15.268-.366.268-.593 0-.227-.098-.443-.27-.593L12.33.445C12.1.242 11.77.193 11.488.32c-.282.128-.462.408-.462.718v3.937c-6.263 0-11.323 5.25-11.012 11.58.293 5.923 5.402 10.47 11.332 10.47h.467c.435 0 .788-.353.788-.787v-1.575c0-.435-.353-.788-.787-.788h-.788c-4.52 0-8.164-3.83-7.857-8.415.274-4.087 3.785-7.185 7.857-7.322v3.924c0 .31.18.59.462.717zM34.637 16.555c.31-6.33-4.75-11.58-11.012-11.58h-.788c-.434 0-.787.353-.787.788v1.575c0 .434.353.787.787.787h.788c4.52 0 8.164 3.83 7.857 8.415-.274 4.087-3.785 7.185-7.857 7.322v-3.924c0-.31-.18-.59-.462-.717-.28-.127-.612-.078-.844.125l-6.3 5.512c-.172.15-.27.366-.27.593 0 .227.098.443.27.593l6.3 5.512c.145.128.33.195.517.195.11 0 .222-.023.326-.07.282-.128.462-.408.462-.718V27.01c5.79-.16 10.724-4.64 11.012-10.455z"
+              />
+            </g>
+          </svg>
+        </span>
+        Save Files
+      </button>
+    </div>
+  </div>
+  <div
+    className="center-block no-datasets row"
+  >
+    <div
+      className="message"
+    >
+      You haven't added any data to this dataset.
+    </div>
+    <button
+      className="bottom-button btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Add data
+    </button>
+  </div>
+</div>
+`;

@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders modal 1`] = `
+<div
+  className="create-dataset-modal modal show container"
+>
+  <div
+    className="center-block header row"
+  >
+    <div
+      className="title"
+    >
+      Create a new dataset 
+      <span
+        className="svg-icon close-button"
+        onClick={undefined}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Dataset title
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            autoFocus={true}
+            className="form-control"
+            id={undefined}
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          This will also be your dataset URL: data.world/
+          test
+          /
+          <strong>
+            cool-new-data
+          </strong>
+          <div
+            className="titleLimit"
+          >
+            max. 60
+          </div>
+        </span>
+      </div>
+      <div
+        className="form-group"
+      >
+        <div
+          className="checked radio"
+          style={undefined}
+        >
+          <label
+            title=""
+          >
+            <input
+              checked={true}
+              disabled={false}
+              name="privacy"
+              onChange={[Function]}
+              type="radio"
+              value="OPEN"
+            />
+            <div
+              className="radio-label"
+            >
+              Open
+            </div>
+            <div
+              className="radio-option-description"
+            >
+              Publicly available data that anyone can view, query, or download.
+            </div>
+          </label>
+        </div>
+        <div
+          className="radio"
+          style={undefined}
+        >
+          <label
+            title=""
+          >
+            <input
+              checked={false}
+              disabled={false}
+              name="privacy"
+              onChange={[Function]}
+              type="radio"
+              value="PRIVATE"
+            />
+            <div
+              className="radio-label"
+            >
+              Private 
+              <span
+                className="glyphicon glyphicon-lock"
+              />
+            </div>
+            <div
+              className="radio-option-description"
+            >
+              Will only be shared with others you invite. Use for personal or sensitive information.
+            </div>
+          </label>
+        </div>
+      </div>
+      <div
+        className="button-group"
+      >
+        <button
+          className="btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary"
+          disabled={true}
+          type="submit"
+        >
+          Create dataset
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

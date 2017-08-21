@@ -18,20 +18,27 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider} from 'react-intl';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import load from 'little-loader';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
 
-function loadApp () {
-  ReactDOM.render(<IntlProvider locale="en"><App /></IntlProvider>, document.getElementById('root'));
-  registerServiceWorker();
-}
+import WelcomePage from '../../components/WelcomePage';
 
-if (process.env.NODE_ENV === 'production') {
-  load('https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js', loadApp);
-} else if (process.env.NODE_ENV === 'development') {
-  // Load the office debug tools when in dev mode
-  load('https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js', loadApp);
-}
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<WelcomePage />, div);
+});
+
+it('renders welcome page - no dataset', () => {
+  expect(renderer.create(<WelcomePage />).toJSON()).toMatchSnapshot()
+});
+
+it('renders welcome page - with dataset', () => {
+  const dataset = {
+    owner: 'test',
+    id: 'test',
+    title: 'This is a test',
+    updated: '2017-07-20T14:24:51.762Z',
+    created: '2017-07-20T14:24:51.762Z'
+  };
+  expect(renderer.create(<IntlProvider locale='en'><WelcomePage dataset={dataset} /></IntlProvider>).toJSON()).toMatchSnapshot()
+});

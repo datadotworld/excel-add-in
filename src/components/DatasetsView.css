@@ -16,8 +16,18 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.datasets-view .dataset-selector .section-header {
+  padding: 15px;
+}
+
+.datasets-view .dataset-selector .section-header .add-icon {
+  float: right;
+  width: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.datasets-view .section-header .title {
+  font-size: 18px;
+  font-weight: 700;
 }

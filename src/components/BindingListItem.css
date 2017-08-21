@@ -1,0 +1,166 @@
+/*
+ * Copyright 2017 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+.file {
+  background-color: #fff;
+  position: relative;
+  border-bottom: 1px solid #dfe3e9;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.file:not(.CSV) {
+  opacity: 0.6;
+}
+
+.file .center-info {
+  margin-left: 15px;
+  max-width: 210px;
+}
+
+.file .title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file .info {
+  font-size: 12px;
+  color: #8c9caf;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file .info a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.file .info a .glyphicon {
+  margin-right: 0;
+}
+
+.file button, .file a.btn {
+  justify-self: flex-end;
+  margin-left: auto;
+}
+
+.file .file-type-icon {
+  width: 25px;
+}
+
+.file .add-button {
+  border-radius: 50%;
+  padding: 0;
+  height: 2rem;
+  width: 2rem;
+  min-width: 2rem;
+}
+
+.file .add-button .svg-icon {
+  line-height: 1;
+  height: 14px;
+  display: block;
+}
+
+.file .add-icon {
+  width: 1rem;
+}
+
+.file .loader-icon {
+  justify-self: flex-end;
+  margin-left: auto;
+  margin-right: 0.375rem;
+}
+
+.file .link-button {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  width: 2rem;
+}
+
+.file .link-button span {
+  display: block;
+  float: none;
+}
+
+.file .link-button .label {
+  padding: 0;
+}
+
+.file .link-button .link .label {
+  color: #65c16d;
+}
+
+.file .link-button .unlink {
+  display: none;
+}
+
+.file .link-button .unlink .label {
+  color: #ff6666;
+}
+
+.file .link-button svg.check-icon .stroke {
+  stroke: #65c16d;
+  fill: #fff;
+}
+.file .link-button svg.close-icon {
+  width: 12px;
+}
+
+.file .link-button svg.close-icon .stroke-medium {
+  stroke: #ff6666;
+}
+
+.file .link-button:hover .unlink {
+  display: block;
+}
+
+.file .link-button:hover .link {
+  display: none;
+}
+
+.file .file-icon {
+  position: relative;
+}
+
+.file .file-icon:after {
+  content: ' ';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 0.2rem;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+}
+
+.file .file-icon.needs-sync:after {
+  background-color: #ff6666;
+}
+
+.file .file-icon.syncing:after {
+  background-color: #f6be61;
+}

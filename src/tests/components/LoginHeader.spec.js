@@ -16,8 +16,22 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+
+import LoginHeader from '../../components/LoginHeader';
+
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<LoginHeader />, div);
+});
+
+it('renders login header - no user', () => {
+  expect(renderer.create(<LoginHeader />).toJSON()).toMatchSnapshot()
+});
+
+it('renders login header - with user', () => {
+  const user = {id: 'test'};
+  expect(renderer.create(<LoginHeader user={user} />).toJSON()).toMatchSnapshot()
+});

@@ -16,8 +16,40 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.dataset {
+  background-color: #fff;
+  position: relative;
+  border-bottom: 1px solid #dfe3e9;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.dataset .center-info {
+  margin-left: 15px;
+  max-width: 210px;
+}
+
+.dataset .title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dataset .info {
+  font-size: 12px;
+  color: #8c9caf;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dataset button, .dataset a.btn {
+  justify-self: flex-end;
+  margin-left: auto;
 }

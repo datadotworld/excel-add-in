@@ -1,0 +1,367 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders modal - with options 1`] = `
+<div
+  className="add-data-modal modal show container"
+>
+  <div
+    className="center-block header row"
+  >
+    <div
+      className="title"
+    >
+      Add data 
+      <span
+        className="svg-icon close-button"
+        onClick={undefined}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Dataset range
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id={undefined}
+            type="text"
+            value="Sheet1!A2:B5"
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Select the area to bind in the worksheet, it will be reflected here.
+        </span>
+      </div>
+      <div
+        className="form-group has-success"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Name
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id={undefined}
+            onChange={[Function]}
+            type="text"
+            value="test1"
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Must not include slashes, your file will be named 
+          <strong>
+            test1
+            .csv
+          </strong>
+          <div
+            className="titleLimit"
+          >
+            max. 128
+          </div>
+        </span>
+      </div>
+      <div
+        className="button-group"
+      >
+        <button
+          className="btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary"
+          disabled={false}
+          type="submit"
+        >
+          Add selection
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`renders modal - with range 1`] = `
+<div
+  className="add-data-modal modal show container"
+>
+  <div
+    className="center-block header row"
+  >
+    <div
+      className="title"
+    >
+      Add data 
+      <span
+        className="svg-icon close-button"
+        onClick={undefined}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Dataset range
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id={undefined}
+            type="text"
+            value="Sheet1!A2:B5"
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Select the area to bind in the worksheet, it will be reflected here.
+        </span>
+      </div>
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Name
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            id={undefined}
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Must not include slashes, your file will be named 
+          <strong>
+            
+            .csv
+          </strong>
+          <div
+            className="titleLimit"
+          >
+            max. 128
+          </div>
+        </span>
+      </div>
+      <div
+        className="button-group"
+      >
+        <button
+          className="btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary"
+          disabled={true}
+          type="submit"
+        >
+          Add selection
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`renders modal 1`] = `
+<div
+  className="add-data-modal modal show container"
+>
+  <div
+    className="center-block header row"
+  >
+    <div
+      className="title"
+    >
+      Add data 
+      <span
+        className="svg-icon close-button"
+        onClick={undefined}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Dataset range
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id={undefined}
+            type="text"
+            value={undefined}
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Select the area to bind in the worksheet, it will be reflected here.
+        </span>
+      </div>
+      <div
+        className="form-group"
+      >
+        <label
+          className="control-label"
+          htmlFor={undefined}
+        >
+          Name
+        </label>
+        <span
+          className="input-group"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            id={undefined}
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </span>
+        <span
+          className="help-block"
+        >
+          Must not include slashes, your file will be named 
+          <strong>
+            
+            .csv
+          </strong>
+          <div
+            className="titleLimit"
+          >
+            max. 128
+          </div>
+        </span>
+      </div>
+      <div
+        className="button-group"
+      >
+        <button
+          className="btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary"
+          disabled={true}
+          type="submit"
+        >
+          Add selection
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

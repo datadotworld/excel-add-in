@@ -16,8 +16,17 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+import React, { Component } from 'react';
+import './LoadingAnimation.css';
+
+class LoadingAnimation extends Component {
+  render () {
+    return (
+      <div className='loaderoverlay'>
+        <div className='loader'>Loading...</div>
+      </div>
+    );
+  }
 }
+
+export default LoadingAnimation;

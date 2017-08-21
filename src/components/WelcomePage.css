@@ -16,8 +16,37 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.welcome-page {
+  background-color: #335c8c;
+  color: #fff;
+  padding: 3.5rem 15px 0;
+  text-align: center;
+  font-weight: 300;
+}
+
+.welcome-page .logo-stacked {
+  width: 75%;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  margin-top: -0.75rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.welcome-page .login-button {
+  margin: 2rem 0 1rem;
+  width: 100%;
+}
+
+.welcome-page .message {
+  font-size: 18px;
+}
+
+.welcome-page .dataset {
+  margin: 0.5rem 0 2rem;
+  background-color: #fff;
+  text-align: left;
+  color: #000;
 }

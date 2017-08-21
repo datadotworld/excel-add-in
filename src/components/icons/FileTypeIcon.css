@@ -1,0 +1,89 @@
+/*
+ * Copyright 2017 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+.file-type-icon .bg {
+  fill: #fff;
+}
+.file-type-icon .stroke {
+  fill: none;
+  stroke-width: 2px;
+  stroke: #a3afbf;
+}
+.file-type-icon .text {
+  font-size: 14px;
+  font-family: Lato;
+  font-weight: 700;
+  fill: #a3afbf;
+}
+.file-type-icon .textboxStroke,
+.file-type-icon .fileCornerStroke {
+  stroke: transparent !important;
+}
+.file-type-icon .fillTransparent,
+.file-type-icon .textboxFill {
+  fill: transparent !important;
+}
+.file-type-icon .tabularType .text,
+.file-type-icon .tabularType .fill {
+  fill: #68BF70;
+}
+.file-type-icon .tabularType .stroke {
+  stroke: #68BF70;
+}
+.file-type-icon .graphType .text,
+.file-type-icon .graphType .fill {
+  fill: #9581CA;
+}
+.file-type-icon .graphType .stroke {
+  stroke: #9581CA;
+}
+.file-type-icon .pdfType .text,
+.file-type-icon .pdfType .fill {
+  fill: #F36866;
+}
+.file-type-icon .pdfType .stroke {
+  stroke: #F36866;
+}
+.file-type-icon .zipType .text,
+.file-type-icon .zipType .fill {
+  fill: #5D6F85;
+}
+.file-type-icon .zipType .stroke {
+  stroke: #5D6F85;
+}
+.file-type-icon .textType .text,
+.file-type-icon .textType .fill {
+  fill: #5CC0DE;
+}
+.file-type-icon .textType .stroke {
+  stroke: #5CC0DE;
+}
+.file-type-icon .imageType .text,
+.file-type-icon .textType .fill {
+  fill: #F6BD68;
+}
+.file-type-icon .imageType .stroke {
+  stroke: #F6BD68;
+}
+.file-type-icon .vegaType .text,
+.file-type-icon .vegaType .fill {
+  fill: #F6BD68;
+}
+.file-type-icon .vegaType .stroke {
+  stroke: #F6BD68;
+}

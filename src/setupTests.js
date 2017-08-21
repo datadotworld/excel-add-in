@@ -16,8 +16,17 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+const localStorageMock = {
+  store: {},
+  getItem(key) {
+    return this.store[key]
+  },
+  setItem(key, value) {
+    this.store[key] = value.toString()
+  },
+  clear() {
+    this.store = {}
+  }
+};
+
+global.localStorage = localStorageMock
