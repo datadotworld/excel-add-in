@@ -13,7 +13,7 @@ exports[`renders modal 1`] = `
       Create a new dataset 
       <span
         className="svg-icon close-button"
-        onClick={undefined}
+        onClick={[Function]}
       >
         <svg
           className="close-icon"
@@ -140,7 +140,7 @@ exports[`renders modal 1`] = `
         <button
           className="btn btn-default"
           disabled={false}
-          onClick={undefined}
+          onClick={[Function]}
           type="button"
         >
           Cancel

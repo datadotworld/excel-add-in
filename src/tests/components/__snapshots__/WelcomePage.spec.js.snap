@@ -385,6 +385,7 @@ exports[`renders welcome page - no dataset 1`] = `
       className="center-block login-button btn btn-primary"
       disabled={false}
       href={undefined}
+      onClick={[Function]}
       type="button"
     >
       Sign in
@@ -393,6 +394,7 @@ exports[`renders welcome page - no dataset 1`] = `
       New to data.world? 
       <a
         href="https://data.world/"
+        onClick={[Function]}
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -838,6 +840,7 @@ exports[`renders welcome page - with dataset 1`] = `
       className="center-block login-button btn btn-primary"
       disabled={false}
       href={undefined}
+      onClick={[Function]}
       type="button"
     >
       Sign in
@@ -846,6 +849,7 @@ exports[`renders welcome page - with dataset 1`] = `
       New to data.world? 
       <a
         href="https://data.world/"
+        onClick={[Function]}
         rel="noopener noreferrer"
         target="_blank"
       >
