@@ -30,8 +30,9 @@ import {
   Row
 } from 'react-bootstrap';
 
-import Icon from './icons/Icon';
+import analytics from '../analytics';
 
+import Icon from './icons/Icon';
 import './AddDataModal.css';
 
 const filenameRegex = /^[^/]+$/;
@@ -72,6 +73,7 @@ class AddDataModal extends Component {
   }
 
   submit = (event) => {
+    analytics.track('exceladdin.add_data.submit.click');
     event.preventDefault();
     const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
     if (options.binding) {
@@ -87,9 +89,19 @@ class AddDataModal extends Component {
     }
   }
 
+  closeClicked = () => {
+    analytics.track('exceladdin.add_data.close.click');
+    this.props.close();
+  }
+
+  cancelClicked = () => {
+    analytics.track('exceladdin.add_data.cancel.click');
+    this.props.close();
+  }
+
   render () {
     const { name } = this.state;
-    const { close, options, range } = this.props;
+    const { options, range } = this.props;
 
     let validState;
 
@@ -101,7 +113,7 @@ class AddDataModal extends Component {
       <Grid className='add-data-modal modal show'>
         <Row className='center-block header'>
           <div className='title'>
-            Add data <Icon icon='close' className='close-button' onClick={close} />
+            Add data <Icon icon='close' className='close-button' onClick={this.closeClicked} />
           </div>
         </Row>
         <Row className='center-block'>
@@ -134,7 +146,7 @@ class AddDataModal extends Component {
               </HelpBlock>
             </FormGroup>
             <div className='button-group'>
-              <Button onClick={close}>Cancel</Button>
+              <Button onClick={this.cancelClicked}>Cancel</Button>
               <Button
                 type='submit'
                 disabled={this.state.isSubmitting || validState !== 'success'}

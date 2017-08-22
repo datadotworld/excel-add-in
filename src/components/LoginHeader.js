@@ -23,6 +23,8 @@ import {
   MenuItem
 } from 'react-bootstrap';
 
+import analytics from '../analytics';
+
 import './LoginHeader.css';
 import LogoFull from './icons/LogoFull';
 
@@ -34,6 +36,7 @@ class LoginHeader extends Component {
   }
 
   userMenuChanged = () => {
+    analytics.track('exceladdin.header.logout.click');
     this.props.logout();
   }
 

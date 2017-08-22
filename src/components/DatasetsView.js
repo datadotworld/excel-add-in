@@ -29,6 +29,7 @@ import {
 
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
+import analytics from '../analytics';
 
 import Icon from './icons/Icon';
 
@@ -77,6 +78,7 @@ class DatasetsView extends Component {
   }
 
   sortChanged = (sortKey) => {
+    analytics.track('exceladdin.datasets.sort.change', {sort: sortKey});
     this.setState({sortKey})
   }
 
@@ -84,6 +86,15 @@ class DatasetsView extends Component {
     this.props.linkDataset(dataset);
   }
 
+  createDatasetClick = () => {
+    analytics.track('exceladdin.datasets.create_dataset_button.click');
+    this.props.createDataset();
+  }
+
+  addDatasetClick = () => {
+    analytics.track('exceladdin.datasets.create_dataset_add.click');
+    this.props.createDataset();
+  }
 
   render () {
     const { sortKey } = this.state;
@@ -100,7 +111,7 @@ class DatasetsView extends Component {
           <Row className='center-block section-header'>
             <div className='title'>
               Select a dataset to link
-              <Icon icon='add' onClick={this.props.createDataset} />
+              <Icon icon='add' onClick={this.addDatasetClick} />
             </div>
           </Row>
           {!!datasets.length && 
@@ -120,7 +131,7 @@ class DatasetsView extends Component {
               </div>
               <div>
                 {datasetEntries}
-                <Button className='bottom-button' onClick={this.props.createDataset}>Create a new dataset</Button>
+                <Button className='bottom-button' onClick={this.createDatasetClick}>Create a new dataset</Button>
               </div>
             </Row>}
           {!datasets.length && 
@@ -128,7 +139,7 @@ class DatasetsView extends Component {
               <div className='message'>
                 You haven't created any datasets to link data to.
               </div>
-              <Button className='bottom-button' bsStyle='primary' onClick={this.props.createDataset}>Create a new dataset</Button>
+              <Button className='bottom-button' bsStyle='primary' onClick={this.createDatasetClick}>Create a new dataset</Button>
             </Row>
           }
         </div>

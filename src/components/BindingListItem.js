@@ -27,6 +27,8 @@ import './BindingListItem.css';
 import FileTypeIcon from './icons/FileTypeIcon';
 import Icon from './icons/Icon';
 
+import analytics from '../analytics';
+
 class BindingsListItem extends Component {
 
   static propTypes = {
@@ -44,13 +46,24 @@ class BindingsListItem extends Component {
   }
 
   onEditClick = (event) => {
+    analytics.track('exceladdin.file.edit_binding.click');
     const { binding, editBinding, file } = this.props;
     event.preventDefault();
     editBinding(file.name, binding);
   }
 
+  addClick = () => {
+    analytics.track('exceladdin.file.add_binding.click');
+    this.props.addBinding(this.props.file);
+  }
+
+  removeClick = () => {
+    analytics.track('exceladdin.file.remove_binding.click');
+    this.props.removeBinding(this.props.binding);
+  }
+
   render () {
-    const { addBinding, file, binding, removeBinding, syncing, syncStatus } = this.props;
+    const { file, binding, syncing, syncStatus } = this.props;
 
     let dotPos = file ? file.name.lastIndexOf('.') : -1;
     let extension = dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
@@ -76,11 +89,11 @@ class BindingsListItem extends Component {
         {isBindable && <Button
           bsSize='small'
           className='add-button'
-          onClick={() => addBinding(file)}><Icon icon='add' /></Button>}
+          onClick={this.addClick}><Icon icon='add' /></Button>}
         {!!binding && !isSyncing && <Button
           bsSize='small'
           className='link-button'
-          onClick={() => removeBinding(binding)}>
+          onClick={this.removeClick}>
             <div className='link'>
               <Icon className='check' icon='check' />
               <span className='label'>Linked</span>

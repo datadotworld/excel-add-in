@@ -27,6 +27,7 @@ import {
 import './WelcomePage.css';
 import LogoStacked from './icons/LogoStacked';
 import DatasetItem from './DatasetItem';
+import analytics from '../analytics';
 
 class WelcomePage extends Component {
 
@@ -51,6 +52,14 @@ class WelcomePage extends Component {
     window.location = this.oauthURI;
   }
 
+  loginClick = () => {
+    analytics.track('exceladdin.welcome.login.click');
+  }
+
+  signUpClick = () => {
+    analytics.track('exceladdin.welcome.signup.click');
+  }
+
   render () {
     const {dataset} = this.props;
     return (
@@ -68,8 +77,9 @@ class WelcomePage extends Component {
           <Button
             className='center-block login-button'
             href={this.oauthURI}
+            onClick={this.loginClick}
             bsStyle='primary'>Sign in</Button>
-          <div>New to data.world? <a href='https://data.world/' target='_blank' rel='noopener noreferrer'> Sign up now</a></div>
+          <div>New to data.world? <a href='https://data.world/' target='_blank' rel='noopener noreferrer' onClick={this.signUpClick}> Sign up now</a></div>
         </Row>
       </Grid>
     );
