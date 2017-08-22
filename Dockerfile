@@ -28,7 +28,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN REACT_APP_OAUTH_URI=/authorize yarn build
 
 EXPOSE 3001
 CMD [ "yarn", "run", "prod" ]

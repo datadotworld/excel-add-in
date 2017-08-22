@@ -70,6 +70,7 @@ class App extends Component {
       bindings: [],
       datasets: [],
       loggedIn: !!token,
+      officeInitialized: false,
       syncStatus: {}
     };
 
