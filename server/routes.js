@@ -71,6 +71,16 @@ module.exports = function (server) {
     }
   });
 
+  server.route({
+    method: 'GET',
+    path: '/service-worker.js',
+    handler: {
+      file: {
+        path: Path.join(__dirname, '..', 'build', 'service-worker.js')
+      }
+    }
+  });
+
   /**
    * Serves up the react front end UI
    */
