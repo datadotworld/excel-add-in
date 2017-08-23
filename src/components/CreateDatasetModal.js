@@ -34,8 +34,9 @@ import {
 import { kebabCase } from 'lodash';
 
 import Icon from './icons/Icon';
-
 import './CreateDatasetModal.css';
+
+import analytics from '../analytics';
 
 class CreateDatasetModal extends Component {
 
@@ -53,6 +54,7 @@ class CreateDatasetModal extends Component {
   }
 
   submit = (event) => {
+    analytics.track('exceladdin.create_dataset.submit.click');
     event.preventDefault();
     this.setState({isSubmitting: true});
     const dataset = {
@@ -74,11 +76,22 @@ class CreateDatasetModal extends Component {
   }
 
   visibilityChanged = (event) => {
+    analytics.track('exceladdin.create_dataset.visibility.change', {visibility: event.target.value});
     this.setState({visibility: event.target.value});
   }
 
+  closeClicked = () => {
+    analytics.track('exceladdin.create_dataset.close.click');
+    this.props.close();
+  }
+
+  cancelClicked = () => {
+    analytics.track('exceladdin.create_dataset.cancel_button.click');
+    this.props.close();
+  }
+
   render () {
-    const {close, user} = this.props;
+    const { user } = this.props;
     const {title, visibility} = this.state;
     let datasetValidState;
 
@@ -90,7 +103,7 @@ class CreateDatasetModal extends Component {
       <Grid className='create-dataset-modal modal show'>
         <Row className='center-block header'>
           <div className='title'>
-            Create a new dataset <Icon icon='close' className='close-button' onClick={close} />
+            Create a new dataset <Icon icon='close' className='close-button' onClick={this.closeClicked} />
           </div>
         </Row>
         <Row className='center-block'>
@@ -130,7 +143,7 @@ class CreateDatasetModal extends Component {
               </Radio>
             </FormGroup>
             <div className='button-group'>
-              <Button onClick={close}>Cancel</Button>
+              <Button onClick={this.cancelClicked}>Cancel</Button>
               <Button
                 type='submit'
                 disabled={this.state.isSubmitting || datasetValidState !== 'success'}

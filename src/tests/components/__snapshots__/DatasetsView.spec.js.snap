@@ -16,7 +16,7 @@ exports[`renders datasets view - datasets 1`] = `
         Select a dataset to link
         <span
           className="svg-icon "
-          onClick={undefined}
+          onClick={[Function]}
         >
           <svg
             className="add-icon"
@@ -453,7 +453,7 @@ exports[`renders datasets view - datasets 1`] = `
         <button
           className="bottom-button btn btn-default"
           disabled={false}
-          onClick={undefined}
+          onClick={[Function]}
           type="button"
         >
           Create a new dataset
@@ -480,7 +480,7 @@ exports[`renders datasets view - no datasets 1`] = `
         Select a dataset to link
         <span
           className="svg-icon "
-          onClick={undefined}
+          onClick={[Function]}
         >
           <svg
             className="add-icon"
@@ -521,7 +521,7 @@ exports[`renders datasets view - no datasets 1`] = `
       <button
         className="bottom-button btn btn-primary"
         disabled={false}
-        onClick={undefined}
+        onClick={[Function]}
         type="button"
       >
         Create a new dataset

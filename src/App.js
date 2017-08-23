@@ -33,6 +33,7 @@ import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
+import analytics from './analytics';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const { localStorage } = window;
@@ -60,6 +61,7 @@ class App extends Component {
     if (this.parsedQueryString.token) {
       token = this.parsedQueryString.token;
       localStorage.setItem(DW_API_TOKEN, token);
+      analytics.identify(token);
       this.setState({ token });
     } else {
       token = localStorage.getItem(DW_API_TOKEN);

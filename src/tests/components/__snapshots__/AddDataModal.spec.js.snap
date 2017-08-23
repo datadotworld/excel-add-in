@@ -13,7 +13,7 @@ exports[`renders modal - with options 1`] = `
       Add data 
       <span
         className="svg-icon close-button"
-        onClick={undefined}
+        onClick={[Function]}
       >
         <svg
           className="close-icon"
@@ -104,7 +104,7 @@ exports[`renders modal - with options 1`] = `
         <button
           className="btn btn-default"
           disabled={false}
-          onClick={undefined}
+          onClick={[Function]}
           type="button"
         >
           Cancel
@@ -135,7 +135,7 @@ exports[`renders modal - with range 1`] = `
       Add data 
       <span
         className="svg-icon close-button"
-        onClick={undefined}
+        onClick={[Function]}
       >
         <svg
           className="close-icon"
@@ -226,7 +226,7 @@ exports[`renders modal - with range 1`] = `
         <button
           className="btn btn-default"
           disabled={false}
-          onClick={undefined}
+          onClick={[Function]}
           type="button"
         >
           Cancel
@@ -257,7 +257,7 @@ exports[`renders modal 1`] = `
       Add data 
       <span
         className="svg-icon close-button"
-        onClick={undefined}
+        onClick={[Function]}
       >
         <svg
           className="close-icon"
@@ -348,7 +348,7 @@ exports[`renders modal 1`] = `
         <button
           className="btn btn-default"
           disabled={false}
-          onClick={undefined}
+          onClick={[Function]}
           type="button"
         >
           Cancel

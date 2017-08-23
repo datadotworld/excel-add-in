@@ -30,6 +30,8 @@ import {
   Row
 } from 'react-bootstrap';
 
+import analytics from '../analytics';
+
 import './BindingsPage.css';
 import BindingListItem from './BindingListItem';
 import Icon from './icons/Icon'
@@ -61,10 +63,12 @@ class BindingsPage extends Component {
   }
 
   addFile = () => {
+    analytics.track('exceladdin.bindings.add_file_button.click');
     this.props.showAddData();
   }
 
   datasetMenuOptionChange = () => {
+    analytics.track('exceladdin.bindings.menu.unlink.click');
     this.props.unlinkDataset();
   }
 
@@ -97,6 +101,7 @@ class BindingsPage extends Component {
   }
 
   sortChanged = (sortKey) => {
+    analytics.track('exceladdin.bindings.sort.change', {sort: sortKey});
     this.setState({sortKey})
   }
 
@@ -108,6 +113,11 @@ class BindingsPage extends Component {
     return this.props.bindings.find((binding) => {
       return binding.id === `dw::${file.name}`;
     });
+  }
+
+  syncClicked = () => {
+    analytics.track('exceladdin.bindings.sync_button.click');
+    this.props.sync();
   }
 
   render () {
@@ -165,7 +175,7 @@ class BindingsPage extends Component {
               <Icon icon='add' />
               Add File
             </Button>
-            {!syncing && <Button onClick={() => this.props.sync()} disabled={!bindingEntries.length}>
+            {!syncing && <Button onClick={this.syncClicked} disabled={!bindingEntries.length}>
               <Icon icon='sync' />
               Save Files
               {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
@@ -210,6 +220,7 @@ class BindingsPage extends Component {
             <Button className='bottom-button' bsStyle='primary'
               href={`https://data.world/${dataset.owner}/${dataset.id}/contributors`}
               target='_blank'
+              onClick={() => analytics.track('exceladdin.bindings.request_access_button.click')}
               rel='noopener noreferrer'>
               Request access
             </Button>

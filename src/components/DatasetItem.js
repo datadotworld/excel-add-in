@@ -21,6 +21,8 @@ import PropTypes from 'prop-types';
 import {FormattedDate} from 'react-intl';
 import {Button} from 'react-bootstrap';
 
+import analytics from '../analytics';
+
 import './DatasetItem.css';
 import Icon from './icons/Icon';
 
@@ -34,6 +36,7 @@ class DatasetItem extends Component {
   }
 
   buttonClick = () => {
+    analytics.track(`exceladdin.dataset.${this.props.buttonText.toLowerCase()}.click`);
     if (this.props.buttonHandler) {
       this.props.buttonHandler(this.props.dataset);
     }
