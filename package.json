@@ -26,7 +26,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"node server/server.js\"",
     "build": "react-scripts build",
-    "prod": "node server/server.js",
+    "prod": "nodemon server/server.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
