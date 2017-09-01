@@ -18,6 +18,18 @@
  */
 let Office, Excel;
 
+const lastRowsAreEmpty = function (array) {
+  if (array.length < 10) {
+    return false;
+  }
+  for (let i = array.length - 1; i >= array.length - 10; i -= 1) {
+    if (!!array[i].join('')) {
+      return false;
+    }
+  }
+  return true;
+};
+
 export default class OfficeConnector {
   initialize () {
     Office = window.Office;
@@ -164,8 +176,8 @@ export default class OfficeConnector {
   getData (binding) {
     return new Promise((resolve, reject) => {
       const {columnCount, rowCount} = binding;
+      const rowInterval = 1000;
       const results = [];
-      let count = 0;
 
       const organizeResults = () => {
         results.sort((a, b) => {
@@ -185,10 +197,17 @@ export default class OfficeConnector {
             return reject(result.error.message);
           }
 
-          count -= 1;
           results.push({options, value: result.value});
-          
-          if (count === 0) {
+          // Check the last 10 rows for empty values
+          if (options.startRow + options.rowCount < rowCount && !lastRowsAreEmpty(result.value)) {
+            const newOptions = {
+              columnCount,
+              startRow: options.startRow + options.rowCount,
+              startColumn: 0,
+              rowCount: Math.min(rowInterval, rowCount - (options.startRow + options.rowCount))
+            };
+            binding.getDataAsync(newOptions, handleData(newOptions));
+          } else {
             organizeResults();
           }
         }
@@ -198,17 +217,13 @@ export default class OfficeConnector {
       // https://support.office.com/en-us/article/Excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
       // Experimentation indicates that 1m is the maximum number of cells retrievable at any one time
       // A maximum number of columns is enforced on the binding, dynamically determine how many rows to fetch
-      const rowInterval = Math.floor(1000000 / columnCount);
-      for (let i = 0; i < rowCount; i += rowInterval) {
-        const options = {
-          columnCount,
-          startRow: i,
-          startColumn: 0,
-          rowCount: Math.min(rowInterval, rowCount - i)
-        };
-        count += 1;
-        binding.getDataAsync(options, handleData(options));
-      }
+      const options = {
+        columnCount,
+        startRow: 0,
+        startColumn: 0,
+        rowCount: Math.min(rowInterval, rowCount)
+      };
+      binding.getDataAsync(options, handleData(options));
     });
   }
 }
