@@ -210,7 +210,6 @@ exports[`renders modal - with range 1`] = `
         >
           Must not include slashes, your file will be named 
           <strong>
-            
             .csv
           </strong>
           <div
@@ -332,7 +331,6 @@ exports[`renders modal 1`] = `
         >
           Must not include slashes, your file will be named 
           <strong>
-            
             .csv
           </strong>
           <div
