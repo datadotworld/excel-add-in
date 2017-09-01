@@ -82,11 +82,22 @@ class AddDataModal extends Component {
         .then(refreshLinkedDataset)
         .then(close);
     } else {
-      createBinding(`${this.state.name}.csv`).then((binding) => {
+      createBinding(`${this.getFilename(this.state.name)}.csv`).then((binding) => {
         // Binding has been created, but the file does not exist yet, sync the file
         sync(binding).then(refreshLinkedDataset).then(close);
       });
     }
+  }
+
+  /**
+   * Peels off a trailing .csv if the user added it
+   */
+  getFilename = () => {
+    const index = this.state.name.lastIndexOf('.csv');
+    if (index >= 0 && index === this.state.name.length - 4) {
+      return getFilenameWithoutExtension(this.state.name);
+    }
+    return this.state.name;
   }
 
   closeClicked = () => {
@@ -103,10 +114,11 @@ class AddDataModal extends Component {
     const { name } = this.state;
     const { options, range } = this.props;
 
-    let validState;
+    let validState, displayName;
 
     if (name) {
       validState = this.isFormValid() ? 'success' : 'warning'
+      displayName = this.getFilename();
     }
 
     return (
@@ -141,7 +153,7 @@ class AddDataModal extends Component {
                   type='text' />
               </InputGroup>
               <HelpBlock>
-                Must not include slashes, your file will be named <strong>{name}.csv</strong>
+                Must not include slashes, your file will be named <strong>{displayName}.csv</strong>
                 <div className='titleLimit'>max. 128</div>
               </HelpBlock>
             </FormGroup>

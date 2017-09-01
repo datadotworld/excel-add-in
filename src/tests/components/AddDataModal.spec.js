@@ -36,3 +36,15 @@ it('renders modal - with options', () => {
   };
   expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' options={options} />).toJSON()).toMatchSnapshot()
 });
+
+it ('removes trailing .csv from filenames', () => {
+  const modal = new AddDataModal({options: {}});
+  modal.state.name = 'testing.csv'
+  expect(modal.getFilename()).toBe('testing');
+});
+
+it ('does not impact filenames without trailing .csv', () => {
+  const modal = new AddDataModal({options: {}});
+  modal.state.name = 'testingwithoutextension'
+  expect(modal.getFilename()).toBe('testingwithoutextension');
+});
