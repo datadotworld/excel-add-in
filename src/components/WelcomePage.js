@@ -67,7 +67,11 @@ class WelcomePage extends Component {
         <Row className='center-block'>
           <LogoStacked />
           {!dataset && <div>
-            <div className='description'>Lorem ipsum dolor sit amet consecteur.</div>
+            <div className='description'>
+              Turn Excel files into data.world datasets<br />
+              Collaborate with other Excel users<br />
+              Sync changes to data.world with a single click
+            </div>
           </div>}
           {dataset && <div>
             <div>This file is linked to a dataset on data.world:</div>
