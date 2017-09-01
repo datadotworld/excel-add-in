@@ -21,13 +21,11 @@ import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 import load from 'little-loader';
 import './analytics-head';
 
 function loadApp () {
   ReactDOM.render(<IntlProvider locale="en"><App /></IntlProvider>, document.getElementById('root'));
-  registerServiceWorker();
 }
 
 if (process.env.NODE_ENV === 'production') {
