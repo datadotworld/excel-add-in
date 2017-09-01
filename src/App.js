@@ -218,8 +218,9 @@ class App extends Component {
 
   async linkDataset (dataset) {
     try  {
-      this.setState({ dataset });
-      return await this.office.setDataset(dataset);
+      const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
+      this.setState({ dataset: freshDataset });
+      return await this.office.setDataset(freshDataset);
     } catch (error) {
       this.setState({error});
     }
