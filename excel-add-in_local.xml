@@ -12,13 +12,14 @@
   <SupportUrl DefaultValue="https://help.data.world/" />
   <AppDomains>
     <AppDomain>https://data.world</AppDomain>
-    <AppDomain>https://excel.data.world</AppDomain>
+    <AppDomain>https://localhost:3000</AppDomain>
+    <AppDomain>https://localhost:3001</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://excel.data.world/" />
+    <SourceLocation DefaultValue="https://localhost:3000/" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>

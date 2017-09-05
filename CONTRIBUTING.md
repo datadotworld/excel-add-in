@@ -40,6 +40,11 @@ git remote add upstream https://github.com/datadotworld/excel-add-in.git
 
 Ensure that you can build the project and run tests.
 
+Install dependencies:
+```bash
+yarn
+```
+
 Run tests:
 ```bash
 yarn test
@@ -61,6 +66,31 @@ Try to write a test that reproduces the problem you're trying to fix or describe
 you want to build. Add tests to [tests](tests).
 
 We definitely appreciate pull requests that highlight or reproduce a problem, even without a fix.
+
+### Test your changes in Excel Online and Excel Desktop
+
+#### Run locally
+
+1. `HTTPS=true yarn start`
+
+#### Testing against Office Online
+
+1. Open `https://localhost:3000`, and `https://localhost:3001` in the browser and accept the self-signed certificates
+1. Open a spreadsheet in Excel Online
+1. Click INSERT > Office Add-ins
+1. Click Upload My Add-in
+1. Click Browse... and browse to the `excel-add-in_local.xml` file located in this repo
+1. Click Upload
+
+#### Testing against Desktop Office for OSX
+
+1. Open `https://localhost:3000`, and `https://localhost:3001` in Safari and accept the self-signed certificates
+1. Close Excel if it is open
+1. If the `wef` directory here `~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/` does not exist, then create it
+1. Open a terminal and from the root of this repo, run `cp ./excel-add-in_local.xml ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/`
+1. Open a spreadsheet in Excel
+1. Click Insert
+1. Click on the dropdown by the My Add-ins.  The add-in will only be available via the dropdown, not via the button which launches a new window to select an add-in.
 
 ### Write Code
 
