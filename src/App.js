@@ -228,7 +228,7 @@ class App extends Component {
 
   async unlinkDataset () {
     try {
-      await this.office.setDataset();
+      await this.office.setDataset(null);
       await this.office.setSyncStatus({});
       this.state.bindings.forEach((binding) => {
         this.office.removeBinding(binding);
