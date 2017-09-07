@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import axios from 'axios';
+import papa from 'papaparse';
 
 const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/
 
@@ -78,9 +79,7 @@ export default class DataDotWorldApi {
     const {dataset, filename} = options;
     const datasetSlug = `${dataset.owner}/${dataset.id}`;
 
-    const csv = options.data.map((row) => {
-      return row.join(',');
-    }).join('\n');
+    const csv = papa.unparse(options.data);
 
     const formData = new FormData();
     

@@ -4565,6 +4565,10 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
+papaparse@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.3.6.tgz#9566eda0ecab13afcb740a62381c699f486cb145"
+
 param-case@2.1.x:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/param-case/-/param-case-2.1.1.tgz#df94fd8cf6531ecf75e6bef9a0858fbc72be2247"

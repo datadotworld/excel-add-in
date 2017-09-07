@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly encodes data into a CSV 1`] = `
+"1,2,3
+1,\\"2, 3, 4\\",5
+10/12/2012,17%,0.123
+\\"this is a test
+of a newline\\",,
+\\"this is a \\"\\"quotation mark\\"\\" test\\",,"
+`;
