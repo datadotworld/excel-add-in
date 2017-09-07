@@ -204,7 +204,8 @@ export default class OfficeConnector {
               columnCount,
               startRow: options.startRow + options.rowCount,
               startColumn: 0,
-              rowCount: Math.min(rowInterval, rowCount - (options.startRow + options.rowCount))
+              rowCount: Math.min(rowInterval, rowCount - (options.startRow + options.rowCount)),
+              valueFormat: Office.ValueFormat.Formatted
             };
             binding.getDataAsync(newOptions, handleData(newOptions));
           } else {
@@ -221,7 +222,8 @@ export default class OfficeConnector {
         columnCount,
         startRow: 0,
         startColumn: 0,
-        rowCount: Math.min(rowInterval, rowCount)
+        rowCount: Math.min(rowInterval, rowCount),
+        valueFormat: Office.ValueFormat.Formatted
       };
       binding.getDataAsync(options, handleData(options));
     });
