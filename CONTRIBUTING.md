@@ -17,6 +17,9 @@ issues and propose changes to the current or next version of the data.world Exce
 ### Review Relevant Docs
 
 * [data.world API](https://docs.data.world/documentation/api)
+* https://dev.office.com/reference/add-ins/excel/application
+* https://dev.office.com/docs/add-ins/excel/excel-add-ins-javascript-programming-overview?product=excel
+* https://dev.office.com/docs/add-ins/overview/add-in-manifests
 
 ### Set up machine
 
@@ -71,7 +74,31 @@ We definitely appreciate pull requests that highlight or reproduce a problem, ev
 
 #### Run locally
 
-1. `HTTPS=true yarn start`
+##### `yarn start`
+
+Runs the react app and server component in development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view the front end UI in the browser.
+The server will be launched at http://localhost:3001 by default.
+
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
+
+React Front End Required Environment Variables:
+
+`REACT_APP_OAUTH_URI`: Endpoint for the OAuth authorization endpoint.  In production this should be `/authorize`
+
+Server Side Required Environment Variables
+
+`OAUTH_REDIRECT_URI`: Must match exactly the redirect setup on the data.world client  
+`OAUTH_CLIENT_ID`: Client id for the data.world OAuth Client  
+`OAUTH_CLIENT_SECRET`: Client secret for the data.world OAuth Client  
+
+Server Side Optional Environment Variables
+`OAUTH_AUTHORIZATION_ENDPOINT`: Allows for overriding the authorization endpoint.  Defaults to `https://data.world`
+
+When testing locally `HTTPS=true` must be set as the Office online site will not load an add-in via http.
+
+`HTTPS=true REACT_APP_OAUTH_URI=https://localhost:3001/authorize OAUTH_REDIRECT_URI=https://localhost:3001/callback OAUTH_CLIENT_ID=excel-add-in-local OAUTH_CLIENT_SECRET=XXXX yarn start`
 
 #### Testing against Office Online
 
