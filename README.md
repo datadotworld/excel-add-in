@@ -17,17 +17,17 @@ Using the Excel Add-In is simple!
 
 In Excel Online
 
-# Go to the Insert Ribbon and click on Office Add-ins
-# Click on Store
-# Search for data.world
-# Click Add on the data.world Excel Add-In
+1. Go to the Insert Ribbon and click on Office Add-ins
+1. Click on Store
+1. Search for data.world
+1. Click Add on the data.world Excel Add-In
 
 In Excel Desktop for Windows or Mac
 
-# Go to the Insert Ribbon and click on My Add-ins
-# Click on Store
-# Search for data.world
-# Click Add on the data.world Excel Add-In
+1. Go to the Insert Ribbon and click on My Add-ins
+1. Click on Store
+1. Search for data.world
+1. Click Add on the data.world Excel Add-In
 
 ## Contributing
 
