@@ -1,52 +1,39 @@
-# data.world Excel Add-In
+# data.world — Excel Add-In
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+data.world's Excel Add-In allows users to sync portions of their Excel documents to their data.world projects and datasets.  
 
-## Available Scripts
+Find the data.world Excel Add-In on the Microsoft Office Add-ins Store.
 
-In the project directory, you can run:
+The data.world Excel Add-In supports the following versions of Excel:
 
-### `yarn start`
+* Excel Online
+* Excel Office 2016 for Windows
+* Excel Office 2016 for Mac
+* Excel Office for iPad
 
-Runs the react app and server component in development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view the front end UI in the browser.
-The server will be launched at http://localhost:3001 by default.
+## Getting started
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Using the Excel Add-In is simple!
 
-React Front End Required Environment Variables:
+In Excel Online
 
-`REACT_APP_OAUTH_URI`: Endpoint for the OAuth authorization endpoint.  In production this should be `/authorize`
+1 Go to the Insert Ribbon and click on Office Add-ins
+1 Click on Store
+1 Search for data.world
+1 Click Add on the data.world Excel Add-In
 
-Server Side Required Environment Variables
+In Excel Desktop for Windows or Mac
 
-`OAUTH_REDIRECT_URI`: Must match exactly the redirect setup on the data.world client  
-`OAUTH_CLIENT_ID`: Client id for the data.world OAuth Client  
-`OAUTH_CLIENT_SECRET`: Client secret for the data.world OAuth Client  
+1 Go to the Insert Ribbon and click on My Add-ins
+1 Click on Store
+1 Search for data.world
+1 Click Add on the data.world Excel Add-In
 
-Server Side Optional Environment Variables
-`OAUTH_AUTHORIZATION_ENDPOINT`: Allows for overriding the authorization endpoint.  Defaults to `https://data.world`
+## Contributing
 
-When testing locally `HTTPS=true` must be set as the Office online site will not load an add-in via http.
+The data.world Excel Add-In is an open-source project. Community participation is encouraged.
+If you'd like to contribute, please follow the [Contributing Guidelines](CONTRIBUTING.md).
 
-`HTTPS=true REACT_APP_OAUTH_URI=https://localhost:3001/authorize OAUTH_REDIRECT_URI=https://localhost:3001/callback OAUTH_CLIENT_ID=excel-add-in-local OAUTH_CLIENT_SECRET=XXXX yarn start`
+## License
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](#running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-# Useful Links
-
-1. https://dev.office.com/reference/add-ins/excel/application
-1. https://dev.office.com/docs/add-ins/excel/excel-add-ins-javascript-programming-overview?product=excel
-1. https://dev.office.com/docs/add-ins/overview/add-in-manifests
+Apache License 2.0
