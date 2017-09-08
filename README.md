@@ -9,7 +9,6 @@ The data.world Excel Add-In supports the following versions of Excel:
 * Excel Online
 * Excel Office 2016 for Windows
 * Excel Office 2016 for Mac
-* Excel Office for iPad
 
 ## Getting started
 
