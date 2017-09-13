@@ -203,7 +203,11 @@ class App extends Component {
 
       return dataset;
     } catch (error) {
-      this.setState({error});
+      if (error.response && error.response.status === 401) {
+        this.logout();
+      } else {
+        this.setState({error});
+      }
     }
   }
 
@@ -252,7 +256,9 @@ class App extends Component {
       const user = await this.api.getUser();
       this.setState({user});
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        this.logout();
+      }
     }
   }
 
