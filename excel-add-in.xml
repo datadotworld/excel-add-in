@@ -8,7 +8,7 @@
   <DisplayName DefaultValue="data.world Excel Add-In" />
   <Description DefaultValue="data.world Excel integration"/>
   <!-- TODO: IconUrl needs to be changed before submitting to the office store -->
-  <IconUrl DefaultValue="https://assets.data.world/icons-d1940ad25da01d05b8f27389101617c1/favicon-32x32.png" />
+  <IconUrl DefaultValue="https://cdn.filepicker.io/api/file/ymdxFDOnSRSzCwqiAEke+.png" />
   <SupportUrl DefaultValue="https://help.data.world/" />
   <AppDomains>
     <AppDomain>https://data.world</AppDomain>
@@ -21,4 +21,62 @@
     <SourceLocation DefaultValue="https://excel.data.world/" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <FunctionFile resid="dw.Url" />
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="dw.Group1">
+                <Label resid="dw.Group1Label" />
+                <Icon>
+                  <bt:Image size="16" resid="dw.tpicon_16x16" />
+                  <bt:Image size="32" resid="dw.tpicon_32x32" />
+                  <bt:Image size="80" resid="dw.tpicon_80x80" />
+                </Icon>
+
+                <Control xsi:type="Button" id="dw.TaskpaneButton">
+                  <Label resid="dw.TaskpaneButton.Label" />
+                  <Supertip>
+                    <Title resid="dw.TaskpaneButton.Label" />
+                    <Description resid="dw.TaskpaneButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="dw.tpicon_16x16" />
+                    <bt:Image size="32" resid="dw.tpicon_32x32" />
+                    <bt:Image size="80" resid="dw.tpicon_80x80" />
+                  </Icon>
+
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <SourceLocation resid="dw.Url" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="dw.tpicon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/MF29z9SUSRGCQMpDYNZG+.png" />
+        <bt:Image id="dw.tpicon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/ymdxFDOnSRSzCwqiAEke+.png" />
+        <bt:Image id="dw.tpicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/MHbuNokQpSHiIiG6pKFK+.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="dw.Url" DefaultValue="https://excel.data.world" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="dw.TaskpaneButton.Label" DefaultValue="data.world" />
+        <bt:String id="dw.Group1Label" DefaultValue="data.world" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="dw.TaskpaneButton.Tooltip" DefaultValue="Click to Show the data.world add in" />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
 </OfficeApp>

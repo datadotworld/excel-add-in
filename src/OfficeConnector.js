@@ -41,6 +41,9 @@ export default class OfficeConnector {
           }
           Excel = window.Excel;
 
+          Office.context.document.settings.set('Office.AutoShowTaskpaneWithDocument', true);
+          Office.context.document.settings.saveAsync();
+
           resolve();
         }
       } else {
