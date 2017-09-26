@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "array.prototype.find": "^2.0.4",
     "axios": "0.15.3",
     "classnames": "^2.2.5",
     "hapi": "^16.5.2",
