@@ -1294,8 +1294,8 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
             <a
               onClick={[Function]}
             >
-              \`$
-              \` 
+              Sheet1!A2:AB
+               
               <span
                 className="glyphicon glyphicon-pencil"
               />
