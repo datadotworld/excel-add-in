@@ -47,6 +47,7 @@ class AddDataModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createBinding: PropTypes.func,
+    excelApiSupported: PropTypes.bool,
     options: PropTypes.object,
     range: PropTypes.string,
     refreshLinkedDataset: PropTypes.func,
@@ -65,8 +66,8 @@ class AddDataModal extends Component {
 
   isFormValid = () => {
     const { name } = this.state;
-    const { range } = this.props;
-    if (!range || !name) {
+    const { excelApiSupported, range } = this.props;
+    if ((excelApiSupported && !range) || !name) {
       return false;
     }
     return name.match(filenameRegex) && name.length < MAX_FILENAME_LENGTH;
@@ -112,8 +113,9 @@ class AddDataModal extends Component {
 
   render () {
     const { name } = this.state;
-    const { options, range } = this.props;
+    const { excelApiSupported, options, range } = this.props;
 
+    const formValue = excelApiSupported ? range : 'Unavailable in Excel 2013';
     let validState, displayName;
 
     if (name) {
@@ -134,7 +136,7 @@ class AddDataModal extends Component {
               <ControlLabel>Dataset range</ControlLabel>
               <InputGroup>
                 <FormControl
-                  value={range}
+                  value={formValue}
                   disabled
                   type='text' />
               </InputGroup>

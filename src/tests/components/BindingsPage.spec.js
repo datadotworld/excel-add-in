@@ -59,7 +59,8 @@ it('renders bindings page - dataset with files, bindings', () => {
     created: '2017-07-20T14:24:51.762Z'
   }];
   const bindings = [{
-    id: 'dw::test_file.csv'
+    id: 'dw::test_file.csv',
+    rangeAddress: 'Sheet1!A2:AB'
   }];
   const syncStatus = {};
   syncStatus['dw::test_file.csv'] = {

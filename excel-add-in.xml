@@ -21,7 +21,6 @@
     <SourceLocation DefaultValue="https://excel.data.world/" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
-
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Workbook">

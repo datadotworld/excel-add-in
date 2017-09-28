@@ -23,6 +23,7 @@
 .datasets-view .dataset-selector .section-header .add-icon {
   float: right;
   width: 20px;
+  height: 20px;
   margin-top: 2px;
   cursor: pointer;
 }

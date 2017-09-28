@@ -296,7 +296,7 @@ exports[`renders modal 1`] = `
             disabled={true}
             id={undefined}
             type="text"
-            value={undefined}
+            value="Unavailable in Excel 2013"
           />
         </span>
         <span

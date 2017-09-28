@@ -81,7 +81,7 @@ class BindingsListItem extends Component {
           <div className='title'>{file.name}</div>
           {!hasPendingChanges &&
             <div className='info'>
-              {binding && <a onClick={this.onEditClick}>`${binding.rangeAddress}` <Glyphicon glyph='pencil' /> · </a>}
+              {binding && <a onClick={this.onEditClick}>{binding.rangeAddress && `${binding.rangeAddress}`} <Glyphicon glyph='pencil' /> · </a>}
               Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' />
             </div>}
           {hasPendingChanges && <div className='info'>{syncStatus.changes} pending changes</div>}

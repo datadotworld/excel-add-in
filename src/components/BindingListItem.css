@@ -32,7 +32,7 @@
 
 .file .center-info {
   margin-left: 15px;
-  max-width: 210px;
+  width: 210px;
 }
 
 .file .title {
@@ -69,6 +69,7 @@
 
 .file .file-type-icon {
   width: 25px;
+  height: 40px;
 }
 
 .file .add-button {
@@ -87,6 +88,7 @@
 
 .file .add-icon {
   width: 1rem;
+  height: 1rem;
 }
 
 .file .loader-icon {

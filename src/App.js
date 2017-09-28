@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import queryString from 'query-string'
 
 import { Alert } from 'react-bootstrap';
+import find from 'array.prototype.find';
 
 import './App.css';
 import './static/css/dw-bootstrap.min.css';
@@ -44,6 +45,8 @@ class App extends Component {
 
   constructor () {
     super();
+
+    find.shim();
 
     this.createBinding = this.createBinding.bind(this);
     this.getDatasets = this.getDatasets.bind(this);
@@ -115,6 +118,7 @@ class App extends Component {
         bindings,
         dataset,
         syncStatus,
+        excelApiSupported: this.office.isExcelApiSupported(),
         officeInitialized: true
       });
 
@@ -375,6 +379,7 @@ class App extends Component {
       dataset,
       datasets,
       error,
+      excelApiSupported,
       loggedIn,
       officeInitialized,
       showAddDataModal,
@@ -425,6 +430,7 @@ class App extends Component {
 
         {showAddDataModal && <AddDataModal 
           sync={this.sync}
+          excelApiSupported={excelApiSupported}
           range={currentSelectedRange}
           close={this.closeAddData}
           options={addDataModalOptions}
