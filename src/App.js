@@ -118,6 +118,7 @@ class App extends Component {
         bindings,
         dataset,
         syncStatus,
+        excelApiSupported: this.office.isExcelApiSupported(),
         officeInitialized: true
       });
 
@@ -378,6 +379,7 @@ class App extends Component {
       dataset,
       datasets,
       error,
+      excelApiSupported,
       loggedIn,
       officeInitialized,
       showAddDataModal,
@@ -428,6 +430,7 @@ class App extends Component {
 
         {showAddDataModal && <AddDataModal 
           sync={this.sync}
+          excelApiSupported={excelApiSupported}
           range={currentSelectedRange}
           close={this.closeAddData}
           options={addDataModalOptions}

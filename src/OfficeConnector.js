@@ -36,10 +36,9 @@ export default class OfficeConnector {
     return new Promise((resolve, reject) => {
       if (Office) {
         Office.initialize = (reason) => {
-          if (!Office.context.requirements.isSetSupported('ExcelApi', '1.1')) {
-            return reject('Need Office 2016 or greater');
+          if (this.isExcelApiSupported()) {
+            Excel = window.Excel;
           }
-          Excel = window.Excel;
 
           Office.context.document.settings.set('Office.AutoShowTaskpaneWithDocument', true);
           Office.context.document.settings.saveAsync();
@@ -52,8 +51,15 @@ export default class OfficeConnector {
     });
   }
 
+  isExcelApiSupported () {
+    return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
+  }
+
   getBindingRange (binding) {
     return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
       Excel.run((ctx) => {
         const range = ctx.workbook.bindings.getItem(binding.id).getRange().load('address');
         return ctx.sync().then(() => {
@@ -143,17 +149,24 @@ export default class OfficeConnector {
   }
 
   listenForSelectionChanges (callback) {
-    Office.context.document.addHandlerAsync('documentSelectionChanged', () => {
-      this.getCurrentlySelectedRange().then(callback);
-    });
+    if (this.isExcelApiSupported()) {
+      Office.context.document.addHandlerAsync('documentSelectionChanged', (e) => {
+        this.getCurrentlySelectedRange().then(callback);
+      });
+    }
   }
 
   stopListeningForSelectionChanges () {
-    Office.context.document.removeHandlerAsync('documentSelectionChanged', {}, () => {});
+    if (this.isExcelApiSupported()) {
+      Office.context.document.removeHandlerAsync('documentSelectionChanged', {}, () => {});
+    }
   }
 
   getCurrentlySelectedRange () {
     return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
       Excel.run((ctx) => {
         const range = ctx.workbook.getSelectedRange().load('address');;
         return ctx.sync().then(() => {
@@ -166,6 +179,9 @@ export default class OfficeConnector {
   select (address = '') {
     const addressSections = address.split('!');
     return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
       Excel.run(function (ctx) {
         const sheetName = addressSections[0];
         const rangeAddress = addressSections[1];

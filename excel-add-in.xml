@@ -21,13 +21,6 @@
     <SourceLocation DefaultValue="https://excel.data.world/" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
-  <Requirements>
-   <Sets DefaultMinVersion="1.3">
-      <Set Name="ExcelApi" MinVersion="1.3"/>
-   </Sets>
-  </Requirements>
-
-
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Workbook">
