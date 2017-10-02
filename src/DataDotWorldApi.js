@@ -26,7 +26,7 @@ export default class DataDotWorldApi {
     this.api = axios.create({
       baseURL: 'https://api.data.world/v0',
       headers: {
-        'Authorization': `Bearer ${token}` 
+        'Authorization': `Bearer ${token}`
       }
     });
   }
@@ -37,7 +37,8 @@ export default class DataDotWorldApi {
       slug = dataset.match(datasetRegex)[1];
     }
     return new Promise((resolve, reject) => {
-      this.api.get(`/datasets/${slug}`).then((result) => {
+      const timestamp = new Date().getTime();
+      this.api.get(`/datasets/${slug}?ts=${timestamp}`).then((result) => {
         resolve(result.data);
       }).catch(reject);
     });
