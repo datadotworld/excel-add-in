@@ -19,7 +19,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
+import {
+  Alert,
   Button,
   ControlLabel,
   FormControl,
@@ -50,7 +51,8 @@ class CreateDatasetModal extends Component {
   state = {
     isSubmitting: false,
     title: '',
-    visibility: 'OPEN'
+    visibility: 'OPEN',
+    error: null
   }
 
   submit = (event) => {
@@ -66,7 +68,14 @@ class CreateDatasetModal extends Component {
         this.props.close();
       });
     }).catch((error) => {
+      if (error && error.response && error.response.data && error.response.data.message === 'Attempted to create an entity that already exists.') {
+        error = {message: 'A dataset with that name already exists, please try again.'};
+      }
 
+      this.setState({
+        error,
+        isSubmitting: false
+      });
     });
   }
 
@@ -90,9 +99,13 @@ class CreateDatasetModal extends Component {
     this.props.close();
   }
 
+  dismissError = () => {
+    this.setState({error: null});
+  }
+
   render () {
     const { user } = this.props;
-    const {title, visibility} = this.state;
+    const { title, visibility, error } = this.state;
     let datasetValidState;
 
     if (title) {
@@ -106,6 +119,7 @@ class CreateDatasetModal extends Component {
             Create a new dataset <Icon icon='close' className='close-button' onClick={this.closeClicked} />
           </div>
         </Row>
+        {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{error && error.message}</Alert>}
         <Row className='center-block'>
           <form onSubmit={this.submit}>
             <FormGroup validationState={datasetValidState}>

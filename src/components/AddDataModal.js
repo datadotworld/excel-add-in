@@ -115,7 +115,6 @@ class AddDataModal extends Component {
     const { name } = this.state;
     const { excelApiSupported, options, range } = this.props;
 
-    const formValue = excelApiSupported ? range : 'Unavailable in Excel 2013';
     let validState, displayName;
 
     if (name) {
@@ -132,18 +131,24 @@ class AddDataModal extends Component {
         </Row>
         <Row className='center-block'>
           <form onSubmit={this.submit}>
-            <FormGroup>
+            {excelApiSupported && <FormGroup>
               <ControlLabel>Dataset range</ControlLabel>
               <InputGroup>
                 <FormControl
-                  value={formValue}
+                  value={range}
                   disabled
                   type='text' />
               </InputGroup>
               <HelpBlock>
                 Select the area to bind in the worksheet, it will be reflected here.
-              </HelpBlock>  
-            </FormGroup>
+              </HelpBlock>
+            </FormGroup>}
+            {!excelApiSupported && <div>
+              <ControlLabel>Dataset range</ControlLabel>
+              <HelpBlock>
+                Select the area to bind in the worksheet.
+              </HelpBlock>
+            </div>}
 
             <FormGroup validationState={validState}>
               <ControlLabel>Name</ControlLabel>
