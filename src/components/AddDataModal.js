@@ -143,9 +143,12 @@ class AddDataModal extends Component {
                 Select the area to bind in the worksheet, it will be reflected here.
               </HelpBlock>
             </FormGroup>}
-            {!excelApiSupported && <HelpBlock>
-              Select the area to bind in the worksheet.
-            </HelpBlock>}
+            {!excelApiSupported && <div>
+              <ControlLabel>Dataset range</ControlLabel>
+              <HelpBlock>
+                Select the area to bind in the worksheet.
+              </HelpBlock>
+            </div>}
 
             <FormGroup validationState={validState}>
               <ControlLabel>Name</ControlLabel>
