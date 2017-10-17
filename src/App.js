@@ -364,11 +364,7 @@ class App extends Component {
   }
 
   async createDataset (dataset) {
-    try {
-      return await this.api.createDataset(this.state.user.id, dataset);
-    } catch (error) {
-      this.setState({error});
-    }
+    return await this.api.createDataset(this.state.user.id, dataset);
   }
   
   render () {
