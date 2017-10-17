@@ -279,9 +279,7 @@ exports[`renders modal 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <div
-        className="form-group"
-      >
+      <div>
         <label
           className="control-label"
           htmlFor={undefined}
@@ -289,20 +287,9 @@ exports[`renders modal 1`] = `
           Dataset range
         </label>
         <span
-          className="input-group"
-        >
-          <input
-            className="form-control"
-            disabled={true}
-            id={undefined}
-            type="text"
-            value="Unavailable in Excel 2013"
-          />
-        </span>
-        <span
           className="help-block"
         >
-          Select the area to bind in the worksheet, it will be reflected here.
+          Select the area to bind in the worksheet.
         </span>
       </div>
       <div
