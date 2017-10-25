@@ -136,6 +136,7 @@ class App extends Component {
   logout = () => {
     localStorage.setItem(DW_API_TOKEN, '');
     this.setState({token: null, loggedIn: false, user: null});
+    window.location = `https://data.world/logout?next=${encodeURIComponent('https://excel.data.world')}`;
   }
 
   listenForChangesToBinding = (binding) => {
