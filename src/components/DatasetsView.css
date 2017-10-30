@@ -32,3 +32,11 @@
   font-size: 18px;
   font-weight: 700;
 }
+
+.datasets-view .loaderoverlay {
+  position: inherit;
+  top: initial;
+  bottom: initial;
+  left: initial;
+  right: initial;
+}

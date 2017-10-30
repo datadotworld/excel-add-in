@@ -74,6 +74,7 @@ class App extends Component {
       token,
       bindings: [],
       datasets: [],
+      loadingDatasets: false,
       loggedIn: !!token,
       officeInitialized: false,
       syncStatus: {}
@@ -173,7 +174,7 @@ class App extends Component {
         syncStatus,
         bindings: this.state.bindings
       });
-      
+
       return binding;
     } catch (error) {
       this.setState({error});
@@ -193,10 +194,17 @@ class App extends Component {
 
   async getDatasets () {
     try {
+      this.setState({loadingDatasets: true});
       const datasets = await this.api.getDatasets();
-      this.setState({datasets});
+      this.setState({
+        datasets,
+        loadingDatasets: false
+      });
     } catch (error) {
-      this.setState({error});
+      this.setState({
+        error,
+        loadingDatasets: false
+      });
     }
   }
 
@@ -377,6 +385,7 @@ class App extends Component {
       datasets,
       error,
       excelApiSupported,
+      loadingDatasets,
       loggedIn,
       officeInitialized,
       showAddDataModal,
@@ -417,6 +426,7 @@ class App extends Component {
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
+          loadingDatasets={loadingDatasets}
         />}
 
         {showCreateDataset && <CreateDatasetModal 

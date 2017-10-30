@@ -28,8 +28,12 @@ it('renders without crashing', () => {
   ReactDOM.render(<DatasetsView />, div);
 });
 
+it('renders datasets view - loading state', () => {
+  expect(renderer.create(<DatasetsView loadingDatasets />).toJSON()).toMatchSnapshot()
+});
+
 it('renders datasets view - no datasets', () => {
-  expect(renderer.create(<DatasetsView />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<DatasetsView loadingDatasets={false} />).toJSON()).toMatchSnapshot()
 });
 
 it('renders datasets view - datasets', () => {
@@ -60,6 +64,6 @@ it('renders datasets view - datasets', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <DatasetsView datasets={datasets} />
+      <DatasetsView datasets={datasets} loadingDatasets={false} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
