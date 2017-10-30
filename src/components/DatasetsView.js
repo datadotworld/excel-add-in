@@ -117,7 +117,7 @@ class DatasetsView extends Component {
               <Icon icon='add' onClick={this.addDatasetClick} />
             </div>
           </Row>
-          {loadingDatasets && <LoadingAnimation />}
+          {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
           {!!datasets.length && !loadingDatasets &&
             <Row className='center-block'>
               <div className='list-info'>

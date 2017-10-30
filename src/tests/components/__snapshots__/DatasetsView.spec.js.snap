@@ -514,9 +514,18 @@ exports[`renders datasets view - loading state 1`] = `
       className="loaderoverlay"
     >
       <div
-        className="loader"
+        className="loader-center"
       >
-        Loading...
+        <div
+          className="loader"
+        >
+          Loading...
+        </div>
+        <span
+          className="loader-label"
+        >
+          Fetching datasets...
+        </span>
       </div>
     </div>
   </div>

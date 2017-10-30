@@ -17,13 +17,21 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './LoadingAnimation.css';
 
 class LoadingAnimation extends Component {
+  static propTypes = {
+    label: PropTypes.string
+  }
+
   render () {
     return (
       <div className='loaderoverlay'>
-        <div className='loader'>Loading...</div>
+        <div className='loader-center'>
+          <div className='loader'>Loading...</div>
+          {this.props.label && <span className='loader-label'>{this.props.label}</span>}
+        </div>
       </div>
     );
   }
