@@ -464,6 +464,74 @@ exports[`renders datasets view - datasets 1`] = `
 </div>
 `;
 
+exports[`renders datasets view - loading state 1`] = `
+<div
+  className="datasets-view container"
+>
+  <div
+    className="dataset-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <div
+        className="title"
+      >
+        Select a dataset to link
+        <span
+          className="svg-icon "
+          onClick={[Function]}
+        >
+          <svg
+            className="add-icon"
+            version="1.1"
+            viewBox="0 0 16 16"
+            x="0px"
+            xmlns="http://www.w3.org/2000/svg"
+            y="0px"
+          >
+            <g>
+              <line
+                className="stroke"
+                x1="8"
+                x2="8"
+                y1="1"
+                y2="15"
+              />
+              <line
+                className="stroke"
+                x1="15"
+                x2="1"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      className="loaderoverlay"
+    >
+      <div
+        className="loader-center"
+      >
+        <div
+          className="loader"
+        >
+          Loading...
+        </div>
+        <span
+          className="loader-label"
+        >
+          Fetching datasets...
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`renders datasets view - no datasets 1`] = `
 <div
   className="datasets-view container"

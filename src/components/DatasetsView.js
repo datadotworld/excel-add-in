@@ -29,6 +29,7 @@ import {
 
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
+import LoadingAnimation from './LoadingAnimation';
 import analytics from '../analytics';
 
 import Icon from './icons/Icon';
@@ -38,11 +39,13 @@ class DatasetsView extends Component {
   static propTypes = {
     createDataset: PropTypes.func,
     datasets: PropTypes.array,
-    linkDataset: PropTypes.func
+    linkDataset: PropTypes.func,
+    loadingDatasets: PropTypes.bool
   }
 
   static defaultProps = {
-    datasets: []
+    datasets: [],
+    loadingDatasets: true
   }
 
   state = {
@@ -98,7 +101,7 @@ class DatasetsView extends Component {
 
   render () {
     const { sortKey } = this.state;
-    const { datasets } = this.props;
+    const { datasets, loadingDatasets } = this.props;
     const sortedDatasets = this.sortDatasets();
 
     const datasetEntries = sortedDatasets.map((d) =>{
@@ -114,7 +117,8 @@ class DatasetsView extends Component {
               <Icon icon='add' onClick={this.addDatasetClick} />
             </div>
           </Row>
-          {!!datasets.length && 
+          {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
+          {!!datasets.length && !loadingDatasets &&
             <Row className='center-block'>
               <div className='list-info'>
                 {datasets.length} datasets
@@ -134,7 +138,7 @@ class DatasetsView extends Component {
                 <Button className='bottom-button' onClick={this.createDatasetClick}>Create a new dataset</Button>
               </div>
             </Row>}
-          {!datasets.length && 
+          {!datasets.length && !loadingDatasets &&
             <Row className='center-block no-datasets'>
               <div className='message'>
                 You haven't created any datasets to link data to.
