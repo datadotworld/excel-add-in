@@ -1,0 +1,15 @@
+.warning-modal .modal-body {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.warning-modal .warning-icon {
+  width: 46px;
+  height: 46px;
+}
+
+.warning-modal .modal-body div {
+  padding-top: 1rem;
+}

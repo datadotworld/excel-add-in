@@ -2,7 +2,7 @@
 
 exports[`renders modal - with options 1`] = `
 <div
-  className="add-data-modal modal show container"
+  className="add-data-modal full-screen-modal show container"
 >
   <div
     className="center-block header row"
@@ -119,12 +119,15 @@ exports[`renders modal - with options 1`] = `
       </div>
     </form>
   </div>
+  <div
+    className="static-modal"
+  />
 </div>
 `;
 
 exports[`renders modal - with range 1`] = `
 <div
-  className="add-data-modal modal show container"
+  className="add-data-modal full-screen-modal show container"
 >
   <div
     className="center-block header row"
@@ -240,12 +243,15 @@ exports[`renders modal - with range 1`] = `
       </div>
     </form>
   </div>
+  <div
+    className="static-modal"
+  />
 </div>
 `;
 
 exports[`renders modal 1`] = `
 <div
-  className="add-data-modal modal show container"
+  className="add-data-modal full-screen-modal show container"
 >
   <div
     className="center-block header row"
@@ -348,5 +354,8 @@ exports[`renders modal 1`] = `
       </div>
     </form>
   </div>
+  <div
+    className="static-modal"
+  />
 </div>
 `;
