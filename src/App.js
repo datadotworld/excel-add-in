@@ -322,8 +322,13 @@ class App extends Component {
             syncStatus[binding.id].synced = true;
             syncStatus[binding.id].changes = 0;
             syncStatus[binding.id].lastSync = new Date();
+            this.office.setSyncStatus(syncStatus);
             this.setState({ syncStatus });
             resolve();
+          }).catch((error) => {
+            this.setState({error});
+            this.setState({syncing: false});
+            reject();
           });
         });
 
@@ -375,6 +380,16 @@ class App extends Component {
   async createDataset (dataset) {
     return await this.api.createDataset(this.state.user.id, dataset);
   }
+
+  doesFileExist = (filename) => {
+    let fileExists = false;
+    this.state.dataset.files.forEach((file) => {
+      if (file.name === filename) {
+        fileExists = true;
+      }
+    });
+    return fileExists;
+  }
   
   render () {
     const {
@@ -422,7 +437,7 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {!showStartPage && !dataset && <DatasetsView 
+        {!showStartPage && !dataset && !showCreateDataset && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
@@ -444,6 +459,7 @@ class App extends Component {
           createBinding={this.createBinding}
           refreshLinkedDataset={this.refreshLinkedDataset}
           updateBinding={this.updateBinding}
+          doesFileExist={this.doesFileExist}
         />}
       </div>
     );

@@ -35,7 +35,7 @@ Fork the [project on Github](https://github.com/datadotworld/excel-add-in) and c
 
 ```
 git clone https://github.com/[YOUR_GITHUB_NAME]/excel-add-in.git
-cd tableau-connector
+cd excel-add-in
 git remote add upstream https://github.com/datadotworld/excel-add-in.git
 ```
 

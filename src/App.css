@@ -44,6 +44,10 @@ body {
   height: 15px;
 }
 
+.warning-icon {
+  stroke: #f6bd70;
+}
+
 .list-info {
   background-color: #f7f7f7;
   padding: 5px 15px;
@@ -83,35 +87,35 @@ body {
   padding-left: 1rem;
 }
 
-.modal {
+.full-screen-modal {
   background-color: #fff;
 }
 
-.modal .header {
+.full-screen-modal .header {
   padding: 15px;
   border-bottom: 1px solid #dfe3e9;
   font-size: 18px;
   font-weight: 700;
 }
 
-.modal .header .close-button {
+.full-screen-modal .header .close-button {
   float: right;
   cursor: pointer;
 }
 
-.modal form {
+.full-screen-modal form {
   padding: 15px;
 }
 
-.modal form .form-group {
+.full-screen-modal form .form-group {
   position: relative;
 }
 
-.modal form .input-group {
+.full-screen-modal form .input-group {
   width: 100%;
 }
 
-.modal form .titleLimit {
+.full-screen-modal form .titleLimit {
   display: block;
   position: absolute;
   top: 0;
@@ -121,13 +125,13 @@ body {
   padding-right: 0;
 }
 
-.modal form .button-group {
+.full-screen-modal form .button-group {
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
 }
 
-.modal form button {
+.full-screen-modal form button {
   width: 47%;
 }
 
@@ -160,4 +164,27 @@ body {
   font-size: 0.75em;
   border-radius: 10px;
   padding: 0.25em 0.75em;
+}
+
+.center-modal .modal-dialog {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+}
+.center-modal .modal-content {
+  width: 100%;
+}
+
+.center-modal .modal-footer {
+  display: flex;
+  padding: 1rem 1rem;
+}
+
+.center-modal .modal-footer .btn {
+  width: 50%;
+}
+
+.center-modal .modal-footer .btn+.btn {
+  margin-left: 1rem;
 }

@@ -33,6 +33,7 @@ import {
 import analytics from '../analytics';
 
 import Icon from './icons/Icon';
+import WarningModal from './WarningModal';
 import './AddDataModal.css';
 
 const filenameRegex = /^[^/]+$/;
@@ -47,6 +48,7 @@ class AddDataModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createBinding: PropTypes.func,
+    doesFileExist: PropTypes.func.isRequired,
     excelApiSupported: PropTypes.bool,
     options: PropTypes.object,
     range: PropTypes.string,
@@ -61,7 +63,8 @@ class AddDataModal extends Component {
 
   state = {
     isSubmitting: false,
-    name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : ''
+    name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : '',
+    showWarningModal: false
   }
 
   isFormValid = () => {
@@ -73,9 +76,8 @@ class AddDataModal extends Component {
     return name.match(filenameRegex) && name.length < MAX_FILENAME_LENGTH;
   }
 
-  submit = (event) => {
-    analytics.track('exceladdin.add_data.submit.click');
-    event.preventDefault();
+  submitBinding = () => {
+    this.closeModal();
     const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
     if (options.binding) {
       updateBinding(options.binding, options.filename)
@@ -88,6 +90,22 @@ class AddDataModal extends Component {
         sync(binding).then(refreshLinkedDataset).then(close);
       });
     }
+  }
+
+  submit = (event) => {
+    analytics.track('exceladdin.add_data.submit.click');
+    event.preventDefault();
+
+    if (this.props.options.filename || this.props.doesFileExist(`${this.getFilename(this.state.name)}.csv`)) {
+      // Show warning modal
+      this.setState({ showWarningModal: true });
+    } else {
+      this.submitBinding();
+    }
+  }
+
+  closeModal = () => {
+    this.setState({ showWarningModal: false });
   }
 
   /**
@@ -123,7 +141,7 @@ class AddDataModal extends Component {
     }
 
     return (
-      <Grid className='add-data-modal modal show'>
+      <Grid className='add-data-modal full-screen-modal show'>
         <Row className='center-block header'>
           <div className='title'>
             Add data <Icon icon='close' className='close-button' onClick={this.closeClicked} />
@@ -173,6 +191,14 @@ class AddDataModal extends Component {
             </div>
           </form>
         </Row>
+        <WarningModal
+          show={this.state.showWarningModal}
+          cancelHandler={this.closeModal}
+          successHandler={this.submitBinding}
+          analyticsLocation='exceladdin.add_data'>
+          <div><strong>"{displayName}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
+          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range : 'the selected cell range'}</div>
+        </WarningModal>
       </Grid>);
   }
 }

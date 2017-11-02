@@ -128,7 +128,7 @@ exports[`renders binding page - insufficient access 1`] = `
             </title>
             <g
               className="fill"
-              fill-rule="evenodd"
+              fillRule="evenodd"
               opacity=".8"
             >
               <path
@@ -290,7 +290,7 @@ exports[`renders bindings page - dataset with files 1`] = `
             </title>
             <g
               className="fill"
-              fill-rule="evenodd"
+              fillRule="evenodd"
               opacity=".8"
             >
               <path
@@ -364,7 +364,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -401,7 +401,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -438,7 +438,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -475,7 +475,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -512,7 +512,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -549,7 +549,7 @@ exports[`renders bindings page - dataset with files 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -879,7 +879,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
             </title>
             <g
               className="fill"
-              fill-rule="evenodd"
+              fillRule="evenodd"
               opacity=".8"
             >
               <path
@@ -953,7 +953,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -990,7 +990,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1027,7 +1027,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1064,7 +1064,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1101,7 +1101,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1138,7 +1138,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1329,7 +1329,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <g
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <polyline
                     className="stroke"
@@ -1556,7 +1556,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1593,7 +1593,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1630,7 +1630,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1667,7 +1667,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1704,7 +1704,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -1741,7 +1741,7 @@ exports[`renders bindings page - syncing 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g
-                      stroke-width="2"
+                      strokeWidth="2"
                     >
                       <polyline
                         className="stroke"
@@ -2035,7 +2035,7 @@ exports[`renders bindings page 1`] = `
             </title>
             <g
               className="fill"
-              fill-rule="evenodd"
+              fillRule="evenodd"
               opacity=".8"
             >
               <path
