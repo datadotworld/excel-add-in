@@ -191,9 +191,13 @@ class AddDataModal extends Component {
             </div>
           </form>
         </Row>
-        <WarningModal show={this.state.showWarningModal} cancelHandler={this.closeModal} successHandler={this.submitBinding} analyticsLocation='exceladdin.add_data'>
+        <WarningModal
+          show={this.state.showWarningModal}
+          cancelHandler={this.closeModal}
+          successHandler={this.submitBinding}
+          analyticsLocation='exceladdin.add_data'>
           <div><strong>"{displayName}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
-          <div className=''>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range : 'the selected cell range'}</div>
+          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range : 'the selected cell range'}</div>
         </WarningModal>
       </Grid>);
   }
