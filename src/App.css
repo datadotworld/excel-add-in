@@ -176,15 +176,19 @@ body {
   width: 100%;
 }
 
-.center-modal .modal-footer {
+.center-modal .modal-footer.continue {
+  text-align: center;
+}
+
+.center-modal .modal-footer.save {
   display: flex;
   padding: 1rem 1rem;
 }
 
-.center-modal .modal-footer .btn {
+.center-modal .modal-footer.save .btn {
   width: 50%;
 }
 
-.center-modal .modal-footer .btn+.btn {
+.center-modal .modal-footer.save .btn+.btn {
   margin-left: 1rem;
 }

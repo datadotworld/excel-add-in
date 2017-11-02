@@ -32,9 +32,15 @@ class WarningModal extends Component {
 
   static propTypes = {
     analyticsLocation: PropTypes.string,
+    dialogMode: PropTypes.oneOf(['save', 'continue']),
     cancelHandler: PropTypes.func,
     children: PropTypes.any,
     successHandler: PropTypes.func
+  }
+
+  static defaultProps = {
+    analyticsLocation: '',
+    dialogMode: 'save'
   }
 
   cancel = () => {
@@ -48,7 +54,13 @@ class WarningModal extends Component {
   };
 
   render () {
-    const { children, ...rest } = this.props;
+    const {
+      cancelHandler,
+      children,
+      dialogMode,
+      successHandler,
+      ...rest
+    } = this.props;
 
     return (<div className="static-modal">
       <Modal {...rest} aria-labelledby='contained-modal-title-sm' className='center-modal warning-modal'>
@@ -57,11 +69,13 @@ class WarningModal extends Component {
           {children}
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button bsStyle='primary' onClick={this.props.cancelHandler}>Cancel</Button>
-          <Button onClick={this.props.successHandler}>Replace</Button>
-        </Modal.Footer>
-
+        {dialogMode === 'save' && <Modal.Footer className='save'>
+          <Button bsStyle='primary' onClick={cancelHandler}>Cancel</Button>
+          <Button onClick={successHandler}>Replace</Button>
+        </Modal.Footer>}
+        {dialogMode === 'continue' && <Modal.Footer className='continue'>
+          <Button bsStyle='link' onClick={successHandler}>Continue</Button>
+        </Modal.Footer>}
       </Modal>
     </div>);
   }
