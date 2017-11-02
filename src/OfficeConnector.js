@@ -55,6 +55,10 @@ export default class OfficeConnector {
     return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
   }
 
+  isCSV () {
+    return /.*\.csv$/.test(Office.context.document.url.toLowerCase());
+  }
+
   getBindingRange (binding) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {

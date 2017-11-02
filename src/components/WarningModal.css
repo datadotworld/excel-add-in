@@ -28,6 +28,10 @@
   height: 46px;
 }
 
-.warning-modal .modal-body div {
+.warning-modal .modal-body > div {
   padding-top: 1rem;
+}
+
+.warning-modal .modal-body .checkbox {
+  margin: 0;
 }

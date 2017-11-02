@@ -26,6 +26,7 @@ import './App.css';
 import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
+import CSVWarningModal from './components/CSVWarningModal';
 import AddDataModal from './components/AddDataModal';
 import WelcomePage from './components/WelcomePage';
 import BindingsPage from './components/BindingsPage';
@@ -37,6 +38,8 @@ import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
+const DW_PREFERENCES = 'DW_PREFERENCES';
+const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
 const { localStorage } = window;
 
 const MAXIMUM_COLUMNS = 150;
@@ -65,13 +68,24 @@ class App extends Component {
       token = this.parsedQueryString.token;
       localStorage.setItem(DW_API_TOKEN, token);
       analytics.identify(token);
-      this.setState({ token });
     } else {
       token = localStorage.getItem(DW_API_TOKEN);
     }
 
+    let preferences;
+    try  {
+      preferences = JSON.parse(localStorage.getItem(DW_PREFERENCES));
+    } catch (e) {
+      // ignore error
+    } finally {
+      if (! preferences) {
+        preferences = { dismissals: [] };
+      }
+    }
+
     this.state = {
       token,
+      preferences,
       bindings: [],
       datasets: [],
       loadingDatasets: false,
@@ -85,7 +99,7 @@ class App extends Component {
       this.getUser();
     }
 
-    this.initializeOffice();  
+    this.initializeOffice();
   }
 
   async initializeOffice () { 
@@ -120,7 +134,8 @@ class App extends Component {
         dataset,
         syncStatus,
         excelApiSupported: this.office.isExcelApiSupported(),
-        officeInitialized: true
+        officeInitialized: true,
+        csvMode: this.office.isCSV()
       });
 
       bindings.forEach(this.listenForChangesToBinding);
@@ -237,6 +252,9 @@ class App extends Component {
     try  {
       const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
       this.setState({ dataset: freshDataset });
+      if (this.state.csvMode && !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)) {
+        this.setState({showCSVWarning: true});
+      }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
       this.setState({error});
@@ -377,6 +395,18 @@ class App extends Component {
     this.setState({showAddDataModal: false, addDataModalOptions: {}});
   }
 
+  dismissCSVWarning = (options) => {
+    if (options.dismissWarning) {
+      this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
+      localStorage.setItem(DW_PREFERENCES, JSON.stringify(this.state.preferences));
+    }
+
+    this.setState({
+      showCSVWarning: false,
+      preferences: this.state.preferences
+    });
+  }
+
   async createDataset (dataset) {
     return await this.api.createDataset(this.state.user.id, dataset);
   }
@@ -389,6 +419,12 @@ class App extends Component {
       }
     });
     return fileExists;
+  }
+
+  hasBeenDismissed = (key) => {
+    return this.state.preferences.dismissals.find((dismissal) => {
+      return dismissal === key;
+    });
   }
   
   render () {
@@ -461,6 +497,7 @@ class App extends Component {
           updateBinding={this.updateBinding}
           doesFileExist={this.doesFileExist}
         />}
+        <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );
   }
