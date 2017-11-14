@@ -19,41 +19,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
-  Button,
-  Modal
-} from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 import analytics from '../analytics';
 import './WarningModal.css';
 import Icon from './icons/Icon';
 
 class WarningModal extends Component {
-
   static propTypes = {
     analyticsLocation: PropTypes.string,
     dialogMode: PropTypes.oneOf(['save', 'continue']),
     cancelHandler: PropTypes.func,
     children: PropTypes.any,
     successHandler: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     analyticsLocation: '',
     dialogMode: 'save'
-  }
+  };
 
   cancel = () => {
-    analytics.track(`${this.props.analyticsLocation}.warning_modal.cancel.click`);
+    analytics.track(
+      `${this.props.analyticsLocation}.warning_modal.cancel.click`
+    );
     this.props.cancelHandler && this.props.cancelHandler();
   };
 
   success = () => {
-    analytics.track(`${this.props.analyticsLocation}.warning_modal.success.click`);
+    analytics.track(
+      `${this.props.analyticsLocation}.warning_modal.success.click`
+    );
     this.props.successHandler && this.props.successHandler();
   };
 
-  render () {
+  render() {
     const {
       cancelHandler,
       children,
@@ -62,22 +62,36 @@ class WarningModal extends Component {
       ...rest
     } = this.props;
 
-    return (<div className="static-modal">
-      <Modal {...rest} aria-labelledby='contained-modal-title-sm' className='center-modal warning-modal'>
-        <Modal.Body>
-          <Icon icon='warning' />
-          {children}
-        </Modal.Body>
+    return (
+      <div className="static-modal">
+        <Modal
+          {...rest}
+          aria-labelledby="contained-modal-title-sm"
+          className="center-modal warning-modal"
+        >
+          <Modal.Body>
+            <Icon icon="warning" />
+            {children}
+          </Modal.Body>
 
-        {dialogMode === 'save' && <Modal.Footer className='save'>
-          <Button bsStyle='primary' onClick={cancelHandler}>Cancel</Button>
-          <Button onClick={successHandler}>Replace</Button>
-        </Modal.Footer>}
-        {dialogMode === 'continue' && <Modal.Footer className='continue'>
-          <Button bsStyle='link' onClick={successHandler}>Continue</Button>
-        </Modal.Footer>}
-      </Modal>
-    </div>);
+          {dialogMode === 'save' && (
+            <Modal.Footer className="save">
+              <Button bsStyle="primary" onClick={cancelHandler}>
+                Cancel
+              </Button>
+              <Button onClick={successHandler}>Replace</Button>
+            </Modal.Footer>
+          )}
+          {dialogMode === 'continue' && (
+            <Modal.Footer className="continue">
+              <Button bsStyle="link" onClick={successHandler}>
+                Continue
+              </Button>
+            </Modal.Footer>
+          )}
+        </Modal>
+      </div>
+    );
   }
 }
 

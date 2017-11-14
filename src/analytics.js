@@ -20,13 +20,13 @@
 const analyticsEnabled = process.env.REACT_APP_ENABLE_ANALYTICS;
 
 const Analytics = {
-  track (event, properties, options) {
+  track(event, properties, options) {
     if (analyticsEnabled) {
       window.analytics.track.call(window.analytics, event, properties, options);
     }
   },
 
-  identify (token) {
+  identify(token) {
     if (analyticsEnabled && token) {
       try {
         const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -35,6 +35,6 @@ const Analytics = {
       } catch (error) {}
     }
   }
-}
+};
 
 export default Analytics;

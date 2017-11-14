@@ -19,13 +19,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
-  Button,
-  DropdownButton,
-  Grid,
-  MenuItem,
-  Row
-} from 'react-bootstrap';
+import { Button, DropdownButton, Grid, MenuItem, Row } from 'react-bootstrap';
 
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
@@ -35,22 +29,21 @@ import analytics from '../analytics';
 import Icon from './icons/Icon';
 
 class DatasetsView extends Component {
-
   static propTypes = {
     createDataset: PropTypes.func,
     datasets: PropTypes.array,
     linkDataset: PropTypes.func,
     loadingDatasets: PropTypes.bool
-  }
+  };
 
   static defaultProps = {
     datasets: [],
     loadingDatasets: true
-  }
+  };
 
   state = {
     sortKey: 'updated'
-  }
+  };
 
   sortDatasets = () => {
     const sortKey = this.state.sortKey;
@@ -60,7 +53,7 @@ class DatasetsView extends Component {
     sortedDatasets.sort((a, b) => {
       if (sortKey.indexOf('title') >= 0) {
         if (a.title < b.title) {
-          return reverseSort ?  1 : -1;
+          return reverseSort ? 1 : -1;
         } else if (a.title > b.title) {
           return reverseSort ? -1 : 1;
         }
@@ -78,74 +71,125 @@ class DatasetsView extends Component {
       }
     });
     return sortedDatasets;
-  }
+  };
 
-  sortChanged = (sortKey) => {
-    analytics.track('exceladdin.datasets.sort.change', {sort: sortKey});
-    this.setState({sortKey})
-  }
+  sortChanged = sortKey => {
+    analytics.track('exceladdin.datasets.sort.change', { sort: sortKey });
+    this.setState({ sortKey });
+  };
 
-  linkDataset = (dataset) => {
+  linkDataset = dataset => {
     this.props.linkDataset(dataset);
-  }
+  };
 
   createDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_button.click');
     this.props.createDataset();
-  }
+  };
 
   addDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_add.click');
     this.props.createDataset();
-  }
+  };
 
-  render () {
+  render() {
     const { sortKey } = this.state;
     const { datasets, loadingDatasets } = this.props;
     const sortedDatasets = this.sortDatasets();
 
-    const datasetEntries = sortedDatasets.map((d) =>{
-      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={this.linkDataset} />);
+    const datasetEntries = sortedDatasets.map(d => {
+      return (
+        <DatasetItem
+          dataset={d}
+          key={`${d.owner}/${d.id}`}
+          buttonText="Link"
+          buttonHandler={this.linkDataset}
+        />
+      );
     });
 
     return (
-      <Grid className='datasets-view'>
-        <div className='dataset-selector'>
-          <Row className='center-block section-header'>
-            <div className='title'>
+      <Grid className="datasets-view">
+        <div className="dataset-selector">
+          <Row className="center-block section-header">
+            <div className="title">
               Select a dataset to link
-              <Icon icon='add' onClick={this.addDatasetClick} />
+              <Icon icon="add" onClick={this.addDatasetClick} />
             </div>
           </Row>
-          {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
-          {!!datasets.length && !loadingDatasets &&
-            <Row className='center-block'>
-              <div className='list-info'>
-                {datasets.length} datasets
-                <div className='pull-right sort-dropdown'>
-                  <DropdownButton title='Sort' pullRight bsSize='small' onSelect={this.sortChanged} id='dropdown-sort-datasets'>
-                    <MenuItem eventKey='updated' active={sortKey === 'updated'}><Icon icon='check' />Updated: Newest</MenuItem>
-                    <MenuItem eventKey='-updated' active={sortKey === '-updated'}><Icon icon='check' />Updated: Oldest</MenuItem>
-                    <MenuItem eventKey='created' active={sortKey === 'created'}><Icon icon='check' />Created: Newest</MenuItem>
-                    <MenuItem eventKey='-created' active={sortKey === '-created'}><Icon icon='check' />Created: Oldest</MenuItem>
-                    <MenuItem eventKey='title' active={sortKey === 'title'}><Icon icon='check' />Name: A - Z</MenuItem>
-                    <MenuItem eventKey='-title' active={sortKey === '-title'}><Icon icon='check' />Name: Z - A</MenuItem>
-                  </DropdownButton>
+          {loadingDatasets && <LoadingAnimation label="Fetching datasets..." />}
+          {!!datasets.length &&
+            !loadingDatasets && (
+              <Row className="center-block">
+                <div className="list-info">
+                  {datasets.length} datasets
+                  <div className="pull-right sort-dropdown">
+                    <DropdownButton
+                      title="Sort"
+                      pullRight
+                      bsSize="small"
+                      onSelect={this.sortChanged}
+                      id="dropdown-sort-datasets"
+                    >
+                      <MenuItem
+                        eventKey="updated"
+                        active={sortKey === 'updated'}
+                      >
+                        <Icon icon="check" />Updated: Newest
+                      </MenuItem>
+                      <MenuItem
+                        eventKey="-updated"
+                        active={sortKey === '-updated'}
+                      >
+                        <Icon icon="check" />Updated: Oldest
+                      </MenuItem>
+                      <MenuItem
+                        eventKey="created"
+                        active={sortKey === 'created'}
+                      >
+                        <Icon icon="check" />Created: Newest
+                      </MenuItem>
+                      <MenuItem
+                        eventKey="-created"
+                        active={sortKey === '-created'}
+                      >
+                        <Icon icon="check" />Created: Oldest
+                      </MenuItem>
+                      <MenuItem eventKey="title" active={sortKey === 'title'}>
+                        <Icon icon="check" />Name: A - Z
+                      </MenuItem>
+                      <MenuItem eventKey="-title" active={sortKey === '-title'}>
+                        <Icon icon="check" />Name: Z - A
+                      </MenuItem>
+                    </DropdownButton>
+                  </div>
                 </div>
-              </div>
-              <div>
-                {datasetEntries}
-                <Button className='bottom-button' onClick={this.createDatasetClick}>Create a new dataset</Button>
-              </div>
-            </Row>}
-          {!datasets.length && !loadingDatasets &&
-            <Row className='center-block no-datasets'>
-              <div className='message'>
-                You haven't created any datasets to link data to.
-              </div>
-              <Button className='bottom-button' bsStyle='primary' onClick={this.createDatasetClick}>Create a new dataset</Button>
-            </Row>
-          }
+                <div>
+                  {datasetEntries}
+                  <Button
+                    className="bottom-button"
+                    onClick={this.createDatasetClick}
+                  >
+                    Create a new dataset
+                  </Button>
+                </div>
+              </Row>
+            )}
+          {!datasets.length &&
+            !loadingDatasets && (
+              <Row className="center-block no-datasets">
+                <div className="message">
+                  You haven't created any datasets to link data to.
+                </div>
+                <Button
+                  className="bottom-button"
+                  bsStyle="primary"
+                  onClick={this.createDatasetClick}
+                >
+                  Create a new dataset
+                </Button>
+              </Row>
+            )}
         </div>
       </Grid>
     );

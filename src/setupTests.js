@@ -19,14 +19,14 @@
 const localStorageMock = {
   store: {},
   getItem(key) {
-    return this.store[key]
+    return this.store[key];
   },
   setItem(key, value) {
-    this.store[key] = value.toString()
+    this.store[key] = value.toString();
   },
   clear() {
-    this.store = {}
+    this.store = {};
   }
 };
 
-global.localStorage = localStorageMock
+global.localStorage = localStorageMock;

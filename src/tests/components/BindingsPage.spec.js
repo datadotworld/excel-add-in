@@ -34,34 +34,47 @@ const dataset = {
 };
 
 it('renders bindings page', () => {
-  expect(renderer.create(<BindingsPage dataset={dataset} />).toJSON()).toMatchSnapshot()
+  expect(
+    renderer.create(<BindingsPage dataset={dataset} />).toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders bindings page - dataset with files', () => {
   const datasetWithFiles = Object.assign(dataset);
-  datasetWithFiles.files = [{
-    name: 'test_file.csv',
-    updated: '2017-07-20T14:24:51.762Z',
-    created: '2017-07-20T14:24:51.762Z'
-  }];
+  datasetWithFiles.files = [
+    {
+      name: 'test_file.csv',
+      updated: '2017-07-20T14:24:51.762Z',
+      created: '2017-07-20T14:24:51.762Z'
+    }
+  ];
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <BindingsPage dataset={datasetWithFiles} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <BindingsPage dataset={datasetWithFiles} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders bindings page - dataset with files, bindings', () => {
   const datasetWithFiles = Object.assign(dataset);
-  datasetWithFiles.files = [{
-    name: 'test_file.csv',
-    updated: '2017-07-20T14:24:51.762Z',
-    created: '2017-07-20T14:24:51.762Z'
-  }];
-  const bindings = [{
-    id: 'dw::test_file.csv',
-    rangeAddress: 'Sheet1!A2:AB'
-  }];
+  datasetWithFiles.files = [
+    {
+      name: 'test_file.csv',
+      updated: '2017-07-20T14:24:51.762Z',
+      created: '2017-07-20T14:24:51.762Z'
+    }
+  ];
+  const bindings = [
+    {
+      id: 'dw::test_file.csv',
+      rangeAddress: 'Sheet1!A2:AB'
+    }
+  ];
   const syncStatus = {};
   syncStatus['dw::test_file.csv'] = {
     synced: true,
@@ -69,22 +82,35 @@ it('renders bindings page - dataset with files, bindings', () => {
     changes: 0
   };
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <BindingsPage dataset={datasetWithFiles} bindings={bindings} syncStatus={syncStatus} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <BindingsPage
+            dataset={datasetWithFiles}
+            bindings={bindings}
+            syncStatus={syncStatus}
+          />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders bindings page - syncing', () => {
   const datasetWithFiles = Object.assign(dataset);
-  datasetWithFiles.files = [{
-    name: 'test_file.csv',
-    updated: '2017-07-20T14:24:51.762Z',
-    created: '2017-07-20T14:24:51.762Z'
-  }];
-  const bindings = [{
-    id: 'dw::test_file.csv'
-  }];
+  datasetWithFiles.files = [
+    {
+      name: 'test_file.csv',
+      updated: '2017-07-20T14:24:51.762Z',
+      created: '2017-07-20T14:24:51.762Z'
+    }
+  ];
+  const bindings = [
+    {
+      id: 'dw::test_file.csv'
+    }
+  ];
   const syncStatus = {};
   syncStatus['dw::test_file.csv'] = {
     synced: false,
@@ -92,18 +118,33 @@ it('renders bindings page - syncing', () => {
     changes: 3
   };
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <BindingsPage dataset={datasetWithFiles} bindings={bindings} syncStatus={syncStatus} syncing />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <BindingsPage
+            dataset={datasetWithFiles}
+            bindings={bindings}
+            syncStatus={syncStatus}
+            syncing
+          />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders binding page - insufficient access', () => {
   const datasetWithoutAccess = Object.assign(dataset);
   datasetWithoutAccess.accessLevel = 'READ';
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <BindingsPage dataset={datasetWithoutAccess} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <BindingsPage dataset={datasetWithoutAccess} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

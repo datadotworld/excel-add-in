@@ -17,28 +17,74 @@
  * data.world, Inc. (http://data.world/).
  */
 .logo-stacked {
-  enable-background:new 0 0 320 170.5;
+  enable-background: new 0 0 320 170.5;
 }
-.logo-stacked .st0{fill:#FFFFFF;}
-.logo-stacked .st1{fill:#AFD8F3;}
-.logo-stacked .st2{fill:#F4D3AA;}
-.logo-stacked .st3{fill:#6290C3;}
-.logo-stacked .st4{fill:#78A6D1;}
-.logo-stacked .st5{opacity:0.3;}
-.logo-stacked .st6{fill:#EEF3F9;}
-.logo-stacked .st7{opacity:0.9;}
-.logo-stacked .st8{fill:#F0F2F8;}
-.logo-stacked .st9{fill:#EDF0F7;}
-.logo-stacked .st10{fill:#EEF1F8;}
-.logo-stacked .st11{fill:#C2CFE6;}
-.logo-stacked .st12{fill:#CAD5E9;}
-.logo-stacked .st13{fill:#C5D2E7;}
-.logo-stacked .st14{fill:#CDD7EA;}
-.logo-stacked .st15{fill:#DAE1EF;}
-.logo-stacked .st16{fill:#D5DEED;}
-.logo-stacked .st17{fill:#DFE5F1;}
-.logo-stacked .st18{fill:#E7EBF5;}
-.logo-stacked .st19{fill:#4E5057;}
-.logo-stacked .st20{fill:#4F5057;}
-.logo-stacked .st21{fill:#DABD9D;}
-.logo-stacked .st22{fill:#336390;}
+.logo-stacked .st0 {
+  fill: #ffffff;
+}
+.logo-stacked .st1 {
+  fill: #afd8f3;
+}
+.logo-stacked .st2 {
+  fill: #f4d3aa;
+}
+.logo-stacked .st3 {
+  fill: #6290c3;
+}
+.logo-stacked .st4 {
+  fill: #78a6d1;
+}
+.logo-stacked .st5 {
+  opacity: 0.3;
+}
+.logo-stacked .st6 {
+  fill: #eef3f9;
+}
+.logo-stacked .st7 {
+  opacity: 0.9;
+}
+.logo-stacked .st8 {
+  fill: #f0f2f8;
+}
+.logo-stacked .st9 {
+  fill: #edf0f7;
+}
+.logo-stacked .st10 {
+  fill: #eef1f8;
+}
+.logo-stacked .st11 {
+  fill: #c2cfe6;
+}
+.logo-stacked .st12 {
+  fill: #cad5e9;
+}
+.logo-stacked .st13 {
+  fill: #c5d2e7;
+}
+.logo-stacked .st14 {
+  fill: #cdd7ea;
+}
+.logo-stacked .st15 {
+  fill: #dae1ef;
+}
+.logo-stacked .st16 {
+  fill: #d5deed;
+}
+.logo-stacked .st17 {
+  fill: #dfe5f1;
+}
+.logo-stacked .st18 {
+  fill: #e7ebf5;
+}
+.logo-stacked .st19 {
+  fill: #4e5057;
+}
+.logo-stacked .st20 {
+  fill: #4f5057;
+}
+.logo-stacked .st21 {
+  fill: #dabd9d;
+}
+.logo-stacked .st22 {
+  fill: #336390;
+}

@@ -23,14 +23,16 @@ import './LoadingAnimation.css';
 class LoadingAnimation extends Component {
   static propTypes = {
     label: PropTypes.string
-  }
+  };
 
-  render () {
+  render() {
     return (
-      <div className='loaderoverlay'>
-        <div className='loader-center'>
-          <div className='loader'>Loading...</div>
-          {this.props.label && <span className='loader-label'>{this.props.label}</span>}
+      <div className="loaderoverlay">
+        <div className="loader-center">
+          <div className="loader">Loading...</div>
+          {this.props.label && (
+            <span className="loader-label">{this.props.label}</span>
+          )}
         </div>
       </div>
     );

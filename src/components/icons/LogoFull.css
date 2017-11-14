@@ -17,29 +17,75 @@
  * data.world, Inc. (http://data.world/).
  */
 .logo-full {
-  enable-background:new 0 0 370 88.8;
+  enable-background: new 0 0 370 88.8;
 }
 
-.logo-full .st0{fill:#9FC9EC;}
-.logo-full .st1{fill:#F4D3AA;}
-.logo-full .st2{fill:#6290C3;}
-.logo-full .st3{fill:#78A6D1;}
-.logo-full .st4{fill:#FFFFFF;}
-.logo-full .st5{opacity:0.3;}
-.logo-full .st6{fill:#EEF3F9;}
-.logo-full .st7{opacity:0.9;}
-.logo-full .st8{fill:#F0F2F8;}
-.logo-full .st9{fill:#EDF0F7;}
-.logo-full .st10{fill:#EEF1F8;}
-.logo-full .st11{fill:#C2CFE6;}
-.logo-full .st12{fill:#CAD5E9;}
-.logo-full .st13{fill:#C5D2E7;}
-.logo-full .st14{fill:#CDD7EA;}
-.logo-full .st15{fill:#DAE1EF;}
-.logo-full .st16{fill:#D5DEED;}
-.logo-full .st17{fill:#DFE5F1;}
-.logo-full .st18{fill:#E7EBF5;}
-.logo-full .st19{fill:#4E5057;}
-.logo-full .st20{fill:#4F5057;}
-.logo-full .st21{fill:#DABD9D;}
-.logo-full .st22{fill:#336390;}
+.logo-full .st0 {
+  fill: #9fc9ec;
+}
+.logo-full .st1 {
+  fill: #f4d3aa;
+}
+.logo-full .st2 {
+  fill: #6290c3;
+}
+.logo-full .st3 {
+  fill: #78a6d1;
+}
+.logo-full .st4 {
+  fill: #ffffff;
+}
+.logo-full .st5 {
+  opacity: 0.3;
+}
+.logo-full .st6 {
+  fill: #eef3f9;
+}
+.logo-full .st7 {
+  opacity: 0.9;
+}
+.logo-full .st8 {
+  fill: #f0f2f8;
+}
+.logo-full .st9 {
+  fill: #edf0f7;
+}
+.logo-full .st10 {
+  fill: #eef1f8;
+}
+.logo-full .st11 {
+  fill: #c2cfe6;
+}
+.logo-full .st12 {
+  fill: #cad5e9;
+}
+.logo-full .st13 {
+  fill: #c5d2e7;
+}
+.logo-full .st14 {
+  fill: #cdd7ea;
+}
+.logo-full .st15 {
+  fill: #dae1ef;
+}
+.logo-full .st16 {
+  fill: #d5deed;
+}
+.logo-full .st17 {
+  fill: #dfe5f1;
+}
+.logo-full .st18 {
+  fill: #e7ebf5;
+}
+.logo-full .st19 {
+  fill: #4e5057;
+}
+.logo-full .st20 {
+  fill: #4f5057;
+}
+.logo-full .st21 {
+  fill: #dabd9d;
+}
+.logo-full .st22 {
+  fill: #336390;
+}

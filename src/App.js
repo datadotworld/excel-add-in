@@ -17,7 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
-import queryString from 'query-string'
+import queryString from 'query-string';
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -45,8 +45,7 @@ const { localStorage } = window;
 const MAXIMUM_COLUMNS = 150;
 
 class App extends Component {
-
-  constructor () {
+  constructor() {
     super();
 
     find.shim();
@@ -73,12 +72,12 @@ class App extends Component {
     }
 
     let preferences;
-    try  {
+    try {
       preferences = JSON.parse(localStorage.getItem(DW_PREFERENCES));
     } catch (e) {
       // ignore error
     } finally {
-      if (! preferences) {
+      if (!preferences) {
         preferences = { dismissals: [] };
       }
     }
@@ -102,24 +101,24 @@ class App extends Component {
     this.initializeOffice();
   }
 
-  async initializeOffice () { 
+  async initializeOffice() {
     this.office = new OfficeConnector();
     try {
       await this.office.initialize();
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
-      if (! dataset && this.state.loggedIn) {
+      if (!dataset && this.state.loggedIn) {
         this.getDatasets();
       } else if (this.state.loggedIn) {
         dataset = await this.refreshLinkedDataset(dataset);
       }
-      if (! syncStatus) {
+      if (!syncStatus) {
         syncStatus = {};
       }
 
       const bindings = await this.office.getBindings();
-      bindings.forEach((binding) => {
+      bindings.forEach(binding => {
         if (!syncStatus[binding.id]) {
           syncStatus[binding.id] = {
             synced: false,
@@ -143,7 +142,8 @@ class App extends Component {
       this.setState({
         error: {
           error,
-          message: 'There was an error initializing the Office connector, please try again.'
+          message:
+            'There was an error initializing the Office connector, please try again.'
         }
       });
     }
@@ -151,12 +151,14 @@ class App extends Component {
 
   logout = () => {
     localStorage.setItem(DW_API_TOKEN, '');
-    this.setState({token: null, loggedIn: false, user: null});
-    window.location = `https://data.world/embed/logout?next=${encodeURIComponent('https://excel.data.world')}`;
-  }
+    this.setState({ token: null, loggedIn: false, user: null });
+    window.location = `https://data.world/embed/logout?next=${encodeURIComponent(
+      'https://excel.data.world'
+    )}`;
+  };
 
-  listenForChangesToBinding = (binding) => {
-    this.office.listenForChanges(binding, (event) => {
+  listenForChangesToBinding = binding => {
+    this.office.listenForChanges(binding, event => {
       const { syncStatus } = this.state;
       syncStatus[binding.id].changes += 1;
       syncStatus[binding.id].synced = false;
@@ -164,14 +166,18 @@ class App extends Component {
       this.office.setSyncStatus(syncStatus);
       this.setState({ syncStatus });
     });
-  }
+  };
 
-  async createBinding (filename) {
+  async createBinding(filename) {
     try {
       const binding = await this.office.createBinding(filename);
       if (binding.columnCount > MAXIMUM_COLUMNS) {
         await this.office.removeBinding(binding);
-        throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
+        throw new Error(
+          `The maximum number of columns is ${
+            MAXIMUM_COLUMNS
+          }.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `
+        );
       }
 
       await this.office.getBindingRange(binding);
@@ -192,24 +198,24 @@ class App extends Component {
 
       return binding;
     } catch (error) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
-  async removeBinding (binding) {
+  async removeBinding(binding) {
     try {
       await this.office.removeBinding(binding);
       const { bindings } = this.state;
       bindings.splice(bindings.indexOf(binding), 1);
       this.setState({ bindings });
     } catch (error) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
-  async getDatasets () {
+  async getDatasets() {
     try {
-      this.setState({loadingDatasets: true});
+      this.setState({ loadingDatasets: true });
       const datasets = await this.api.getDatasets();
       this.setState({
         datasets,
@@ -223,9 +229,11 @@ class App extends Component {
     }
   }
 
-  async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
+  async refreshLinkedDataset(datasetToRefresh = this.state.dataset) {
     try {
-      const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
+      const dataset = await this.api.getDataset(
+        `${datasetToRefresh.owner}/${datasetToRefresh.id}`
+      );
       this.office.setDataset(dataset);
       this.setState({ dataset });
 
@@ -234,38 +242,43 @@ class App extends Component {
       if (error.response && error.response.status === 401) {
         this.logout();
       } else {
-        this.setState({error});
+        this.setState({ error });
       }
     }
   }
 
-  async linkNewDataset (datasetUrl) {
+  async linkNewDataset(datasetUrl) {
     try {
       const dataset = await this.api.getDataset(datasetUrl);
       return await this.linkDataset(dataset);
     } catch (error) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
-  async linkDataset (dataset) {
-    try  {
-      const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
+  async linkDataset(dataset) {
+    try {
+      const freshDataset = await this.api.getDataset(
+        `${dataset.owner}/${dataset.id}`
+      );
       this.setState({ dataset: freshDataset });
-      if (this.state.csvMode && !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)) {
-        this.setState({showCSVWarning: true});
+      if (
+        this.state.csvMode &&
+        !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)
+      ) {
+        this.setState({ showCSVWarning: true });
       }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
-  async unlinkDataset () {
+  async unlinkDataset() {
     try {
       await this.office.setDataset(null);
       await this.office.setSyncStatus({});
-      this.state.bindings.forEach((binding) => {
+      this.state.bindings.forEach(binding => {
         this.office.removeBinding(binding);
       });
       this.getDatasets();
@@ -275,17 +288,17 @@ class App extends Component {
         syncStatus: {}
       });
     } catch (error) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
   /**
    * Gets the user from the data.world API and sets it on the state
    */
-  async getUser () {
+  async getUser() {
     try {
       const user = await this.api.getUser();
-      this.setState({user});
+      this.setState({ user });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         this.logout();
@@ -298,7 +311,7 @@ class App extends Component {
    * There is not currently a way to update the range for an existing binding
    * in the office API.
    */
-  async updateBinding (binding, filename) {
+  async updateBinding(binding, filename) {
     try {
       await this.removeBinding(binding);
       return this.createBinding(filename);
@@ -310,124 +323,132 @@ class App extends Component {
   /**
    * Highlights the address provided in the excel document
    */
-  select = (address) => {
+  select = address => {
     this.office.select(address);
-  }
+  };
 
   dismissError = () => {
     this.setState({ error: null });
-  }
+  };
 
   /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
-  sync = (binding) => {
-    this.setState({syncing: true});
+  sync = binding => {
+    this.setState({ syncing: true });
     return new Promise((resolve, reject) => {
       const bindings = binding ? [binding] : this.state.bindings;
       const promises = [];
-      bindings.forEach((binding) => {
+      bindings.forEach(binding => {
         const promise = new Promise((resolve, reject) => {
-          this.office.getData(binding).then((data) => {
-            return this.api.uploadFile({
-              data,
-              dataset: this.state.dataset,
-              filename: binding.id.replace('dw::', '')
+          this.office
+            .getData(binding)
+            .then(data => {
+              return this.api.uploadFile({
+                data,
+                dataset: this.state.dataset,
+                filename: binding.id.replace('dw::', '')
+              });
+            })
+            .then(() => {
+              const syncStatus = this.state.syncStatus;
+              syncStatus[binding.id].synced = true;
+              syncStatus[binding.id].changes = 0;
+              syncStatus[binding.id].lastSync = new Date();
+              this.office.setSyncStatus(syncStatus);
+              this.setState({ syncStatus });
+              resolve();
+            })
+            .catch(error => {
+              this.setState({ error });
+              this.setState({ syncing: false });
+              reject();
             });
-          }).then(() => {
-            const syncStatus = this.state.syncStatus;
-            syncStatus[binding.id].synced = true;
-            syncStatus[binding.id].changes = 0;
-            syncStatus[binding.id].lastSync = new Date();
-            this.office.setSyncStatus(syncStatus);
-            this.setState({ syncStatus });
-            resolve();
-          }).catch((error) => {
-            this.setState({error});
-            this.setState({syncing: false});
-            reject();
-          });
         });
 
         promises.push(promise);
       });
 
-      Promise.all(promises).then(() => {
-        this.setState({syncing: false});
-        resolve();
-      }).catch((error) => {
-        this.setState({error});
-        this.setState({syncing: false});
-        reject();
-      });
+      Promise.all(promises)
+        .then(() => {
+          this.setState({ syncing: false });
+          resolve();
+        })
+        .catch(error => {
+          this.setState({ error });
+          this.setState({ syncing: false });
+          reject();
+        });
     });
-  }
+  };
 
   showCreateDataset = () => {
-    this.setState({showCreateDataset: true});
-  }
+    this.setState({ showCreateDataset: true });
+  };
 
   showAddData = (filename, binding) => {
-
     if (binding) {
       this.office.select(binding.rangeAddress);
     }
 
     // Listen for changes to the selected range
-    this.office.listenForSelectionChanges((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
+    this.office.listenForSelectionChanges(currentSelectedRange => {
+      this.setState({ currentSelectedRange });
     });
 
     // But also grab the current selection
-    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
+    this.office.getCurrentlySelectedRange().then(currentSelectedRange => {
+      this.setState({ currentSelectedRange });
     });
 
     this.setState({
       showAddDataModal: true,
-      addDataModalOptions: {binding, filename}
+      addDataModalOptions: { binding, filename }
     });
-  }
+  };
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false, addDataModalOptions: {}});
-  }
+    this.setState({ showAddDataModal: false, addDataModalOptions: {} });
+  };
 
-  dismissCSVWarning = (options) => {
+  dismissCSVWarning = options => {
     if (options.dismissWarning) {
       this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
-      localStorage.setItem(DW_PREFERENCES, JSON.stringify(this.state.preferences));
+      localStorage.setItem(
+        DW_PREFERENCES,
+        JSON.stringify(this.state.preferences)
+      );
     }
 
     this.setState({
       showCSVWarning: false,
       preferences: this.state.preferences
     });
-  }
+  };
 
-  async createDataset (dataset) {
+  async createDataset(dataset) {
     return await this.api.createDataset(this.state.user.id, dataset);
   }
 
-  doesFileExist = (filename) => {
+  doesFileExist = filename => {
     let fileExists = false;
-    this.state.dataset.files.forEach((file) => {
+    this.state.dataset.files.forEach(file => {
       if (file.name === filename) {
         fileExists = true;
       }
     });
     return fileExists;
-  }
+  };
 
-  hasBeenDismissed = (key) => {
-    return this.state.preferences.dismissals.find((dismissal) => {
+  hasBeenDismissed = key => {
+    return this.state.preferences.dismissals.find(dismissal => {
       return dismissal === key;
     });
-  }
-  
-  render () {
+  };
+
+  render() {
     const {
       addDataModalOptions,
       bindings,
@@ -456,48 +477,68 @@ class App extends Component {
 
     return (
       <div>
-        {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
+        {error && (
+          <Alert bsStyle="warning" onDismiss={this.dismissError}>
+            {errorMessage}
+          </Alert>
+        )}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
-        {!showStartPage && !modalViewOpened && dataset && <BindingsPage
-          bindings={bindings}
-          dataset={dataset}
-          createBinding={this.createBinding}
-          removeBinding={this.removeBinding}
-          unlinkDataset={this.unlinkDataset}
-          showAddData={this.showAddData}
-          select={this.select}
-          sync={this.sync}
-          syncing={syncing}
-          syncStatus={syncStatus}
-        />}
+        {!showStartPage &&
+          !modalViewOpened &&
+          dataset && (
+            <BindingsPage
+              bindings={bindings}
+              dataset={dataset}
+              createBinding={this.createBinding}
+              removeBinding={this.removeBinding}
+              unlinkDataset={this.unlinkDataset}
+              showAddData={this.showAddData}
+              select={this.select}
+              sync={this.sync}
+              syncing={syncing}
+              syncStatus={syncStatus}
+            />
+          )}
 
-        {!showStartPage && !dataset && !showCreateDataset && <DatasetsView 
-          datasets={datasets}
-          createDataset={this.showCreateDataset}
-          linkDataset={this.linkDataset}
-          loadingDatasets={loadingDatasets}
-        />}
+        {!showStartPage &&
+          !dataset &&
+          !showCreateDataset && (
+            <DatasetsView
+              datasets={datasets}
+              createDataset={this.showCreateDataset}
+              linkDataset={this.linkDataset}
+              loadingDatasets={loadingDatasets}
+            />
+          )}
 
-        {showCreateDataset && <CreateDatasetModal 
-          user={user}
-          linkNewDataset={this.linkNewDataset}
-          createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} 
-        />}
+        {showCreateDataset && (
+          <CreateDatasetModal
+            user={user}
+            linkNewDataset={this.linkNewDataset}
+            createDataset={this.createDataset}
+            close={() => this.setState({ showCreateDataset: false })}
+          />
+        )}
 
-        {showAddDataModal && <AddDataModal 
-          sync={this.sync}
-          excelApiSupported={excelApiSupported}
-          range={currentSelectedRange}
-          close={this.closeAddData}
-          options={addDataModalOptions}
-          createBinding={this.createBinding}
-          refreshLinkedDataset={this.refreshLinkedDataset}
-          updateBinding={this.updateBinding}
-          doesFileExist={this.doesFileExist}
-        />}
-        <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
+        {showAddDataModal && (
+          <AddDataModal
+            sync={this.sync}
+            excelApiSupported={excelApiSupported}
+            range={currentSelectedRange}
+            close={this.closeAddData}
+            options={addDataModalOptions}
+            createBinding={this.createBinding}
+            refreshLinkedDataset={this.refreshLinkedDataset}
+            updateBinding={this.updateBinding}
+            doesFileExist={this.doesFileExist}
+          />
+        )}
+        <CSVWarningModal
+          show={this.state.showCSVWarning}
+          successHandler={this.dismissCSVWarning}
+        />
       </div>
     );
   }

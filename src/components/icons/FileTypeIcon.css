@@ -40,50 +40,50 @@
 }
 .file-type-icon .tabularType .text,
 .file-type-icon .tabularType .fill {
-  fill: #68BF70;
+  fill: #68bf70;
 }
 .file-type-icon .tabularType .stroke {
-  stroke: #68BF70;
+  stroke: #68bf70;
 }
 .file-type-icon .graphType .text,
 .file-type-icon .graphType .fill {
-  fill: #9581CA;
+  fill: #9581ca;
 }
 .file-type-icon .graphType .stroke {
-  stroke: #9581CA;
+  stroke: #9581ca;
 }
 .file-type-icon .pdfType .text,
 .file-type-icon .pdfType .fill {
-  fill: #F36866;
+  fill: #f36866;
 }
 .file-type-icon .pdfType .stroke {
-  stroke: #F36866;
+  stroke: #f36866;
 }
 .file-type-icon .zipType .text,
 .file-type-icon .zipType .fill {
-  fill: #5D6F85;
+  fill: #5d6f85;
 }
 .file-type-icon .zipType .stroke {
-  stroke: #5D6F85;
+  stroke: #5d6f85;
 }
 .file-type-icon .textType .text,
 .file-type-icon .textType .fill {
-  fill: #5CC0DE;
+  fill: #5cc0de;
 }
 .file-type-icon .textType .stroke {
-  stroke: #5CC0DE;
+  stroke: #5cc0de;
 }
 .file-type-icon .imageType .text,
 .file-type-icon .textType .fill {
-  fill: #F6BD68;
+  fill: #f6bd68;
 }
 .file-type-icon .imageType .stroke {
-  stroke: #F6BD68;
+  stroke: #f6bd68;
 }
 .file-type-icon .vegaType .text,
 .file-type-icon .vegaType .fill {
-  fill: #F6BD68;
+  fill: #f6bd68;
 }
 .file-type-icon .vegaType .stroke {
-  stroke: #F6BD68;
+  stroke: #f6bd68;
 }

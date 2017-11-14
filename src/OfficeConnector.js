@@ -18,7 +18,7 @@
  */
 let Office, Excel;
 
-const lastRowsAreEmpty = function (array) {
+const lastRowsAreEmpty = function(array) {
   if (array.length < 10) {
     return false;
   }
@@ -31,84 +31,99 @@ const lastRowsAreEmpty = function (array) {
 };
 
 export default class OfficeConnector {
-  initialize () {
+  initialize() {
     Office = window.Office;
     return new Promise((resolve, reject) => {
       if (Office) {
-        Office.initialize = (reason) => {
+        Office.initialize = reason => {
           if (this.isExcelApiSupported()) {
             Excel = window.Excel;
           }
 
-          Office.context.document.settings.set('Office.AutoShowTaskpaneWithDocument', true);
+          Office.context.document.settings.set(
+            'Office.AutoShowTaskpaneWithDocument',
+            true
+          );
           Office.context.document.settings.saveAsync();
 
           resolve();
-        }
+        };
       } else {
         reject();
       }
     });
   }
 
-  isExcelApiSupported () {
+  isExcelApiSupported() {
     return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
   }
 
-  isCSV () {
+  isCSV() {
     return /.*\.csv$/.test(Office.context.document.url.toLowerCase());
   }
 
-  getBindingRange (binding) {
+  getBindingRange(binding) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
-      Excel.run((ctx) => {
-        const range = ctx.workbook.bindings.getItem(binding.id).getRange().load('address');
-        return ctx.sync().then(() => {
-          binding.rangeAddress = range.address;
-          resolve();
-        }).catch(resolve);
+      Excel.run(ctx => {
+        const range = ctx.workbook.bindings
+          .getItem(binding.id)
+          .getRange()
+          .load('address');
+        return ctx
+          .sync()
+          .then(() => {
+            binding.rangeAddress = range.address;
+            resolve();
+          })
+          .catch(resolve);
       });
     });
   }
 
-  getBindings () {
+  getBindings() {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.getAllAsync((result) => {
+      Office.context.document.bindings.getAllAsync(result => {
         if (result.status === Office.AsyncResultStatus.Failed) {
           return reject(result.error.message);
         }
         const bindings = [];
         const promises = [];
-        result.value.forEach((binding) => {
+        result.value.forEach(binding => {
           if (binding.id.indexOf('dw::') === 0) {
             bindings.push(binding);
             promises.push(this.getBindingRange(binding));
           }
         });
-        Promise.all(promises).then(() => {
-          resolve(bindings);
-        }).catch(reject);
+        Promise.all(promises)
+          .then(() => {
+            resolve(bindings);
+          })
+          .catch(reject);
       });
     });
   }
 
-  createBinding (name, options) {
+  createBinding(name, options) {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Matrix, { id: `dw::${name}` }, (result) => {
-        if (result.status === Office.AsyncResultStatus.Failed) {
-          return reject(result.error.message);
+      Office.context.document.bindings.addFromSelectionAsync(
+        Office.BindingType.Matrix,
+        { id: `dw::${name}` },
+        result => {
+          if (result.status === Office.AsyncResultStatus.Failed) {
+            return reject(result.error.message);
+          }
+          resolve(result.value);
         }
-        resolve(result.value);
-      });
+      );
     });
   }
 
-  removeBinding (binding) {
+  removeBinding(binding) {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.releaseByIdAsync(binding.id, (result) => {
+      Office.context.document.bindings.releaseByIdAsync(binding.id, result => {
         if (result.status === Office.AsyncResultStatus.Failed) {
           return reject(result.error.message);
         }
@@ -117,16 +132,16 @@ export default class OfficeConnector {
     });
   }
 
-  getSettings () {
+  getSettings() {
     return {
       dataset: Office.context.document.settings.get('dataset'),
       syncStatus: Office.context.document.settings.get('syncStatus')
     };
   }
 
-  saveSettings () {
+  saveSettings() {
     return new Promise((resolve, reject) => {
-      Office.context.document.settings.saveAsync((result) => {
+      Office.context.document.settings.saveAsync(result => {
         if (result.status === Office.AsyncResultStatus.Failed) {
           return reject(result.error.message);
         }
@@ -135,44 +150,54 @@ export default class OfficeConnector {
     });
   }
 
-  setSyncStatus (syncStatus) {
+  setSyncStatus(syncStatus) {
     Office.context.document.settings.set('syncStatus', syncStatus);
     return this.saveSettings();
   }
 
-  setDataset (dataset) {
+  setDataset(dataset) {
     Office.context.document.settings.set('dataset', dataset);
     return this.saveSettings();
   }
 
-  listenForChanges (binding, callback) {
+  listenForChanges(binding, callback) {
     const bindingId = `bindings#${binding.id}`;
-    Office.select(bindingId).removeHandlerAsync(Office.EventType.BindingDataChanged, () => {
-      Office.select(bindingId).addHandlerAsync(Office.EventType.BindingDataChanged, callback);
-    });
+    Office.select(bindingId).removeHandlerAsync(
+      Office.EventType.BindingDataChanged,
+      () => {
+        Office.select(bindingId).addHandlerAsync(
+          Office.EventType.BindingDataChanged,
+          callback
+        );
+      }
+    );
   }
 
-  listenForSelectionChanges (callback) {
+  listenForSelectionChanges(callback) {
     if (this.isExcelApiSupported()) {
-      Office.context.document.addHandlerAsync('documentSelectionChanged', (e) => {
+      Office.context.document.addHandlerAsync('documentSelectionChanged', e => {
         this.getCurrentlySelectedRange().then(callback);
       });
     }
   }
 
-  stopListeningForSelectionChanges () {
+  stopListeningForSelectionChanges() {
     if (this.isExcelApiSupported()) {
-      Office.context.document.removeHandlerAsync('documentSelectionChanged', {}, () => {});
+      Office.context.document.removeHandlerAsync(
+        'documentSelectionChanged',
+        {},
+        () => {}
+      );
     }
   }
 
-  getCurrentlySelectedRange () {
+  getCurrentlySelectedRange() {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
-      Excel.run((ctx) => {
-        const range = ctx.workbook.getSelectedRange().load('address');;
+      Excel.run(ctx => {
+        const range = ctx.workbook.getSelectedRange().load('address');
         return ctx.sync().then(() => {
           resolve(range.address);
         });
@@ -180,25 +205,27 @@ export default class OfficeConnector {
     });
   }
 
-  select (address = '') {
+  select(address = '') {
     const addressSections = address.split('!');
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
-      Excel.run(function (ctx) {
+      Excel.run(function(ctx) {
         const sheetName = addressSections[0];
         const rangeAddress = addressSections[1];
-        const range = ctx.workbook.worksheets.getItem(sheetName).getRange(rangeAddress);
+        const range = ctx.workbook.worksheets
+          .getItem(sheetName)
+          .getRange(rangeAddress);
         range.select();
         return ctx.sync().then(resolve);
-      });;
+      });
     });
   }
 
-  getData (binding) {
+  getData(binding) {
     return new Promise((resolve, reject) => {
-      const {columnCount, rowCount} = binding;
+      const { columnCount, rowCount } = binding;
       const rowInterval = 1000;
       const results = [];
 
@@ -208,35 +235,41 @@ export default class OfficeConnector {
         });
 
         let data = [];
-        results.forEach((result) => {
+        results.forEach(result => {
           data = data.concat(result.value);
         });
         resolve(data);
       };
 
-      const handleData = (options) => {
-        return (result) => {
+      const handleData = options => {
+        return result => {
           if (result.status === Office.AsyncResultStatus.Failed) {
             return reject(result.error.message);
           }
 
-          results.push({options, value: result.value});
+          results.push({ options, value: result.value });
           // Check the last 10 rows for empty values
-          if (options.startRow + options.rowCount < rowCount && !lastRowsAreEmpty(result.value)) {
+          if (
+            options.startRow + options.rowCount < rowCount &&
+            !lastRowsAreEmpty(result.value)
+          ) {
             const newOptions = {
               columnCount,
               startRow: options.startRow + options.rowCount,
               startColumn: 0,
-              rowCount: Math.min(rowInterval, rowCount - (options.startRow + options.rowCount)),
+              rowCount: Math.min(
+                rowInterval,
+                rowCount - (options.startRow + options.rowCount)
+              ),
               valueFormat: Office.ValueFormat.Formatted
             };
             binding.getDataAsync(newOptions, handleData(newOptions));
           } else {
             organizeResults();
           }
-        }
+        };
       };
-      
+
       // The maximum number of columns is 16384
       // https://support.office.com/en-us/article/Excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
       // Experimentation indicates that 1m is the maximum number of cells retrievable at any one time

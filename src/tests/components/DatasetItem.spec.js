@@ -32,32 +32,56 @@ const dataset = {
 };
 
 it('renders dataset', () => {
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <DatasetItem dataset={dataset} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <DatasetItem dataset={dataset} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders dataset - button text', () => {
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <DatasetItem dataset={dataset} buttonText='test' />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <DatasetItem dataset={dataset} buttonText="test" />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders dataset - button text, link', () => {
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <DatasetItem dataset={dataset} buttonText='test' buttonLink='https://data.world' />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <DatasetItem
+            dataset={dataset}
+            buttonText="test"
+            buttonLink="https://data.world"
+          />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders dataset - as project', () => {
   const project = Object.assign(dataset);
   project.isProject = true;
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <DatasetItem dataset={project} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <DatasetItem dataset={project} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

@@ -28,10 +28,12 @@ it('renders without crashing', () => {
 });
 
 it('renders login header - no user', () => {
-  expect(renderer.create(<LoginHeader />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<LoginHeader />).toJSON()).toMatchSnapshot();
 });
 
 it('renders login header - with user', () => {
-  const user = {id: 'test'};
-  expect(renderer.create(<LoginHeader user={user} />).toJSON()).toMatchSnapshot()
+  const user = { id: 'test' };
+  expect(
+    renderer.create(<LoginHeader user={user} />).toJSON()
+  ).toMatchSnapshot();
 });

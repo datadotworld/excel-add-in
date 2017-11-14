@@ -34,10 +34,9 @@ import analytics from '../analytics';
 
 import './BindingsPage.css';
 import BindingListItem from './BindingListItem';
-import Icon from './icons/Icon'
+import Icon from './icons/Icon';
 
 class BindingsPage extends Component {
-
   static propTypes = {
     addBindingToExistingFile: PropTypes.func,
     bindings: PropTypes.array,
@@ -48,29 +47,29 @@ class BindingsPage extends Component {
     sync: PropTypes.func,
     syncing: PropTypes.bool,
     syncStatus: PropTypes.object
-  }
+  };
 
   static defaultProps = {
     bindings: []
-  }
+  };
 
   state = {
     sortKey: 'updated'
-  }
+  };
 
-  getFilenameFromBinding = (binding) => {
+  getFilenameFromBinding = binding => {
     return `${binding.id.replace('dw::', '')}.csv`;
-  }
+  };
 
   addFile = () => {
     analytics.track('exceladdin.bindings.add_file_button.click');
     this.props.showAddData();
-  }
+  };
 
   datasetMenuOptionChange = () => {
     analytics.track('exceladdin.bindings.menu.unlink.click');
     this.props.unlinkDataset();
-  }
+  };
 
   sortFiles = () => {
     const sortKey = this.state.sortKey;
@@ -80,7 +79,7 @@ class BindingsPage extends Component {
     sortedFiles.sort((a, b) => {
       if (sortKey.indexOf('name') >= 0) {
         if (a.name < b.name) {
-          return reverseSort ?  1 : -1;
+          return reverseSort ? 1 : -1;
         } else if (a.title > b.title) {
           return reverseSort ? -1 : 1;
         }
@@ -98,29 +97,29 @@ class BindingsPage extends Component {
       }
     });
     return sortedFiles;
-  }
+  };
 
-  sortChanged = (sortKey) => {
-    analytics.track('exceladdin.bindings.sort.change', {sort: sortKey});
-    this.setState({sortKey})
-  }
+  sortChanged = sortKey => {
+    analytics.track('exceladdin.bindings.sort.change', { sort: sortKey });
+    this.setState({ sortKey });
+  };
 
-  addBindingToExistingFile = (file) => {
+  addBindingToExistingFile = file => {
     this.props.showAddData(file.name);
-  }
+  };
 
-  findBindingForFile = (file) => {
-    return this.props.bindings.find((binding) => {
+  findBindingForFile = file => {
+    return this.props.bindings.find(binding => {
       return binding.id === `dw::${file.name}`;
     });
-  }
+  };
 
   syncClicked = () => {
     analytics.track('exceladdin.bindings.sync_button.click');
     this.props.sync();
-  }
+  };
 
-  render () {
+  render() {
     const { sortKey } = this.state;
 
     const {
@@ -131,100 +130,170 @@ class BindingsPage extends Component {
       syncStatus
     } = this.props;
 
-    const canEdit = dataset.accessLevel === 'ADMIN' || dataset.accessLevel === 'WRITE';
+    const canEdit =
+      dataset.accessLevel === 'ADMIN' || dataset.accessLevel === 'WRITE';
 
     let bindingEntries = [];
     let unsyncedFileCount = 0;
     if (dataset && dataset.files.length) {
       const sortedFiles = this.sortFiles();
-      
-      bindingEntries = sortedFiles.map((file) => {
+
+      bindingEntries = sortedFiles.map(file => {
         const binding = this.findBindingForFile(file);
         if (binding && !syncStatus[binding.id].synced) {
           unsyncedFileCount += 1;
         }
-        return (<BindingListItem binding={binding} file={file}
-          key={file.name}
-          syncing={syncing}
-          syncStatus={binding && syncStatus[binding.id]}
-          addBinding={this.addBindingToExistingFile}
-          removeBinding={removeBinding}
-          editBinding={showAddData} />);
+        return (
+          <BindingListItem
+            binding={binding}
+            file={file}
+            key={file.name}
+            syncing={syncing}
+            syncStatus={binding && syncStatus[binding.id]}
+            addBinding={this.addBindingToExistingFile}
+            removeBinding={removeBinding}
+            editBinding={showAddData}
+          />
+        );
       });
     }
 
     return (
-      <Grid className='bindings-page'>
-        <Row className='center-block section-header'>
-          <div className='title'>
+      <Grid className="bindings-page">
+        <Row className="center-block section-header">
+          <div className="title">
             {dataset.title}
-            <Dropdown id='dropdown-dataset-options' className='pull-right' pullRight>
-              <Dropdown.Toggle noCaret >
-                <Glyphicon glyph='option-vertical' />
+            <Dropdown
+              id="dropdown-dataset-options"
+              className="pull-right"
+              pullRight
+            >
+              <Dropdown.Toggle noCaret>
+                <Glyphicon glyph="option-vertical" />
               </Dropdown.Toggle>
-              <Dropdown.Menu pullRight bsSize='small' onSelect={this.datasetMenuOptionChange}>
-                <MenuItem eventKey='unlink'>Unlink</MenuItem>
+              <Dropdown.Menu
+                pullRight
+                bsSize="small"
+                onSelect={this.datasetMenuOptionChange}
+              >
+                <MenuItem eventKey="unlink">Unlink</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className='dataset-link'>
-            <a href={`https://data.world/${dataset.owner}/${dataset.id}`} target='_blank'>https://data.world/{dataset.owner}/{dataset.id}</a>
+          <div className="dataset-link">
+            <a
+              href={`https://data.world/${dataset.owner}/${dataset.id}`}
+              target="_blank"
+            >
+              https://data.world/{dataset.owner}/{dataset.id}
+            </a>
           </div>
-          <div className='button-group'>
+          <div className="button-group">
             <Button onClick={this.addFile}>
-              <Icon icon='add' />
+              <Icon icon="add" />
               Add File
             </Button>
-            {!syncing && <Button onClick={this.syncClicked} disabled={!bindingEntries.length}>
-              <Icon icon='sync' />
-              Save Files
-              {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
-            </Button>}
-            {syncing && <Button className='syncing-button'>
-              <div className='loader-icon'></div>
-              Syncing…
-              </Button>}
+            {!syncing && (
+              <Button
+                onClick={this.syncClicked}
+                disabled={!bindingEntries.length}
+              >
+                <Icon icon="sync" />
+                Save Files
+                {!!unsyncedFileCount && (
+                  <Badge bsStyle="danger">{unsyncedFileCount}</Badge>
+                )}
+              </Button>
+            )}
+            {syncing && (
+              <Button className="syncing-button">
+                <div className="loader-icon" />
+                Syncing…
+              </Button>
+            )}
           </div>
         </Row>
-        {!!bindingEntries.length && canEdit &&
-          <Row className='center-block'>
-            <div className='list-info'>
-              {dataset.files.length} files
-              <div className='pull-right sort-dropdown'>
-                <DropdownButton title='Sort' pullRight bsSize='small' onSelect={this.sortChanged} id='dropdown-sort-files'>
-                  <MenuItem eventKey='updated' active={sortKey === 'updated'}><Icon icon='check' />Updated: Newest</MenuItem>
-                  <MenuItem eventKey='-updated' active={sortKey === '-updated'}><Icon icon='check' />Updated: Oldest</MenuItem>
-                  <MenuItem eventKey='created' active={sortKey === 'created'}><Icon icon='check' />Created: Newest</MenuItem>
-                  <MenuItem eventKey='-created' active={sortKey === '-created'}><Icon icon='check' />Created: Oldest</MenuItem>
-                  <MenuItem eventKey='name' active={sortKey === 'name'}><Icon icon='check' />Name: A - Z</MenuItem>
-                  <MenuItem eventKey='-name' active={sortKey === '-name'}><Icon icon='check' />Name: Z - A</MenuItem>
-                </DropdownButton>
+        {!!bindingEntries.length &&
+          canEdit && (
+            <Row className="center-block">
+              <div className="list-info">
+                {dataset.files.length} files
+                <div className="pull-right sort-dropdown">
+                  <DropdownButton
+                    title="Sort"
+                    pullRight
+                    bsSize="small"
+                    onSelect={this.sortChanged}
+                    id="dropdown-sort-files"
+                  >
+                    <MenuItem eventKey="updated" active={sortKey === 'updated'}>
+                      <Icon icon="check" />Updated: Newest
+                    </MenuItem>
+                    <MenuItem
+                      eventKey="-updated"
+                      active={sortKey === '-updated'}
+                    >
+                      <Icon icon="check" />Updated: Oldest
+                    </MenuItem>
+                    <MenuItem eventKey="created" active={sortKey === 'created'}>
+                      <Icon icon="check" />Created: Newest
+                    </MenuItem>
+                    <MenuItem
+                      eventKey="-created"
+                      active={sortKey === '-created'}
+                    >
+                      <Icon icon="check" />Created: Oldest
+                    </MenuItem>
+                    <MenuItem eventKey="name" active={sortKey === 'name'}>
+                      <Icon icon="check" />Name: A - Z
+                    </MenuItem>
+                    <MenuItem eventKey="-name" active={sortKey === '-name'}>
+                      <Icon icon="check" />Name: Z - A
+                    </MenuItem>
+                  </DropdownButton>
+                </div>
               </div>
-            </div>
-            <div>
-              {bindingEntries}
-            </div>
-          </Row>}
-        {!bindingEntries.length && canEdit &&
-          <Row className='center-block no-datasets'>
-            <div className='message'>
-              You haven't added any data to this dataset.
-            </div>
-            <Button className='bottom-button' bsStyle='primary' onClick={this.addFile}>Add data</Button>
-          </Row>}
-        {!canEdit &&
-          <Row className='center-block no-datasets'>
-            <div className='message'>
+              <div>{bindingEntries}</div>
+            </Row>
+          )}
+        {!bindingEntries.length &&
+          canEdit && (
+            <Row className="center-block no-datasets">
+              <div className="message">
+                You haven't added any data to this dataset.
+              </div>
+              <Button
+                className="bottom-button"
+                bsStyle="primary"
+                onClick={this.addFile}
+              >
+                Add data
+              </Button>
+            </Row>
+          )}
+        {!canEdit && (
+          <Row className="center-block no-datasets">
+            <div className="message">
               You are not authorized to save changes to this dataset.
             </div>
-            <Button className='bottom-button' bsStyle='primary'
-              href={`https://data.world/${dataset.owner}/${dataset.id}/contributors`}
-              target='_blank'
-              onClick={() => analytics.track('exceladdin.bindings.request_access_button.click')}
-              rel='noopener noreferrer'>
+            <Button
+              className="bottom-button"
+              bsStyle="primary"
+              href={`https://data.world/${dataset.owner}/${
+                dataset.id
+              }/contributors`}
+              target="_blank"
+              onClick={() =>
+                analytics.track(
+                  'exceladdin.bindings.request_access_button.click'
+                )
+              }
+              rel="noopener noreferrer"
+            >
               Request access
             </Button>
-          </Row>}
+          </Row>
+        )}
       </Grid>
     );
   }
