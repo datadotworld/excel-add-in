@@ -18,10 +18,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  DropdownButton,
-  MenuItem
-} from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import analytics from '../analytics';
 
@@ -29,26 +26,33 @@ import './LoginHeader.css';
 import LogoFull from './icons/LogoFull';
 
 class LoginHeader extends Component {
-
   static propTypes = {
     user: PropTypes.object,
     logout: PropTypes.func
-  }
+  };
 
   userMenuChanged = () => {
     analytics.track('exceladdin.header.logout.click');
     this.props.logout();
-  }
+  };
 
-  render () {
+  render() {
     const { user } = this.props;
 
     return (
-      <div className='login-header'>
+      <div className="login-header">
         <LogoFull />
-        {user && <DropdownButton title={user.id} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
-          <MenuItem eventKey='signout'>Sign out</MenuItem>
-        </DropdownButton>}
+        {user && (
+          <DropdownButton
+            title={user.id}
+            pullRight
+            bsSize="small"
+            onSelect={this.userMenuChanged}
+            id="dropdown-user"
+          >
+            <MenuItem eventKey="signout">Sign out</MenuItem>
+          </DropdownButton>
+        )}
       </div>
     );
   }

@@ -22,9 +22,9 @@
   border-top: 0.25rem solid rgba(0, 0, 0, 0.125);
   border-right: 0.25rem solid rgba(0, 0, 0, 0.125);
   border-bottom: 0.25rem solid rgba(0, 0, 0, 0.125);
-  border-left: 0.25rem solid #5DC0DE;
+  border-left: 0.25rem solid #5dc0de;
   transform: translateZ(0);
-  animation: load8 .75s infinite linear;
+  animation: load8 0.75s infinite linear;
 }
 
 .loader,
@@ -42,7 +42,7 @@
 }
 
 .loaderoverlay {
-  background-color: rgba(255,255,255,.875);
+  background-color: rgba(255, 255, 255, 0.875);
   position: absolute;
   top: 0;
   right: 0;

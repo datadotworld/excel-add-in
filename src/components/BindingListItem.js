@@ -30,7 +30,6 @@ import Icon from './icons/Icon';
 import analytics from '../analytics';
 
 class BindingsListItem extends Component {
-
   static propTypes = {
     addBinding: PropTypes.func,
     file: PropTypes.object,
@@ -39,34 +38,35 @@ class BindingsListItem extends Component {
     syncing: PropTypes.bool,
     syncStatus: PropTypes.object,
     editBinding: PropTypes.func
-  }
+  };
 
   remove = () => {
     this.props.removeBinding(this.props.binding);
-  }
+  };
 
-  onEditClick = (event) => {
+  onEditClick = event => {
     analytics.track('exceladdin.file.edit_binding.click');
     const { binding, editBinding, file } = this.props;
     event.preventDefault();
     editBinding(file.name, binding);
-  }
+  };
 
   addClick = () => {
     analytics.track('exceladdin.file.add_binding.click');
     this.props.addBinding(this.props.file);
-  }
+  };
 
   removeClick = () => {
     analytics.track('exceladdin.file.remove_binding.click');
     this.props.removeBinding(this.props.binding);
-  }
+  };
 
-  render () {
+  render() {
     const { file, binding, syncing, syncStatus } = this.props;
 
     let dotPos = file ? file.name.lastIndexOf('.') : -1;
-    let extension = dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
+    let extension =
+      dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
 
     const isBindable = !binding && extension === 'CSV';
     const isSyncing = syncing && syncStatus && !syncStatus.synced;
@@ -74,36 +74,60 @@ class BindingsListItem extends Component {
 
     return (
       <div className={cx('file', extension)} key={file.id}>
-        <span className={cx('file-icon', {syncing: isSyncing, 'needs-sync': hasPendingChanges})}>
+        <span
+          className={cx('file-icon', {
+            syncing: isSyncing,
+            'needs-sync': hasPendingChanges
+          })}
+        >
           <FileTypeIcon filename={file.name} />
         </span>
-        <div className='center-info'>
-          <div className='title'>{file.name}</div>
-          {!hasPendingChanges &&
-            <div className='info'>
-              {binding && <a onClick={this.onEditClick}>{binding.rangeAddress && `${binding.rangeAddress}`} <Glyphicon glyph='pencil' /> · </a>}
-              Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' />
-            </div>}
-          {hasPendingChanges && <div className='info'>{syncStatus.changes} pending changes</div>}
+        <div className="center-info">
+          <div className="title">{file.name}</div>
+          {!hasPendingChanges && (
+            <div className="info">
+              {binding && (
+                <a onClick={this.onEditClick}>
+                  {binding.rangeAddress && `${binding.rangeAddress}`}{' '}
+                  <Glyphicon glyph="pencil" /> ·{' '}
+                </a>
+              )}
+              Updated{' '}
+              <FormattedDate
+                value={file.updated}
+                year="numeric"
+                month="short"
+                day="2-digit"
+              />
+            </div>
+          )}
+          {hasPendingChanges && (
+            <div className="info">{syncStatus.changes} pending changes</div>
+          )}
         </div>
-        {isBindable && <Button
-          bsSize='small'
-          className='add-button'
-          onClick={this.addClick}><Icon icon='add' /></Button>}
-        {!!binding && !isSyncing && <Button
-          bsSize='small'
-          className='link-button'
-          onClick={this.removeClick}>
-            <div className='link'>
-              <Icon className='check' icon='check' />
-              <span className='label'>Linked</span>
-            </div>
-            <div className='unlink'>
-              <Icon icon='close' />
-              <span className='label'>Unlink</span>
-            </div>
-          </Button>}
-          {!!binding && isSyncing && <div className='loader-icon'></div>}
+        {isBindable && (
+          <Button bsSize="small" className="add-button" onClick={this.addClick}>
+            <Icon icon="add" />
+          </Button>
+        )}
+        {!!binding &&
+          !isSyncing && (
+            <Button
+              bsSize="small"
+              className="link-button"
+              onClick={this.removeClick}
+            >
+              <div className="link">
+                <Icon className="check" icon="check" />
+                <span className="label">Linked</span>
+              </div>
+              <div className="unlink">
+                <Icon icon="close" />
+                <span className="label">Unlink</span>
+              </div>
+            </Button>
+          )}
+        {!!binding && isSyncing && <div className="loader-icon" />}
       </div>
     );
   }

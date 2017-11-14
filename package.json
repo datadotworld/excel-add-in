@@ -21,7 +21,10 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^5.0.0",
     "office-addin-validator": "^1.0.1",
+    "prettier": "1.8.2",
     "react-test-renderer": "^15.6.1",
     "selfsigned": "^1.10.1"
   },
@@ -30,7 +33,11 @@
     "build": "react-scripts build",
     "prod": "nodemon server/server.js",
     "test": "react-scripts test --env=jsdom",
+    "precommit": "lint-staged",
     "eject": "react-scripts eject"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["prettier --single-quote --write", "git add"]
   },
   "repository": {
     "type": "git",

@@ -29,7 +29,7 @@ it('renders without crashing', () => {
 });
 
 it('renders welcome page - no dataset', () => {
-  expect(renderer.create(<WelcomePage />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<WelcomePage />).toJSON()).toMatchSnapshot();
 });
 
 it('renders welcome page - with dataset', () => {
@@ -40,5 +40,13 @@ it('renders welcome page - with dataset', () => {
     updated: '2017-07-20T14:24:51.762Z',
     created: '2017-07-20T14:24:51.762Z'
   };
-  expect(renderer.create(<IntlProvider locale='en'><WelcomePage dataset={dataset} /></IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <WelcomePage dataset={dataset} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

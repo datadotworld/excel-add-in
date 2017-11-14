@@ -141,7 +141,7 @@ body {
   border-top: 0.125rem solid rgba(0, 0, 0, 0.1);
   border-right: 0.125rem solid rgba(0, 0, 0, 0.1);
   border-bottom: 0.125rem solid rgba(0, 0, 0, 0.1);
-  border-left: 0.125rem solid #5DC0DE;
+  border-left: 0.125rem solid #5dc0de;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
@@ -189,6 +189,6 @@ body {
   width: 50%;
 }
 
-.center-modal .modal-footer.save .btn+.btn {
+.center-modal .modal-footer.save .btn + .btn {
   margin-left: 1rem;
 }

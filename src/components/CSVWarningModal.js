@@ -25,14 +25,13 @@ import analytics from '../analytics';
 import WarningModal from './WarningModal';
 
 class CSVWarningModal extends Component {
-
   static propTypes = {
     successHandler: PropTypes.func
-  }
+  };
 
   state = {
     checkboxChecked: false
-  }
+  };
 
   toggleCheckbox = () => {
     analytics.track('csv_warning.dont_show.toggle');
@@ -43,21 +42,34 @@ class CSVWarningModal extends Component {
     this.props.successHandler({ dismissWarning: this.state.checkboxChecked });
   };
 
-  render () {
-
-    return (<WarningModal
-      show={this.props.show}
-      dialogMode='continue'
-      successHandler={this.success}
-      analyticsLocation='csv_warning'>
-      <div><strong>If you save to data.world as .CSV some Excel formatting will be lost.</strong></div>
-      <div>To make sure that your settings will be remembered, use "File > Save as" to save this file using the Excel Workbook (.xlsx) format.</div>
-      <div>
-        <Checkbox onChange={this.toggleCheckbox} checked={this.state.checkboxChecked}>
-          Don't show again
-        </Checkbox>
-      </div>
-    </WarningModal>);
+  render() {
+    return (
+      <WarningModal
+        show={this.props.show}
+        dialogMode="continue"
+        successHandler={this.success}
+        analyticsLocation="csv_warning"
+      >
+        <div>
+          <strong>
+            If you save to data.world as .CSV some Excel formatting will be
+            lost.
+          </strong>
+        </div>
+        <div>
+          To make sure that your settings will be remembered, use "File > Save
+          as" to save this file using the Excel Workbook (.xlsx) format.
+        </div>
+        <div>
+          <Checkbox
+            onChange={this.toggleCheckbox}
+            checked={this.state.checkboxChecked}
+          >
+            Don't show again
+          </Checkbox>
+        </div>
+      </WarningModal>
+    );
   }
 }
 

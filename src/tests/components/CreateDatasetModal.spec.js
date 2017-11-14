@@ -24,9 +24,14 @@ import { IntlProvider } from 'react-intl';
 import CreateDatasetModal from '../../components/CreateDatasetModal';
 
 it('renders modal', () => {
-  const user = {id: 'test'};
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <CreateDatasetModal user={user} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  const user = { id: 'test' };
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <CreateDatasetModal user={user} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

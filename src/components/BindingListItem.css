@@ -62,7 +62,8 @@
   margin-right: 0;
 }
 
-.file button, .file a.btn {
+.file button,
+.file a.btn {
   justify-self: flex-end;
   margin-left: auto;
 }
@@ -150,7 +151,7 @@
 }
 
 .file .file-icon:after {
-  content: ' ';
+  content: " ";
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 0.2rem;

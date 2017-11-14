@@ -49,7 +49,8 @@
   text-overflow: ellipsis;
 }
 
-.dataset button, .dataset a.btn {
+.dataset button,
+.dataset a.btn {
   justify-self: flex-end;
   margin-left: auto;
 }
