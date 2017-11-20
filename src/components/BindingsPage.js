@@ -157,8 +157,16 @@ class BindingsPage extends Component {
       <Grid className='bindings-page'>
         <Row className='center-block section-header'>
           <div className='title'>
-            {dataset.title}
-            <Dropdown id='dropdown-dataset-options' className='pull-right' pullRight>
+            <div>
+              <div className='link' onClick={this.props.unlinkDataset}>
+                <Icon icon='angleLeft' />
+                Change linked dataset
+              </div>
+              <div className='dataset-title'>
+                {`${dataset.title} dataset`}
+              </div>
+            </div>
+            <Dropdown id='dropdown-dataset-options' className='dropdown' pullRight>
               <Dropdown.Toggle noCaret >
                 <Glyphicon glyph='option-vertical' />
               </Dropdown.Toggle>
@@ -166,9 +174,6 @@ class BindingsPage extends Component {
                 <MenuItem eventKey='unlink'>Unlink</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-          </div>
-          <div className='dataset-link'>
-            <a href={`https://data.world/${dataset.owner}/${dataset.id}`} target='_blank'>https://data.world/{dataset.owner}/{dataset.id}</a>
           </div>
           <div className='button-group'>
             <Button onClick={this.addFile}>
@@ -184,6 +189,15 @@ class BindingsPage extends Component {
               <div className='loader-icon'></div>
               Syncing…
               </Button>}
+            <Button>
+              <a
+                href={`https://data.world/${dataset.owner}/${dataset.id}`}
+                target='_blank'
+                className='link button-link'
+              >
+                View on Web
+              </a>
+            </Button>
           </div>
         </Row>
         {!!bindingEntries.length && canEdit &&
@@ -208,9 +222,8 @@ class BindingsPage extends Component {
         {!bindingEntries.length && canEdit &&
           <Row className='center-block no-datasets'>
             <div className='message'>
-              You haven't added any data to this dataset.
+              You haven't added any files to this dataset
             </div>
-            <Button className='bottom-button' bsStyle='primary' onClick={this.addFile}>Add data</Button>
           </Row>}
         {!canEdit &&
           <Row className='center-block no-datasets'>
@@ -225,6 +238,9 @@ class BindingsPage extends Component {
               Request access
             </Button>
           </Row>}
+          <Row className='center-block'>
+            <Button className='bottom-button' bsStyle='primary' onClick={this.addFile}>New File</Button>
+          </Row>
       </Grid>
     );
   }

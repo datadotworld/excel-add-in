@@ -10,9 +10,38 @@ exports[`renders binding page - insufficient access 1`] = `
     <div
       className="title"
     >
-      This is a test
+      <div>
+        <div
+          className="link"
+          onClick={undefined}
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-left-icon"
+              height="20"
+              viewBox="0 0 40 40"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+          Change linked dataset
+        </div>
+        <div
+          className="dataset-title"
+        >
+          This is a test dataset
+        </div>
+      </div>
       <div
-        className="pull-right dropdown btn-group"
+        className="dropdown dropdown btn-group"
       >
         <button
           aria-expanded={false}
@@ -51,19 +80,6 @@ exports[`renders binding page - insufficient access 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      className="dataset-link"
-    >
-      <a
-        href="https://data.world/test/test"
-        target="_blank"
-      >
-        https://data.world/
-        test
-        /
-        test
-      </a>
     </div>
     <div
       className="button-group"
@@ -138,6 +154,19 @@ exports[`renders binding page - insufficient access 1`] = `
           </svg>
         </span>
         Save Files
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <a
+          className="link button-link"
+          href="https://data.world/test/test"
+          target="_blank"
+        >
+          View on Web
+        </a>
       </button>
     </div>
   </div>
@@ -159,6 +188,18 @@ exports[`renders binding page - insufficient access 1`] = `
       Request access
     </a>
   </div>
+  <div
+    className="center-block row"
+  >
+    <button
+      className="bottom-button btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      New File
+    </button>
+  </div>
 </div>
 `;
 
@@ -172,9 +213,38 @@ exports[`renders bindings page - dataset with files 1`] = `
     <div
       className="title"
     >
-      This is a test
+      <div>
+        <div
+          className="link"
+          onClick={undefined}
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-left-icon"
+              height="20"
+              viewBox="0 0 40 40"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+          Change linked dataset
+        </div>
+        <div
+          className="dataset-title"
+        >
+          This is a test dataset
+        </div>
+      </div>
       <div
-        className="pull-right dropdown btn-group"
+        className="dropdown dropdown btn-group"
       >
         <button
           aria-expanded={false}
@@ -213,19 +283,6 @@ exports[`renders bindings page - dataset with files 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      className="dataset-link"
-    >
-      <a
-        href="https://data.world/test/test"
-        target="_blank"
-      >
-        https://data.world/
-        test
-        /
-        test
-      </a>
     </div>
     <div
       className="button-group"
@@ -300,6 +357,19 @@ exports[`renders bindings page - dataset with files 1`] = `
           </svg>
         </span>
         Save Files
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <a
+          className="link button-link"
+          href="https://data.world/test/test"
+          target="_blank"
+        >
+          View on Web
+        </a>
       </button>
     </div>
   </div>
@@ -748,6 +818,18 @@ exports[`renders bindings page - dataset with files 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="center-block row"
+  >
+    <button
+      className="bottom-button btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      New File
+    </button>
+  </div>
 </div>
 `;
 
@@ -761,9 +843,38 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
     <div
       className="title"
     >
-      This is a test
+      <div>
+        <div
+          className="link"
+          onClick={undefined}
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-left-icon"
+              height="20"
+              viewBox="0 0 40 40"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+          Change linked dataset
+        </div>
+        <div
+          className="dataset-title"
+        >
+          This is a test dataset
+        </div>
+      </div>
       <div
-        className="pull-right dropdown btn-group"
+        className="dropdown dropdown btn-group"
       >
         <button
           aria-expanded={false}
@@ -802,19 +913,6 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      className="dataset-link"
-    >
-      <a
-        href="https://data.world/test/test"
-        target="_blank"
-      >
-        https://data.world/
-        test
-        /
-        test
-      </a>
     </div>
     <div
       className="button-group"
@@ -889,6 +987,19 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
           </svg>
         </span>
         Save Files
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <a
+          className="link button-link"
+          href="https://data.world/test/test"
+          target="_blank"
+        >
+          View on Web
+        </a>
       </button>
     </div>
   </div>
@@ -1310,7 +1421,6 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
         <button
           className="link-button btn btn-sm btn-default"
           disabled={false}
-          onClick={[Function]}
           type="button"
         >
           <div
@@ -1338,41 +1448,22 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
                 </g>
               </svg>
             </span>
-            <span
-              className="label"
-            >
-              Linked
-            </span>
-          </div>
-          <div
-            className="unlink"
-          >
-            <span
-              className="svg-icon "
-              onClick={undefined}
-            >
-              <svg
-                className="close-icon"
-                height="15"
-                viewBox="0 0 16 15"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  className="stroke stroke-medium"
-                  d="M15.222 14.222L1 0M1 14.222L15.222 0"
-                />
-              </svg>
-            </span>
-            <span
-              className="label"
-            >
-              Unlink
-            </span>
           </div>
         </button>
       </div>
     </div>
+  </div>
+  <div
+    className="center-block row"
+  >
+    <button
+      className="bottom-button btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      New File
+    </button>
   </div>
 </div>
 `;
@@ -1387,9 +1478,38 @@ exports[`renders bindings page - syncing 1`] = `
     <div
       className="title"
     >
-      This is a test
+      <div>
+        <div
+          className="link"
+          onClick={undefined}
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-left-icon"
+              height="20"
+              viewBox="0 0 40 40"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+          Change linked dataset
+        </div>
+        <div
+          className="dataset-title"
+        >
+          This is a test dataset
+        </div>
+      </div>
       <div
-        className="pull-right dropdown btn-group"
+        className="dropdown dropdown btn-group"
       >
         <button
           aria-expanded={false}
@@ -1428,19 +1548,6 @@ exports[`renders bindings page - syncing 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      className="dataset-link"
-    >
-      <a
-        href="https://data.world/test/test"
-        target="_blank"
-      >
-        https://data.world/
-        test
-        /
-        test
-      </a>
     </div>
     <div
       className="button-group"
@@ -1492,6 +1599,19 @@ exports[`renders bindings page - syncing 1`] = `
           className="loader-icon"
         />
         Syncing…
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <a
+          className="link button-link"
+          href="https://data.world/test/test"
+          target="_blank"
+        >
+          View on Web
+        </a>
       </button>
     </div>
   </div>
@@ -1904,6 +2024,18 @@ exports[`renders bindings page - syncing 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="center-block row"
+  >
+    <button
+      className="bottom-button btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      New File
+    </button>
+  </div>
 </div>
 `;
 
@@ -1917,9 +2049,38 @@ exports[`renders bindings page 1`] = `
     <div
       className="title"
     >
-      This is a test
+      <div>
+        <div
+          className="link"
+          onClick={undefined}
+        >
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-left-icon"
+              height="20"
+              viewBox="0 0 40 40"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+          Change linked dataset
+        </div>
+        <div
+          className="dataset-title"
+        >
+          This is a test dataset
+        </div>
+      </div>
       <div
-        className="pull-right dropdown btn-group"
+        className="dropdown dropdown btn-group"
       >
         <button
           aria-expanded={false}
@@ -1958,19 +2119,6 @@ exports[`renders bindings page 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      className="dataset-link"
-    >
-      <a
-        href="https://data.world/test/test"
-        target="_blank"
-      >
-        https://data.world/
-        test
-        /
-        test
-      </a>
     </div>
     <div
       className="button-group"
@@ -2046,6 +2194,19 @@ exports[`renders bindings page 1`] = `
         </span>
         Save Files
       </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        type="button"
+      >
+        <a
+          className="link button-link"
+          href="https://data.world/test/test"
+          target="_blank"
+        >
+          View on Web
+        </a>
+      </button>
     </div>
   </div>
   <div
@@ -2054,15 +2215,19 @@ exports[`renders bindings page 1`] = `
     <div
       className="message"
     >
-      You haven't added any data to this dataset.
+      You haven't added any files to this dataset
     </div>
+  </div>
+  <div
+    className="center-block row"
+  >
     <button
       className="bottom-button btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button"
     >
-      Add data
+      New File
     </button>
   </div>
 </div>

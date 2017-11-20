@@ -78,6 +78,9 @@
   height: 2rem;
   width: 2rem;
   min-width: 2rem;
+  border: 0;
+  border: 1px solid #cbcbcb;
+  box-shadow: none;
 }
 
 .file .add-button .svg-icon {
@@ -98,15 +101,18 @@
 }
 
 .file .link-button {
-  border: none;
-  box-shadow: none;
-  padding: 0;
+  display: flex;
+  justify-content: center;
   width: 2rem;
+  padding: 0;
+  border: 1px solid #5ab962;
+  border-radius: 50%;
+  box-shadow: none;
+  height: 2rem;
 }
 
 .file .link-button span {
-  display: block;
-  float: none;
+  display: flex;
 }
 
 .file .link-button .label {
@@ -117,18 +123,16 @@
   color: #65c16d;
 }
 
-.file .link-button .unlink {
-  display: none;
-}
-
-.file .link-button .unlink .label {
-  color: #ff6666;
-}
-
 .file .link-button svg.check-icon .stroke {
   stroke: #65c16d;
   fill: #fff;
 }
+
+.file svg.add-icon .stroke {
+  stroke: #cbcbcb;
+  fill: #fff;
+}
+
 .file .link-button svg.close-icon {
   width: 12px;
 }
@@ -139,10 +143,6 @@
 
 .file .link-button:hover .unlink {
   display: block;
-}
-
-.file .link-button:hover .link {
-  display: none;
 }
 
 .file .file-icon {
