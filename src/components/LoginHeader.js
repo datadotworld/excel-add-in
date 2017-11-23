@@ -46,7 +46,7 @@ class LoginHeader extends Component {
     return (
       <div className='login-header'>
         <LogoFull />
-        {user && <DropdownButton title={user.id} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
+        {user && <DropdownButton title={`@${user.id}`} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
           <MenuItem eventKey='signout'>Sign out</MenuItem>
         </DropdownButton>}
       </div>

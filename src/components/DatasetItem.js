@@ -19,7 +19,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {FormattedDate} from 'react-intl';
-import {Button} from 'react-bootstrap';
 
 import analytics from '../analytics';
 
@@ -37,28 +36,26 @@ class DatasetItem extends Component {
 
   buttonClick = () => {
     analytics.track(`exceladdin.dataset.${this.props.buttonText.toLowerCase()}.click`);
+    if(this.props.buttonLink) {
+      return window.open(this.props.buttonLink);
+    }
     if (this.props.buttonHandler) {
       this.props.buttonHandler(this.props.dataset);
     }
   }
 
   render () {
-    const {dataset, buttonText, buttonLink} = this.props;
-    return (<div className='dataset'>
+    const {dataset} = this.props;
+    return (
+    <div className='dataset' onClick={this.buttonClick}>
       <Icon icon={dataset.isProject ? 'projectSchema' : 'datasetSchema'} />
       <div className='center-info'>
         <div className='title'>{dataset.title}</div>
         <div className='info'>@{dataset.owner} &middot; Updated <FormattedDate value={dataset.updated} year='numeric' month='short' day='2-digit' /></div>
       </div>
-      {!!buttonLink && <Button
-        bsSize='small'
-        href={buttonLink}
-        target='_blank'
-        rel='noopener noreferrer'
-        onClick={this.buttonClick}>{buttonText}</Button>}
-      {!buttonLink && <Button
-        bsSize='small'
-        onClick={this.buttonClick}>{buttonText}</Button>}
+      <div className='link-icon'>
+        <Icon icon='angleRight' />
+      </div>
     </div>)
   }
 }

@@ -799,6 +799,7 @@ exports[`renders welcome page - with dataset 1`] = `
       </div>
       <div
         className="dataset"
+        onClick={[Function]}
       >
         <span
           className="svg-icon "
@@ -834,15 +835,27 @@ exports[`renders welcome page - with dataset 1`] = `
             </span>
           </div>
         </div>
-        <a
-          className="btn btn-sm btn-default"
-          href="https://data.world/test/test"
-          onClick={[Function]}
-          rel="noopener noreferrer"
-          target="_blank"
+        <div
+          className="link-icon"
         >
-          View
-        </a>
+          <span
+            className="svg-icon "
+            onClick={undefined}
+          >
+            <svg
+              className="angle-right"
+              height="40"
+              viewBox="0 0 40 40"
+              width="40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke"
+                d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
       <div
         className="message"
