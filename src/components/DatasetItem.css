@@ -49,7 +49,11 @@
   text-overflow: ellipsis;
 }
 
-.dataset button, .dataset a.btn {
+.link-icon {
   justify-self: flex-end;
   margin-left: auto;
+}
+
+.link-icon .stroke {
+  fill: #c1c1c1;
 }

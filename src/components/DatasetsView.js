@@ -114,8 +114,11 @@ class DatasetsView extends Component {
           <Row className='center-block section-header'>
             <div className='title'>
               Select a dataset to link
-              <Icon icon='add' onClick={this.addDatasetClick} />
             </div>
+            <Button onClick={this.addDatasetClick}>
+              <Icon icon='add' />
+              New
+            </Button>
           </Row>
           {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
           {!!datasets.length && !loadingDatasets &&

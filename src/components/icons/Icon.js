@@ -26,6 +26,18 @@ const datasetSchema = <svg className='dataset-schema-icon' xmlns='http://www.w3.
 const projectSchema = <svg className='project-schema-icon' version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 16 16'>
   <path className='fill' d='M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M13.6,6.3l-2.3,3.5c-0.3,0.6-1.3,0.7-1.7,0.2L7,7.5l-2.7,3.6c-0.3,0.5-1.2,0.6-1.6,0.2C2.2,11,2.1,10.1,2.4,9.7L5.9,5c0.5-0.6,1.3-0.6,1.7-0.1l2.4,2.4L11.6,5c0.3-0.6,1-0.7,1.6-0.3C13.8,5,13.9,5.7,13.6,6.3z'/>
 </svg>;
+const angleRight =
+<svg
+  className='angle-right'
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 40 40"
+  width="40" height="40"
+>
+  <path
+    className='stroke'
+    d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+  />
+ </svg>
 
 
 const add = <svg className='add-icon' version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 16 16'>
@@ -64,7 +76,7 @@ const warning = <svg className='warning-icon' width='16' height='16' viewBox='0 
 
 
 const ICONS = {
-  add, check, close, datasetSchema, projectSchema, sync, warning
+  add, check, close, datasetSchema, projectSchema, sync, warning, angleRight
 };
 
 export default class Icon extends Component {
