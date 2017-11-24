@@ -166,9 +166,13 @@ class App extends Component {
     });
   }
 
-  async createBinding (filename) {
+  async createBinding (selection) {
+    await this.office.createSelectionRange(selection.name, selection.sheet, selection.range)
+
+    // Temporary workaround: The last namedItem added is not visible so we have to add twice 
+    await this.office.createSelectionRange(selection.name + "Temp", selection.sheet, selection.range)
     try {
-      const binding = await this.office.createBinding(filename);
+      const binding = await this.office.createBinding(selection.name);
       if (binding.columnCount > MAXIMUM_COLUMNS) {
         await this.office.removeBinding(binding);
         throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
@@ -298,10 +302,10 @@ class App extends Component {
    * There is not currently a way to update the range for an existing binding
    * in the office API.
    */
-  async updateBinding (binding, filename) {
+  async updateBinding (binding, selection) {
     try {
       await this.removeBinding(binding);
-      return this.createBinding(filename);
+      return this.createBinding(selection);
     } catch (error) {
       this.setState({ error });
     }

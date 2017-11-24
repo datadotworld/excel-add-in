@@ -51,7 +51,7 @@ class AddDataModal extends Component {
     doesFileExist: PropTypes.func.isRequired,
     excelApiSupported: PropTypes.bool,
     options: PropTypes.object,
-    range: PropTypes.string,
+    range: PropTypes.object,
     refreshLinkedDataset: PropTypes.func,
     sync: PropTypes.func,
     updateBinding: PropTypes.func
@@ -64,7 +64,8 @@ class AddDataModal extends Component {
   state = {
     isSubmitting: false,
     name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : '',
-    showWarningModal: false
+    showWarningModal: false,
+    selectSheet: false
   }
 
   isFormValid = () => {
@@ -76,19 +77,26 @@ class AddDataModal extends Component {
     return name.match(filenameRegex) && name.length < MAX_FILENAME_LENGTH;
   }
 
-  submitBinding = () => {
+  submitBinding = (sheet, range) => {
     this.closeModal();
     const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
+
+    const selection = {
+      name: `${this.state.name}.csv`,
+      sheet: sheet,
+      range: this.state.selectSheet ? 'A1:ET10000' : range.address
+    }
+
     if (options.binding) {
-      updateBinding(options.binding, options.filename)
+      updateBinding(options.binding, selection)
         .then(sync)
         .then(refreshLinkedDataset)
         .then(close);
     } else {
-      createBinding(`${this.getFilename(this.state.name)}.csv`).then((binding) => {
+      createBinding(selection).then((binding) => {
         // Binding has been created, but the file does not exist yet, sync the file
         sync(binding).then(refreshLinkedDataset).then(close);
-      });
+      })
     }
   }
 
@@ -100,7 +108,9 @@ class AddDataModal extends Component {
       // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
-      this.submitBinding();
+      const { range } = this.props;
+      const sheet = `Sheet${this.getSheetNumber(range)}`;
+      this.submitBinding(sheet, range);
     }
   }
 
@@ -129,8 +139,29 @@ class AddDataModal extends Component {
     this.props.close();
   }
 
+  getSheetNumber = (range) => {
+    if (range) {
+      const address = range.address;
+      const sheet = address.substring(0, address.indexOf('!'));
+      const sheetNumber = sheet.match(/[0-9]+/);
+      return sheetNumber;
+    }
+
+    return ''
+  }
+
+  changeSelection = (event) => {
+    const { value } = event.target
+
+    if (value === 'selection') {
+      this.setState({ selectSheet: false})
+    } else if (value === 'sheet') {
+      this.setState({ selectSheet: true });
+    }
+  }
+
   render () {
-    const { name } = this.state;
+    const { name, selectSheet } = this.state;
     const { excelApiSupported, options, range } = this.props;
 
     let validState, displayName;
@@ -149,25 +180,44 @@ class AddDataModal extends Component {
         </Row>
         <Row className='center-block'>
           <form onSubmit={this.submit}>
-            {excelApiSupported && <FormGroup>
-              <ControlLabel>Dataset range</ControlLabel>
-              <InputGroup>
-                <FormControl
-                  value={range}
-                  disabled
-                  type='text' />
-              </InputGroup>
+            {excelApiSupported &&
+            <form className='selection-form' onClick={this.changeSelection}>
+              <div className='selection'>
+                <label className='radio-button'>
+                  <input type='radio' name='selection' value='selection' defaultChecked />
+                  <span>Selection</span>
+                </label>
+                <div className='selection-info'>
+                  {
+                    range ?
+                    `(${range.rowCount} Rows x ${range.columnCount} Columns)` :
+                    '(Rows x Columns)'
+                  }
+                </div>
+              </div>
+              <div className='selection'>
+                <label className='radio-button'>
+                  <input type='radio' name='selection' value='sheet' />
+                  <span>Sheet</span>
+                </label>
+                <div className='selection-info'>
+                  {`(Sheet ${this.getSheetNumber(range)})`}
+                </div>
+              </div>
               <HelpBlock>
-                Select the area to bind in the worksheet, it will be reflected here.
+                {
+                  selectSheet ?
+                  'Select the sheet you\'d like to add, it will be refelected here.' :
+                  'Select the area to bind in the worksheet, it will be reflected here.'
+                }
               </HelpBlock>
-            </FormGroup>}
+            </form>}
             {!excelApiSupported && <div>
               <ControlLabel>Dataset range</ControlLabel>
               <HelpBlock>
                 Select the area to bind in the worksheet.
               </HelpBlock>
             </div>}
-
             <FormGroup validationState={validState}>
               <ControlLabel>Name</ControlLabel>
               <InputGroup>
@@ -187,7 +237,7 @@ class AddDataModal extends Component {
               <Button
                 type='submit'
                 disabled={this.state.isSubmitting || validState !== 'success'}
-                bsStyle='primary'>Add selection</Button>
+                bsStyle='primary'>OK</Button>
             </div>
           </form>
         </Row>
@@ -197,7 +247,7 @@ class AddDataModal extends Component {
           successHandler={this.submitBinding}
           analyticsLocation='exceladdin.add_data'>
           <div><strong>"{displayName}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
-          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range : 'the selected cell range'}</div>
+          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range ? range.address : '' : 'the selected cell range'}</div>
         </WarningModal>
       </Grid>);
   }

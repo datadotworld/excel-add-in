@@ -36,32 +36,59 @@ exports[`renders modal - with options 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <div
-        className="form-group"
+      <form
+        className="selection-form"
+        onClick={[Function]}
       >
-        <label
-          className="control-label"
-          htmlFor={undefined}
+        <div
+          className="selection"
         >
-          Dataset range
-        </label>
-        <span
-          className="input-group"
+          <label
+            className="radio-button"
+          >
+            <input
+              defaultChecked={true}
+              name="selection"
+              type="radio"
+              value="selection"
+            />
+            <span>
+              Selection
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (4 Rows x 2 Columns)
+          </div>
+        </div>
+        <div
+          className="selection"
         >
-          <input
-            className="form-control"
-            disabled={true}
-            id={undefined}
-            type="text"
-            value="Sheet1!A2:B5"
-          />
-        </span>
+          <label
+            className="radio-button"
+          >
+            <input
+              name="selection"
+              type="radio"
+              value="sheet"
+            />
+            <span>
+              Sheet
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (Sheet 1)
+          </div>
+        </div>
         <span
           className="help-block"
         >
           Select the area to bind in the worksheet, it will be reflected here.
         </span>
-      </div>
+      </form>
       <div
         className="form-group has-success"
       >
@@ -114,7 +141,7 @@ exports[`renders modal - with options 1`] = `
           disabled={false}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>
@@ -161,32 +188,59 @@ exports[`renders modal - with range 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <div
-        className="form-group"
+      <form
+        className="selection-form"
+        onClick={[Function]}
       >
-        <label
-          className="control-label"
-          htmlFor={undefined}
+        <div
+          className="selection"
         >
-          Dataset range
-        </label>
-        <span
-          className="input-group"
+          <label
+            className="radio-button"
+          >
+            <input
+              defaultChecked={true}
+              name="selection"
+              type="radio"
+              value="selection"
+            />
+            <span>
+              Selection
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (4 Rows x 2 Columns)
+          </div>
+        </div>
+        <div
+          className="selection"
         >
-          <input
-            className="form-control"
-            disabled={true}
-            id={undefined}
-            type="text"
-            value="Sheet1!A2:B5"
-          />
-        </span>
+          <label
+            className="radio-button"
+          >
+            <input
+              name="selection"
+              type="radio"
+              value="sheet"
+            />
+            <span>
+              Sheet
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (Sheet 1)
+          </div>
+        </div>
         <span
           className="help-block"
         >
           Select the area to bind in the worksheet, it will be reflected here.
         </span>
-      </div>
+      </form>
       <div
         className="form-group"
       >
@@ -238,7 +292,7 @@ exports[`renders modal - with range 1`] = `
           disabled={true}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>
@@ -349,7 +403,7 @@ exports[`renders modal 1`] = `
           disabled={true}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>
