@@ -76,6 +76,9 @@
 
 .bindings-page .section-header .title .link {
   display: flex;
+  align-items: center;
+  position: relative;
+  left: -6px;
 }
 
 .bindings-page svg.angle-left-icon .stroke {
@@ -83,16 +86,18 @@
 }
 
 .bindings-page .section-header .button-link {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .bindings-page .section-header .title .dropdown {
   display: flex;
+  position: relative;
+  right: -11px;
 }
 
 .bindings-page .section-header .title .dataset-title {
+  font-size: 18px;
   font-weight:  bold;
-  line-height: 2em;
 }
 
 .bindings-page .section-header .button-group {
@@ -106,7 +111,8 @@
   padding: 0 10px;
   height: 2rem;
   color: #4376b2;
-  font-size: 14px;
+  font-size: 16px;
+  flex-grow: 1;
 }
 
 .bindings-page .section-header .button-group button .badge {
@@ -130,6 +136,11 @@
   text-overflow: ellipsis;
   display: block;
   white-space: nowrap;
+}
+
+.bindings-page .section-header .title .svg-icon {
+  width: 19px;
+  height: 23px;
 }
 
 .bindings-page .button-group button .svg-icon {

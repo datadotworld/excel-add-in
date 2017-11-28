@@ -153,7 +153,7 @@ exports[`renders binding page - insufficient access 1`] = `
             </g>
           </svg>
         </span>
-        Save Files
+        Save
       </button>
       <button
         className="btn btn-default"
@@ -356,7 +356,7 @@ exports[`renders bindings page - dataset with files 1`] = `
             </g>
           </svg>
         </span>
-        Save Files
+        Save
       </button>
       <button
         className="btn btn-default"
@@ -986,7 +986,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
             </g>
           </svg>
         </span>
-        Save Files
+        Save
       </button>
       <button
         className="btn btn-default"
@@ -1598,7 +1598,7 @@ exports[`renders bindings page - syncing 1`] = `
         <div
           className="loader-icon"
         />
-        Syncing…
+        Saving...
       </button>
       <button
         className="btn btn-default"
@@ -2192,7 +2192,7 @@ exports[`renders bindings page 1`] = `
             </g>
           </svg>
         </span>
-        Save Files
+        Save
       </button>
       <button
         className="btn btn-default"
