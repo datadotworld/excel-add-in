@@ -113,18 +113,23 @@ export default class OfficeConnector {
 
   createBinding(name) {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.addFromNamedItemAsync(
-        name,
-        Office.BindingType.Matrix,
-        { id: `dw::${name}` },
-        result => {
-          if (result.status === Office.AsyncResultStatus.Failed) {
-            return reject(result.error.message);
-          }
-          resolve(result.value);
-        }
-      );
-    });
+      // Create binding after Excel sync to have access to newly added nameditem
+      Excel.run((ctx) => {
+        return ctx.sync().then(() => {
+          Office.context.document.bindings.addFromNamedItemAsync(
+            name,
+            Office.BindingType.Matrix,
+            { id: `dw::${name}` },
+            result => {
+              if (result.status === Office.AsyncResultStatus.Failed) {
+                return reject(result.error.message);
+              }
+              resolve(result.value);
+            }
+          );
+        }).catch(reject);
+      });
+    })
   }
 
   removeBinding (binding) {

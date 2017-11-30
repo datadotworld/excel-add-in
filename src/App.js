@@ -168,9 +168,6 @@ class App extends Component {
 
   async createBinding (selection) {
     await this.office.createSelectionRange(selection.name, selection.sheet, selection.range)
-
-    // Temporary workaround: The last namedItem added is not visible so we have to add twice 
-    await this.office.createSelectionRange(selection.name + "Temp", selection.sheet, selection.range)
     try {
       const binding = await this.office.createBinding(selection.name);
       if (binding.columnCount > MAXIMUM_COLUMNS) {
