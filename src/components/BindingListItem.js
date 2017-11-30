@@ -92,7 +92,8 @@ class BindingsListItem extends Component {
           onClick={this.addClick}><Icon icon='add' /></Button>}
         {!!binding && !isSyncing && <Button
           bsSize='small'
-          className='link-button'>
+          className='link-button'
+          onClick={this.removeClick}>
             <div className='link'>
               <Icon className='check' icon='check' />
             </div>
