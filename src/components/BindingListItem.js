@@ -98,7 +98,11 @@ class BindingsListItem extends Component {
               <Icon className='check' icon='check' />
             </div>
           </Button>}
-          {!!binding && isSyncing && <div className='loader-icon'></div>}
+          {!!binding && isSyncing &&
+            <div className='loader-icon-container'>
+              <div className='loader-icon' />
+            </div>
+          }
       </div>
     );
   }

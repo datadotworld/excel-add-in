@@ -1421,6 +1421,7 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
         <button
           className="link-button btn btn-sm btn-default"
           disabled={false}
+          onClick={[Function]}
           type="button"
         >
           <div
@@ -2019,8 +2020,12 @@ exports[`renders bindings page - syncing 1`] = `
           </div>
         </div>
         <div
-          className="loader-icon"
-        />
+          className="loader-icon-container"
+        >
+          <div
+            className="loader-icon"
+          />
+        </div>
       </div>
     </div>
   </div>
