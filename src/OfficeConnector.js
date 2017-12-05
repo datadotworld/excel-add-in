@@ -101,23 +101,25 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run(function(ctx) {
+        // Make each namedItem unique to prevent `already exists` errors
+        const namedItem = name + new Date().getTime().toString();
         const range = ctx.workbook.worksheets
           .getItem(sheet)
           .getRange(rangeAddress);
         const namedItemCollection = ctx.workbook.names;
-        namedItemCollection.add(name, range, 'Range as a name');
-        return ctx.sync().then(resolve());
+        namedItemCollection.add(namedItem, range, 'Range as a name');
+        return ctx.sync().then(resolve(namedItem));
       });
     });
   }
 
-  createBinding(name) {
+  createBinding(name, namedItem) {
     return new Promise((resolve, reject) => {
       // Create binding after Excel sync to have access to newly added nameditem
       Excel.run((ctx) => {
         return ctx.sync().then(() => {
           Office.context.document.bindings.addFromNamedItemAsync(
-            name,
+            namedItem,
             Office.BindingType.Matrix,
             { id: `dw::${name}` },
             result => {

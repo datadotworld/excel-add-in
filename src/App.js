@@ -167,9 +167,9 @@ class App extends Component {
   }
 
   async createBinding (selection) {
-    await this.office.createSelectionRange(selection.name, selection.sheet, selection.range)
+    const namedItem = await this.office.createSelectionRange(selection.name, selection.sheet, selection.range)
     try {
-      const binding = await this.office.createBinding(selection.name);
+      const binding = await this.office.createBinding(selection.name, namedItem);
       if (binding.columnCount > MAXIMUM_COLUMNS) {
         await this.office.removeBinding(binding);
         throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
