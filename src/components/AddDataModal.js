@@ -77,15 +77,25 @@ class AddDataModal extends Component {
     return name.match(filenameRegex) && name.length < MAX_FILENAME_LENGTH;
   }
 
-  submitBinding = (sheet, range) => {
+  submitBinding = () => {
     this.closeModal();
-    const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
-    const allRows = 1048576;
+    const {
+      close,
+      createBinding,
+      options,
+      refreshLinkedDataset,
+      sync,
+      updateBinding,
+      range
+    } = this.props;
+    const { name, selectSheet } = this.state;
 
+    const sheet = `Sheet${this.getSheetNumber(range)}`;
+    const allRows = 1048576;
     const selection = {
-      name: `${this.state.name}.csv`,
-      sheet: sheet,
-      range: this.state.selectSheet ? `A1:ET${allRows}` : range.address
+      name: `${name}.csv`,
+      sheet,
+      range: selectSheet ? `A1:ET${allRows}` : range.address
     };
 
     if (options.binding) {
@@ -109,9 +119,7 @@ class AddDataModal extends Component {
       // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
-      const { range } = this.props;
-      const sheet = `Sheet${this.getSheetNumber(range)}`;
-      this.submitBinding(sheet, range);
+      this.submitBinding();
     }
   }
 
