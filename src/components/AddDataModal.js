@@ -165,11 +165,17 @@ class AddDataModal extends Component {
     const { name, selectSheet } = this.state;
     const { excelApiSupported, options, range } = this.props;
 
-    let validState, displayName;
+    let validState, displayName, selection;
 
     if (name) {
       validState = this.isFormValid() ? 'success' : 'warning'
       displayName = this.getFilename();
+    }
+
+    if (selectSheet) {
+      selection = range ? `Sheet${this.getSheetNumber(range)}` : '';
+    } else {
+      selection = range ? range.address : '';
     }
 
     return (
@@ -248,7 +254,7 @@ class AddDataModal extends Component {
           successHandler={this.submitBinding}
           analyticsLocation='exceladdin.add_data'>
           <div><strong>"{displayName}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
-          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? range ? range.address : '' : 'the selected cell range'}</div>
+          <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? selection : 'the selected cell range'}</div>
         </WarningModal>
       </Grid>);
   }
