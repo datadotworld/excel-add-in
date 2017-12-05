@@ -80,12 +80,13 @@ class AddDataModal extends Component {
   submitBinding = (sheet, range) => {
     this.closeModal();
     const { close, createBinding, options, refreshLinkedDataset, sync, updateBinding } = this.props;
+    const allRows = 1048576;
 
     const selection = {
       name: `${this.state.name}.csv`,
       sheet: sheet,
-      range: this.state.selectSheet ? 'A1:ET10000' : range.address
-    }
+      range: this.state.selectSheet ? `A1:ET${allRows}` : range.address
+    };
 
     if (options.binding) {
       updateBinding(options.binding, selection)
