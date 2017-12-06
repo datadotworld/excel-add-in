@@ -167,7 +167,7 @@ class App extends Component {
   }
 
   async createBinding (selection) {
-    const namedItem = await this.office.createSelectionRange(selection.name, selection.sheet, selection.range)
+    const namedItem = await this.office.createSelectionRange(selection.sheet, selection.range)
     try {
       const binding = await this.office.createBinding(selection.name, namedItem);
       if (binding.columnCount > MAXIMUM_COLUMNS) {

@@ -95,14 +95,14 @@ export default class OfficeConnector {
     });
   }
 
-  createSelectionRange(name, sheet, rangeAddress) {
+  createSelectionRange(sheet, rangeAddress) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
       Excel.run(function(ctx) {
         // Make each namedItem unique to prevent `already exists` errors
-        const namedItem = name + new Date().getTime().toString();
+        const namedItem = 'name' + new Date().getTime().toString();
         const range = ctx.workbook.worksheets
           .getItem(sheet)
           .getRange(rangeAddress);
