@@ -759,7 +759,7 @@ exports[`renders login header - with user 1`] = `
       role="button"
       type="button"
     >
-      test
+      @test
        
       <span
         className="caret"

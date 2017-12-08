@@ -18,14 +18,20 @@
  */
 .datasets-view .dataset-selector .section-header {
   padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .datasets-view .dataset-selector .section-header .add-icon {
-  float: right;
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
   cursor: pointer;
+}
+
+.datasets-view .dataset-selector .section-header .add-icon .stroke {
+  stroke: #4376b2;
 }
 
 .datasets-view .section-header .title {
@@ -39,4 +45,13 @@
   bottom: initial;
   left: initial;
   right: initial;
+}
+
+.datasets-view .dataset-selector .section-header button {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: #4376b2;
+  float: right;
+  font-size: 18px;
 }

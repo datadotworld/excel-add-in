@@ -14,9 +14,16 @@ exports[`renders datasets view - datasets 1`] = `
         className="title"
       >
         Select a dataset to link
+      </div>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
         <span
           className="svg-icon "
-          onClick={[Function]}
+          onClick={undefined}
         >
           <svg
             className="add-icon"
@@ -44,7 +51,8 @@ exports[`renders datasets view - datasets 1`] = `
             </g>
           </svg>
         </span>
-      </div>
+        New
+      </button>
     </div>
     <div
       className="center-block row"
@@ -311,6 +319,7 @@ exports[`renders datasets view - datasets 1`] = `
       <div>
         <div
           className="dataset"
+          onClick={[Function]}
         >
           <span
             className="svg-icon "
@@ -346,17 +355,31 @@ exports[`renders datasets view - datasets 1`] = `
               </span>
             </div>
           </div>
-          <button
-            className="btn btn-sm btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
+          <div
+            className="link-icon"
           >
-            Link
-          </button>
+            <span
+              className="svg-icon "
+              onClick={undefined}
+            >
+              <svg
+                className="angle-right"
+                height="40"
+                viewBox="0 0 40 40"
+                width="40"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  className="stroke"
+                  d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+                />
+              </svg>
+            </span>
+          </div>
         </div>
         <div
           className="dataset"
+          onClick={[Function]}
         >
           <span
             className="svg-icon "
@@ -395,17 +418,31 @@ exports[`renders datasets view - datasets 1`] = `
               </span>
             </div>
           </div>
-          <button
-            className="btn btn-sm btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
+          <div
+            className="link-icon"
           >
-            Link
-          </button>
+            <span
+              className="svg-icon "
+              onClick={undefined}
+            >
+              <svg
+                className="angle-right"
+                height="40"
+                viewBox="0 0 40 40"
+                width="40"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  className="stroke"
+                  d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+                />
+              </svg>
+            </span>
+          </div>
         </div>
         <div
           className="dataset"
+          onClick={[Function]}
         >
           <span
             className="svg-icon "
@@ -441,14 +478,27 @@ exports[`renders datasets view - datasets 1`] = `
               </span>
             </div>
           </div>
-          <button
-            className="btn btn-sm btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
+          <div
+            className="link-icon"
           >
-            Link
-          </button>
+            <span
+              className="svg-icon "
+              onClick={undefined}
+            >
+              <svg
+                className="angle-right"
+                height="40"
+                viewBox="0 0 40 40"
+                width="40"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  className="stroke"
+                  d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+                />
+              </svg>
+            </span>
+          </div>
         </div>
         <button
           className="bottom-button btn btn-default"
@@ -478,9 +528,16 @@ exports[`renders datasets view - loading state 1`] = `
         className="title"
       >
         Select a dataset to link
+      </div>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
         <span
           className="svg-icon "
-          onClick={[Function]}
+          onClick={undefined}
         >
           <svg
             className="add-icon"
@@ -508,7 +565,8 @@ exports[`renders datasets view - loading state 1`] = `
             </g>
           </svg>
         </span>
-      </div>
+        New
+      </button>
     </div>
     <div
       className="loaderoverlay"
@@ -546,9 +604,16 @@ exports[`renders datasets view - no datasets 1`] = `
         className="title"
       >
         Select a dataset to link
+      </div>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
         <span
           className="svg-icon "
-          onClick={[Function]}
+          onClick={undefined}
         >
           <svg
             className="add-icon"
@@ -576,7 +641,8 @@ exports[`renders datasets view - no datasets 1`] = `
             </g>
           </svg>
         </span>
-      </div>
+        New
+      </button>
     </div>
     <div
       className="center-block no-datasets row"
