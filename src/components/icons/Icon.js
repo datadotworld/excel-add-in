@@ -61,10 +61,24 @@ const warning = <svg className='warning-icon' width='16' height='16' viewBox='0 
   </g>
 </svg>
 
+const angleLeft =
+  <svg
+    className='angle-left-icon'
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 40 40"
+  >
+    <path
+      className='stroke'
+      d="m26.5 12.1q0 0.3-0.2 0.6l-8.8 8.7 8.8 8.8q0.2 0.2 0.2 0.5t-0.2 0.5l-1.1 1.1q-0.3 0.3-0.6 0.3t-0.5-0.3l-10.4-10.4q-0.2-0.2-0.2-0.5t0.2-0.5l10.4-10.4q0.3-0.2 0.5-0.2t0.6 0.2l1.1 1.1q0.2 0.2 0.2 0.5z"
+    />
+  </svg>
+
 
 
 const ICONS = {
-  add, check, close, datasetSchema, projectSchema, sync, warning
+  add, check, close, datasetSchema, projectSchema, sync, warning, angleLeft
 };
 
 export default class Icon extends Component {

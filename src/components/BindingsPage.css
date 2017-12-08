@@ -62,13 +62,57 @@
   border-top: 1px solid #dfe3e9;
 }
 
+.bindings-page .section-header .title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.bindings-page .section-header .link {
+  color: #4376b2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bindings-page .section-header .title .link {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: -6px;
+}
+
+.bindings-page svg.angle-left-icon .stroke {
+  fill: #4376b2;
+}
+
+.bindings-page .section-header .button-link {
+  font-size: 16px;
+}
+
+.bindings-page .section-header .title .dropdown {
+  display: flex;
+  position: relative;
+  right: -11px;
+}
+
+.bindings-page .section-header .title .dataset-title {
+  font-size: 18px;
+  font-weight:  bold;
+}
+
+.bindings-page .section-header .button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
 .bindings-page .section-header .button-group button {
-  width: 50%;
   border: none;
   box-shadow: none;
-  padding: 0 1.5rem;
+  padding: 0 10px;
   height: 2rem;
   color: #4376b2;
+  font-size: 16px;
+  flex-grow: 1;
 }
 
 .bindings-page .section-header .button-group button .badge {
@@ -79,12 +123,9 @@
   background-color: transparent;
 }
 
-.bindings-page .section-header .button-group button:first-child {
+.bindings-page .section-header .button-group button:nth-child(even) {
   border-right: 1px solid #dfe3e9;
-}
-
-.bindings-page .dataset-link {
-  margin-bottom: 1rem;
+  border-left: 1px solid #dfe3e9;
 }
 
 .bindings-page .section-header a {
@@ -95,6 +136,11 @@
   text-overflow: ellipsis;
   display: block;
   white-space: nowrap;
+}
+
+.bindings-page .section-header .title .svg-icon {
+  width: 19px;
+  height: 23px;
 }
 
 .bindings-page .button-group button .svg-icon {
