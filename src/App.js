@@ -320,6 +320,54 @@ class App extends Component {
   }
 
   /**
+   * Removes blank rows and columns around the data
+   */
+  trimFile = (grid) => {
+    const numberOfRows = grid.length;
+    const numberOfColumns = grid[0].length;
+
+    // Rows and columns where the data starts and ends
+    const paramaters = {
+      firstRow: numberOfRows,
+      lastRow: 0,
+      firstColumn: numberOfColumns,
+      lastColumn: 0
+    }
+
+    for (let row = 0; row < numberOfRows; row++) {
+      for (let column = 0; column < numberOfColumns; column++) {
+
+        // If current cell contains data
+        if (grid[row][column]) {
+          if (row < paramaters.firstRow) {
+            paramaters.firstRow = row
+          }
+          if (row > paramaters.lastRow) {
+            paramaters.lastRow = row
+          }
+
+          if (column < paramaters.firstColumn) {
+            paramaters.firstColumn = column
+          }
+
+          if (column > paramaters.lastColumn) {
+            paramaters.lastColumn = column
+          }
+        }
+      }
+    }
+
+    // Remove blank rows and columns
+    const trimmedRows = grid.slice(paramaters.firstRow, paramaters.lastRow + 1);
+    const trimmedColumns = trimmedRows.map(row => {
+      return row.slice(paramaters.firstColumn, paramaters.lastColumn + 1);
+    })
+
+    const result = trimmedColumns.length > 0 ? trimmedColumns : [['']]
+    return result;
+  }
+
+  /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
@@ -331,8 +379,9 @@ class App extends Component {
       bindings.forEach((binding) => {
         const promise = new Promise((resolve, reject) => {
           this.office.getData(binding).then((data) => {
+            const trimmedData = this.trimFile(data);
             return this.api.uploadFile({
-              data,
+              data: trimmedData,
               dataset: this.state.dataset,
               filename: binding.id.replace('dw::', '')
             });
