@@ -169,6 +169,31 @@ class AddDataModal extends Component {
     }
   }
 
+  getSelectionText(range) {
+    if (range) {
+      const rowsInSheet = 1048576;
+      const maxColumns = 150;
+
+      // Return sheet number if entire sheet is selected
+      if (range.rowCount ===  rowsInSheet && range.columnCount === maxColumns) {
+        const selection = range.address;
+        const sheet = selection.substring(0, selection.indexOf('!'));
+        return `(${sheet})`;
+      }
+
+      // Return number of rows and columns in selection
+      const rowCount = range.rowCount;
+      const columnCount = range.columnCount;
+      const rowText = rowCount === 1 ? 'Row' : 'Rows';
+      const columnText = columnCount === 1 ? 'Column' : 'Columns';
+
+      return `(${rowCount} ${rowText} x ${columnCount} ${columnText})`;
+    }
+
+    // Range no yet loaded, return placeholder text
+    return '(Rows x Columns)';
+  }
+
   render () {
     const { name, selectSheet } = this.state;
     const { excelApiSupported, options, range } = this.props;
@@ -204,9 +229,7 @@ class AddDataModal extends Component {
                 </label>
                 <div className='selection-info'>
                   {
-                    range ?
-                    `(${range.rowCount} Rows x ${range.columnCount} Columns)` :
-                    '(Rows x Columns)'
+                    this.getSelectionText(range)
                   }
                 </div>
               </div>
