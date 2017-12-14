@@ -171,16 +171,6 @@ class AddDataModal extends Component {
 
   getSelectionText(range) {
     if (range) {
-      const rowsInSheet = 1048576;
-      const maxColumns = 150;
-
-      // Return sheet number if entire sheet is selected
-      if (range.rowCount ===  rowsInSheet && range.columnCount === maxColumns) {
-        const selection = range.address;
-        const sheet = selection.substring(0, selection.indexOf('!'));
-        return `(${sheet})`;
-      }
-
       // Return number of rows and columns in selection
       const rowCount = range.rowCount;
       const columnCount = range.columnCount;
@@ -228,9 +218,7 @@ class AddDataModal extends Component {
                   <span>Selection</span>
                 </label>
                 <div className='selection-info'>
-                  {
-                    this.getSelectionText(range)
-                  }
+                  { this.getSelectionText(range) }
                 </div>
               </div>
               <div className='selection'>

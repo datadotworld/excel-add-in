@@ -421,7 +421,13 @@ class App extends Component {
   showAddData = (filename, binding) => {
 
     if (binding) {
-      this.office.select(binding.rangeAddress);
+      const maxRows = 1048576;
+      const maxColumns = 150;
+
+      // Select non sheet binding range
+      if (binding.rowCount !== maxRows && binding.columnCount !== maxColumns) {
+        this.office.select(binding.rangeAddress);
+      }
     }
 
     // Listen for changes to the selected range
