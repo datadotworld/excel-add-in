@@ -427,6 +427,10 @@ class App extends Component {
       // Select non sheet binding range
       if (binding.rowCount !== maxRows && binding.columnCount !== maxColumns) {
         this.office.select(binding.rangeAddress);
+      } else {
+        // Display the bound sheet
+        const sheet = binding.rangeAddress.substring(0, binding.rangeAddress.indexOf('!'));
+        this.office.activateSheet(sheet);
       }
     }
 

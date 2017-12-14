@@ -224,6 +224,19 @@ export default class OfficeConnector {
     });
   }
 
+  activateSheet (sheet) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run(function (ctx) {
+        var worksheet = ctx.workbook.worksheets.getItem(sheet);
+        worksheet.activate();
+        return ctx.sync().then(resolve);
+      });;
+    });
+  }
+
   getData (binding) {
     return new Promise((resolve, reject) => {
       const {columnCount, rowCount} = binding;
