@@ -44,6 +44,23 @@ const getFilenameWithoutExtension = function (filename) {
   return dotPos > -1 ? filename.slice(0, dotPos) : filename;
 }
 
+const selectSheetState = function (options) {
+  const binding = options.binding;
+  // If editing a binding set the state from the binding
+  if (binding) {
+    const maxRows = 1048576;
+    const maxColumns = 150;
+
+    // If it's a sheet binding set to true
+    if (binding.rowCount === maxRows && binding.columnCount === maxColumns) {
+      return true;
+    }
+  }
+
+  // False when creating a new binding or editing a selection binding
+  return false;
+}
+
 class AddDataModal extends Component {
   static propTypes = {
     close: PropTypes.func,
@@ -65,7 +82,7 @@ class AddDataModal extends Component {
     isSubmitting: false,
     name: this.props.options.filename ? getFilenameWithoutExtension(this.props.options.filename) : '',
     showWarningModal: false,
-    selectSheet: false
+    selectSheet: selectSheetState(this.props.options)
   }
 
   isFormValid = () => {
@@ -211,10 +228,16 @@ class AddDataModal extends Component {
         <Row className='center-block'>
           <form onSubmit={this.submit}>
             {excelApiSupported &&
-            <form className='selection-form' onClick={this.changeSelection}>
+            <div className='selection-form' onClick={this.changeSelection}>
               <div className='selection'>
                 <label className='radio-button'>
-                  <input type='radio' name='selection' value='selection' defaultChecked />
+                  <input
+                    type='radio'
+                    name='selection'
+                    value='selection'
+                    checked={!this.state.selectSheet}
+                    readOnly
+                  />
                   <span>Selection</span>
                 </label>
                 <div className='selection-info'>
@@ -223,7 +246,13 @@ class AddDataModal extends Component {
               </div>
               <div className='selection'>
                 <label className='radio-button'>
-                  <input type='radio' name='selection' value='sheet' />
+                  <input
+                    type='radio'
+                    name='selection'
+                    value='sheet'
+                    checked={this.state.selectSheet}
+                    readOnly
+                  />
                   <span>Sheet</span>
                 </label>
                 <div className='selection-info'>
@@ -237,7 +266,7 @@ class AddDataModal extends Component {
                   'Select the area to bind in the worksheet, it will be reflected here.'
                 }
               </HelpBlock>
-            </form>}
+            </div>}
             {!excelApiSupported && <div>
               <ControlLabel>Dataset range</ControlLabel>
               <HelpBlock>
