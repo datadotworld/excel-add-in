@@ -36,7 +36,7 @@ exports[`renders modal - with options 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <form
+      <div
         className="selection-form"
         onClick={[Function]}
       >
@@ -47,8 +47,9 @@ exports[`renders modal - with options 1`] = `
             className="radio-button"
           >
             <input
-              defaultChecked={true}
+              checked={true}
               name="selection"
+              readOnly={true}
               type="radio"
               value="selection"
             />
@@ -69,7 +70,9 @@ exports[`renders modal - with options 1`] = `
             className="radio-button"
           >
             <input
+              checked={false}
               name="selection"
+              readOnly={true}
               type="radio"
               value="sheet"
             />
@@ -88,7 +91,7 @@ exports[`renders modal - with options 1`] = `
         >
           Select the area to bind in the worksheet, it will be reflected here.
         </span>
-      </form>
+      </div>
       <div
         className="form-group has-success"
       >
@@ -188,7 +191,7 @@ exports[`renders modal - with range 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <form
+      <div
         className="selection-form"
         onClick={[Function]}
       >
@@ -199,8 +202,9 @@ exports[`renders modal - with range 1`] = `
             className="radio-button"
           >
             <input
-              defaultChecked={true}
+              checked={true}
               name="selection"
+              readOnly={true}
               type="radio"
               value="selection"
             />
@@ -221,7 +225,9 @@ exports[`renders modal - with range 1`] = `
             className="radio-button"
           >
             <input
+              checked={false}
               name="selection"
+              readOnly={true}
               type="radio"
               value="sheet"
             />
@@ -240,7 +246,7 @@ exports[`renders modal - with range 1`] = `
         >
           Select the area to bind in the worksheet, it will be reflected here.
         </span>
-      </form>
+      </div>
       <div
         className="form-group"
       >
