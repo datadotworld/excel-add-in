@@ -62,6 +62,24 @@ class BindingsListItem extends Component {
     this.props.removeBinding(this.props.binding);
   }
 
+  showAddress = (binding) => {
+    const range = binding.rangeAddress;
+    if (range) {
+      const maxRows = 1048576;
+      const maxColumns = 150;
+
+      // If it's a sheet binding just show the sheet number
+      if (binding.rowCount === maxRows && binding.columnCount === maxColumns) {
+        return range.substring(0, range.indexOf('!'))
+      } else {
+        return range;
+      }
+    } else {
+      // Still loading
+      return ''
+    }
+  }
+
   render () {
     const { file, binding, syncing, syncStatus } = this.props;
 
@@ -81,7 +99,7 @@ class BindingsListItem extends Component {
           <div className='title'>{file.name}</div>
           {!hasPendingChanges &&
             <div className='info'>
-              {binding && <a onClick={this.onEditClick}>{binding.rangeAddress && `${binding.rangeAddress}`} <Glyphicon glyph='pencil' /> · </a>}
+              {binding && <a onClick={this.onEditClick}>{this.showAddress(binding)} <Glyphicon glyph='pencil' /> · </a>}
               Updated <FormattedDate value={file.updated} year='numeric' month='short' day='2-digit' />
             </div>}
           {hasPendingChanges && <div className='info'>{syncStatus.changes} pending changes</div>}
