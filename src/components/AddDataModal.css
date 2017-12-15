@@ -19,3 +19,60 @@
 .add-data-modal {
   top: 50px;
 }
+
+.selection {
+  display: flex;
+  border: 1px solid #a3afbf;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selection span {
+  margin: 0;
+  padding-left: 6px;
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+}
+
+.selection span::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  border: 1px solid white;
+  box-shadow: 0 0 0 0.05em grey;
+  margin-right: 0.75em;
+}
+
+.selection input[type=radio] {
+  display: none;
+}
+
+.selection input[type=radio]:checked + span::before {
+  border: 4.5px solid #328df3;
+  background: white;
+  box-shadow: 0 0 0 0.05em grey;
+}
+
+.selection .radio-button {
+  display: flex;
+  padding: 12px;
+  align-items: center;
+}
+
+.selection .selection-info {
+  display: flex;
+  padding: 12px;
+  color: #969696;
+  font-size: 11px;
+}
+
+.select-sheet {
+  background-color: aliceblue;
+}
+
+.full-screen-modal .center-block .selection-form {
+  padding: 0;
+}

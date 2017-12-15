@@ -27,14 +27,33 @@ it('renders modal', () => {
 });
 
 it('renders modal - with range', () => {
-  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' excelApiSupported />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(
+    <AddDataModal
+      range={{
+        rowCount: 4,
+        columnCount: 2,
+        address: 'Sheet1!A2:B5'
+      }}
+      excelApiSupported
+    />
+  ).toJSON()).toMatchSnapshot()
 });
 
 it('renders modal - with options', () => {
   const options = {
     filename: 'test1.csv'
   };
-  expect(renderer.create(<AddDataModal range='Sheet1!A2:B5' options={options} excelApiSupported />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(
+    <AddDataModal
+      range={{
+        rowCount: 4,
+        columnCount: 2,
+        address: 'Sheet1!A2:B5'
+      }}
+      options={options}
+      excelApiSupported
+    />
+  ).toJSON()).toMatchSnapshot()
 });
 
 it ('removes trailing .csv from filenames', () => {

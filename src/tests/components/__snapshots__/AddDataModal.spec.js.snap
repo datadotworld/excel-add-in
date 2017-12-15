@@ -37,25 +37,55 @@ exports[`renders modal - with options 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="form-group"
+        className="selection-form"
+        onClick={[Function]}
       >
-        <label
-          className="control-label"
-          htmlFor={undefined}
+        <div
+          className="selection"
         >
-          Dataset range
-        </label>
-        <span
-          className="input-group"
+          <label
+            className="radio-button"
+          >
+            <input
+              checked={true}
+              name="selection"
+              readOnly={true}
+              type="radio"
+              value="selection"
+            />
+            <span>
+              Selection
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (4 Rows x 2 Columns)
+          </div>
+        </div>
+        <div
+          className="selection"
         >
-          <input
-            className="form-control"
-            disabled={true}
-            id={undefined}
-            type="text"
-            value="Sheet1!A2:B5"
-          />
-        </span>
+          <label
+            className="radio-button"
+          >
+            <input
+              checked={false}
+              name="selection"
+              readOnly={true}
+              type="radio"
+              value="sheet"
+            />
+            <span>
+              Sheet
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (Sheet 1)
+          </div>
+        </div>
         <span
           className="help-block"
         >
@@ -114,7 +144,7 @@ exports[`renders modal - with options 1`] = `
           disabled={false}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>
@@ -162,25 +192,55 @@ exports[`renders modal - with range 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="form-group"
+        className="selection-form"
+        onClick={[Function]}
       >
-        <label
-          className="control-label"
-          htmlFor={undefined}
+        <div
+          className="selection"
         >
-          Dataset range
-        </label>
-        <span
-          className="input-group"
+          <label
+            className="radio-button"
+          >
+            <input
+              checked={true}
+              name="selection"
+              readOnly={true}
+              type="radio"
+              value="selection"
+            />
+            <span>
+              Selection
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (4 Rows x 2 Columns)
+          </div>
+        </div>
+        <div
+          className="selection"
         >
-          <input
-            className="form-control"
-            disabled={true}
-            id={undefined}
-            type="text"
-            value="Sheet1!A2:B5"
-          />
-        </span>
+          <label
+            className="radio-button"
+          >
+            <input
+              checked={false}
+              name="selection"
+              readOnly={true}
+              type="radio"
+              value="sheet"
+            />
+            <span>
+              Sheet
+            </span>
+          </label>
+          <div
+            className="selection-info"
+          >
+            (Sheet 1)
+          </div>
+        </div>
         <span
           className="help-block"
         >
@@ -238,7 +298,7 @@ exports[`renders modal - with range 1`] = `
           disabled={true}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>
@@ -349,7 +409,7 @@ exports[`renders modal 1`] = `
           disabled={true}
           type="submit"
         >
-          Add selection
+          OK
         </button>
       </div>
     </form>

@@ -95,15 +95,43 @@ export default class OfficeConnector {
     });
   }
 
-  createBinding (name, options) {
+  createSelectionRange(sheet, rangeAddress) {
     return new Promise((resolve, reject) => {
-      Office.context.document.bindings.addFromSelectionAsync(Office.BindingType.Matrix, { id: `dw::${name}` }, (result) => {
-        if (result.status === Office.AsyncResultStatus.Failed) {
-          return reject(result.error.message);
-        }
-        resolve(result.value);
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run(function(ctx) {
+        // Make each namedItem unique to prevent `already exists` errors
+        const namedItem = 'name' + new Date().getTime().toString();
+        const range = ctx.workbook.worksheets
+          .getItem(sheet)
+          .getRange(rangeAddress);
+        const namedItemCollection = ctx.workbook.names;
+        namedItemCollection.add(namedItem, range, 'Range as a name');
+        return ctx.sync().then(resolve(namedItem));
       });
     });
+  }
+
+  createBinding(name, namedItem) {
+    return new Promise((resolve, reject) => {
+      // Create binding after Excel sync to have access to newly added nameditem
+      Excel.run((ctx) => {
+        return ctx.sync().then(() => {
+          Office.context.document.bindings.addFromNamedItemAsync(
+            namedItem,
+            Office.BindingType.Matrix,
+            { id: `dw::${name}` },
+            result => {
+              if (result.status === Office.AsyncResultStatus.Failed) {
+                return reject(result.error.message);
+              }
+              resolve(result.value);
+            }
+          );
+        }).catch(reject);
+      });
+    })
   }
 
   removeBinding (binding) {
@@ -172,9 +200,9 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run((ctx) => {
-        const range = ctx.workbook.getSelectedRange().load('address');;
+        const range = ctx.workbook.getSelectedRange().load(['columnCount', 'rowCount', 'address']);
         return ctx.sync().then(() => {
-          resolve(range.address);
+          resolve(range);
         });
       });
     });
@@ -191,6 +219,19 @@ export default class OfficeConnector {
         const rangeAddress = addressSections[1];
         const range = ctx.workbook.worksheets.getItem(sheetName).getRange(rangeAddress);
         range.select();
+        return ctx.sync().then(resolve);
+      });;
+    });
+  }
+
+  activateSheet (sheet) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run(function (ctx) {
+        var worksheet = ctx.workbook.worksheets.getItem(sheet);
+        worksheet.activate();
         return ctx.sync().then(resolve);
       });;
     });
