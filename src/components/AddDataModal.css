@@ -41,8 +41,7 @@
   width: 1em;
   height: 1em;
   border-radius: 1em;
-  border: 1px solid white;
-  box-shadow: 0 0 0 0.05em grey;
+  border: 1px solid grey;
   margin-right: 0.75em;
 }
 
@@ -53,7 +52,6 @@
 .selection input[type=radio]:checked + span::before {
   border: 4.5px solid #328df3;
   background: white;
-  box-shadow: 0 0 0 0.05em grey;
 }
 
 .selection .radio-button {
