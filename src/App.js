@@ -234,6 +234,9 @@ class App extends Component {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         this.logout();
+      } else if (error.response && error.response.status === 404) {
+        this.unlinkDataset();
+        this.setState({error: 'Dataset not found'})
       } else {
         this.setState({error});
       }
