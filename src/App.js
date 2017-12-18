@@ -248,7 +248,14 @@ class App extends Component {
       const dataset = await this.api.getDataset(datasetUrl);
       return await this.linkDataset(dataset);
     } catch (error) {
-      this.setState({error});
+      if (error.response && error.response.status === 401) {
+        this.logout();
+      } else if (error.response && error.response.status === 404) {
+        this.unlinkDataset();
+        this.setState({error: 'Dataset not found'})
+      } else {
+        this.setState({error});
+      }
     }
   }
 
@@ -261,7 +268,14 @@ class App extends Component {
       }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
-      this.setState({error});
+      if (error.response && error.response.status === 401) {
+        this.logout();
+      } else if (error.response && error.response.status === 404) {
+        this.unlinkDataset();
+        this.setState({error: 'Dataset not found'})
+      } else {
+        this.setState({error});
+      }
     }
   }
 
