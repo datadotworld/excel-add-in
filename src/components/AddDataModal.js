@@ -107,7 +107,7 @@ class AddDataModal extends Component {
     } = this.props;
     const { name, selectSheet } = this.state;
 
-    const sheet = `Sheet${this.getSheetNumber(range)}`;
+    const sheet = this.getSheetName(range);
     const allRows = 1048576;
     const selection = {
       name: `${name}.csv`,
@@ -165,12 +165,11 @@ class AddDataModal extends Component {
     this.props.close();
   }
 
-  getSheetNumber = (range) => {
+  getSheetName = (range) => {
     if (range) {
       const address = range.address;
       const sheet = address.substring(0, address.indexOf('!'));
-      const sheetNumber = sheet.match(/[0-9]+/);
-      return sheetNumber;
+      return sheet;
     }
 
     return ''
@@ -213,7 +212,7 @@ class AddDataModal extends Component {
     }
 
     if (selectSheet) {
-      selection = range ? `Sheet${this.getSheetNumber(range)}` : '';
+      selection = range ? this.getSheetName(range) : '';
     } else {
       selection = range ? range.address : '';
     }
@@ -256,7 +255,7 @@ class AddDataModal extends Component {
                   <span>Sheet</span>
                 </label>
                 <div className='selection-info'>
-                  {`(Sheet ${this.getSheetNumber(range)})`}
+                  {`(${this.getSheetName(range)})`}
                 </div>
               </div>
               <HelpBlock>

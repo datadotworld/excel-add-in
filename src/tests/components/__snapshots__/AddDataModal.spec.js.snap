@@ -83,7 +83,7 @@ exports[`renders modal - with options 1`] = `
           <div
             className="selection-info"
           >
-            (Sheet 1)
+            (Sheet1)
           </div>
         </div>
         <span
@@ -238,7 +238,7 @@ exports[`renders modal - with range 1`] = `
           <div
             className="selection-info"
           >
-            (Sheet 1)
+            (Sheet1)
           </div>
         </div>
         <span
