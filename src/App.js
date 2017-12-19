@@ -60,6 +60,7 @@ class App extends Component {
     this.linkNewDataset = this.linkNewDataset.bind(this);
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
     this.updateBinding = this.updateBinding.bind(this);
+    this.sync = this.sync.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -374,14 +375,26 @@ class App extends Component {
     return result;
   }
 
+  refreshBindings() {
+    return new Promise((resolve, reject) => {
+      this.office.getBindings().then((bindings) => {
+        resolve(bindings);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+    })
+  }
+
   /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
-  sync = (binding) => {
+  async sync(binding) {
     this.setState({syncing: true});
+    const syncedBindings = await this.refreshBindings();
     return new Promise((resolve, reject) => {
-      const bindings = binding ? [binding] : this.state.bindings;
+      const bindings = binding ? [binding] : syncedBindings;
       const promises = [];
       bindings.forEach((binding) => {
         const promise = new Promise((resolve, reject) => {
@@ -411,7 +424,7 @@ class App extends Component {
       });
 
       Promise.all(promises).then(() => {
-        this.setState({syncing: false});
+        this.setState({syncing: false, bindings: syncedBindings});
         resolve();
       }).catch((error) => {
         this.setState({error});
