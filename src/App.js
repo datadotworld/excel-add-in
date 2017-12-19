@@ -391,47 +391,51 @@ class App extends Component {
    * is provided, then only that binding is saved to data.world.
    */
   async sync(binding) {
-    this.setState({syncing: true});
-    const syncedBindings = await this.refreshBindings();
-    return new Promise((resolve, reject) => {
-      const bindings = binding ? [binding] : syncedBindings;
-      const promises = [];
-      bindings.forEach((binding) => {
-        const promise = new Promise((resolve, reject) => {
-          this.office.getData(binding).then((data) => {
-            const trimmedData = this.trimFile(data);
-            return this.api.uploadFile({
-              data: trimmedData,
-              dataset: this.state.dataset,
-              filename: binding.id.replace('dw::', '')
+    try {
+      this.setState({syncing: true});
+      const syncedBindings = await this.refreshBindings();
+      return new Promise((resolve, reject) => {
+        const bindings = binding ? [binding] : syncedBindings;
+        const promises = [];
+        bindings.forEach((binding) => {
+          const promise = new Promise((resolve, reject) => {
+            this.office.getData(binding).then((data) => {
+              const trimmedData = this.trimFile(data);
+              return this.api.uploadFile({
+                data: trimmedData,
+                dataset: this.state.dataset,
+                filename: binding.id.replace('dw::', '')
+              });
+            }).then(() => {
+              const syncStatus = this.state.syncStatus;
+              syncStatus[binding.id].synced = true;
+              syncStatus[binding.id].changes = 0;
+              syncStatus[binding.id].lastSync = new Date();
+              this.office.setSyncStatus(syncStatus);
+              this.setState({ syncStatus });
+              resolve();
+            }).catch((error) => {
+              this.setState({error});
+              this.setState({syncing: false});
+              reject();
             });
-          }).then(() => {
-            const syncStatus = this.state.syncStatus;
-            syncStatus[binding.id].synced = true;
-            syncStatus[binding.id].changes = 0;
-            syncStatus[binding.id].lastSync = new Date();
-            this.office.setSyncStatus(syncStatus);
-            this.setState({ syncStatus });
-            resolve();
-          }).catch((error) => {
-            this.setState({error});
-            this.setState({syncing: false});
-            reject();
           });
+
+          promises.push(promise);
         });
 
-        promises.push(promise);
+        Promise.all(promises).then(() => {
+          this.setState({syncing: false, bindings: syncedBindings});
+          resolve();
+        }).catch((error) => {
+          this.setState({error});
+          this.setState({syncing: false});
+          reject();
+        });
       });
-
-      Promise.all(promises).then(() => {
-        this.setState({syncing: false, bindings: syncedBindings});
-        resolve();
-      }).catch((error) => {
-        this.setState({error});
-        this.setState({syncing: false});
-        reject();
-      });
-    });
+    } catch(error) {
+      this.setState({syncing: false, error});
+    }
   }
 
   showCreateDataset = () => {
