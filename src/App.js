@@ -224,6 +224,17 @@ class App extends Component {
     }
   }
 
+  handleDatasetFetchError(error) {
+    if (error.response && error.response.status === 401) {
+      this.logout();
+    } else if (error.response && error.response.status === 404) {
+      this.unlinkDataset();
+      this.setState({error: 'Dataset not found'})
+    } else {
+      this.setState({error});
+    }
+  }
+
   async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
     try {
       const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
@@ -232,11 +243,7 @@ class App extends Component {
 
       return dataset;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        this.logout();
-      } else {
-        this.setState({error});
-      }
+      this.handleDatasetFetchError(error);
     }
   }
 
@@ -245,7 +252,7 @@ class App extends Component {
       const dataset = await this.api.getDataset(datasetUrl);
       return await this.linkDataset(dataset);
     } catch (error) {
-      this.setState({error});
+      this.handleDatasetFetchError(error);
     }
   }
 
@@ -258,7 +265,7 @@ class App extends Component {
       }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
-      this.setState({error});
+      this.handleDatasetFetchError(error);
     }
   }
 
