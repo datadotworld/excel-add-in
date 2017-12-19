@@ -109,6 +109,7 @@
 .file .link-button {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 2rem;
   padding: 0;
   border: 1px solid #5ab962;
