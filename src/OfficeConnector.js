@@ -95,7 +95,7 @@ export default class OfficeConnector {
     });
   }
 
-  createSelectionRange(sheet, rangeAddress) {
+  createSelectionRange(sheetId, rangeAddress) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
@@ -104,11 +104,13 @@ export default class OfficeConnector {
         // Make each namedItem unique to prevent `already exists` errors
         const namedItem = 'name' + new Date().getTime().toString();
         const range = ctx.workbook.worksheets
-          .getItem(sheet)
+          .getItem(sheetId)
           .getRange(rangeAddress);
         const namedItemCollection = ctx.workbook.names;
         namedItemCollection.add(namedItem, range, 'Range as a name');
-        return ctx.sync().then(resolve(namedItem));
+        return ctx.sync()
+          .then(resolve(namedItem))
+          .catch(reject);
       });
     });
   }
@@ -200,7 +202,8 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run((ctx) => {
-        const range = ctx.workbook.getSelectedRange().load(['columnCount', 'rowCount', 'address']);
+        const range = ctx.workbook.getSelectedRange()
+          .load(['columnCount', 'rowCount', 'address', 'worksheet']);
         return ctx.sync().then(() => {
           resolve(range);
         });
