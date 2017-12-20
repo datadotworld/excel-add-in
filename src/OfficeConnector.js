@@ -110,7 +110,7 @@ export default class OfficeConnector {
         namedItemCollection.add(namedItem, range, 'Range as a name');
         return ctx.sync()
           .then(resolve(namedItem))
-          .catch((error) => { reject(error) });
+          .catch(reject);
       });
     });
   }
