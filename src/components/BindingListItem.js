@@ -28,6 +28,7 @@ import FileTypeIcon from './icons/FileTypeIcon';
 import Icon from './icons/Icon';
 
 import analytics from '../analytics';
+import { isSheetBinding, getSheetName } from '../util/index';
 
 class BindingsListItem extends Component {
 
@@ -63,18 +64,12 @@ class BindingsListItem extends Component {
   }
 
   showAddress = (binding) => {
-    const range = binding.rangeAddress;
-    if (range) {
-      const maxRows = 1048576;
-      const maxColumns = 150;
-      const sheet = range.substring(0, range.indexOf('!')).replace(/'/g, '');
-
-      // If it's a sheet binding just show the sheet name
-      if (binding.rowCount === maxRows && binding.columnCount === maxColumns) {
-        return sheet;
+    if (binding) {
+      // If it's a sheet binding just show the sheet number
+      if (isSheetBinding(binding)) {
+        return getSheetName(binding);
       } else {
-        const cellRange = range.substring(range.indexOf('!') + 1);
-        return `${sheet}!${cellRange}`;
+        return binding.rangeAddress;
       }
     } else {
       // Still loading

@@ -36,13 +36,13 @@ import LoginHeader from './components/LoginHeader';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
+import { isSheetBinding, getSheetName } from './util';
+import { MAX_COLUMNS, MAX_COLUMNS_ERROR } from './constants';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_PREFERENCES = 'DW_PREFERENCES';
 const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
 const { localStorage } = window;
-
-const MAXIMUM_COLUMNS = 150;
 
 class App extends Component {
 
@@ -171,9 +171,9 @@ class App extends Component {
     try {
       const namedItem = await this.office.createSelectionRange(selection.sheetId, selection.range)
       const binding = await this.office.createBinding(selection.name, namedItem);
-      if (binding.columnCount > MAXIMUM_COLUMNS) {
+      if (binding.columnCount > MAX_COLUMNS) {
         await this.office.removeBinding(binding);
-        throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
+        throw new Error(MAX_COLUMNS_ERROR);
       }
 
       await this.office.getBindingRange(binding);
@@ -392,7 +392,7 @@ class App extends Component {
   updateBindings(currentBindings, newBindings) {
     // Get all the current sheet bindings
     const sheetBindings = currentBindings.filter((binding) => {
-      return binding.rowCount === 1048576 && binding.columnCount === 150
+      return isSheetBinding(binding);
     });
     const sheetBindingIds = sheetBindings.map((binding) => binding.id );
     const result = newBindings.map((binding) => {
@@ -471,15 +471,12 @@ class App extends Component {
   showAddData = (filename, binding) => {
 
     if (binding) {
-      const maxRows = 1048576;
-      const maxColumns = 150;
-
       // Select non sheet binding range
-      if (binding.rowCount !== maxRows && binding.columnCount !== maxColumns) {
+      if (!isSheetBinding(binding)) {
         this.office.select(binding.rangeAddress);
       } else {
         // Display the bound sheet
-        const sheet = binding.rangeAddress.substring(0, binding.rangeAddress.indexOf('!'));
+        const sheet = getSheetName(binding);
         this.office.activateSheet(sheet);
       }
     }
