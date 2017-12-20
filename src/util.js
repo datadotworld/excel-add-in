@@ -1,4 +1,4 @@
-import { MAX_ROWS, MAX_COLUMNS } from '../constants';
+import { MAX_ROWS, MAX_COLUMNS } from './constants';
 
 export function isSheetBinding(binding) {
   if (binding.rowCount === MAX_ROWS && binding.columnCount === MAX_COLUMNS) {

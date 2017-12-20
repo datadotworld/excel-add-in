@@ -28,7 +28,7 @@ import FileTypeIcon from './icons/FileTypeIcon';
 import Icon from './icons/Icon';
 
 import analytics from '../analytics';
-import { isSheetBinding, getSheetName } from '../util/index';
+import { isSheetBinding, getSheetName } from '../util';
 
 class BindingsListItem extends Component {
 

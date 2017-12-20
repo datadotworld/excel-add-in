@@ -387,16 +387,20 @@ class App extends Component {
   }
 
   /**
-   * Returns the new array of bindings to be stored in state
+   * @param {array} currentBindings: Bindings currently stored in state
+   * @param {array} newBindings: Bindings stored in Excel
+   *
+   * @returns {array} the new array of bindings to be stored in state
    */
   updateBindings(currentBindings, newBindings) {
     // Get all the current sheet bindings
     const sheetBindings = currentBindings.filter((binding) => {
       return isSheetBinding(binding);
     });
-    const sheetBindingIds = sheetBindings.map((binding) => binding.id );
+    const sheetBindingIds = sheetBindings.map((binding) => binding.id);
+
     const result = newBindings.map((binding) => {
-      // Do not update if it is a sheet binding, return current binding
+      // Do not update if it is a sheet binding
       if (sheetBindingIds.indexOf(binding.id) > -1) {
         return sheetBindings.find((sheetBinding) => {
           return sheetBinding.id === binding.id
@@ -450,6 +454,8 @@ class App extends Component {
         Promise.all(promises).then(() => {
           this.setState({
             syncing: false,
+            // Actions such as renaming a sheet and deleting columns change binding values in Excel
+            // Bindings stored in Excel and those in the state should therefore be kept in sync
             bindings: this.updateBindings(currentBindings, syncedBindings)
           });
           resolve();
