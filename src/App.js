@@ -387,12 +387,35 @@ class App extends Component {
   }
 
   /**
+   * Returns the new array of bindings to be stored in state
+   */
+  updateBindings(currentBindings, newBindings) {
+    // Get all the current sheet bindings
+    const sheetBindings = currentBindings.filter((binding) => {
+      return binding.rowCount === 1048576 && binding.columnCount === 150
+    });
+    const sheetBindingIds = sheetBindings.map((binding) => binding.id );
+    const result = newBindings.map((binding) => {
+      // Do not update if it is a sheet binding, return current binding
+      if (sheetBindingIds.indexOf(binding.id) > -1) {
+        return sheetBindings.find((sheetBinding) => {
+          return sheetBinding.id === binding.id
+        });
+      } else {
+        return binding;
+      }
+    });
+    return result;
+  }
+
+  /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
   async sync(binding) {
     try {
       this.setState({syncing: true});
+      const currentBindings = this.state.bindings;
       const syncedBindings = await this.refreshBindings();
       return new Promise((resolve, reject) => {
         const bindings = binding ? [binding] : syncedBindings;
@@ -425,7 +448,10 @@ class App extends Component {
         });
 
         Promise.all(promises).then(() => {
-          this.setState({syncing: false, bindings: syncedBindings});
+          this.setState({
+            syncing: false,
+            bindings: this.updateBindings(currentBindings, syncedBindings)
+          });
           resolve();
         }).catch((error) => {
           this.setState({error});
