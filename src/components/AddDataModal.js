@@ -107,11 +107,10 @@ class AddDataModal extends Component {
     } = this.props;
     const { name, selectSheet } = this.state;
 
-    const sheet = this.getSheetName(range);
     const allRows = 1048576;
     const selection = {
       name: `${name}.csv`,
-      sheet,
+      sheetId: range.worksheet.id,
       range: selectSheet ? `A1:ET${allRows}` : range.address
     };
 
@@ -168,7 +167,8 @@ class AddDataModal extends Component {
   getSheetName = (range) => {
     if (range) {
       const address = range.address;
-      const sheet = address.substring(0, address.indexOf('!'));
+      // Extract sheet name and trim quote marks which are added when the name has a space
+      const sheet = address.substring(0, address.indexOf('!')).replace(/'/g, '');
       return sheet;
     }
 

@@ -67,12 +67,14 @@ class BindingsListItem extends Component {
     if (range) {
       const maxRows = 1048576;
       const maxColumns = 150;
+      const sheet = range.substring(0, range.indexOf('!')).replace(/'/g, '');
 
-      // If it's a sheet binding just show the sheet number
+      // If it's a sheet binding just show the sheet name
       if (binding.rowCount === maxRows && binding.columnCount === maxColumns) {
-        return range.substring(0, range.indexOf('!'))
+        return sheet;
       } else {
-        return range;
+        const cellRange = range.substring(range.indexOf('!') + 1);
+        return `${sheet}!${cellRange}`;
       }
     } else {
       // Still loading
