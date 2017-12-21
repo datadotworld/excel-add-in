@@ -31,13 +31,14 @@ import {
 } from 'react-bootstrap';
 
 import analytics from '../analytics';
+import { isSheetBinding } from '../util';
+import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
 
 import Icon from './icons/Icon';
 import WarningModal from './WarningModal';
 import './AddDataModal.css';
 
 const filenameRegex = /^[^/]+$/;
-const MAX_FILENAME_LENGTH = 128;
 
 const getFilenameWithoutExtension = function (filename) {
   const dotPos = filename.lastIndexOf('.');
@@ -48,13 +49,7 @@ const selectSheetState = function (options) {
   const binding = options.binding;
   // If editing a binding set the state from the binding
   if (binding) {
-    const maxRows = 1048576;
-    const maxColumns = 150;
-
-    // If it's a sheet binding set to true
-    if (binding.rowCount === maxRows && binding.columnCount === maxColumns) {
-      return true;
-    }
+    return isSheetBinding(binding);
   }
 
   // False when creating a new binding or editing a selection binding
@@ -107,11 +102,10 @@ class AddDataModal extends Component {
     } = this.props;
     const { name, selectSheet } = this.state;
 
-    const allRows = 1048576;
     const selection = {
       name: `${name}.csv`,
       sheetId: range.worksheet.id,
-      range: selectSheet ? `A1:ET${allRows}` : range.address
+      range: selectSheet ? SHEET_RANGE : range.address
     };
 
     if (options.binding) {
@@ -196,7 +190,7 @@ class AddDataModal extends Component {
       return `(${rowCount} ${rowText} x ${columnCount} ${columnText})`;
     }
 
-    // Range no yet loaded, return placeholder text
+    // Range not yet loaded, return placeholder text
     return '(Rows x Columns)';
   }
 

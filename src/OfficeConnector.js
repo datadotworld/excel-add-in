@@ -218,7 +218,8 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run(function (ctx) {
-        const sheetName = addressSections[0];
+        // Sheet names with spaces have quotes around them
+        const sheetName = addressSections[0].replace(/'/g, '');
         const rangeAddress = addressSections[1];
         const range = ctx.workbook.worksheets.getItem(sheetName).getRange(rangeAddress);
         range.select();

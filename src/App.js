@@ -36,13 +36,13 @@ import LoginHeader from './components/LoginHeader';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
+import { isSheetBinding, getSheetName } from './util';
+import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_PREFERENCES = 'DW_PREFERENCES';
 const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
 const { localStorage } = window;
-
-const MAXIMUM_COLUMNS = 150;
 
 class App extends Component {
 
@@ -171,9 +171,9 @@ class App extends Component {
     try {
       const namedItem = await this.office.createSelectionRange(selection.sheetId, selection.range)
       const binding = await this.office.createBinding(selection.name, namedItem);
-      if (binding.columnCount > MAXIMUM_COLUMNS) {
+      if (binding.columnCount > MAX_COLUMNS) {
         await this.office.removeBinding(binding);
-        throw new Error(`The maximum number of columns is ${MAXIMUM_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `);
+        throw new Error(MAX_COLUMNS_ERROR);
       }
 
       await this.office.getBindingRange(binding);
@@ -202,8 +202,10 @@ class App extends Component {
     try {
       await this.office.removeBinding(binding);
       const { bindings } = this.state;
-      bindings.splice(bindings.indexOf(binding), 1);
-      this.setState({ bindings });
+      if (bindings.indexOf(binding) > -1) {
+        bindings.splice(bindings.indexOf(binding), 1);
+        this.setState({ bindings });
+      }
     } catch (error) {
       this.setState({error});
     }
@@ -375,7 +377,7 @@ class App extends Component {
     return result;
   }
 
-  refreshBindings() {
+  getExcelBindings() {
     return new Promise((resolve, reject) => {
       this.office.getBindings().then((bindings) => {
         resolve(bindings);
@@ -387,15 +389,64 @@ class App extends Component {
   }
 
   /**
+   * Replaces all the bindings stored in the state with those stored in Excel
+   * while ensuring sheet bindings remain bound to the sheet
+   */
+  updateBindings() {
+    return new Promise((resolve, reject) => {
+      this.getExcelBindings().then((excelBindings) => {
+        // Get all the current sheet bindings from state
+        const sheetBindings = this.state.bindings.filter((binding) => {
+          return isSheetBinding(binding);
+        });
+        const sheetBindingIds = sheetBindings.map((binding) => binding.id);
+
+        // Remove all the current state bindings for replacement
+        this.setState({bindings: []});
+        const promises = [];
+
+        excelBindings.forEach((binding) => {
+          // Find sheet bindings whose binding range has changed in Excel but not in the state
+          if (sheetBindingIds.indexOf(binding.id) > -1 && !isSheetBinding(binding)) {
+            // Rebind changed bindings to the sheet
+            const promise = new Promise((resolve, reject) => {
+              // Sheet ID unavailable, use the sheet name instead
+              const sheet = getSheetName(binding);
+              // Extract file name from the binding id
+              const name = binding.id.replace('dw::', '');
+              const range = SHEET_RANGE;
+
+              this.updateBinding(binding, {sheetId: sheet, range, name})
+                .then(resolve)
+                .catch(reject);
+            });
+            promises.push(promise);
+          } else {
+            // Simply add all other bindings to the state
+            const stateBindings = this.state.bindings;
+            stateBindings.push(binding)
+            this.setState({bindings: stateBindings});
+          }
+        });
+        Promise.all(promises)
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
   async sync(binding) {
     try {
       this.setState({syncing: true});
-      const syncedBindings = await this.refreshBindings();
+      // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
+      // to change, bindings must therefore be updated before a sync is attempted
+      await this.updateBindings();
       return new Promise((resolve, reject) => {
-        const bindings = binding ? [binding] : syncedBindings;
+        const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         bindings.forEach((binding) => {
           const promise = new Promise((resolve, reject) => {
@@ -425,7 +476,7 @@ class App extends Component {
         });
 
         Promise.all(promises).then(() => {
-          this.setState({syncing: false, bindings: syncedBindings});
+          this.setState({syncing: false});
           resolve();
         }).catch((error) => {
           this.setState({error});
@@ -445,15 +496,12 @@ class App extends Component {
   showAddData = (filename, binding) => {
 
     if (binding) {
-      const maxRows = 1048576;
-      const maxColumns = 150;
-
       // Select non sheet binding range
-      if (binding.rowCount !== maxRows && binding.columnCount !== maxColumns) {
+      if (!isSheetBinding(binding)) {
         this.office.select(binding.rangeAddress);
       } else {
         // Display the bound sheet
-        const sheet = binding.rangeAddress.substring(0, binding.rangeAddress.indexOf('!'));
+        const sheet = getSheetName(binding);
         this.office.activateSheet(sheet);
       }
     }
