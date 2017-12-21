@@ -37,7 +37,7 @@ import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
 import { isSheetBinding, getSheetName } from './util';
-import { MAX_COLUMNS, MAX_COLUMNS_ERROR } from './constants';
+import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_PREFERENCES = 'DW_PREFERENCES';
@@ -375,7 +375,7 @@ class App extends Component {
     return result;
   }
 
-  refreshBindings() {
+  getExcelBindings() {
     return new Promise((resolve, reject) => {
       this.office.getBindings().then((bindings) => {
         resolve(bindings);
@@ -392,24 +392,39 @@ class App extends Component {
    *
    * @returns {array} the new array of bindings to be stored in state
    */
-  updateBindings(currentBindings, newBindings) {
-    // Get all the current sheet bindings
-    const sheetBindings = currentBindings.filter((binding) => {
-      return isSheetBinding(binding);
-    });
-    const sheetBindingIds = sheetBindings.map((binding) => binding.id);
-
-    const result = newBindings.map((binding) => {
-      // Do not update if it is a sheet binding
-      if (sheetBindingIds.indexOf(binding.id) > -1) {
-        return sheetBindings.find((sheetBinding) => {
-          return sheetBinding.id === binding.id
+  updateBindings() {
+    return new Promise((resolve, reject) => {
+      this.getExcelBindings().then((excelBindings) => {
+        // Get all the current sheet bindings from state
+        const sheetBindings = this.state.bindings.filter((binding) => {
+          return isSheetBinding(binding);
         });
-      } else {
-        return binding;
-      }
+        const sheetBindingIds = sheetBindings.map((binding) => binding.id);
+        const promises = [];
+
+        excelBindings.forEach((binding) => {
+          // Find sheet bindings that have changed in Excel but not in state
+          if (sheetBindingIds.indexOf(binding.id) > -1 && !isSheetBinding(binding)) {
+            // Rebind changed bindings to the sheet
+            const promise = new Promise((resolve, reject) => {
+              // Sheet ID unavailable, use the sheet name instead
+              const sheet = getSheetName(binding);
+              // Extract file name from the binding id
+              const name = binding.id.replace('dw::', '');
+              const range = SHEET_RANGE;
+
+              this.updateBinding(binding, {sheetId: sheet, range, name})
+                .then(resolve)
+                .catch(reject);
+            });
+            promises.push(promise);
+          }
+        });
+        Promise.all(promises)
+          .then(resolve)
+          .catch(reject);
+      });
     });
-    return result;
   }
 
   /**
@@ -419,10 +434,9 @@ class App extends Component {
   async sync(binding) {
     try {
       this.setState({syncing: true});
-      const currentBindings = this.state.bindings;
-      const syncedBindings = await this.refreshBindings();
+      await this.updateBindings();
       return new Promise((resolve, reject) => {
-        const bindings = binding ? [binding] : syncedBindings;
+        const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         bindings.forEach((binding) => {
           const promise = new Promise((resolve, reject) => {
@@ -452,12 +466,7 @@ class App extends Component {
         });
 
         Promise.all(promises).then(() => {
-          this.setState({
-            syncing: false,
-            // Actions such as renaming a sheet and deleting columns change binding values in Excel
-            // Bindings stored in Excel and those in the state should therefore be kept in sync
-            bindings: this.updateBindings(currentBindings, syncedBindings)
-          });
+          this.setState({syncing: false});
           resolve();
         }).catch((error) => {
           this.setState({error});

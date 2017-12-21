@@ -69,7 +69,7 @@ class BindingsListItem extends Component {
       if (isSheetBinding(binding)) {
         return getSheetName(binding);
       } else {
-        return binding.rangeAddress;
+        return binding.rangeAddress.replace(/'/g, '');
       }
     } else {
       // Still loading

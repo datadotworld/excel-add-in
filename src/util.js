@@ -10,5 +10,9 @@ export function isSheetBinding(binding) {
 
 export function getSheetName(binding) {
   const rangeAddress = binding.rangeAddress
-  return rangeAddress.substring(0, rangeAddress.indexOf('!'));
+  return rangeAddress
+    // Extract sheet name from cell range
+    .substring(0, rangeAddress.indexOf('!'))
+    // Remove quotation marks from sheet names containing a space
+    .replace(/'/g, '');
 }
