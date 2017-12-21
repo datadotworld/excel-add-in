@@ -202,8 +202,10 @@ class App extends Component {
     try {
       await this.office.removeBinding(binding);
       const { bindings } = this.state;
-      bindings.splice(bindings.indexOf(binding), 1);
-      this.setState({ bindings });
+      if (bindings.indexOf(binding) > -1) {
+        bindings.splice(bindings.indexOf(binding), 1);
+        this.setState({ bindings });
+      }
     } catch (error) {
       this.setState({error});
     }
@@ -387,10 +389,8 @@ class App extends Component {
   }
 
   /**
-   * @param {array} currentBindings: Bindings currently stored in state
-   * @param {array} newBindings: Bindings stored in Excel
-   *
-   * @returns {array} the new array of bindings to be stored in state
+   * Replaces all the bindings stored in the state with those stored in Excel
+   * while ensuring sheet bindings remain bound to the sheet
    */
   updateBindings() {
     return new Promise((resolve, reject) => {
@@ -400,10 +400,13 @@ class App extends Component {
           return isSheetBinding(binding);
         });
         const sheetBindingIds = sheetBindings.map((binding) => binding.id);
+
+        // Remove all the current state bindings for replacement
+        this.setState({bindings: []});
         const promises = [];
 
         excelBindings.forEach((binding) => {
-          // Find sheet bindings that have changed in Excel but not in state
+          // Find sheet bindings whose binding range has changed in Excel but not in the state
           if (sheetBindingIds.indexOf(binding.id) > -1 && !isSheetBinding(binding)) {
             // Rebind changed bindings to the sheet
             const promise = new Promise((resolve, reject) => {
@@ -418,6 +421,11 @@ class App extends Component {
                 .catch(reject);
             });
             promises.push(promise);
+          } else {
+            // Simply add all other bindings to the state
+            const stateBindings = this.state.bindings;
+            stateBindings.push(binding)
+            this.setState({bindings: stateBindings});
           }
         });
         Promise.all(promises)
@@ -434,6 +442,8 @@ class App extends Component {
   async sync(binding) {
     try {
       this.setState({syncing: true});
+      // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
+      // to change, bindings must therefore be updated before a sync is attempted
       await this.updateBindings();
       return new Promise((resolve, reject) => {
         const bindings = binding ? [binding] : this.state.bindings;

@@ -65,10 +65,11 @@ class BindingsListItem extends Component {
 
   showAddress = (binding) => {
     if (binding) {
-      // If it's a sheet binding just show the sheet number
+      // If it's a sheet binding just show the sheet name
       if (isSheetBinding(binding)) {
         return getSheetName(binding);
       } else {
+        // Sheet names with a space have single quotes added around them
         return binding.rangeAddress.replace(/'/g, '');
       }
     } else {

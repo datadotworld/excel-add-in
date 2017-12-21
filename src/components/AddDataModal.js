@@ -32,7 +32,7 @@ import {
 
 import analytics from '../analytics';
 import { isSheetBinding } from '../util';
-import { MAX_FILENAME_LENGTH, MAX_ROWS } from '../constants';
+import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
 
 import Icon from './icons/Icon';
 import WarningModal from './WarningModal';
@@ -105,7 +105,7 @@ class AddDataModal extends Component {
     const selection = {
       name: `${name}.csv`,
       sheetId: range.worksheet.id,
-      range: selectSheet ? `A1:ET${MAX_ROWS}` : range.address
+      range: selectSheet ? SHEET_RANGE : range.address
     };
 
     if (options.binding) {
