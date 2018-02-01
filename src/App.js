@@ -33,6 +33,7 @@ import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
+import Insights from './components/Insights';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
@@ -84,6 +85,13 @@ class App extends Component {
       }
     }
 
+    let insights;
+    if (window.location.pathname === '/insights') {
+      insights = true;
+    } else {
+      insights = false;
+    }
+
     this.state = {
       token,
       preferences,
@@ -92,7 +100,8 @@ class App extends Component {
       loadingDatasets: false,
       loggedIn: !!token,
       officeInitialized: false,
-      syncStatus: {}
+      syncStatus: {},
+      insights
     };
 
     if (token) {
@@ -575,7 +584,8 @@ class App extends Component {
       showCreateDataset,
       syncing,
       syncStatus,
-      user
+      user,
+      insights
     } = this.state;
 
     let errorMessage = error;
@@ -592,7 +602,7 @@ class App extends Component {
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
-        {!showStartPage && !modalViewOpened && dataset && <BindingsPage
+        {!showStartPage && !modalViewOpened && dataset && !insights && <BindingsPage
           bindings={bindings}
           dataset={dataset}
           createBinding={this.createBinding}
@@ -605,7 +615,7 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {!showStartPage && !dataset && !showCreateDataset && <DatasetsView 
+        {!showStartPage && !dataset && !showCreateDataset && !insights && <DatasetsView
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
@@ -629,6 +639,8 @@ class App extends Component {
           updateBinding={this.updateBinding}
           doesFileExist={this.doesFileExist}
         />}
+
+        {!showStartPage && insights && <Insights />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );
