@@ -60,6 +60,7 @@ class Insights extends Component {
         {selectedChart && <UploadInsight
           getImage={this.props.getImage}
           chart={selectedChart}
+          uploadChart={this.props.uploadChart}
           />}
       </Grid>
     );

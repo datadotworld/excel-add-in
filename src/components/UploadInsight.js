@@ -22,56 +22,81 @@ import {
   ControlLabel,
   FormControl,
   FormGroup,
-  Grid,
   InputGroup,
   Row
 } from 'react-bootstrap';
+import Published from './Published';
 
 import './UploadInsight.css';
 
 
 class UploadInsight extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      title: '',
+      uploadComplete: false
+    }
+  }
+
+  handleChange = (e) => {
+    const {name, value} = e.target;
+
+    this.setState({ [name]: value})
+  }
+
+  upload = () => {
+    const filename = `${this.state.title}.png`;
+    this.props.uploadChart(this.props.chart, {filename});
+    this.setState({uploadComplete: true});
+  }
+
   render() {
+    const {uploadComplete} = this.state;
     return (
-      <Grid>
-        <Row >
-          <div className="insight-upload">
-            <img
-              className="insight-selected"
-              src={`data:image/png;base64, ${this.props.chart}`}
-              alt="chart"
-            />
-            <FormGroup>
-              <ControlLabel className="insight-label">Project</ControlLabel>
-              <InputGroup>
-                <FormControl
-                  type='text' />
-              </InputGroup>
-              <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
-              <InputGroup>
-                <FormControl
-                  type='text' />
-              </InputGroup>
-              <ControlLabel className="insight-label">Add Comment <span className="info">Optional</span></ControlLabel>
-              <InputGroup>
-                <FormControl
-                  componentClass="textarea"
-                  type='textarea' />
-              </InputGroup>
-            </FormGroup>
-            <div className='insight-upload-buttons'>
-              <Button
-                className="insight-upload-button"
-              >
-                Cancel
-              </Button>
-              <Button
-                className="insight-upload-button"
-                bsStyle='primary'>OK</Button>
-            </div>
+      <Row className="upload-row">
+        {!uploadComplete && <div className="insight-upload">
+          <img
+            className="insight-selected"
+            src={`data:image/png;base64, ${this.props.chart}`}
+            alt="chart"
+          />
+          <FormGroup>
+            <ControlLabel className="insight-label">Project</ControlLabel>
+            <InputGroup>
+              <FormControl
+                type='text' />
+            </InputGroup>
+            <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
+            <InputGroup>
+              <FormControl
+                onChange={this.handleChange}
+                name='title'
+                value={this.state.title}
+                type='text' />
+            </InputGroup>
+            <ControlLabel className="insight-label">Add Comment <span className="info">Optional</span></ControlLabel>
+            <InputGroup>
+              <FormControl
+                componentClass="textarea"
+                type='textarea' />
+            </InputGroup>
+          </FormGroup>
+          <div className='insight-upload-buttons'>
+            <Button
+              className="insight-upload-button"
+            >
+              Cancel
+            </Button>
+            <Button
+              className="insight-upload-button"
+              onClick={this.upload}
+              bsStyle='primary'>OK</Button>
           </div>
-        </Row>
-      </Grid>
+        </div>}
+        {uploadComplete && <Published />}
+      </Row>
     );
   }
 }

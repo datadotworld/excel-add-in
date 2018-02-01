@@ -587,6 +587,10 @@ class App extends Component {
       });
     });
   }
+
+  uploadChart = (imageString, options) => {
+    this.api.uploadChart(imageString, options);
+  }
   
   render () {
     const {
@@ -664,6 +668,7 @@ class App extends Component {
           close={this.closeAddInsight}
           getImage={this.office.getImage}
           charts={this.state.charts}
+          uploadChart={this.uploadChart}
         />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>

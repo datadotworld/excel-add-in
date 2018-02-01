@@ -16,47 +16,12 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
- .upload-row {
-   margin: 0
- }
+import React, {Component} from 'react';
 
- .insight-upload {
-    width: 85%;
-    margin: 0 auto;
+class Published extends Component {
+  render() {
+    return (<div className="published">It is complete</div>);
   }
-
- .insight-selected {
-    max-width: 100%;
-    max-height: 100%;
-    margin: 30px 0;
 }
 
-.input-group {
-  width: 100%;
-}
-
-.insight-label {
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.info {
- float: right;
- font-weight: normal;
- color: gray;
- font-size: 12px;
-}
-
-
-.insight-upload-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin: 35px 0;
-}
-
-.insight-upload-button {
-  width: 47%;
-}
+export default Published;

@@ -18,6 +18,7 @@
  */
 import axios from 'axios';
 import papa from 'papaparse';
+import {b64toBlob} from './util';
 
 const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/
 
@@ -89,5 +90,15 @@ export default class DataDotWorldApi {
     formData.append('file', blob, filename);
 
     return this.api.post(`/uploads/${datasetSlug}/files`, formData);
+  }
+
+  uploadChart (imageString, options) {
+    const { filename } = options;
+    const blob = b64toBlob(imageString);
+
+    var formData = new FormData();
+    formData.append('file', blob, filename);
+
+    return this.api.post(`/uploads/kinuthia/testing/files`, formData)
   }
 }
