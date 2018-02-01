@@ -19,6 +19,7 @@
 import React, { Component } from 'react';
 import { Grid, Row } from 'react-bootstrap';
 import Icon from './icons/Icon';
+import Chart from './Chart'
 import analytics from '../analytics';
 
 import './Insights.css';
@@ -42,6 +43,17 @@ class Insights extends Component {
         <Row className='center-block section-header insight-sub-header'>
           <div className='insight-sub-title'>
             Pick a chart
+          </div>
+        </Row>
+        <Row >
+          <div className="insight-charts">
+            {this.props.charts.map((chart, index) => {
+              return <Chart
+                chart={chart}
+                key={index}
+                getImage={this.props.getImage}
+              />})
+            }
           </div>
         </Row>
       </Grid>

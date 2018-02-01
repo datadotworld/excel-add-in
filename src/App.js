@@ -101,7 +101,8 @@ class App extends Component {
       loggedIn: !!token,
       officeInitialized: false,
       syncStatus: {},
-      insights
+      insights,
+      charts: []
     };
 
     if (token) {
@@ -126,6 +127,11 @@ class App extends Component {
       }
       if (! syncStatus) {
         syncStatus = {};
+      }
+
+      if (this.state.insights) {
+        console.log('What about me?')
+        this.getCharts();
       }
 
       const bindings = await this.office.getBindings();
@@ -571,6 +577,17 @@ class App extends Component {
       return dismissal === key;
     });
   }
+
+  getCharts = () => {
+    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+      const sheetName = currentSelectedRange.address
+        .substring(0, currentSelectedRange.address.indexOf('!'))
+        .replace(/'/g, '');
+      this.office.getCharts(sheetName).then(charts => {
+        this.setState({ charts: charts.items })
+      });
+    });
+  }
   
   render () {
     const {
@@ -644,7 +661,11 @@ class App extends Component {
           doesFileExist={this.doesFileExist}
         />}
 
-        {!showStartPage && insights && <Insights close={this.closeAddInsight} />}
+        {!showStartPage && insights && <Insights
+          close={this.closeAddInsight}
+          getImage={this.office.getImage}
+          charts={this.state.charts}
+        />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );

@@ -296,4 +296,31 @@ export default class OfficeConnector {
       binding.getDataAsync(options, handleData(options));
     });
   }
+
+  getCharts(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        var charts = ctx.workbook.worksheets.getItem(sheetName).charts;
+        charts.load('items');
+        return ctx.sync().then(() => {
+          resolve(charts);
+        });
+      });
+    });
+  }
+
+  getImage(chart) {
+    return new Promise((resolve, reject) => {
+      Excel.run((ctx) => {
+        var image = chart.getImage();
+        return ctx.sync().then(function() {
+          resolve(image.value);
+        })
+      });
+    });
+
+  }
 }

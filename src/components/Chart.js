@@ -16,29 +16,34 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.insight-header {
-  padding: 15px;
+import React, { Component } from 'react';
+
+import './Chart.css';
+
+class Chart extends Component {
+  constructor() {
+    super();
+    
+    this.state = { imageString: ''}
+  }
+  
+  componentWillMount() {
+    this.props.getImage(this.props.chart).then(string => {
+      this.setState({ imageString: string })
+    });
+  }
+  
+  render() {
+    if (this.state.imageString) {
+      return <img
+        className="insight-chart"
+        src={`data:image/png;base64, ${this.state.imageString}`}
+        alt="chart"
+      />
+    } else {
+      return <div>Loading</div>
+    }
+  }
 }
 
-.insight-title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.close-button {
-  float: right;
-}
-
-.insight-sub-header {
-  padding: 5px 15px;
-  background-color: #dfe3e9;
-}
-
-.insight-sub-title {
-  color: gray;
-}
-
-.insight-charts {
-  width: 80%;
-  margin: 0 auto;
-}
+export default Chart;

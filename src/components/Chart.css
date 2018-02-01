@@ -16,29 +16,9 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.insight-header {
-  padding: 15px;
-}
-
-.insight-title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.close-button {
-  float: right;
-}
-
-.insight-sub-header {
-  padding: 5px 15px;
-  background-color: #dfe3e9;
-}
-
-.insight-sub-title {
-  color: gray;
-}
-
-.insight-charts {
-  width: 80%;
-  margin: 0 auto;
+.insight-chart {
+    max-width: 100%;
+    max-height: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
