@@ -27,10 +27,6 @@
       <Host xsi:type="Workbook">
         <!-- Form factor. Currently only DesktopFormFactor is supported. -->
         <DesktopFormFactor>
-          <!-- Function file is a HTML page that includes the JavaScript where functions for ExecuteAction will be called. 
-            Think of the FunctionFile as the code behind ExecuteFunction. -->
-          <FunctionFile resid="dw.Url" />
-
           <!-- PrimaryCommandSurface is the main Office Ribbon. -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
@@ -48,13 +44,13 @@
                 </Icon>
 
                 <!-- Control. It can be of type "Button" or "Menu". -->
-                <Control xsi:type="Button" id="dw.TaskpaneButton">
-                  <Label resid="dw.TaskpaneButton.Label" />
+                <Control xsi:type="Button" id="dw.DatasetsButton">
+                  <Label resid="dw.DatasetsButton.Label" />
                   <Supertip>
                     <!-- ToolTip title. resid must point to a ShortString resource. -->
-                    <Title resid="dw.TaskpaneButton.Label" />
+                    <Title resid="dw.DatasetsButton.Label" />
                     <!-- ToolTip description. resid must point to a LongString resource. -->
-                    <Description resid="dw.TaskpaneButton.Tooltip" />
+                    <Description resid="dw.DatasetsButton.Tooltip" />
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="dw.tpicon_16x16" />
@@ -69,7 +65,31 @@
                     -->
                     <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
                     <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
-                    <SourceLocation resid="dw.Url" />
+                    <SourceLocation resid="dw.DatasetsUrl" />
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="dw.InsightsButton">
+                  <Label resid="dw.InsightsButton.Label" />
+                  <Supertip>
+                    <!-- ToolTip title. resid must point to a ShortString resource. -->
+                    <Title resid="dw.InsightsButton.Label" />
+                    <!-- ToolTip description. resid must point to a LongString resource. -->
+                    <Description resid="dw.InsightsButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="dw.tpicon_16x16" />
+                    <bt:Image size="32" resid="dw.tpicon_32x32" />
+                    <bt:Image size="80" resid="dw.tpicon_80x80" />
+                  </Icon>
+
+                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+                  <Action xsi:type="ShowTaskpane">
+                    <!--This is the key for auto-open to work, you need to set the TaskpaneId of the pane you want
+                    to open to the well-known value of Office.AutoShowTaskpaneWithDocument
+                    -->
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                    <SourceLocation resid="dw.InsightsUrl" />
                   </Action>
                 </Control>
               </Group>
@@ -87,16 +107,19 @@
         <bt:Image id="dw.tpicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/MHbuNokQpSHiIiG6pKFK+.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="dw.Url" DefaultValue="https://localhost:3000" />
+        <bt:Url id="dw.DatasetsUrl" DefaultValue="https://localhost:3000" />
+        <bt:Url id="dw.InsightsUrl" DefaultValue="https://localhost:3000/insights" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="dw.TaskpaneButton.Label" DefaultValue="data.world" />
+        <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Datasets" />
+        <bt:String id="dw.InsightsButton.Label" DefaultValue="Upload Chart" />
         <bt:String id="dw.Group1Label" DefaultValue="data.world" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
-        <bt:String id="dw.TaskpaneButton.Tooltip" DefaultValue="Click to Show the data.world add in" />
+        <bt:String id="dw.DatasetsButton.Tooltip" DefaultValue="Click to sync with data.world" />
+        <bt:String id="dw.InsightsButton.Tooltip" DefaultValue="Click to upload charts to data.world" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
