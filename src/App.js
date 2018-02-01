@@ -536,6 +536,10 @@ class App extends Component {
     this.setState({showAddDataModal: false, addDataModalOptions: {}});
   }
 
+  closeAddInsight = () => {
+    this.setState({ insights: false });
+  }
+
   dismissCSVWarning = (options) => {
     if (options.dismissWarning) {
       this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
@@ -640,7 +644,7 @@ class App extends Component {
           doesFileExist={this.doesFileExist}
         />}
 
-        {!showStartPage && insights && <Insights />}
+        {!showStartPage && insights && <Insights close={this.closeAddInsight} />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );

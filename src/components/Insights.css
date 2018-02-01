@@ -1,0 +1,12 @@
+.insight-header {
+  padding: 15px;
+}
+
+.insight-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.close-button {
+  float: right;
+}
