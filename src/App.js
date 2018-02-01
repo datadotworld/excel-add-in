@@ -130,7 +130,6 @@ class App extends Component {
       }
 
       if (this.state.insights) {
-        console.log('What about me?')
         this.getCharts();
       }
 

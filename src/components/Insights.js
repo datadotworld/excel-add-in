@@ -19,43 +19,48 @@
 import React, { Component } from 'react';
 import { Grid, Row } from 'react-bootstrap';
 import Icon from './icons/Icon';
-import Chart from './Chart'
+import Charts from './Charts';
+import UploadInsight from './UploadInsight'
 import analytics from '../analytics';
 
 import './Insights.css';
 
 
 class Insights extends Component {
+  constructor() {
+    super();
+
+    this.state = {selectedChart: ''}
+  }
+
   closeClicked = () => {
     analytics.track('exceladdin.add_insight.close.click');
     this.props.close();
   }
 
+  selectChart= (chart) => {
+    this.setState({selectedChart: chart});
+  }
+
   render() {
+    const { selectedChart } = this.state;
     return (
-      <Grid>
+      <Grid className="insights">
         <Row className='center-block section-header insight-header'>
           <div className='insight-title'>
             New Insight
             <Icon icon='close' className='close-button' onClick={this.closeClicked}/>
           </div>
         </Row>
-        <Row className='center-block section-header insight-sub-header'>
-          <div className='insight-sub-title'>
-            Pick a chart
-          </div>
-        </Row>
-        <Row >
-          <div className="insight-charts">
-            {this.props.charts.map((chart, index) => {
-              return <Chart
-                chart={chart}
-                key={index}
-                getImage={this.props.getImage}
-              />})
-            }
-          </div>
-        </Row>
+        {!selectedChart && <Charts
+            charts={this.props.charts}
+            getImage={this.props.getImage}
+            selectChart={this.selectChart}
+          />}
+        {selectedChart && <UploadInsight
+          getImage={this.props.getImage}
+          chart={selectedChart}
+          />}
       </Grid>
     );
   }

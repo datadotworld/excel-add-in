@@ -32,6 +32,10 @@ class Chart extends Component {
       this.setState({ imageString: string })
     });
   }
+
+  selectChart= () => {
+    this.props.selectChart(this.state.imageString);
+  }
   
   render() {
     if (this.state.imageString) {
@@ -39,6 +43,7 @@ class Chart extends Component {
         className="insight-chart"
         src={`data:image/png;base64, ${this.state.imageString}`}
         alt="chart"
+        onClick={this.selectChart}
       />
     } else {
       return <div>Loading</div>
