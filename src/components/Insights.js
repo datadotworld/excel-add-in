@@ -35,7 +35,7 @@ class Insights extends Component {
 
   closeClicked = () => {
     analytics.track('exceladdin.add_insight.close.click');
-    this.props.close();
+    window.location.pathname = '/';
   }
 
   selectChart= (chart) => {

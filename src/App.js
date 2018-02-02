@@ -62,6 +62,7 @@ class App extends Component {
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
+    this.initializeDatasets = this.initializeDatasets.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -117,6 +118,23 @@ class App extends Component {
     this.office = new OfficeConnector();
     try {
       await this.office.initialize();
+      if (this.state.insights) {
+        this.getCharts();
+      } else {
+        this.initializeDatasets();
+      }
+    } catch (error) {
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the Office connector, please try again.'
+        }
+      });
+    }
+  }
+
+  async initializeDatasets() {
+    try {
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
@@ -127,10 +145,6 @@ class App extends Component {
       }
       if (! syncStatus) {
         syncStatus = {};
-      }
-
-      if (this.state.insights) {
-        this.getCharts();
       }
 
       const bindings = await this.office.getBindings();
@@ -154,7 +168,7 @@ class App extends Component {
       });
 
       bindings.forEach(this.listenForChangesToBinding);
-    } catch (error) {
+    } catch(error) {
       this.setState({
         error: {
           error,
@@ -583,7 +597,7 @@ class App extends Component {
         .substring(0, currentSelectedRange.address.indexOf('!'))
         .replace(/'/g, '');
       this.office.getCharts(sheetName).then(charts => {
-        this.setState({ charts: charts.items })
+        this.setState({ charts: charts.items, officeInitialized: true })
       });
     });
   }
