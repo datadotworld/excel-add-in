@@ -17,7 +17,8 @@
  * data.world, Inc. (http://data.world/).
  */
  .upload-row {
-   margin: 0
+   margin: 0;
+   height: 100vh;
  }
 
  .insight-upload {

@@ -52,6 +52,10 @@ class UploadInsight extends Component {
     this.setState({uploadComplete: true});
   }
 
+  close = () => {
+    window.location.pathname = '/insights'
+  }
+
   render() {
     const {uploadComplete} = this.state;
     return (
@@ -85,6 +89,7 @@ class UploadInsight extends Component {
           </FormGroup>
           <div className='insight-upload-buttons'>
             <Button
+              onClick={this.close}
               className="insight-upload-button"
             >
               Cancel

@@ -29,12 +29,12 @@ class Chart extends Component {
   }
   
   componentWillMount() {
-    this.props.getImage(this.props.chart).then(string => {
-      this.setState({ imageString: string })
+    this.props.getImage(this.props.chart).then(b64String => {
+      this.setState({ imageString: b64String })
     });
   }
 
-  selectChart= () => {
+  selectChart = () => {
     this.props.selectChart(this.state.imageString);
   }
   
