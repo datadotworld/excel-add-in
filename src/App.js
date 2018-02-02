@@ -63,6 +63,7 @@ class App extends Component {
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
+    this.getProjects = this.getProjects.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -119,7 +120,9 @@ class App extends Component {
     try {
       await this.office.initialize();
       if (this.state.insights) {
-        this.getCharts();
+        const projects = this.getProjects();
+        const charts = await this.getCharts();
+        this.setState({charts, projects, officeInitialized: true})
       } else {
         this.initializeDatasets();
       }
@@ -251,6 +254,17 @@ class App extends Component {
       this.setState({
         error,
         loadingDatasets: false
+      });
+    }
+  }
+
+  async getProjects () {
+    try {
+      const projects = await this.api.getProjects();
+      return projects;
+    } catch (error) {
+      this.setState({
+        error
       });
     }
   }
@@ -592,12 +606,14 @@ class App extends Component {
   }
 
   getCharts = () => {
-    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-      const sheetName = currentSelectedRange.address
-        .substring(0, currentSelectedRange.address.indexOf('!'))
-        .replace(/'/g, '');
-      this.office.getCharts(sheetName).then(charts => {
-        this.setState({ charts: charts.items, officeInitialized: true })
+    return new Promise((resolve, reject) => {
+      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+        const sheetName = currentSelectedRange.address
+          .substring(0, currentSelectedRange.address.indexOf('!'))
+          .replace(/'/g, '');
+        this.office.getCharts(sheetName).then(charts => {
+          resolve(charts.items);
+        });
       });
     });
   }
@@ -623,7 +639,9 @@ class App extends Component {
       syncing,
       syncStatus,
       user,
-      insights
+      insights,
+      charts,
+      projects
     } = this.state;
 
     let errorMessage = error;
@@ -681,7 +699,9 @@ class App extends Component {
         {!showStartPage && insights && <Insights
           close={this.closeAddInsight}
           getImage={this.office.getImage}
-          charts={this.state.charts}
+          charts={charts}
+          projects={projects}
+          user={user}
           uploadChart={this.uploadChart}
         />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />

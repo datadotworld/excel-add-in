@@ -61,6 +61,21 @@ export default class DataDotWorldApi {
     });
   }
 
+  getProjects () {
+    return new Promise((resolve, reject) => {
+      let projects = [];
+      Promise.all([
+        this.api.get('/user/projects/own', {params: {limit: 500}}),
+        this.api.get('/user/projects/contributing', {params: {limit: 500}})
+      ]).then((results) => {
+        results.forEach((result) => {
+          projects = projects.concat(result.data.records);
+        });
+        resolve(projects);
+      }).catch(reject);
+    });
+  }
+
   getUser () {
     return new Promise((resolve, reject) => {
       this.api.get('/user').then((result) => {
