@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import LoadingAnimation from './LoadingAnimation';
 
 import './Chart.css';
 
@@ -46,7 +47,7 @@ class Chart extends Component {
         onClick={this.selectChart}
       />
     } else {
-      return <div>Loading</div>
+      return <LoadingAnimation />
     }
   }
 }
