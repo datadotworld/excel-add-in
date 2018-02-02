@@ -16,11 +16,31 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+
+import './Published.css';
 
 class Published extends Component {
   render() {
-    return (<div className="published">It is complete</div>);
+    return (
+    <div className="published">
+      <div className="published-container">
+        <h3 className="published-title">Insight Published!</h3>
+        <img
+          className="published-chart"
+          src={`data:image/png;base64, ${this.props.chart}`}
+          alt="chart"
+        />
+        <Button
+          className="published-button"
+          onClick={this.upload}
+          bsStyle='primary'
+        >
+          View it
+        </Button>
+      </div>
+    </div>);
   }
 }
 

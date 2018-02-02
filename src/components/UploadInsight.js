@@ -100,7 +100,7 @@ class UploadInsight extends Component {
               bsStyle='primary'>OK</Button>
           </div>
         </div>}
-        {uploadComplete && <Published />}
+        {uploadComplete && <Published chart={this.props.chart} />}
       </Row>
     );
   }
