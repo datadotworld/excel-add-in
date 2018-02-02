@@ -19,27 +19,35 @@
 import React, {Component} from 'react';
 import { Row } from 'react-bootstrap';
 import Chart from './Chart';
+import NoChart from './NoChart';
+
+import './Charts.css';
 
 class Charts extends Component {
   render() {
+    const charts = this.props.charts.length;
     return (
       <div>
-        <Row className='center-block section-header insight-sub-header'>
-          <div className='insight-sub-title'>
-            Pick a chart
-          </div>
-        </Row>
-        <Row >
-          <div className="insight-charts">
-            {this.props.charts.map((chart, index) => {
-              return <Chart
-                chart={chart}
-                key={index}
-                getImage={this.props.getImage}
-                selectChart={this.props.selectChart}
-              />})
-            }
-          </div>
+        <Row className="charts-container">
+          {!!charts && <div className="container">
+            <div className='insight-sub-header'>
+              <div className='insight-sub-title'>
+                Pick a chart
+              </div>
+            </div>
+            <div className="insight-charts">
+              {
+                this.props.charts.map((chart, index) => {
+                return <Chart
+                  chart={chart}
+                  key={index}
+                  getImage={this.props.getImage}
+                  selectChart={this.props.selectChart}
+                />})
+              }
+            </div>
+          </div>}
+          {!charts && <NoChart />}
         </Row>
       </div>
     );

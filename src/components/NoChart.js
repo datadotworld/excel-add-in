@@ -16,25 +16,14 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
- .insights {
-   background-color: white;
- }
- 
-.insight-header {
-  padding: 15px;
+import React, { Component } from 'react';
+
+import './NoChart.css';
+
+class NoChart extends Component { 
+  render() {
+    return <div className="no-chart">There are currently no charts in the active sheet</div>
+  }
 }
 
-.insight-title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.close-button {
-  float: right;
-  cursor: pointer;
-}
-
-.insight-charts {
-  width: 80%;
-  margin: 0 auto;
-}
+export default NoChart;
