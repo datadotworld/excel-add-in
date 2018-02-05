@@ -114,7 +114,7 @@ export default class DataDotWorldApi {
         title,
         description,
         body: {
-          imageUrl: `https://data.world/api/${user}/dataset/${project}/file/raw/${title}.png`
+          imageUrl: `https://data.world/api/${user}/dataset/${project}/file/raw/${encodeURIComponent(title)}.png`
         }
       }).then((result) => {
         resolve(result.data.uri);

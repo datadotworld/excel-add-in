@@ -61,7 +61,6 @@ class UploadInsight extends Component {
     const { chart, user } = this.props;
     const { title, project, description } = this.state;
     this.props.uploadChart(chart, { title, project, description, user }).then(res => {
-      console.log('The res', res);
       this.setState({ uploadComplete: true, uri: res })
     });
   }
