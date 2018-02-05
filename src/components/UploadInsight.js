@@ -36,20 +36,26 @@ class UploadInsight extends Component {
 
     this.state = {
       title: '',
-      uploadComplete: false
+      project: '',
+      description: '',
+      uploadComplete: false,
+      uri: ''
     }
   }
 
   handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     this.setState({ [name]: value})
   }
 
   upload = () => {
-    const filename = `${this.state.title}.png`;
-    this.props.uploadChart(this.props.chart, {filename});
-    this.setState({uploadComplete: true});
+    const { chart, user } = this.props;
+    const { title, project, description } = this.state;
+    this.props.uploadChart(chart, { title, project, description, user }).then(res => {
+      console.log('The res', res);
+      this.setState({ uploadComplete: true, uri: res })
+    });
   }
 
   close = () => {
@@ -70,6 +76,9 @@ class UploadInsight extends Component {
             <ControlLabel className="insight-label">Project</ControlLabel>
             <InputGroup>
               <FormControl
+                onChange={this.handleChange}
+                name='project'
+                value={this.state.project}
                 type='text' />
             </InputGroup>
             <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
@@ -83,6 +92,9 @@ class UploadInsight extends Component {
             <ControlLabel className="insight-label">Add Comment <span className="info">Optional</span></ControlLabel>
             <InputGroup>
               <FormControl
+                onChange={this.handleChange}
+                name='description'
+                value={this.state.description}
                 componentClass="textarea"
                 type='textarea' />
             </InputGroup>
@@ -100,7 +112,7 @@ class UploadInsight extends Component {
               bsStyle='primary'>OK</Button>
           </div>
         </div>}
-        {uploadComplete && <Published chart={this.props.chart} />}
+        {uploadComplete && <Published chart={this.props.chart} uri={this.state.uri} />}
       </Row>
     );
   }

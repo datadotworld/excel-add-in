@@ -32,13 +32,14 @@ class Published extends Component {
           src={`data:image/png;base64, ${this.props.chart}`}
           alt="chart"
         />
+        <a href={this.props.uri} target="_blank">
         <Button
           className="published-button"
           onClick={this.upload}
           bsStyle='primary'
         >
           View it
-        </Button>
+        </Button></a>
       </div>
     </div>);
   }

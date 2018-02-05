@@ -107,13 +107,39 @@ export default class DataDotWorldApi {
     return this.api.post(`/uploads/${datasetSlug}/files`, formData);
   }
 
+  uploadInsight(options) {
+    const { title, user, project, description } = options;
+    return new Promise((resolve, reject) => {
+      this.api.post(`/insights/${user}/${project}`, {
+        title,
+        description,
+        body: {
+          imageUrl: `https://data.world/api/${user}/dataset/${project}/file/raw/${title}.png`
+        }
+      }).then((result) => {
+        resolve(result.data.uri);
+      }).catch(reject);
+    });
+  }
+
   uploadChart (imageString, options) {
-    const { filename } = options;
-    const blob = b64toBlob(imageString);
+    const { title, user, project } = options;
+    return new Promise((resolve, reject) => {
+      const { filename } = options;
+      const blob = b64toBlob(imageString);
+  
+      var formData = new FormData();
+      formData.append('file', blob, `${title}.png`);
+  
+      return this.api.post(`/uploads/${user}/${project}/files`, formData).then(res => {
+        console.log('This is the res', res)
+        this.uploadInsight(options).then(done => {
+          resolve(done);
+        })
+      }).catch(err => {
+        console.log('This is the error', err)
+      })
+    });
 
-    var formData = new FormData();
-    formData.append('file', blob, filename);
-
-    return this.api.post(`/uploads/kinuthia/testing/files`, formData)
   }
 }
