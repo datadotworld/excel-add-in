@@ -125,14 +125,12 @@ export default class DataDotWorldApi {
   uploadChart (imageString, options) {
     const { title, user, project } = options;
     return new Promise((resolve, reject) => {
-      const { filename } = options;
       const blob = b64toBlob(imageString);
   
       var formData = new FormData();
       formData.append('file', blob, `${title}.png`);
   
       return this.api.post(`/uploads/${user}/${project}/files`, formData).then(res => {
-        console.log('This is the res', res)
         this.uploadInsight(options).then(done => {
           resolve(done);
         })

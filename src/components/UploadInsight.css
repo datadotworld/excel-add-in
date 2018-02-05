@@ -32,7 +32,7 @@
     margin: 30px 0;
 }
 
-.input-group, .dropdown, .dropdown-menu {
+.input-group, .dropdown-menu {
   width: 100%;
 }
 
@@ -51,7 +51,6 @@
  font-size: 12px;
 }
 
-
 .insight-upload-buttons {
   display: flex;
   justify-content: space-between;
@@ -60,6 +59,10 @@
 
 .insight-upload-button {
   width: 47%;
+}
+
+.insight-upload .dropdown {
+  width: 100%;
 }
 
 .dropdown-toggle {

@@ -70,7 +70,7 @@ class UploadInsight extends Component {
   }
 
   render() {
-    const {uploadComplete} = this.state;
+    const { uploadComplete, title } = this.state;
     return (
       <Row className="upload-row">
         {!uploadComplete && <div className="insight-upload">
@@ -93,6 +93,8 @@ class UploadInsight extends Component {
                 })
               }
             </DropdownButton>
+            </FormGroup>
+            <FormGroup validationState={this.state.title.length > 60 ? 'error' : null}>
             <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
             <InputGroup>
               <FormControl
@@ -101,6 +103,8 @@ class UploadInsight extends Component {
                 value={this.state.title}
                 type='text' />
             </InputGroup>
+            </FormGroup>
+            <FormGroup>
             <ControlLabel className="insight-label">Add Comment <span className="info">Optional</span></ControlLabel>
             <InputGroup>
               <FormControl
@@ -121,6 +125,7 @@ class UploadInsight extends Component {
             <Button
               className="insight-upload-button"
               onClick={this.upload}
+              disabled={!title || title.length > 60}
               bsStyle='primary'>OK</Button>
           </div>
         </div>}
