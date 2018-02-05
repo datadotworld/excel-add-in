@@ -63,7 +63,6 @@ class App extends Component {
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
-    this.getProjects = this.getProjects.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -120,7 +119,7 @@ class App extends Component {
     try {
       await this.office.initialize();
       if (this.state.insights) {
-        const projects = this.getProjects();
+        const projects = await this.api.getProjects();
         const charts = await this.getCharts();
         this.setState({charts, projects, officeInitialized: true})
       } else {
@@ -254,17 +253,6 @@ class App extends Component {
       this.setState({
         error,
         loadingDatasets: false
-      });
-    }
-  }
-
-  async getProjects () {
-    try {
-      const projects = await this.api.getProjects();
-      return projects;
-    } catch (error) {
-      this.setState({
-        error
       });
     }
   }

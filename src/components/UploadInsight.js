@@ -23,7 +23,9 @@ import {
   FormControl,
   FormGroup,
   InputGroup,
-  Row
+  Row,
+  DropdownButton,
+  MenuItem
 } from 'react-bootstrap';
 import Published from './Published';
 
@@ -31,12 +33,12 @@ import './UploadInsight.css';
 
 
 class UploadInsight extends Component {
-  constructor() {
+  constructor(props) {
     super();
 
     this.state = {
       title: '',
-      project: '',
+      project: props.projects[0].id,
       description: '',
       uploadComplete: false,
       uri: ''
@@ -47,6 +49,12 @@ class UploadInsight extends Component {
     const { name, value } = e.target;
 
     this.setState({ [name]: value})
+  }
+
+  onSelect = (eventKey) => {
+    const value = this.props.projects[eventKey].id;
+
+    this.setState({ project: value})
   }
 
   upload = () => {
@@ -74,13 +82,18 @@ class UploadInsight extends Component {
           />
           <FormGroup>
             <ControlLabel className="insight-label">Project</ControlLabel>
-            <InputGroup>
-              <FormControl
-                onChange={this.handleChange}
-                name='project'
-                value={this.state.project}
-                type='text' />
-            </InputGroup>
+            <DropdownButton
+              id="projects-dropdown"
+              className="projects"
+              title={this.state.project}
+              onSelect={this.onSelect}
+            >
+              {
+                this.props.projects.map((project, index) => {
+                  return <MenuItem eventKey={index}>{project.id}</MenuItem>
+                })
+              }
+            </DropdownButton>
             <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
             <InputGroup>
               <FormControl
