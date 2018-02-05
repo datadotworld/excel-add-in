@@ -17,12 +17,26 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 import './NoChart.css';
 
-class NoChart extends Component { 
+class NoChart extends Component {
+  refresh() {
+    window.location.pathname = '/insights';
+  }
+
   render() {
-    return <div className="no-chart">There are currently no charts in the active sheet</div>
+    return <div className="no-chart">
+      <div>There are currently no charts in the active sheet</div>
+      <Button
+        onClick={this.refresh}
+        bsStyle="primary"
+        className="no-chart-button"
+      >
+        Refresh
+      </Button>
+    </div>
   }
 }
 
