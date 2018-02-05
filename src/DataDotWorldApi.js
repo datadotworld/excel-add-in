@@ -136,9 +136,7 @@ export default class DataDotWorldApi {
         this.uploadInsight(options).then(done => {
           resolve(done);
         })
-      }).catch(err => {
-        console.log('This is the error', err)
-      })
+      }).catch(reject)
     });
 
   }

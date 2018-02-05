@@ -18,6 +18,7 @@
  */
  .insights {
    background-color: white;
+   overflow: scroll;
  }
  
 .insight-header {
@@ -37,4 +38,5 @@
 .insight-charts {
   width: 80%;
   margin: 0 auto;
+  padding-bottom: 30px;
 }
