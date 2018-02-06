@@ -65,7 +65,9 @@
   width: 100%;
 }
 
-.dropdown-toggle {
+.insight-upload .dropdown-toggle {
+  color: #5d6f85;
+  background-color: white;
   box-shadow: none;
   border-color: #6290c3;
 }

@@ -30,7 +30,7 @@ const Published = (props) => (
         src={`data:image/png;base64, ${props.chart}`}
         alt="chart"
       />
-      <a href={props.uri} target="_blank">
+      <a className="published-link" href={props.uri} target="_blank">
         <Button
           className="published-button"
           onClick={this.upload}
