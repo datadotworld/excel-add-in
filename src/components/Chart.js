@@ -29,7 +29,8 @@ class Chart extends Component {
   }
   
   componentWillMount() {
-    this.props.getImage(this.props.chart).then(b64String => {
+    const { sheet, chartName } = this.props.chart
+    this.props.getImage(sheet, chartName).then(b64String => {
       this.setState({ imageString: b64String })
     });
   }

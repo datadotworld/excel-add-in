@@ -595,13 +595,17 @@ class App extends Component {
 
   getCharts = () => {
     return new Promise((resolve, reject) => {
-      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-        const sheetName = currentSelectedRange.address
-          .substring(0, currentSelectedRange.address.indexOf('!'))
-          .replace(/'/g, '');
-        this.office.getCharts(sheetName).then(charts => {
-          resolve(charts.items);
-        });
+      this.office.getWorksheets().then(workSheets => {
+        const promises = workSheets.map(worksheet => {
+          return this.office.getCharts(worksheet.id);
+        })
+
+        Promise.all(promises).then((allCharts) => {
+          const charts = allCharts.filter(chart => {
+            return chart.length > 0;
+          })
+          resolve([].concat.apply([], charts));
+        }).catch(reject);
       });
     });
   }

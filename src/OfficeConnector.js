@@ -303,24 +303,42 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run((ctx) => {
-        var charts = ctx.workbook.worksheets.getItem(sheetName).charts;
+        let charts = ctx.workbook.worksheets.getItem(sheetName).charts;
         charts.load('items');
         return ctx.sync().then(() => {
+          charts = charts.items.map(chart => {
+            return {sheet: sheetName, chartName: chart.name}
+          })
           resolve(charts);
-        });
+        })
       });
     });
   }
 
-  getImage(chart) {
+  getImage(sheetId, chartName) {
     return new Promise((resolve, reject) => {
       Excel.run((ctx) => {
-        var image = chart.getImage();
-        return ctx.sync().then(function() {
+        var chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
+        const image = chart.getImage();
+        return ctx.sync().then(() => {
           resolve(image.value);
         })
       });
     });
+  }
 
+  getWorksheets() {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        const worksheets = ctx.workbook.worksheets;
+        worksheets.load('items')
+        return ctx.sync().then(() => {
+          resolve(worksheets.items);
+        }).catch(reject)
+      });
+    });
   }
 }
