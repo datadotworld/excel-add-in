@@ -86,6 +86,7 @@ class App extends Component {
       }
     }
 
+    // For determining whether to render the Insights components
     let insights;
     if (window.location.pathname === '/insights') {
       insights = true;
@@ -119,7 +120,10 @@ class App extends Component {
     try {
       await this.office.initialize();
       if (this.state.insights) {
+        // Logged in user's projects
         const projects = await this.api.getProjects();
+
+        // All the charts in the workbook
         const charts = await this.getCharts();
         this.setState({charts, projects, officeInitialized: true})
       } else {
@@ -136,48 +140,39 @@ class App extends Component {
   }
 
   async initializeDatasets() {
-    try {
-      const settings = this.office.getSettings();
-      let syncStatus = settings.syncStatus;
-      let dataset = settings.dataset;
-      if (! dataset && this.state.loggedIn) {
-        this.getDatasets();
-      } else if (this.state.loggedIn) {
-        dataset = await this.refreshLinkedDataset(dataset);
-      }
-      if (! syncStatus) {
-        syncStatus = {};
-      }
-
-      const bindings = await this.office.getBindings();
-      bindings.forEach((binding) => {
-        if (!syncStatus[binding.id]) {
-          syncStatus[binding.id] = {
-            synced: false,
-            changes: 1,
-            lastSync: null
-          };
-        }
-      });
-
-      this.setState({
-        bindings,
-        dataset,
-        syncStatus,
-        excelApiSupported: this.office.isExcelApiSupported(),
-        officeInitialized: true,
-        csvMode: this.office.isCSV()
-      });
-
-      bindings.forEach(this.listenForChangesToBinding);
-    } catch(error) {
-      this.setState({
-        error: {
-          error,
-          message: 'There was an error initializing the Office connector, please try again.'
-        }
-      });
+    const settings = this.office.getSettings();
+    let syncStatus = settings.syncStatus;
+    let dataset = settings.dataset;
+    if (! dataset && this.state.loggedIn) {
+      this.getDatasets();
+    } else if (this.state.loggedIn) {
+      dataset = await this.refreshLinkedDataset(dataset);
     }
+    if (! syncStatus) {
+      syncStatus = {};
+    }
+
+    const bindings = await this.office.getBindings();
+    bindings.forEach((binding) => {
+      if (!syncStatus[binding.id]) {
+        syncStatus[binding.id] = {
+          synced: false,
+          changes: 1,
+          lastSync: null
+        };
+      }
+    });
+
+    this.setState({
+      bindings,
+      dataset,
+      syncStatus,
+      excelApiSupported: this.office.isExcelApiSupported(),
+      officeInitialized: true,
+      csvMode: this.office.isCSV()
+    });
+
+    bindings.forEach(this.listenForChangesToBinding);
   }
 
   logout = () => {
@@ -557,10 +552,6 @@ class App extends Component {
     this.setState({showAddDataModal: false, addDataModalOptions: {}});
   }
 
-  closeAddInsight = () => {
-    this.setState({ insights: false });
-  }
-
   dismissCSVWarning = (options) => {
     if (options.dismissWarning) {
       this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
@@ -595,15 +586,19 @@ class App extends Component {
 
   getCharts = () => {
     return new Promise((resolve, reject) => {
-      this.office.getWorksheets().then(workSheets => {
-        const promises = workSheets.map(worksheet => {
+      this.office.getWorksheets().then(worksheets => {
+        const promises = worksheets.map(worksheet => {
+          // Returns an array of charts in the worksheet
           return this.office.getCharts(worksheet.id);
         })
 
         Promise.all(promises).then((allCharts) => {
+          // Some worksheets may not contain charts
           const charts = allCharts.filter(chart => {
             return chart.length > 0;
-          })
+          });
+
+          // charts is an array of arrays, flatten before resolving
           resolve([].concat.apply([], charts));
         }).catch(reject);
       });
@@ -689,7 +684,6 @@ class App extends Component {
         />}
 
         {!showStartPage && insights && <Insights
-          close={this.closeAddInsight}
           getImage={this.office.getImage}
           charts={charts}
           projects={projects}

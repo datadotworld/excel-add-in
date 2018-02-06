@@ -20,7 +20,7 @@ import React, { Component } from 'react';
 import { Grid, Row } from 'react-bootstrap';
 import Icon from './icons/Icon';
 import Charts from './Charts';
-import UploadInsight from './UploadInsight'
+import UploadInsight from './UploadInsight';
 import analytics from '../analytics';
 
 import './Insights.css';
@@ -30,7 +30,7 @@ class Insights extends Component {
   constructor() {
     super();
 
-    this.state = {selectedChart: ''}
+    this.state = { selectedChart: '' };
   }
 
   closeClicked = () => {
@@ -39,7 +39,7 @@ class Insights extends Component {
   }
 
   selectChart= (chart) => {
-    this.setState({selectedChart: chart});
+    this.setState({ selectedChart: chart });
   }
 
   render() {
@@ -53,17 +53,17 @@ class Insights extends Component {
           </div>
         </Row>
         {!selectedChart && <Charts
-            charts={this.props.charts}
-            getImage={this.props.getImage}
-            selectChart={this.selectChart}
-          />}
+          charts={this.props.charts}
+          getImage={this.props.getImage}
+          selectChart={this.selectChart}
+        />}
         {selectedChart && <UploadInsight
           getImage={this.props.getImage}
           chart={selectedChart}
           uploadChart={this.props.uploadChart}
           user={this.props.user}
           projects={this.props.projects}
-          />}
+        />}
       </Grid>
     );
   }

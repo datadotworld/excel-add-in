@@ -110,13 +110,16 @@ export default class DataDotWorldApi {
   uploadInsight(options) {
     const { title, user, project, description } = options;
     return new Promise((resolve, reject) => {
+      const uriTitle = encodeURIComponent(title);
       this.api.post(`/insights/${user}/${project}`, {
         title,
         description,
         body: {
-          imageUrl: `https://data.world/api/${user}/dataset/${project}/file/raw/${encodeURIComponent(title)}.png`
+          imageUrl:
+            `https://data.world/api/${user}/dataset/${project}/file/raw/${uriTitle}.png`
         }
       }).then((result) => {
+        // Return the URL to the newly created insight
         resolve(result.data.uri);
       }).catch(reject);
     });
@@ -125,17 +128,20 @@ export default class DataDotWorldApi {
   uploadChart (imageString, options) {
     const { title, user, project } = options;
     return new Promise((resolve, reject) => {
+      // Convert base64 string into a binary large object
       const blob = b64toBlob(imageString);
-  
+
+      // Add blob to a FormData object for uploading
       var formData = new FormData();
       formData.append('file', blob, `${title}.png`);
-  
+
+      // First upload the image
       return this.api.post(`/uploads/${user}/${project}/files`, formData).then(res => {
-        this.uploadInsight(options).then(done => {
-          resolve(done);
+        // Then use the uploaded image to create an insight
+        this.uploadInsight(options).then(url => {
+          resolve(url);
         })
       }).catch(reject)
     });
-
   }
 }

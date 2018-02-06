@@ -16,42 +16,38 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import React, {Component} from 'react';
+import React from 'react';
 import { Row } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
 
 import './Charts.css';
 
-class Charts extends Component {
-  render() {
-    const charts = this.props.charts.length;
-    return (
-      <div>
-        <Row className="charts-container">
-          {!!charts && <div className="container">
-            <div className='insight-sub-header'>
-              <div className='insight-sub-title'>
-                Pick a chart
-              </div>
-            </div>
-            <div className="insight-charts">
-              {
-                this.props.charts.map((chart, index) => {
-                return <Chart
-                  chart={chart}
-                  key={index}
-                  getImage={this.props.getImage}
-                  selectChart={this.props.selectChart}
-                />})
-              }
-            </div>
-          </div>}
-          {!charts && <NoChart />}
-        </Row>
-      </div>
-    );
-  }
+const Charts = (props) => {
+  const loadCharts = props.charts.length > 0;
+  return (
+    <Row className="charts-container">
+      {loadCharts && <div className="container">
+        <div className='insight-sub-header'>
+          <div className='insight-sub-title'>
+            Pick a chart
+          </div>
+        </div>
+        <div className="insight-charts">
+          {
+            props.charts.map((chart, index) => {
+            return <Chart
+              chart={chart}
+              key={index}
+              getImage={props.getImage}
+              selectChart={props.selectChart}
+            />})
+          }
+        </div>
+      </div>}
+      {!loadCharts && <NoChart />}
+    </Row>
+  );
 }
 
 export default Charts;

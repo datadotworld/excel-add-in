@@ -42,19 +42,19 @@ class UploadInsight extends Component {
       description: '',
       uploadComplete: false,
       uri: ''
-    }
+    };
   }
 
   handleChange = (e) => {
     const { name, value } = e.target;
 
-    this.setState({ [name]: value})
+    this.setState({ [name]: value});
   }
 
   onSelect = (eventKey) => {
     const value = this.props.projects[eventKey].id;
 
-    this.setState({ project: value})
+    this.setState({ project: value});
   }
 
   upload = () => {
@@ -66,7 +66,7 @@ class UploadInsight extends Component {
   }
 
   close = () => {
-    window.location.pathname = '/insights'
+    window.location.pathname = '/insights';
   }
 
   render() {
@@ -93,9 +93,11 @@ class UploadInsight extends Component {
                 })
               }
             </DropdownButton>
-            </FormGroup>
-            <FormGroup validationState={this.state.title.length > 60 ? 'error' : null}>
-            <ControlLabel className="insight-label">Title <span className='info'>Max. 60</span></ControlLabel>
+          </FormGroup>
+          <FormGroup validationState={this.state.title.length > 60 ? 'error' : null}>
+            <ControlLabel className="insight-label">
+              Title <span className='insight-info'>Max. 60</span>
+            </ControlLabel>
             <InputGroup>
               <FormControl
                 onChange={this.handleChange}
@@ -103,9 +105,11 @@ class UploadInsight extends Component {
                 value={this.state.title}
                 type='text' />
             </InputGroup>
-            </FormGroup>
-            <FormGroup>
-            <ControlLabel className="insight-label">Add Comment <span className="info">Optional</span></ControlLabel>
+          </FormGroup>
+          <FormGroup>
+            <ControlLabel className="insight-label">
+              Add Comment <span className="insight-info">Optional</span>
+            </ControlLabel>
             <InputGroup>
               <FormControl
                 onChange={this.handleChange}

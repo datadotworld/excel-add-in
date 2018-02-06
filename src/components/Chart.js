@@ -25,13 +25,13 @@ class Chart extends Component {
   constructor() {
     super();
     
-    this.state = { imageString: ''}
+    this.state = { imageString: '' };
   }
   
   componentWillMount() {
     const { sheet, chartName } = this.props.chart
     this.props.getImage(sheet, chartName).then(b64String => {
-      this.setState({ imageString: b64String })
+      this.setState({ imageString: b64String });
     });
   }
 

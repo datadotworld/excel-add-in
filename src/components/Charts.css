@@ -16,7 +16,13 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.container {
+ .charts-container {
+  height: 100vh;
+  margin: 0;
+  background-color: white;
+}
+
+ .container {
   width: 100%;
 }
 

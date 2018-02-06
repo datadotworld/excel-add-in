@@ -49,7 +49,6 @@ export function b64toBlob(imageString) {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
-
     byteArrays.push(byteArray);
   }
 

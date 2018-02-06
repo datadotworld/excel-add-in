@@ -303,12 +303,15 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run((ctx) => {
+        // Load all charts in the specified worksheet
         let charts = ctx.workbook.worksheets.getItem(sheetName).charts;
         charts.load('items');
         return ctx.sync().then(() => {
           charts = charts.items.map(chart => {
-            return {sheet: sheetName, chartName: chart.name}
-          })
+            return { sheet: sheetName, chartName: chart.name }
+          });
+
+          // Return array of objects containing the chart names and worksheet
           resolve(charts);
         })
       });
@@ -318,9 +321,11 @@ export default class OfficeConnector {
   getImage(sheetId, chartName) {
     return new Promise((resolve, reject) => {
       Excel.run((ctx) => {
+        // Get chart using the sheet id and chart name
         var chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
         const image = chart.getImage();
         return ctx.sync().then(() => {
+          // Return the base64 string representation of the chart
           resolve(image.value);
         })
       });
