@@ -28,7 +28,7 @@ class NoChart extends Component {
 
   render() {
     return <div className="no-chart">
-      <div>There are currently no charts in the active sheet</div>
+      <div>There are currently no charts in the workbook</div>
       <Button
         onClick={this.refresh}
         bsStyle="primary"
