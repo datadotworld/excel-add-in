@@ -36,9 +36,10 @@ class UploadInsight extends Component {
   constructor(props) {
     super();
 
+    const defaultProject = props.projects[0];
     this.state = {
       title: '',
-      project: props.projects[0].id,
+      project: defaultProject,
       description: '',
       uploadComplete: false,
       uri: ''
@@ -52,15 +53,19 @@ class UploadInsight extends Component {
   }
 
   onSelect = (eventKey) => {
-    const value = this.props.projects[eventKey].id;
+    const projects = this.props.projects;
+    const selected = {
+      owner: projects[eventKey].owner,
+      id: projects[eventKey].id
+    };
 
-    this.setState({ project: value});
+    this.setState({ project: selected });
   }
 
   upload = () => {
-    const { chart, user } = this.props;
+    const { chart } = this.props;
     const { title, project, description } = this.state;
-    this.props.uploadChart(chart, { title, project, description, user }).then(res => {
+    this.props.uploadChart(chart, { title, project, description }).then(res => {
       this.setState({ uploadComplete: true, uri: res })
     });
   }
@@ -70,7 +75,7 @@ class UploadInsight extends Component {
   }
 
   render() {
-    const { uploadComplete, title } = this.state;
+    const { uploadComplete, title, project } = this.state;
     return (
       <Row className="upload-row">
         {!uploadComplete && <div className="insight-upload">
@@ -84,12 +89,12 @@ class UploadInsight extends Component {
             <DropdownButton
               id="projects-dropdown"
               className="projects"
-              title={this.state.project}
+              title={`${project.owner}/${project.id}`}
               onSelect={this.onSelect}
             >
               {
                 this.props.projects.map((project, index) => {
-                  return <MenuItem eventKey={index}>{project.id}</MenuItem>
+                  return <MenuItem eventKey={index} key={index}>{`${project.owner}/${project.id}`}</MenuItem>
                 })
               }
             </DropdownButton>

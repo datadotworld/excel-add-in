@@ -61,7 +61,6 @@ class Insights extends Component {
           getImage={this.props.getImage}
           chart={selectedChart}
           uploadChart={this.props.uploadChart}
-          user={this.props.user}
           projects={this.props.projects}
         />}
       </Grid>

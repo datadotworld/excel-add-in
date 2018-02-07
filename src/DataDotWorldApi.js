@@ -18,7 +18,7 @@
  */
 import axios from 'axios';
 import papa from 'papaparse';
-import {b64toBlob} from './util';
+import { b64toBlob, groupAndSortProjects } from './util';
 
 const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/
 
@@ -71,6 +71,9 @@ export default class DataDotWorldApi {
         results.forEach((result) => {
           projects = projects.concat(result.data.records);
         });
+
+        // Sort the projects before resolving
+        projects = groupAndSortProjects(projects);
         resolve(projects);
       }).catch(reject);
     });
@@ -108,15 +111,15 @@ export default class DataDotWorldApi {
   }
 
   uploadInsight(options) {
-    const { title, user, project, description } = options;
+    const { title, project, description } = options;
     return new Promise((resolve, reject) => {
       const uriTitle = encodeURIComponent(title);
-      this.api.post(`/insights/${user}/${project}`, {
+      this.api.post(`/insights/${project.owner}/${project.id}`, {
         title,
         description,
         body: {
           imageUrl:
-            `https://data.world/api/${user}/dataset/${project}/file/raw/${uriTitle}.png`
+            `https://data.world/api/${project.owner}/dataset/${project.id}/file/raw/${uriTitle}.png`
         }
       }).then((result) => {
         // Return the URL to the newly created insight
@@ -126,7 +129,7 @@ export default class DataDotWorldApi {
   }
 
   uploadChart (imageString, options) {
-    const { title, user, project } = options;
+    const { title, project } = options;
     return new Promise((resolve, reject) => {
       // Convert base64 string into a binary large object
       const blob = b64toBlob(imageString);
@@ -136,7 +139,7 @@ export default class DataDotWorldApi {
       formData.append('file', blob, `${title}.png`);
 
       // First upload the image
-      return this.api.post(`/uploads/${user}/${project}/files`, formData).then(res => {
+      return this.api.post(`/uploads/${project.owner}/${project.id}/files`, formData).then(res => {
         // Then use the uploaded image to create an insight
         this.uploadInsight(options).then(url => {
           resolve(url);

@@ -687,7 +687,6 @@ class App extends Component {
           getImage={this.office.getImage}
           charts={charts}
           projects={projects}
-          user={user && user.id}
           uploadChart={this.uploadChart}
         />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />

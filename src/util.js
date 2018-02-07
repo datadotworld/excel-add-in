@@ -56,3 +56,46 @@ export function b64toBlob(imageString) {
 
   return blob;
 }
+
+export function groupAndSortProjects(projects) {
+  // Get all the project owners
+  const owners = [];
+  projects.forEach(project => {
+    if (!owners.includes(project.owner)) {
+      owners.push(project.owner);
+    }
+  });
+
+  // Sort project owners
+  owners.sort();
+
+  // Group projects by owner
+  const projectsByOwner = [];
+  owners.forEach(owner => {
+    const userProjects = projects.filter(project => {
+      if (project.owner === owner) {
+        return true;
+      }
+
+      return false;
+    });
+
+    // Sort projects by project name
+    userProjects.sort((firstProject, secondProject) => {
+      if (firstProject.id < secondProject.id) {
+        return -1;
+      }
+
+      if (firstProject.id > secondProject.id) {
+        return 1;
+      }
+
+      return 0
+    })
+
+    projectsByOwner.push(userProjects);
+  });
+
+  // Flatten the array of arrays
+  return [].concat.apply([], projectsByOwner);
+}
