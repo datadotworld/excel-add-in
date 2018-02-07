@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders charts view - chart 1`] = `
+<div
+  className="insights container"
+>
+  <div
+    className="center-block section-header insight-header row"
+  >
+    <div
+      className="insight-title"
+    >
+      New Insight
+      <span
+        className="svg-icon close-button"
+        onClick={[Function]}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="charts-container row"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="insight-sub-header"
+      >
+        <div
+          className="insight-sub-title"
+        >
+          Pick a chart
+        </div>
+      </div>
+      <div
+        className="insight-charts"
+      >
+        <div
+          className="loaderoverlay"
+        >
+          <div
+            className="loader-center"
+          >
+            <div
+              className="loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+        <div
+          className="loaderoverlay"
+        >
+          <div
+            className="loader-center"
+          >
+            <div
+              className="loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`renders charts view - no charts 1`] = `
+<div
+  className="insights container"
+>
+  <div
+    className="center-block section-header insight-header row"
+  >
+    <div
+      className="insight-title"
+    >
+      New Insight
+      <span
+        className="svg-icon close-button"
+        onClick={[Function]}
+      >
+        <svg
+          className="close-icon"
+          height="15"
+          viewBox="0 0 16 15"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            className="stroke stroke-medium"
+            d="M15.222 14.222L1 0M1 14.222L15.222 0"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className="charts-container row"
+  >
+    <div
+      className="no-chart"
+    >
+      <div>
+        There are currently no charts in the workbook
+      </div>
+      <button
+        className="no-chart-button btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Refresh
+      </button>
+    </div>
+  </div>
+  
+</div>
+`;

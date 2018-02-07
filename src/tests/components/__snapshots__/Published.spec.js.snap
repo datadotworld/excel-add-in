@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders published insight 1`] = `
+<div
+  className="published"
+>
+  <div
+    className="published-container"
+  >
+    <h3
+      className="published-title"
+    >
+      Insight Published!
+    </h3>
+    <img
+      alt="chart"
+      className="published-chart"
+      src="data:image/png;base64, b64ImageString"
+    />
+    <a
+      className="published-link"
+      href="https://data.world/path/to/insight"
+      target="_blank"
+    >
+      <button
+        className="published-button btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        View it
+      </button>
+    </a>
+  </div>
+</div>
+`;

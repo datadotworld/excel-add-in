@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 data.world, Inc.
+ * Copyright 2017 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,29 +17,21 @@
  * data.world, Inc. (http://data.world/).
  */
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
 
-import './Published.css';
+import Published from '../../components/Published';
 
-const Published = (props) => (
-  <div className="published">
-    <div className="published-container">
-      <h3 className="published-title">Insight Published!</h3>
-      <img
-        className="published-chart"
-        src={`data:image/png;base64, ${props.chart}`}
-        alt="chart"
-      />
-      <a className="published-link" href={props.uri} target="_blank">
-        <Button
-          className="published-button"
-          bsStyle='primary'
-        >
-          View it
-        </Button>
-      </a>
-    </div>
-  </div>
-);
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Published />, div);
+});
 
-export default Published;
+it('renders published insight', () => {
+
+  expect(renderer.create(<Published
+    chart={'b64ImageString'}
+    uri={'https://data.world/path/to/insight'}
+  />).toJSON()).toMatchSnapshot()
+});
