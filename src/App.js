@@ -63,6 +63,7 @@ class App extends Component {
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
+    this.initializeInsights = this.initializeInsights.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -115,17 +116,15 @@ class App extends Component {
     this.initializeOffice();
   }
 
-  async initializeOffice () { 
-    this.office = new OfficeConnector();
+  async initializeOffice() {
     try {
+      this.office = new OfficeConnector();
       await this.office.initialize();
-      if (this.state.insights) {
-        // Logged in user's projects
-        const projects = await this.api.getProjects();
 
-        // All the charts in the workbook
-        const charts = await this.getCharts();
-        this.setState({charts, projects, officeInitialized: true})
+      this.setState({ officeInitialized: true });
+
+      if (this.state.insights) {
+        this.initializeInsights();
       } else {
         this.initializeDatasets();
       }
@@ -140,39 +139,67 @@ class App extends Component {
   }
 
   async initializeDatasets() {
-    const settings = this.office.getSettings();
-    let syncStatus = settings.syncStatus;
-    let dataset = settings.dataset;
-    if (! dataset && this.state.loggedIn) {
-      this.getDatasets();
-    } else if (this.state.loggedIn) {
-      dataset = await this.refreshLinkedDataset(dataset);
-    }
-    if (! syncStatus) {
-      syncStatus = {};
-    }
-
-    const bindings = await this.office.getBindings();
-    bindings.forEach((binding) => {
-      if (!syncStatus[binding.id]) {
-        syncStatus[binding.id] = {
-          synced: false,
-          changes: 1,
-          lastSync: null
-        };
+    try {
+      const settings = this.office.getSettings();
+      let syncStatus = settings.syncStatus;
+      let dataset = settings.dataset;
+      if (! dataset && this.state.loggedIn) {
+        this.getDatasets();
+      } else if (this.state.loggedIn) {
+        dataset = await this.refreshLinkedDataset(dataset);
       }
-    });
+      if (! syncStatus) {
+        syncStatus = {};
+      }
 
-    this.setState({
-      bindings,
-      dataset,
-      syncStatus,
-      excelApiSupported: this.office.isExcelApiSupported(),
-      officeInitialized: true,
-      csvMode: this.office.isCSV()
-    });
+      const bindings = await this.office.getBindings();
+      bindings.forEach((binding) => {
+        if (!syncStatus[binding.id]) {
+          syncStatus[binding.id] = {
+            synced: false,
+            changes: 1,
+            lastSync: null
+          };
+        }
+      });
 
-    bindings.forEach(this.listenForChangesToBinding);
+      this.setState({
+        bindings,
+        dataset,
+        syncStatus,
+        excelApiSupported: this.office.isExcelApiSupported(),
+        officeInitialized: true,
+        csvMode: this.office.isCSV()
+      });
+
+      bindings.forEach(this.listenForChangesToBinding);
+    } catch(error) {
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the datasets page, please try again.'
+        }
+      });
+    }
+  }
+
+  async initializeInsights() {
+    try {
+      // Logged in user's projects
+      const projects = await this.api.getProjects();
+
+      // All the charts in the workbook
+      const charts = await this.getCharts();
+
+      this.setState({ charts, projects });
+    } catch(error) {
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the Insights page, please try again.'
+        }
+      });
+    }
   }
 
   logout = () => {
