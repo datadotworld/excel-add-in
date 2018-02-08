@@ -72,6 +72,16 @@ export default class DataDotWorldApi {
           projects = projects.concat(result.data.records);
         });
 
+        // Only display projects for which the user has write rights
+        projects = projects.filter(project => {
+          const { accessLevel } = project;
+          if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
+            return true;
+          }
+
+          return false;
+        })
+
         // Sort the projects before resolving
         projects = groupAndSortProjects(projects);
         resolve(projects);
