@@ -105,7 +105,8 @@ class App extends Component {
       officeInitialized: false,
       syncStatus: {},
       insights,
-      charts: []
+      charts: [],
+      projects: []
     };
 
     if (token) {
@@ -185,13 +186,14 @@ class App extends Component {
 
   async initializeInsights() {
     try {
-      // Logged in user's projects
-      const projects = await this.api.getProjects();
+      if (this.state.loggedIn) {
+        // Logged in user's projects
+        const projects = await this.api.getProjects();
 
-      // All the charts in the workbook
-      const charts = await this.getCharts();
-
-      this.setState({ charts, projects });
+        // All the charts in the workbook
+        const charts = await this.getCharts();
+        this.setState({ charts, projects });
+      }
     } catch(error) {
       this.setState({
         error: {
