@@ -25,11 +25,11 @@ import Insights from '../../components/Insights';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Insights charts={[]}/>, div);
+  ReactDOM.render(<Insights charts={[]} projects={[]}/>, div);
 });
 
 it('renders charts view - no charts', () => {
-  expect(renderer.create(<Insights charts={[]} />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<Insights charts={[]} projects={['project 1', 'project 2']} />).toJSON()).toMatchSnapshot()
 });
 
 it('renders charts view - chart', () => {
@@ -46,6 +46,10 @@ it('renders charts view - chart', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <Insights charts={charts} getImage={getImage}/>
+      <Insights charts={charts} getImage={getImage} projects={[]} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
+});
+
+it('renders no projects view', () => {
+  expect(renderer.create(<Insights charts={[]} projects={[]} />).toJSON()).toMatchSnapshot()
 });

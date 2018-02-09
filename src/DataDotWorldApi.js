@@ -105,6 +105,14 @@ export default class DataDotWorldApi {
     });
   }
 
+  createProject (userId, project) {
+    return new Promise((resolve, reject) => {
+      this.api.post(`/projects/${userId}`, project).then((result) => {
+        resolve(result.data);
+      }).catch(reject);
+    });
+  }
+
   uploadFile (options) {
     const {dataset, filename} = options;
     const datasetSlug = `${dataset.owner}/${dataset.id}`;

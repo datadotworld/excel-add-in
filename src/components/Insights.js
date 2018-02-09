@@ -44,7 +44,7 @@ class Insights extends Component {
 
   render() {
     const { selectedChart } = this.state;
-    const { charts, getImage, uploadChart, projects } = this.props;
+    const { charts, getImage, uploadChart, projects, user, createProject } = this.props;
     return (
       <Grid className="insights">
         <Row className='center-block section-header insight-header'>
@@ -55,7 +55,10 @@ class Insights extends Component {
         </Row>
         {!selectedChart && <Charts
           charts={charts}
+          projects={projects}
           getImage={getImage}
+          user={user}
+          createProject={createProject}
           selectChart={this.selectChart}
         />}
         {selectedChart && <UploadInsight

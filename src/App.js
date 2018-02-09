@@ -597,6 +597,10 @@ class App extends Component {
     return await this.api.createDataset(this.state.user.id, dataset);
   }
 
+  createProject = (project) => {
+    return this.api.createProject(this.state.user.id, project);
+  }
+
   doesFileExist = (filename) => {
     let fileExists = false;
     this.state.dataset.files.forEach((file) => {
@@ -715,7 +719,9 @@ class App extends Component {
         {!showStartPage && insights && <Insights
           getImage={this.office.getImage}
           charts={charts}
+          user={user}
           projects={projects}
+          createProject={this.createProject}
           uploadChart={this.uploadChart}
         />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />

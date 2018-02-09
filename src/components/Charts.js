@@ -16,38 +16,70 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import React from 'react';
+import React, { Component } from 'react';
 import { Row } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
+import NoProjects from './NoProjects';
+import CreateProject from './CreateProjectModal';
 
 import './Charts.css';
 
-const Charts = (props) => {
-  const loadCharts = props.charts.length > 0;
-  return (
-    <Row className="charts-container">
-      {loadCharts && <div className="container">
-        <div className='insight-sub-header'>
-          <div className='insight-sub-title'>
-            Pick a chart
+class Charts extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      showAddProject: false
+    };
+  }
+
+  showAddProject = () => {
+    this.setState({ showAddProject: true });
+  }
+
+  closeAddProject = () => {
+    this.setState({ showAddProject: false });
+  }
+
+  render() {
+    const { charts, projects, getImage, selectChart, user, createProject } = this.props;
+    const { showAddProject } = this.state;
+
+    const loadCharts = charts.length > 0;
+    const loadProjects = projects.length > 0;
+
+    return (
+      <Row className="charts-container">
+        {loadProjects && loadCharts && <div className="container">
+          <div className='insight-sub-header'>
+            <div className='insight-sub-title'>
+              Pick a chart
+            </div>
           </div>
-        </div>
-        <div className="insight-charts">
-          {
-            props.charts.map((chart, index) => {
-            return <Chart
-              chart={chart}
-              key={index}
-              getImage={props.getImage}
-              selectChart={props.selectChart}
-            />})
-          }
-        </div>
-      </div>}
-      {!loadCharts && <NoChart />}
-    </Row>
-  );
+          <div className="insight-charts">
+            {
+              charts.map((chart, index) => {
+                return <Chart
+                  chart={chart}
+                  key={index}
+                  getImage={getImage}
+                  selectChart={selectChart}
+                />
+              })
+            }
+          </div>
+        </div>}
+        {!loadProjects && !showAddProject && <NoProjects showAddProject={this.showAddProject} />}
+        {loadProjects && !loadCharts && <NoChart />}
+        {showAddProject && <CreateProject
+          user={user}
+          close={this.closeAddProject}
+          createProject={createProject}
+        />}
+      </Row>
+    );
+  }
 }
 
 export default Charts;
