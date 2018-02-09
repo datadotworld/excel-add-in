@@ -42,7 +42,30 @@
                   <bt:Image size="32" resid="dw.tpicon_32x32" />
                   <bt:Image size="80" resid="dw.tpicon_80x80" />
                 </Icon>
+                <Control xsi:type="Button" id="dw.InsightsButton">
+                  <Label resid="dw.InsightsButton.Label" />
+                  <Supertip>
+                    <!-- ToolTip title. resid must point to a ShortString resource. -->
+                    <Title resid="dw.InsightsButton.Label" />
+                    <!-- ToolTip description. resid must point to a LongString resource. -->
+                    <Description resid="dw.InsightsButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="dw.insighticon_16x16" />
+                    <bt:Image size="32" resid="dw.insighticon_32x32" />
+                    <bt:Image size="80" resid="dw.insighticon_80x80" />
+                  </Icon>
 
+                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+                  <Action xsi:type="ShowTaskpane">
+                    <!--This is the key for auto-open to work, you need to set the TaskpaneId of the pane you want
+                    to open to the well-known value of Office.AutoShowTaskpaneWithDocument
+                    -->
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                    <SourceLocation resid="dw.InsightsUrl" />
+                  </Action>
+                </Control>
                 <!-- Control. It can be of type "Button" or "Menu". -->
                 <Control xsi:type="Button" id="dw.DatasetsButton">
                   <Label resid="dw.DatasetsButton.Label" />
@@ -68,30 +91,6 @@
                     <SourceLocation resid="dw.DatasetsUrl" />
                   </Action>
                 </Control>
-                <Control xsi:type="Button" id="dw.InsightsButton">
-                  <Label resid="dw.InsightsButton.Label" />
-                  <Supertip>
-                    <!-- ToolTip title. resid must point to a ShortString resource. -->
-                    <Title resid="dw.InsightsButton.Label" />
-                    <!-- ToolTip description. resid must point to a LongString resource. -->
-                    <Description resid="dw.InsightsButton.Tooltip" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="dw.tpicon_16x16" />
-                    <bt:Image size="32" resid="dw.tpicon_32x32" />
-                    <bt:Image size="80" resid="dw.tpicon_80x80" />
-                  </Icon>
-
-                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
-                  <Action xsi:type="ShowTaskpane">
-                    <!--This is the key for auto-open to work, you need to set the TaskpaneId of the pane you want
-                    to open to the well-known value of Office.AutoShowTaskpaneWithDocument
-                    -->
-                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
-                    <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
-                    <SourceLocation resid="dw.InsightsUrl" />
-                  </Action>
-                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -102,18 +101,21 @@
     <!-- You can use resources across hosts and form factors. -->
     <Resources>
       <bt:Images>
-        <bt:Image id="dw.tpicon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/MF29z9SUSRGCQMpDYNZG+.png" />
-        <bt:Image id="dw.tpicon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/ymdxFDOnSRSzCwqiAEke+.png" />
-        <bt:Image id="dw.tpicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/MHbuNokQpSHiIiG6pKFK+.png" />
+        <bt:Image id="dw.tpicon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/7aS9XTTuRZybAmuiN5to+.png" />
+        <bt:Image id="dw.tpicon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/UVI9DNtRrKSKPTKM4Dxv+.png" />
+        <bt:Image id="dw.tpicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/NKcaEcTCT1GQw0qmLtoz+.png" />
+        <bt:Image id="dw.insighticon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/GvOUpSWnSSuLrEmXTZRU+.png" />
+        <bt:Image id="dw.insighticon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/0gwPaIQSyK1xahk73R4Q+.png" />
+        <bt:Image id="dw.insighticon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/Noq3POU0QTqJGGj5dcFL+.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="dw.DatasetsUrl" DefaultValue="https://localhost:3000" />
-        <bt:Url id="dw.InsightsUrl" DefaultValue="https://localhost:3000/insights" />
+        <bt:Url id="dw.InsightsUrl" DefaultValue="https://cdn.filepicker.io/api/file/MHbuNokQpSHiIiG6pKFK+.png" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Datasets" />
-        <bt:String id="dw.InsightsButton.Label" DefaultValue="Upload Chart" />
+        <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Data" />
+        <bt:String id="dw.InsightsButton.Label" DefaultValue="Publish Insights" />
         <bt:String id="dw.Group1Label" DefaultValue="data.world" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
