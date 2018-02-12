@@ -34,6 +34,8 @@ import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import Insights from './components/Insights';
+import ImportData from './components/ImportData';
+
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
@@ -87,12 +89,20 @@ class App extends Component {
       }
     }
 
-    // For determining whether to render the Insights components
+    // For determining whether to render the Insights component
     let insights;
     if (window.location.pathname === '/insights') {
       insights = true;
     } else {
       insights = false;
+    }
+
+    // For determining whether to render the ImportData component
+    let importData;
+    if (window.location.pathname === '/import') {
+      importData = true;
+    } else {
+      importData = false;
     }
 
     this.state = {
@@ -105,6 +115,7 @@ class App extends Component {
       officeInitialized: false,
       syncStatus: {},
       insights,
+      importData,
       charts: [],
       projects: []
     };
@@ -126,6 +137,8 @@ class App extends Component {
 
       if (this.state.insights) {
         this.initializeInsights();
+      } else if(this.state.importData) {
+        return;
       } else {
         this.initializeDatasets();
       }
@@ -660,6 +673,7 @@ class App extends Component {
       syncStatus,
       user,
       insights,
+      importData,
       charts,
       projects
     } = this.state;
@@ -691,12 +705,18 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {!showStartPage && !dataset && !showCreateDataset && !insights && <DatasetsView
-          datasets={datasets}
-          createDataset={this.showCreateDataset}
-          linkDataset={this.linkDataset}
-          loadingDatasets={loadingDatasets}
-        />}
+        {
+          !showStartPage &&
+          !dataset &&
+          !showCreateDataset &&
+          !insights && 
+          !importData && <DatasetsView
+            datasets={datasets}
+            createDataset={this.showCreateDataset}
+            linkDataset={this.linkDataset}
+            loadingDatasets={loadingDatasets}
+          />
+        }
 
         {showCreateDataset && <CreateDatasetModal 
           user={user}
@@ -724,6 +744,8 @@ class App extends Component {
           createProject={this.createProject}
           uploadChart={this.uploadChart}
         />}
+
+        {!showStartPage && importData && <ImportData />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );
