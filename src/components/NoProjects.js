@@ -28,7 +28,7 @@ class NoProject extends Component {
 
   render() {
     return <div className="no-chart">
-      <div>You currently don't have any projects</div>
+      <div>Create a project for your insight.</div>
       <Button
         onClick={this.showAddProject}
         bsStyle="primary"

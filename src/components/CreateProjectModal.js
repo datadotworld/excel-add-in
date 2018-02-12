@@ -108,7 +108,7 @@ class CreateDatasetModal extends Component {
           <FormGroup>
             <ControlLabel>
               <div>
-                Project Objective <span className='project-form-info'>(optional)</span>
+                Project objective <span className='project-form-info'>(optional)</span>
               </div>
               <span className='project-form-info'>max. 120</span></ControlLabel>
             <InputGroup>
