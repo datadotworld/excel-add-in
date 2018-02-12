@@ -41,10 +41,10 @@ class LoginHeader extends Component {
   }
 
   render () {
-    const { user } = this.props;
+    const { user, page } = this.props;
 
     return (
-      <div className='login-header'>
+      <div className={`login-header ${page}`}>
         <LogoFull />
         {user && <DropdownButton title={`@${user.id}`} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
           <MenuItem eventKey='signout'>Sign out</MenuItem>

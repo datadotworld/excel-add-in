@@ -16,7 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
- .insights {
+ .insights-container {
    background-color: white;
    overflow: scroll;
  }

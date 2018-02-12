@@ -89,21 +89,8 @@ class App extends Component {
       }
     }
 
-    // For determining whether to render the Insights component
-    let insights;
-    if (window.location.pathname === '/insights') {
-      insights = true;
-    } else {
-      insights = false;
-    }
-
-    // For determining whether to render the ImportData component
-    let importData;
-    if (window.location.pathname === '/import') {
-      importData = true;
-    } else {
-      importData = false;
-    }
+    // To be used for rendering the respective pages and header styling
+    const page = window.location.pathname.substr(1);
 
     this.state = {
       token,
@@ -114,8 +101,7 @@ class App extends Component {
       loggedIn: !!token,
       officeInitialized: false,
       syncStatus: {},
-      insights,
-      importData,
+      page,
       charts: [],
       projects: []
     };
@@ -129,15 +115,16 @@ class App extends Component {
   }
 
   async initializeOffice() {
+    const { page } = this.state;
     try {
       this.office = new OfficeConnector();
       await this.office.initialize();
 
       this.setState({ officeInitialized: true });
 
-      if (this.state.insights) {
+      if (page === 'insights') {
         this.initializeInsights();
-      } else if(this.state.importData) {
+      } else if(page === 'import') {
         return;
       } else {
         this.initializeDatasets();
@@ -672,8 +659,7 @@ class App extends Component {
       syncing,
       syncStatus,
       user,
-      insights,
-      importData,
+      page,
       charts,
       projects
     } = this.state;
@@ -686,11 +672,14 @@ class App extends Component {
     const showStartPage = officeInitialized && !loggedIn;
     const modalViewOpened = showAddDataModal || showCreateDataset;
 
+    const insights = page === 'insights';
+    const importData = page === 'import'
+
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
-        {loggedIn && <LoginHeader user={user} logout={this.logout} />}
+        {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} />}
         {!showStartPage && !modalViewOpened && dataset && !insights && <BindingsPage
           bindings={bindings}

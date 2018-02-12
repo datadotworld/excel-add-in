@@ -46,7 +46,7 @@ class Insights extends Component {
     const { selectedChart } = this.state;
     const { charts, getImage, uploadChart, projects, user, createProject } = this.props;
     return (
-      <Grid className="insights">
+      <Grid className="insights-container">
         <Row className='center-block section-header insight-header'>
           <div className='insight-title'>
             New Insight

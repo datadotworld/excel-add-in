@@ -47,3 +47,11 @@
 .login-header .dropdown-menu {
   z-index: 1060;
 }
+
+.insights {
+  background-color: #8671ad
+}
+
+.import {
+  background-color: #43984c;
+}
