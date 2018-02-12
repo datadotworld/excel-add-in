@@ -17,7 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
-import { Row } from 'react-bootstrap';
+import { Row, Button } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
 import NoProjects from './NoProjects';
@@ -68,6 +68,14 @@ class Charts extends Component {
                 />
               })
             }
+          </div>
+          <div className="insight-button-container">
+            <Button
+              onClick={this.refresh}
+              bsStyle="primary"
+            >
+              Refresh
+            </Button>
           </div>
         </div>}
         {!loadProjects && !showAddProject && <NoProjects showAddProject={this.showAddProject} />}

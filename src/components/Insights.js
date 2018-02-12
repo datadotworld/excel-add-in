@@ -33,11 +33,6 @@ class Insights extends Component {
     this.state = { selectedChart: '' };
   }
 
-  closeClicked = () => {
-    analytics.track('exceladdin.add_insight.close.click');
-    window.location.pathname = '/';
-  }
-
   selectChart= (chart) => {
     this.setState({ selectedChart: chart });
   }
@@ -50,7 +45,6 @@ class Insights extends Component {
         <Row className='center-block section-header insight-header'>
           <div className='insight-title'>
             New Insight
-            <Icon icon='close' className='close-button' onClick={this.closeClicked}/>
           </div>
         </Row>
         {!selectedChart && <Charts
