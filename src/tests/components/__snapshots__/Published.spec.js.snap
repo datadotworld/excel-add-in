@@ -10,26 +10,39 @@ exports[`renders published insight 1`] = `
     <h3
       className="published-title"
     >
-      Insight Published!
+      undefined was published!
     </h3>
     <img
       alt="chart"
       className="published-chart"
       src="data:image/png;base64, b64ImageString"
     />
-    <a
-      className="published-link"
-      href="https://data.world/path/to/insight"
-      target="_blank"
+    <div
+      className="published-buttons"
     >
       <button
-        className="published-button btn btn-primary"
+        className="published-back-button btn btn-default"
         disabled={false}
+        onClick={[Function]}
         type="button"
       >
-        View it
+        Publish new insight
       </button>
-    </a>
+      <a
+        className="published-link"
+        href="https://data.world/path/to/insight"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <button
+          className="published-link-button btn btn-primary"
+          disabled={false}
+          type="button"
+        >
+          View on data.world
+        </button>
+      </a>
+    </div>
   </div>
 </div>
 `;
