@@ -24,7 +24,7 @@ import './Published.css';
 const Published = (props) => (
   <div className="published">
     <div className="published-container">
-      <h3 className="published-title">Insight Published!</h3>
+      <h3 className="published-title">{`${props.title} was published!`}</h3>
       <img
         className="published-chart"
         src={`data:image/png;base64, ${props.chart}`}
@@ -43,7 +43,7 @@ const Published = (props) => (
             className="published-link-button"
             bsStyle='primary'
           >
-            View it
+            View on data.world
           </Button>
         </a>
       </div>
