@@ -40,6 +40,8 @@ const ImportData = () => {
         />
         <a
           className="import-link"
+          target="_blank"
+          rel="noopener noreferrer"
           href="https://data.world/sparklesquad/the-easiest-way-to-do-advanced-business-sql/workspace/query?queryid=c48badee-0d48-4dfb-b6ee-ab1e87e6aae6)"
         >
           <Button

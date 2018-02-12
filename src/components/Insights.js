@@ -18,10 +18,8 @@
  */
 import React, { Component } from 'react';
 import { Grid, Row } from 'react-bootstrap';
-import Icon from './icons/Icon';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
-import analytics from '../analytics';
 
 import './Insights.css';
 
@@ -33,8 +31,8 @@ class Insights extends Component {
     this.state = { selectedChart: '' };
   }
 
-  selectChart= (chart) => {
-    this.setState({ selectedChart: chart });
+  selectChart= (imageString, title) => {
+    this.setState({ selectedChart: { imageString, title } });
   }
 
   render() {
@@ -57,7 +55,8 @@ class Insights extends Component {
         />}
         {selectedChart && <UploadInsight
           getImage={getImage}
-          chart={selectedChart}
+          chart={selectedChart.imageString}
+          title={selectedChart.title}
           uploadChart={uploadChart}
           projects={projects}
         />}

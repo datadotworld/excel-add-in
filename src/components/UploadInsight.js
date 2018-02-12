@@ -38,7 +38,7 @@ class UploadInsight extends Component {
 
     const defaultProject = props.projects[0];
     this.state = {
-      title: '',
+      title: props.title || '',
       project: defaultProject,
       description: '',
       uploadComplete: false,

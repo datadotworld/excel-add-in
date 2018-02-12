@@ -71,7 +71,7 @@ class Charts extends Component {
           </div>
           <div className="insight-button-container">
             <Button
-              onClick={this.refresh}
+              onClick={() => {window.location.pathname = '/insights'}}
               bsStyle="primary"
             >
               Refresh

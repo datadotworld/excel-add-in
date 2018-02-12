@@ -36,7 +36,7 @@ class Chart extends Component {
   }
 
   selectChart = () => {
-    this.props.selectChart(this.state.imageString);
+    this.props.selectChart(this.state.imageString, this.props.chart.chartName);
   }
   
   render() {

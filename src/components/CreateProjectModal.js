@@ -59,11 +59,10 @@ class CreateDatasetModal extends Component {
   }
 
   formValid = () => {
-    const { title, objective } = this.state;
+    const { title } = this.state;
     const titleValid = title.length >= 5 && title.length <= 60;
-    const objectiveValid = objective.length > 0 && objective.length <= 120;
 
-    return titleValid && objectiveValid;
+    return titleValid;
   }
 
   createProject = () => {
