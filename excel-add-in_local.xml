@@ -91,6 +91,30 @@
                     <SourceLocation resid="dw.DatasetsUrl" />
                   </Action>
                 </Control>
+                <Control xsi:type="Button" id="dw.ImportButton">
+                  <Label resid="dw.ImportButton.Label" />
+                  <Supertip>
+                    <!-- ToolTip title. resid must point to a ShortString resource. -->
+                    <Title resid="dw.ImportButton.Label" />
+                    <!-- ToolTip description. resid must point to a LongString resource. -->
+                    <Description resid="dw.ImportButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="dw.importicon_16x16" />
+                    <bt:Image size="32" resid="dw.importicon_32x32" />
+                    <bt:Image size="80" resid="dw.importicon_80x80" />
+                  </Icon>
+
+                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+                  <Action xsi:type="ShowTaskpane">
+                    <!--This is the key for auto-open to work, you need to set the TaskpaneId of the pane you want
+                    to open to the well-known value of Office.AutoShowTaskpaneWithDocument
+                    -->
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                    <SourceLocation resid="dw.ImportUrl" />
+                  </Action>
+                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -107,21 +131,27 @@
         <bt:Image id="dw.insighticon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/GvOUpSWnSSuLrEmXTZRU+.png" />
         <bt:Image id="dw.insighticon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/0gwPaIQSyK1xahk73R4Q+.png" />
         <bt:Image id="dw.insighticon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/Noq3POU0QTqJGGj5dcFL+.png" />
+        <bt:Image id="dw.importicon_16x16" DefaultValue="https://cdn.filepicker.io/api/file/255R6itQLCgnZl0p6sTs+.png" />
+        <bt:Image id="dw.importicon_32x32" DefaultValue="https://cdn.filepicker.io/api/file/4gM5sAXgTASGx4Jv0cZx+.png" />
+        <bt:Image id="dw.importicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/LRvLLUdaQiCWBYmJ8iHX+.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="dw.DatasetsUrl" DefaultValue="https://localhost:3000" />
-        <bt:Url id="dw.InsightsUrl" DefaultValue="https://cdn.filepicker.io/api/file/MHbuNokQpSHiIiG6pKFK+.png" />
+        <bt:Url id="dw.InsightsUrl" DefaultValue="https://localhost:3000/insights" />
+        <bt:Url id="dw.ImportUrl" DefaultValue="https://localhost:3000/import" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
         <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Data" />
         <bt:String id="dw.InsightsButton.Label" DefaultValue="Publish Insights" />
+        <bt:String id="dw.ImportButton.Label" DefaultValue="Import Data" />
         <bt:String id="dw.Group1Label" DefaultValue="data.world" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
         <bt:String id="dw.DatasetsButton.Tooltip" DefaultValue="Click to sync with data.world" />
-        <bt:String id="dw.InsightsButton.Tooltip" DefaultValue="Click to upload charts to data.world" />
+        <bt:String id="dw.InsightsButton.Tooltip" DefaultValue="Click to upload charts as insights to data.world" />
+        <bt:String id="dw.ImportButton.Tooltip" DefaultValue="Click to import data from data.world" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
