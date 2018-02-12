@@ -35,11 +35,24 @@
   max-height: 100%;
 }
 
-.published-button {
+.published-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 25px;
-  width: 100%;
 }
 
-.pulbished-link {
-  color: white
+.published-link {
+  color: white;
+}
+
+.published-back-button {
+  width: 50%;
+  padding: 0;
+  font-size: 12px;
+}
+
+.pulbished-link-button {
+  width: 100%;
+  float: right;
 }

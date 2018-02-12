@@ -30,14 +30,23 @@ const Published = (props) => (
         src={`data:image/png;base64, ${props.chart}`}
         alt="chart"
       />
-      <a className="published-link" href={props.uri} target="_blank">
+
+      <div className='published-buttons'>
         <Button
-          className="published-button"
-          bsStyle='primary'
+          onClick={() => window.location.pathname = '/insights'}
+          className="published-back-button"
         >
-          View it
+          Publish new insight
         </Button>
-      </a>
+        <a className="published-link" href={props.uri} target="_blank">
+          <Button
+            className="published-link-button"
+            bsStyle='primary'
+          >
+            View it
+          </Button>
+        </a>
+      </div>
     </div>
   </div>
 );
