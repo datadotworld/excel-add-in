@@ -395,15 +395,13 @@ exports[`renders welcome page - no dataset 1`] = `
         </p>
       </div>
     </div>
-    <button
+    <a
       className="center-block login-button btn btn-primary"
-      disabled={false}
-      href={undefined}
+      href="undefined?page=undefined"
       onClick={[Function]}
-      type="button"
     >
       Sign in
-    </button>
+    </a>
     <div>
       New to data.world? 
       <a
@@ -863,15 +861,13 @@ exports[`renders welcome page - with dataset 1`] = `
         Sign in to data.world to save changes as they are made.
       </div>
     </div>
-    <button
+    <a
       className="center-block login-button btn btn-primary"
-      disabled={false}
-      href={undefined}
+      href="undefined?page=undefined"
       onClick={[Function]}
-      type="button"
     >
       Sign in
-    </button>
+    </a>
     <div>
       New to data.world? 
       <a

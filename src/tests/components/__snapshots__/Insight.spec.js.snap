@@ -72,38 +72,4 @@ exports[`renders charts view - no charts 1`] = `
 </div>
 `;
 
-exports[`renders no projects view 1`] = `
-<div
-  className="insights-container container"
->
-  <div
-    className="center-block section-header insight-header row"
-  >
-    <div
-      className="insight-title"
-    >
-      New Insight
-    </div>
-  </div>
-  <div
-    className="charts-container row"
-  >
-    <div
-      className="no-chart"
-    >
-      <div>
-        Create a project for your insight.
-      </div>
-      <button
-        className="no-chart-button btn btn-primary"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Create Project
-      </button>
-    </div>
-  </div>
-  
-</div>
-`;
+exports[`renders no projects view 1`] = `<div />`;
