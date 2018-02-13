@@ -29,7 +29,12 @@ it('renders without crashing', () => {
 });
 
 it('renders charts view - no charts', () => {
-  expect(renderer.create(<Insights charts={[]} projects={['project 1', 'project 2']} />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<Insights
+    charts={[]}
+    projects={['project 1', 'project 2']}
+    officeInitialized="true"
+    />
+  ).toJSON()).toMatchSnapshot()
 });
 
 it('renders charts view - chart', () => {
@@ -46,7 +51,12 @@ it('renders charts view - chart', () => {
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <Insights charts={charts} getImageAndTitle={getImageAndTitle} projects={[]} />
+      <Insights
+        charts={charts}
+        getImageAndTitle={getImageAndTitle}
+        projects={[]}
+        officeInitialized="true"
+      />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
 

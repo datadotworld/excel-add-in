@@ -37,31 +37,44 @@ class Insights extends Component {
 
   render() {
     const { selectedChart } = this.state;
-    const { charts, getImageAndTitle, uploadChart, projects, user, createProject } = this.props;
-    return (
-      <Grid className="insights-container">
-        <Row className='center-block section-header insight-header'>
-          <div className='insight-title'>
-            New Insight
-          </div>
-        </Row>
-        {!selectedChart && <Charts
-          charts={charts}
-          projects={projects}
-          getImageAndTitle={getImageAndTitle}
-          user={user}
-          createProject={createProject}
-          selectChart={this.selectChart}
-        />}
-        {selectedChart && <UploadInsight
-          getImageAndTitle={getImageAndTitle}
-          chart={selectedChart.imageString}
-          title={selectedChart.title}
-          uploadChart={uploadChart}
-          projects={projects}
-        />}
-      </Grid>
-    );
+    const {
+      charts,
+      getImageAndTitle,
+      uploadChart,
+      projects,
+      user,
+      createProject,
+      officeInitialized
+    } = this.props;
+
+    if (officeInitialized) {
+      return (
+        <Grid className="insights-container">
+          <Row className='center-block section-header insight-header'>
+            <div className='insight-title'>
+              New Insight
+            </div>
+          </Row>
+          {!selectedChart && <Charts
+            charts={charts}
+            projects={projects}
+            getImageAndTitle={getImageAndTitle}
+            user={user}
+            createProject={createProject}
+            selectChart={this.selectChart}
+          />}
+          {selectedChart && <UploadInsight
+            getImageAndTitle={getImageAndTitle}
+            chart={selectedChart.imageString}
+            title={selectedChart.title}
+            uploadChart={uploadChart}
+            projects={projects}
+          />}
+        </Grid>
+      );
+    } else {
+      return <div />
+    }
   }
 }
 

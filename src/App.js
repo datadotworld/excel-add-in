@@ -120,8 +120,6 @@ class App extends Component {
       this.office = new OfficeConnector();
       await this.office.initialize();
 
-      this.setState({ officeInitialized: true });
-
       if (page === 'insights') {
         this.initializeInsights();
       } else if(page === 'import') {
@@ -192,7 +190,7 @@ class App extends Component {
 
         // All the charts in the workbook
         const charts = await this.getCharts();
-        this.setState({ charts, projects });
+        this.setState({ charts, projects, officeInitialized: true });
       }
     } catch(error) {
       this.setState({
@@ -729,6 +727,7 @@ class App extends Component {
           getImageAndTitle={this.office.getImageAndTitle}
           charts={charts}
           user={user}
+          officeInitialized={officeInitialized}
           projects={projects}
           createProject={this.createProject}
           uploadChart={this.uploadChart}
