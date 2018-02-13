@@ -27,13 +27,9 @@
 }
 
 .insight-sub-header {
-  width: 100%;
+  background-color: #F6F5F7;
   padding: 5px 15px;
-  background-color: #dfe3e9;
-}
-  
-.insight-sub-title {
-  color: gray;
+  color: #9d9d9d;
 }
 
 .insight-button-container {

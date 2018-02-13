@@ -53,9 +53,7 @@ class Charts extends Component {
       <Row className="charts-container">
         {loadProjects && loadCharts && <div className="container">
           <div className='insight-sub-header'>
-            <div className='insight-sub-title'>
-              Pick a chart
-            </div>
+            Pick a chart
           </div>
           <div className="insight-charts">
             {
