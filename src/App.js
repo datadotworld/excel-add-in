@@ -90,7 +90,12 @@ class App extends Component {
     }
 
     // To be used for rendering the respective pages and header styling
-    const page = window.location.pathname.substr(1);
+    let page;
+    if (this.parsedQueryString.page) {
+      page = this.parsedQueryString.page;
+    } else {
+      page = window.location.pathname.substr(1);
+    }
 
     this.state = {
       token,
@@ -123,7 +128,7 @@ class App extends Component {
       if (page === 'insights') {
         this.initializeInsights();
       } else if(page === 'import') {
-        return;
+        return this.setState({ officeInitialized: true });
       } else {
         this.initializeDatasets();
       }
@@ -142,6 +147,9 @@ class App extends Component {
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
+      if (!this.state.loggedIn) {
+        return this.setState({ officeInitialized: true });
+      }
       if (! dataset && this.state.loggedIn) {
         this.getDatasets();
       } else if (this.state.loggedIn) {
@@ -191,6 +199,8 @@ class App extends Component {
         // All the charts in the workbook
         const charts = await this.getCharts();
         this.setState({ charts, projects, officeInitialized: true });
+      } else {
+        this.setState({ officeInitialized: true });
       }
     } catch(error) {
       this.setState({
@@ -671,14 +681,14 @@ class App extends Component {
     const modalViewOpened = showAddDataModal || showCreateDataset;
 
     const insights = page === 'insights';
-    const importData = page === 'import'
+    const importData = page === 'import';
 
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
-        {showStartPage && <WelcomePage dataset={dataset} />}
+        {showStartPage && <WelcomePage dataset={dataset} page={page} />}
         {!showStartPage && !modalViewOpened && dataset && !insights && <BindingsPage
           bindings={bindings}
           dataset={dataset}

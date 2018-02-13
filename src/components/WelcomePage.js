@@ -35,9 +35,9 @@ class WelcomePage extends Component {
     dataset: PropTypes.object
   }
 
-  constructor () {
+  constructor (props) {
     super();
-    this.oauthURI = process.env.REACT_APP_OAUTH_URI;
+    this.oauthURI = `${process.env.REACT_APP_OAUTH_URI}?page=${props.page}`;
   }
 
   componentWillMount = () => {
