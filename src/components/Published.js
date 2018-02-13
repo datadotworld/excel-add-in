@@ -16,39 +16,50 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import React from 'react';
+import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
 import './Published.css';
 
-const Published = (props) => (
-  <div className="published">
-    <div className="published-container">
-      <h3 className="published-title">{`${props.title} was published!`}</h3>
-      <img
-        className="published-chart"
-        src={`data:image/png;base64, ${props.chart}`}
-        alt="chart"
-      />
+class Published extends Component {
+  componentDidMount () {
+    // User will have scrolled to the bottom of the add in when filling in the form
+    // Ensure the header is visible when this page is loaded
+    window.scrollTo(0, 0)
+  }
 
-      <div className='published-buttons'>
-        <Button
-          onClick={() => window.location.pathname = '/insights'}
-          className="published-back-button"
-        >
-          Publish new insight
-        </Button>
-        <a className="published-link" href={props.uri} target="_blank" rel="noopener noreferrer">
-          <Button
-            className="published-link-button"
-            bsStyle='primary'
-          >
-            View on data.world
-          </Button>
-        </a>
+  render() {
+    const { title, chart, uri } = this.props;
+    return (
+      <div className="published">
+        <div className="published-container">
+          <h3 className="published-title">{`${title} was published!`}</h3>
+          <img
+            className="published-chart"
+            src={`data:image/png;base64, ${chart}`}
+            alt="chart"
+          />
+
+          <div className='published-buttons'>
+            <Button
+              onClick={() => window.location.pathname = '/insights'}
+              className="published-back-button"
+            >
+              Publish new insight
+            </Button>
+            <a className="published-link" href={uri} target="_blank" rel="noopener noreferrer">
+              <Button
+                className="published-link-button"
+                bsStyle='primary'
+              >
+                View on data.world
+              </Button>
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
 
 export default Published;
