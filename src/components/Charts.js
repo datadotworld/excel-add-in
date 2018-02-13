@@ -43,7 +43,7 @@ class Charts extends Component {
   }
 
   render() {
-    const { charts, projects, getImage, selectChart, user, createProject } = this.props;
+    const { charts, projects, getImageAndTitle, selectChart, user, createProject } = this.props;
     const { showAddProject } = this.state;
 
     const loadCharts = charts.length > 0;
@@ -63,7 +63,7 @@ class Charts extends Component {
                 return <Chart
                   chart={chart}
                   key={index}
-                  getImage={getImage}
+                  getImageAndTitle={getImageAndTitle}
                   selectChart={selectChart}
                 />
               })

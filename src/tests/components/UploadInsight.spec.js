@@ -29,9 +29,9 @@ it('renders without crashing', () => {
 });
 
 it('renders upload insight view', () => {
-  const getImage = () => {
+  const getImageAndTitle = () => {
     return new Promise((resolve, reject) => {
-      resolve('b64string');
+      resolve({ image: 'b64string', title: 'A Title' });
     })
   }
 

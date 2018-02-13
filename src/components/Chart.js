@@ -25,18 +25,18 @@ class Chart extends Component {
   constructor() {
     super();
     
-    this.state = { imageString: '' };
+    this.state = { imageString: '', title: '' };
   }
   
   componentWillMount() {
     const { sheet, chartName } = this.props.chart
-    this.props.getImage(sheet, chartName).then(b64String => {
-      this.setState({ imageString: b64String });
+    this.props.getImageAndTitle(sheet, chartName).then(res => {
+      this.setState({ imageString: res.image, title: res.title });
     });
   }
 
   selectChart = () => {
-    this.props.selectChart(this.state.imageString, this.props.chart.chartName);
+    this.props.selectChart(this.state.imageString, this.state.title);
   }
   
   render() {

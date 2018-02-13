@@ -38,15 +38,15 @@ it('renders charts view - chart', () => {
     { sheet: '{00000000-0001-0000-0000-000000000000}', chartName: 'Chart 2' }
   ];
 
-  const getImage = () => {
+  const getImageAndTitle = () => {
     return new Promise((resolve, reject) => {
-      resolve('b64string');
+      resolve({ image: 'b64string', title: 'A Title' });
     })
   }
 
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <Insights charts={charts} getImage={getImage} projects={[]} />
+      <Insights charts={charts} getImageAndTitle={getImageAndTitle} projects={[]} />
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
 

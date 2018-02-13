@@ -726,7 +726,7 @@ class App extends Component {
         />}
 
         {!showStartPage && insights && <Insights
-          getImage={this.office.getImage}
+          getImageAndTitle={this.office.getImageAndTitle}
           charts={charts}
           user={user}
           projects={projects}

@@ -318,15 +318,19 @@ export default class OfficeConnector {
     });
   }
 
-  getImage(sheetId, chartName) {
+  getImageAndTitle(sheetId, chartName) {
     return new Promise((resolve, reject) => {
       Excel.run((ctx) => {
         // Get chart using the sheet id and chart name
-        var chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
+        const chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
+
+        // Load the chart's title and b64 image string
+        const title = chart.title;
+        title.load('text')
         const image = chart.getImage();
         return ctx.sync().then(() => {
           // Return the base64 string representation of the chart
-          resolve(image.value);
+          resolve({ image: image.value, title: title.text });
         })
       });
     });
