@@ -44,6 +44,7 @@ class Published extends Component {
             <Button
               onClick={() => window.location.pathname = '/insights'}
               className="published-back-button"
+              bsSize="xsmall"
             >
               Publish new insight
             </Button>
@@ -51,6 +52,7 @@ class Published extends Component {
               <Button
                 className="published-link-button"
                 bsStyle='primary'
+                bsSize="xsmall"
               >
                 View on data.world
               </Button>
