@@ -58,11 +58,20 @@ class CreateDatasetModal extends Component {
     this.setState({ [name]: value });
   }
 
-  formValid = () => {
-    const { title } = this.state;
-    const titleValid = title.length >= 5 && title.length <= 60;
+  isObjectiveValid = () => {
+    const { objective } = this.state;
 
-    return titleValid;
+    return objective.length <= 120;
+  }
+
+  isTitleValid = () => {
+    const { title } = this.state;
+
+    return title.length >= 5 && title.length <= 60;
+  }
+
+  formValid = () => {
+    return this.isTitleValid() && this.isObjectiveValid();
   }
 
   createProject = () => {
@@ -89,7 +98,7 @@ class CreateDatasetModal extends Component {
         </Row>
         <Row className='center-block create-project-form'>
           <FormGroup>
-            <ControlLabel>Project name<span className='project-form-info'>max. 60</span></ControlLabel>
+            <ControlLabel>Project name<span className='project-form-info'>min. 5</span></ControlLabel>
             <InputGroup>
               <FormControl
                 onChange={this.handleChange}
