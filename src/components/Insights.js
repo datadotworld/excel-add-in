@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Row } from 'react-bootstrap';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
@@ -25,10 +26,24 @@ import './Insights.css';
 
 
 class Insights extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    user: PropTypes.object,
+    getImageAndTitle: PropTypes.func,
+    charts: PropTypes.array,
+    officeInitialized: PropTypes.bool,
+    projects: PropTypes.array,
+    createProject: PropTypes.func,
+    uploadChart: PropTypes.func,
+    setPage: PropTypes.func,
+    initializeInsights: PropTypes.func
+  }
 
-    this.state = { selectedChart: '' };
+  state = {
+    selectedChart: '' 
+  }
+
+  componentWillMount() {
+    this.props.initializeInsights();
   }
 
   selectChart= (imageString, title) => {
@@ -44,7 +59,9 @@ class Insights extends Component {
       projects,
       user,
       createProject,
-      officeInitialized
+      officeInitialized,
+      setPage,
+      initializeInsights
     } = this.props;
 
     if (officeInitialized) {
@@ -62,6 +79,8 @@ class Insights extends Component {
             user={user}
             createProject={createProject}
             selectChart={this.selectChart}
+            setPage={setPage}
+            initializeInsights={initializeInsights}
           />}
           {selectedChart && <UploadInsight
             getImageAndTitle={getImageAndTitle}

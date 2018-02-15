@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { 
   Button,
   ControlLabel,
@@ -33,18 +34,19 @@ import './UploadInsight.css';
 
 
 class UploadInsight extends Component {
-  constructor(props) {
-    super();
-
-    const defaultProject = props.projects[0];
-    this.state = {
-      title: props.title || '',
-      project: defaultProject,
-      description: '',
-      uploadComplete: false,
-      uri: ''
-    };
+  static propTypes = {
+    chart: PropTypes.object,
+    uri: PropTypes.string,
+    title: PropTypes.string
   }
+
+  state = {
+    title: this.props.title || '',
+    project: this.props.projects[0],
+    description: '',
+    uploadComplete: false,
+    uri: ''
+  };
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -138,7 +140,7 @@ class UploadInsight extends Component {
               bsStyle='primary'>OK</Button>
           </div>
         </div>}
-        {uploadComplete && <Published chart={this.props.chart} uri={this.state.uri} title={title}/>}
+        {uploadComplete && <Published chart={this.props.chart} uri={this.state.uri} title={title} />}
       </Row>
     );
   }

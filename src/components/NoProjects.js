@@ -17,11 +17,16 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import './NoChart.css';
 
 class NoProject extends Component {
+  static propTypes = {
+    showAddProject: PropTypes.func
+  }
+
   showAddProject = () => {
     this.props.showAddProject();
   }

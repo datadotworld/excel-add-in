@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import { MAX_ROWS, MAX_COLUMNS } from './constants';
+import { flatten } from 'lodash';
 
 export function isSheetBinding(binding) {
   if (binding.rowCount === MAX_ROWS && binding.columnCount === MAX_COLUMNS) {
@@ -97,5 +98,5 @@ export function groupAndSortProjects(projects) {
   });
 
   // Flatten the array of arrays
-  return [].concat.apply([], projectsByOwner);
+  return flatten(projectsByOwner);
 }

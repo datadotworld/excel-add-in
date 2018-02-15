@@ -326,12 +326,12 @@ export default class OfficeConnector {
 
         // Load the chart's title and b64 image string
         const title = chart.title;
-        title.load('text')
+        title.load('text');
         const image = chart.getImage();
         return ctx.sync().then(() => {
           // Return the base64 string representation of the chart
           resolve({ image: image.value, title: title.text });
-        })
+        });
       });
     });
   }
@@ -343,7 +343,7 @@ export default class OfficeConnector {
       }
       Excel.run((ctx) => {
         const worksheets = ctx.workbook.worksheets;
-        worksheets.load('items')
+        worksheets.load('items');
         return ctx.sync().then(() => {
           resolve(worksheets.items);
         }).catch(reject)

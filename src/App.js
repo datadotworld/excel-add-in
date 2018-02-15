@@ -18,6 +18,7 @@
  */
 import React, { Component } from 'react';
 import queryString from 'query-string'
+import { flatten } from 'lodash'
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -45,6 +46,8 @@ import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_PREFERENCES = 'DW_PREFERENCES';
 const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
+const INSIGHTS_ROUTE = 'insights';
+const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
 
 class App extends Component {
@@ -119,15 +122,20 @@ class App extends Component {
     this.initializeOffice();
   }
 
+  setPage = (page) => {
+    console.log('This thing has been called', page)
+    this.setState({ page })
+  }
+
   async initializeOffice() {
     const { page } = this.state;
     try {
       this.office = new OfficeConnector();
       await this.office.initialize();
 
-      if (page === 'insights') {
+      if (page === INSIGHTS_ROUTE) {
         this.initializeInsights();
-      } else if(page === 'import') {
+      } else if (page === IMPORT_ROUTE) {
         return this.setState({ officeInitialized: true });
       } else {
         this.initializeDatasets();
@@ -180,7 +188,7 @@ class App extends Component {
       });
 
       bindings.forEach(this.listenForChangesToBinding);
-    } catch(error) {
+    } catch (error) {
       this.setState({
         error: {
           error,
@@ -628,19 +636,13 @@ class App extends Component {
   getCharts = () => {
     return new Promise((resolve, reject) => {
       this.office.getWorksheets().then(worksheets => {
-        const promises = worksheets.map(worksheet => {
-          // Returns an array of charts in the worksheet
-          return this.office.getCharts(worksheet.id);
-        })
-
+        const promises = worksheets.map(worksheet => this.office.getCharts(worksheet.id));
         Promise.all(promises).then((allCharts) => {
           // Some worksheets may not contain charts
-          const charts = allCharts.filter(chart => {
-            return chart.length > 0;
-          });
+          const charts = allCharts.filter(chart => chart.length > 0);
 
           // charts is an array of arrays, flatten before resolving
-          resolve([].concat.apply([], charts));
+          resolve(flatten(charts));
         }).catch(reject);
       });
     });
@@ -683,13 +685,18 @@ class App extends Component {
     const insights = page === 'insights';
     const importData = page === 'import';
 
+    const renderBindingsPage = !showStartPage && !modalViewOpened && dataset && !insights;
+    const renderDatasetsView = !showStartPage && !dataset && !showCreateDataset && !insights && !importData;
+    const renderInsights = !showStartPage && insights;
+    const renderImportData = !showStartPage && importData;
+
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} />}
-        {!showStartPage && !modalViewOpened && dataset && !insights && <BindingsPage
+        {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
           createBinding={this.createBinding}
@@ -702,12 +709,7 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {
-          !showStartPage &&
-          !dataset &&
-          !showCreateDataset &&
-          !insights && 
-          !importData && <DatasetsView
+        {renderDatasetsView && <DatasetsView
             datasets={datasets}
             createDataset={this.showCreateDataset}
             linkDataset={this.linkDataset}
@@ -718,7 +720,8 @@ class App extends Component {
         {showCreateDataset && <CreateDatasetModal 
           user={user}
           linkNewDataset={this.linkNewDataset}
-          createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} 
+          createDataset={this.createDataset}
+          close={() => this.setState({showCreateDataset: false})} 
         />}
 
         {showAddDataModal && <AddDataModal 
@@ -733,7 +736,7 @@ class App extends Component {
           doesFileExist={this.doesFileExist}
         />}
 
-        {!showStartPage && insights && <Insights
+        {renderInsights && <Insights
           getImageAndTitle={this.office.getImageAndTitle}
           charts={charts}
           user={user}
@@ -741,9 +744,11 @@ class App extends Component {
           projects={projects}
           createProject={this.createProject}
           uploadChart={this.uploadChart}
+          setPage={this.setPage}
+          initializeInsights={this.initializeInsights}
         />}
 
-        {!showStartPage && importData && <ImportData />}
+        {renderImportData && <ImportData />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );

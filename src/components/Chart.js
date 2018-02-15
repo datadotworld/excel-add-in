@@ -17,15 +17,22 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LoadingAnimation from './LoadingAnimation';
 
 import './Chart.css';
 
 class Chart extends Component {
-  constructor() {
-    super();
-    
-    this.state = { imageString: '', title: '' };
+  static propTypes = {
+    chart: PropTypes.object,
+    key: PropTypes.number,
+    getImageAndTitle: PropTypes.func,
+    selectChart: PropTypes.func
+  }
+
+  state = {
+    imageString: '',
+    title: ''
   }
   
   componentWillMount() {

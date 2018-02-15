@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Button } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
@@ -26,12 +27,17 @@ import CreateProject from './CreateProjectModal';
 import './Charts.css';
 
 class Charts extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    charts: PropTypes.array,
+    projects: PropTypes.array,
+    getImageAndTitle: PropTypes.func,
+    user: PropTypes.string,
+    createProject: PropTypes.func,
+    selectChart: PropTypes.func
+  }
 
-    this.state = {
-      showAddProject: false
-    };
+  state = {
+    showAddProject: false
   }
 
   showAddProject = () => {
@@ -43,7 +49,16 @@ class Charts extends Component {
   }
 
   render() {
-    const { charts, projects, getImageAndTitle, selectChart, user, createProject } = this.props;
+    const {
+      charts,
+      projects,
+      getImageAndTitle,
+      selectChart,
+      user,
+      createProject,
+      setPage,
+      initializeInsights
+    } = this.props;
     const { showAddProject } = this.state;
 
     const loadCharts = charts.length > 0;
@@ -69,7 +84,7 @@ class Charts extends Component {
           </div>
           <div className="insight-button-container">
             <Button
-              onClick={() => {window.location.pathname = '/insights'}}
+              onClick={() => {initializeInsights()}}
               bsStyle="primary"
             >
               Refresh
@@ -77,11 +92,12 @@ class Charts extends Component {
           </div>
         </div>}
         {!loadProjects && !showAddProject && <NoProjects showAddProject={this.showAddProject} />}
-        {loadProjects && !loadCharts && <NoChart />}
+        {loadProjects && !loadCharts && <NoChart initializeInsights={initializeInsights} />}
         {showAddProject && <CreateProject
           user={user}
           close={this.closeAddProject}
           createProject={createProject}
+          setPage={setPage}
         />}
       </Row>
     );

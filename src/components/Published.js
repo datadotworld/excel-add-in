@@ -17,11 +17,18 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import './Published.css';
 
 class Published extends Component {
+  static propTypes = {
+    chart: PropTypes.object,
+    uri: PropTypes.string,
+    title: PropTypes.string
+  }
+
   componentDidMount () {
     // User will have scrolled to the bottom of the add in when filling in the form
     // Ensure the header is visible when this page is loaded

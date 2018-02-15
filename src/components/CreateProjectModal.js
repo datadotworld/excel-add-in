@@ -17,6 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Button,
@@ -37,16 +38,19 @@ import './CreateProjectModal.css';
 
 import analytics from '../analytics';
 
-class CreateDatasetModal extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      title: '',
-      objective: '',
-      visibility: 'OPEN'
-    };
+class CreateProjectModal extends Component {
+  static propTypes = {
+    user: PropTypes.string,
+    close: PropTypes.func,
+    createProject: PropTypes.func
   }
+
+  state = {
+    title: '',
+    objective: '',
+    visibility: 'OPEN'
+  }
+
   closeClicked = () => {
     analytics.track('exceladdin.create_project.close.click');
     this.props.close();
@@ -81,7 +85,8 @@ class CreateDatasetModal extends Component {
       objective,
       visibility
     }).then(res => {
-      window.location.pathname = '/insights';
+      this.props.setPage('insights')
+      // window.location.pathname = '/insights';
     });
   }
 
@@ -170,4 +175,4 @@ class CreateDatasetModal extends Component {
   }
 }
 
-export default CreateDatasetModal;
+export default CreateProjectModal;
