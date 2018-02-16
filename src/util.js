@@ -17,7 +17,6 @@
  * data.world, Inc. (http://data.world/).
  */
 import { MAX_ROWS, MAX_COLUMNS } from './constants';
-import { flatten } from 'lodash';
 
 export function isSheetBinding(binding) {
   if (binding.rowCount === MAX_ROWS && binding.columnCount === MAX_COLUMNS) {
@@ -59,44 +58,18 @@ export function b64toBlob(imageString) {
 }
 
 export function groupAndSortProjects(projects) {
-  // Get all the project owners
-  const owners = [];
-  projects.forEach(project => {
-    if (!owners.includes(project.owner)) {
-      owners.push(project.owner);
+  // Sort projects first by owner then by id
+  projects.sort((firstProject, secondProject) => {
+    if (firstProject.owner === secondProject.owner) {
+      return (firstProject.id < secondProject.id) ?
+        -1 :
+        (firstProject.id > secondProject.id) ?
+          1 :
+          0;
+    } else {
+      return (firstProject.owner < secondProject.owner) ? -1 : 1;
     }
   });
 
-  // Sort project owners
-  owners.sort();
-
-  // Group projects by owner
-  const projectsByOwner = [];
-  owners.forEach(owner => {
-    const userProjects = projects.filter(project => {
-      if (project.owner === owner) {
-        return true;
-      }
-
-      return false;
-    });
-
-    // Sort projects by project name
-    userProjects.sort((firstProject, secondProject) => {
-      if (firstProject.id < secondProject.id) {
-        return -1;
-      }
-
-      if (firstProject.id > secondProject.id) {
-        return 1;
-      }
-
-      return 0
-    })
-
-    projectsByOwner.push(userProjects);
-  });
-
-  // Flatten the array of arrays
-  return flatten(projectsByOwner);
+  return projects;
 }
