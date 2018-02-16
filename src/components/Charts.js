@@ -62,8 +62,8 @@ class Charts extends Component {
       selectChart,
       user,
       createProject,
-      setPage,
-      initializeInsights
+      initializeInsights,
+      setError
     } = this.props;
     const { showAddProject, failed } = this.state;
 
@@ -113,7 +113,7 @@ class Charts extends Component {
           user={user}
           close={this.closeAddProject}
           createProject={createProject}
-          setPage={setPage}
+          setError={setError}
         />}
       </Row>
     );

@@ -651,6 +651,15 @@ class App extends Component {
   uploadChart = (imageString, options) => {
     return this.api.uploadChart(imageString, options);
   }
+
+  setError = (error, message) => {
+    this.setState({
+      error: {
+        error,
+        message
+      }
+    });
+  }
   
   render () {
     const {
@@ -745,6 +754,7 @@ class App extends Component {
           createProject={this.createProject}
           uploadChart={this.uploadChart}
           setPage={this.setPage}
+          setError={this.setError}
         />}
 
         {renderImportData && <ImportData />}

@@ -55,7 +55,8 @@ class Insights extends Component {
       projects,
       user,
       createProject,
-      officeInitialized
+      officeInitialized,
+      setError
     } = this.props;
 
     if (officeInitialized) {
@@ -73,6 +74,7 @@ class Insights extends Component {
             user={user}
             createProject={createProject}
             selectChart={this.selectChart}
+            setError={setError}
           />}
           {selectedChart && <UploadInsight
             getImageAndTitle={getImageAndTitle}

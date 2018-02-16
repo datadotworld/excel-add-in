@@ -18,7 +18,6 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Button,
   ControlLabel,
@@ -34,13 +33,13 @@ import {
 import { kebabCase } from 'lodash';
 
 import Icon from './icons/Icon';
-import './CreateProjectModal.css';
 
+import './CreateProjectModal.css';
 import analytics from '../analytics';
 
 class CreateProjectModal extends Component {
   static propTypes = {
-    user: PropTypes.string,
+    user: PropTypes.object,
     close: PropTypes.func,
     createProject: PropTypes.func
   }
@@ -56,8 +55,20 @@ class CreateProjectModal extends Component {
     this.props.close();
   }
 
+  cancelClicked = () => {
+    analytics.track('exceladdin.create_project.cancel_button.click');
+    this.props.close();
+  }
+
   handleChange = (event) => {
     const { name, value } = event.target;
+
+    if (name === 'VISIBILITY') {
+      analytics.track(
+        'exceladdin.create_project.visibility.change',
+        { visibility: value }
+      );
+    }
 
     this.setState({ [name]: value });
   }
@@ -79,14 +90,17 @@ class CreateProjectModal extends Component {
   }
 
   createProject = () => {
+    analytics.track('exceladdin.create_dataset.create_button.click');
     const { title, objective, visibility } = this.state;
+
     this.props.createProject({
       title,
       objective,
       visibility
     }).then(res => {
-      this.props.setPage('insights')
-      // window.location.pathname = '/insights';
+      window.location.pathname = '/insights';
+    }).catch(error => {
+      this.props.setError(error, 'There was an error creating the project, please try again');
     });
   }
 
@@ -139,11 +153,13 @@ class CreateProjectModal extends Component {
               name='visibility'
               onChange={this.handleChange}
               checked={visibility === 'OPEN'}
-              className={visibility=== 'OPEN' ? 'checked' : ''}
+              className={visibility === 'OPEN' ? 'checked' : ''}
               value='OPEN'
             >
               <div className='radio-label'>Open</div>
-              <div className='radio-option-description'>Publicly available data that anyone can view, query, or download.</div>
+              <div className='radio-option-description'>
+                Publicly available data that anyone can view, query, or download.
+              </div>
             </Radio>
             <Radio
               name='visibility'
@@ -153,12 +169,14 @@ class CreateProjectModal extends Component {
               value='PRIVATE'
             >
               <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
-              <div className='radio-option-description'>Will only be shared with others you invite. Use for personal or sensitive information.</div>
+              <div className='radio-option-description'>
+                Will only be shared with others you invite. Use for personal or sensitive information.
+              </div>
             </Radio>
           </FormGroup>
           <div className='insight-upload-buttons'>
             <Button
-              onClick={this.close}
+              onClick={this.cancelClicked}
               className="insight-upload-button"
             >
               Cancel
@@ -167,7 +185,10 @@ class CreateProjectModal extends Component {
               className="insight-upload-button"
               onClick={this.createProject}
               disabled={!this.formValid()}
-              bsStyle='primary'>Create Project</Button>
+              bsStyle='primary'
+            >
+              Create Project
+            </Button>
           </div>
         </Row>
       </Grid>
