@@ -313,7 +313,7 @@ export default class OfficeConnector {
 
           // Return array of objects containing the chart names and worksheet
           resolve(charts);
-        })
+        }).catch (reject);
       });
     });
   }

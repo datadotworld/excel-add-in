@@ -34,7 +34,6 @@ class Insights extends Component {
     projects: PropTypes.array,
     createProject: PropTypes.func,
     uploadChart: PropTypes.func,
-    setPage: PropTypes.func,
     initializeInsights: PropTypes.func
   }
 

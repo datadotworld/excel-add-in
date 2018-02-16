@@ -122,11 +122,6 @@ class App extends Component {
     this.initializeOffice();
   }
 
-  setPage = (page) => {
-    console.log('This thing has been called', page)
-    this.setState({ page })
-  }
-
   async initializeOffice() {
     const { page } = this.state;
     try {
@@ -704,7 +699,7 @@ class App extends Component {
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
-        {showStartPage && <WelcomePage dataset={dataset} page={page} />}
+        {showStartPage && <WelcomePage page={page} />}
         {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
@@ -719,12 +714,11 @@ class App extends Component {
         />}
 
         {renderDatasetsView && <DatasetsView
-            datasets={datasets}
-            createDataset={this.showCreateDataset}
-            linkDataset={this.linkDataset}
-            loadingDatasets={loadingDatasets}
-          />
-        }
+          datasets={datasets}
+          createDataset={this.showCreateDataset}
+          linkDataset={this.linkDataset}
+          loadingDatasets={loadingDatasets}
+        />}
 
         {showCreateDataset && <CreateDatasetModal 
           user={user}
@@ -753,7 +747,6 @@ class App extends Component {
           projects={projects}
           createProject={this.createProject}
           uploadChart={this.uploadChart}
-          setPage={this.setPage}
           setError={this.setError}
         />}
 
