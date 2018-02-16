@@ -21,10 +21,11 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import './Published.css';
+import analytics from '../analytics';
 
 class Published extends Component {
   static propTypes = {
-    chart: PropTypes.object,
+    chart: PropTypes.string,
     uri: PropTypes.string,
     title: PropTypes.string
   }
@@ -33,6 +34,15 @@ class Published extends Component {
     // User will have scrolled to the bottom of the add in when filling in the form
     // Ensure the header is visible when this page is loaded
     window.scrollTo(0, 0)
+  }
+
+  viewClicked() {
+    analytics.track('exceladdin.published.view_button.click');
+  }
+
+  newInsightClicked() {
+    analytics.track('exceladdin.published.new_button.click');
+    window.location.pathname = '/insights'
   }
 
   render() {
@@ -49,9 +59,9 @@ class Published extends Component {
 
           <div className='published-buttons'>
             <Button
-              onClick={() => window.location.pathname = '/insights'}
               className="published-back-button"
               bsSize="xsmall"
+              onClick={this.newInsightClicked}
             >
               Publish new insight
             </Button>
@@ -60,6 +70,7 @@ class Published extends Component {
                 className="published-link-button"
                 bsStyle='primary'
                 bsSize="xsmall"
+                onClick={this.viewClicked}
               >
                 View on data.world
               </Button>
