@@ -34,10 +34,16 @@
 
 .insight-button-container {
   text-align: center;
+  margin: 0 15px;
   margin-bottom: 20px;
 }
 
-.charts-failures {
-  background-color: yellow;
-  padding: 10px;
+.insight-button-container .refresh-button{
+  width: 100%
+}
+
+.charts-failed {
+  margin: 0 15px;
+  margin-bottom: 15px;
+  font-size: 13px;
 }

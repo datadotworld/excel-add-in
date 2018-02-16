@@ -323,7 +323,6 @@ export default class OfficeConnector {
       Excel.run((ctx) => {
         // Get chart using the sheet id and chart name
         const chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
-        console.log('This is the chart', chart);
 
         // Load the chart's title and b64 image string
         const title = chart.title;

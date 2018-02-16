@@ -18,27 +18,29 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Button } from 'react-bootstrap';
+import { Row, Button, Alert } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
 import NoProjects from './NoProjects';
 import CreateProject from './CreateProjectModal';
 
 import './Charts.css';
+import analytics from '../analytics';
 
 class Charts extends Component {
   static propTypes = {
     charts: PropTypes.array,
     projects: PropTypes.array,
     getImageAndTitle: PropTypes.func,
-    user: PropTypes.object,
     createProject: PropTypes.func,
-    selectChart: PropTypes.func
+    user: PropTypes.object,
+    selectChart: PropTypes.func,
+    setError: PropTypes.func
   }
 
   state = {
     showAddProject: false,
-    failed: 0
+    failedToLoad: 0
   }
 
   showAddProject = () => {
@@ -50,8 +52,13 @@ class Charts extends Component {
   }
 
   incrementFailed = () => {
-    const { failed } = this.state;
-    this.setState({ failed: failed + 1 });
+    const { failedToLoad } = this.state;
+    this.setState({ failedToLoad: failedToLoad + 1 });
+  }
+
+  refresh = () => {
+    analytics.track('exceladdin.charts.refresh_button.click');
+    window.location.pathname = '/insights'
   }
 
   render() {
@@ -64,14 +71,19 @@ class Charts extends Component {
       createProject,
       setError
     } = this.props;
-    const { showAddProject, failed } = this.state;
+    const { showAddProject, failedToLoad } = this.state;
 
     const loadCharts = charts.length > 0;
     const loadProjects = projects.length > 0;
 
-    const errorMessage = failed > 1 ?
-      'charts were detected but cannot be displayed. To use them in insights, try changing their chart type.' : 
-      'chart was detected but cannot be displayed. To use it in insights, try changing its chart type.';
+    let errorMessage;
+    if (charts.length > 1) {
+      errorMessage = failedToLoad > 1 ?
+        `${failedToLoad} additional charts were detected but cannot be displayed. To use them in insights, try changing their chart type.` :
+        `1 additional chart was detected but cannot be displayed. To use it in insights, try changing its chart type.`;
+    } else {
+      errorMessage = `${failedToLoad} chart was detected but cannot be displayed. To use it in insights, try changing its chart type.`;
+    }
 
     return (
       <Row className="charts-container">
@@ -79,17 +91,12 @@ class Charts extends Component {
           <div className='insight-sub-header'>
             Pick a chart
           </div>
-          {failed > 0 && <div className="charts-failures">
-            {
-              `${failed} additional ${errorMessage}`
-            }
-          </div>}
           <div className="insight-charts">
             {
               charts.map((chart, index) => {
                 return <Chart
-                  chart={chart}
                   key={index}
+                  chart={chart}
                   getImageAndTitle={getImageAndTitle}
                   selectChart={selectChart}
                   incrementFailed={this.incrementFailed}
@@ -97,10 +104,14 @@ class Charts extends Component {
               })
             }
           </div>
+          {failedToLoad > 0 && <Alert bsStyle="danger" className="charts-failed">
+            {errorMessage}
+          </Alert>}
           <div className="insight-button-container">
             <Button
-              onClick={() => {window.location.pathname = '/insights'}}
+              onClick={this.refresh}
               bsStyle="primary"
+              className="refresh-button"
             >
               Refresh
             </Button>

@@ -25,9 +25,9 @@ import './Chart.css';
 class Chart extends Component {
   static propTypes = {
     chart: PropTypes.object,
-    key: PropTypes.number,
     getImageAndTitle: PropTypes.func,
-    selectChart: PropTypes.func
+    selectChart: PropTypes.func,
+    incrementFailed: PropTypes.func
   }
 
   state = {
