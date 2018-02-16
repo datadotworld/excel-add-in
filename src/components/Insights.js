@@ -42,10 +42,6 @@ class Insights extends Component {
     selectedChart: '' 
   }
 
-  componentWillMount() {
-    this.props.initializeInsights();
-  }
-
   selectChart= (imageString, title) => {
     this.setState({ selectedChart: { imageString, title } });
   }
@@ -59,9 +55,7 @@ class Insights extends Component {
       projects,
       user,
       createProject,
-      officeInitialized,
-      setPage,
-      initializeInsights
+      officeInitialized
     } = this.props;
 
     if (officeInitialized) {
@@ -79,8 +73,6 @@ class Insights extends Component {
             user={user}
             createProject={createProject}
             selectChart={this.selectChart}
-            setPage={setPage}
-            initializeInsights={initializeInsights}
           />}
           {selectedChart && <UploadInsight
             getImageAndTitle={getImageAndTitle}

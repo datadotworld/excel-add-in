@@ -27,8 +27,8 @@ class NoChart extends Component {
     initializeInsights: PropTypes.func
   }
 
-  refresh() {
-    this.props.initializeInsights();
+  refresh = () => {
+    window.location.pathname = '/insights';
   }
 
   render() {

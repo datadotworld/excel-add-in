@@ -31,6 +31,7 @@ class Chart extends Component {
   }
 
   state = {
+    loading: true,
     imageString: '',
     title: ''
   }
@@ -38,7 +39,14 @@ class Chart extends Component {
   componentWillMount() {
     const { sheet, chartName } = this.props.chart
     this.props.getImageAndTitle(sheet, chartName).then(res => {
-      this.setState({ imageString: res.image, title: res.title });
+      this.setState({
+        loading: false,
+        imageString: res.image,
+        title: res.title
+      });
+    }).catch (error => {
+      this.props.incrementFailed();
+      this.setState({ loading: false});
     });
   }
 
@@ -47,13 +55,18 @@ class Chart extends Component {
   }
   
   render() {
-    if (this.state.imageString) {
-      return <img
-        className="insight-chart"
-        src={`data:image/png;base64, ${this.state.imageString}`}
-        alt="chart"
-        onClick={this.selectChart}
-      />
+    const { loading, imageString } = this.state;
+    if (!loading) {
+      if (imageString) {
+        return <img
+          className="insight-chart"
+          src={`data:image/png;base64, ${this.state.imageString}`}
+          alt="chart"
+          onClick={this.selectChart}
+        />
+      } else {
+        return null;
+      }
     } else {
       return <LoadingAnimation />
     }

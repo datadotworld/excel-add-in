@@ -31,13 +31,14 @@ class Charts extends Component {
     charts: PropTypes.array,
     projects: PropTypes.array,
     getImageAndTitle: PropTypes.func,
-    user: PropTypes.string,
+    user: PropTypes.object,
     createProject: PropTypes.func,
     selectChart: PropTypes.func
   }
 
   state = {
-    showAddProject: false
+    showAddProject: false,
+    failed: 0
   }
 
   showAddProject = () => {
@@ -46,6 +47,11 @@ class Charts extends Component {
 
   closeAddProject = () => {
     this.setState({ showAddProject: false });
+  }
+
+  incrementFailed = () => {
+    const { failed } = this.state;
+    this.setState({ failed: failed + 1 });
   }
 
   render() {
@@ -59,10 +65,14 @@ class Charts extends Component {
       setPage,
       initializeInsights
     } = this.props;
-    const { showAddProject } = this.state;
+    const { showAddProject, failed } = this.state;
 
     const loadCharts = charts.length > 0;
     const loadProjects = projects.length > 0;
+
+    const errorMessage = failed > 1 ?
+      'charts were detected but cannot be displayed. To use them in insights, try changing their chart type.' : 
+      'chart was detected but cannot be displayed. To use it in insights, try changing its chart type.';
 
     return (
       <Row className="charts-container">
@@ -70,6 +80,11 @@ class Charts extends Component {
           <div className='insight-sub-header'>
             Pick a chart
           </div>
+          {failed > 0 && <div className="charts-failures">
+            {
+              `${failed} additional ${errorMessage}`
+            }
+          </div>}
           <div className="insight-charts">
             {
               charts.map((chart, index) => {
@@ -78,13 +93,14 @@ class Charts extends Component {
                   key={index}
                   getImageAndTitle={getImageAndTitle}
                   selectChart={selectChart}
+                  incrementFailed={this.incrementFailed}
                 />
               })
             }
           </div>
           <div className="insight-button-container">
             <Button
-              onClick={() => {initializeInsights()}}
+              onClick={() => {window.location.pathname = '/insights'}}
               bsStyle="primary"
             >
               Refresh

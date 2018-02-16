@@ -36,3 +36,8 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
+.charts-failures {
+  background-color: yellow;
+  padding: 10px;
+}

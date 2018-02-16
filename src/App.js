@@ -745,7 +745,6 @@ class App extends Component {
           createProject={this.createProject}
           uploadChart={this.uploadChart}
           setPage={this.setPage}
-          initializeInsights={this.initializeInsights}
         />}
 
         {renderImportData && <ImportData />}
