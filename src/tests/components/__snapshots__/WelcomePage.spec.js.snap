@@ -374,43 +374,66 @@ exports[`renders welcome page - no dataset 1`] = `
         </g>
       </g>
     </svg>
-    <div>
-      <div
-        className="description"
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_insight_round.svg"
+      />
+      <p
+        className="feature-text"
       >
-        <p>
-          Turn Excel files into
-          <br />
-          data.world datasets
-        </p>
-        <p>
-          Collaborate with
-          <br />
-          other Excel users
-        </p>
-        <p>
-          Sync changes to data.world
-          <br />
-          with a single click
-        </p>
-      </div>
+        Publish charts as insights
+      </p>
     </div>
-    <a
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_dataset_round.svg"
+      />
+      <p
+        className="feature-text"
+      >
+        Save your data on data.world
+      </p>
+    </div>
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_import_round.svg"
+      />
+      <p
+        className="feature-text"
+      >
+        Import datasets into Excel
+      </p>
+    </div>
+    <button
       className="center-block login-button btn btn-primary"
-      href="undefined?page=undefined"
+      disabled={false}
       onClick={[Function]}
+      type="button"
     >
       Sign in
-    </a>
+    </button>
     <div>
       New to data.world? 
       <a
+        className="sign-up-link"
         href="https://data.world/"
         onClick={[Function]}
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>
@@ -791,92 +814,66 @@ exports[`renders welcome page - with dataset 1`] = `
         </g>
       </g>
     </svg>
-    <div>
-      <div>
-        This file is linked to a dataset on data.world:
-      </div>
-      <div
-        className="dataset"
-        onClick={[Function]}
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_insight_round.svg"
+      />
+      <p
+        className="feature-text"
       >
-        <span
-          className="svg-icon "
-          onClick={undefined}
-        >
-          <svg
-            className="dataset-schema-icon"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              className="fill"
-              d="M15,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14c0.6,0,1-0.4,1-1V1C16,0.4,15.6,0,15,0z M8,13.5L2.2,9.9l1.5-1L8,11.5l4.3-2.7l1.5,0.9L8,13.5z M8,9.9L2.2,6.1L8,2.5l5.8,3.6L8,9.9z"
-            />
-          </svg>
-        </span>
-        <div
-          className="center-info"
-        >
-          <div
-            className="title"
-          >
-            This is a test
-          </div>
-          <div
-            className="info"
-          >
-            @
-            test
-             · Updated 
-            <span>
-              Jul 20, 2017
-            </span>
-          </div>
-        </div>
-        <div
-          className="link-icon"
-        >
-          <span
-            className="svg-icon "
-            onClick={undefined}
-          >
-            <svg
-              className="angle-right"
-              height="40"
-              viewBox="0 0 40 40"
-              width="40"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                className="stroke"
-                d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
-              />
-            </svg>
-          </span>
-        </div>
-      </div>
-      <div
-        className="message"
-      >
-        Sign in to data.world to save changes as they are made.
-      </div>
+        Publish charts as insights
+      </p>
     </div>
-    <a
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_dataset_round.svg"
+      />
+      <p
+        className="feature-text"
+      >
+        Save your data on data.world
+      </p>
+    </div>
+    <div
+      className="feature"
+    >
+      <img
+        alt="insights logo"
+        className="feature-icon"
+        src="icon_import_round.svg"
+      />
+      <p
+        className="feature-text"
+      >
+        Import datasets into Excel
+      </p>
+    </div>
+    <button
       className="center-block login-button btn btn-primary"
-      href="undefined?page=undefined"
+      disabled={false}
       onClick={[Function]}
+      type="button"
     >
       Sign in
-    </a>
+    </button>
     <div>
       New to data.world? 
       <a
+        className="sign-up-link"
         href="https://data.world/"
         onClick={[Function]}
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>
