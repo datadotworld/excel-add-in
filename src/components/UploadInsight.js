@@ -31,13 +31,17 @@ import {
 import Published from './Published';
 
 import './UploadInsight.css';
+import analytics from '../analytics';
 
 
 class UploadInsight extends Component {
   static propTypes = {
-    chart: PropTypes.object,
+    getImageAndTitle: PropTypes.func,
+    chart: PropTypes.string,
+    title: PropTypes.string,
     uri: PropTypes.string,
-    title: PropTypes.string
+    uploadChart: PropTypes.func,
+    projects: PropTypes.array
   }
 
   state = {
@@ -46,7 +50,7 @@ class UploadInsight extends Component {
     description: '',
     uploadComplete: false,
     uri: ''
-  };
+  }
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,25 +69,28 @@ class UploadInsight extends Component {
   }
 
   upload = () => {
+    analytics.track('exceladdin.create_project.ok.click');
     const { chart } = this.props;
     const { title, project, description } = this.state;
     this.props.uploadChart(chart, { title, project, description }).then(res => {
-      this.setState({ uploadComplete: true, uri: res })
+      this.setState({ uploadComplete: true, uri: res });
     });
   }
 
-  close = () => {
+  closeClicked = () => {
+    analytics.track('exceladdin.upload_insight.close.click');
     window.location.pathname = '/insights';
   }
 
   render() {
-    const { uploadComplete, title, project } = this.state;
+    const { uploadComplete, title, project, uri } = this.state;
+    const { chart } = this.props;
     return (
       <Row className="upload-row">
         {!uploadComplete && <div className="insight-upload">
           <img
             className="insight-selected"
-            src={`data:image/png;base64, ${this.props.chart}`}
+            src={`data:image/png;base64, ${chart}`}
             alt="chart"
           />
           <FormGroup>
@@ -109,7 +116,7 @@ class UploadInsight extends Component {
               <FormControl
                 onChange={this.handleChange}
                 name='title'
-                value={this.state.title}
+                value={title}
                 type='text' />
             </InputGroup>
           </FormGroup>
@@ -128,7 +135,7 @@ class UploadInsight extends Component {
           </FormGroup>
           <div className='insight-upload-buttons'>
             <Button
-              onClick={this.close}
+              onClick={this.closeClicked}
               className="insight-upload-button"
             >
               Cancel
@@ -137,10 +144,13 @@ class UploadInsight extends Component {
               className="insight-upload-button"
               onClick={this.upload}
               disabled={!title || title.length > 60}
-              bsStyle='primary'>OK</Button>
+              bsStyle='primary'
+            >
+              OK
+            </Button>
           </div>
         </div>}
-        {uploadComplete && <Published chart={this.props.chart} uri={this.state.uri} title={title} />}
+        {uploadComplete && <Published chart={chart} uri={uri} title={title} />}
       </Row>
     );
   }

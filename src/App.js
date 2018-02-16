@@ -644,7 +644,7 @@ class App extends Component {
           // charts is an array of arrays, flatten before resolving
           resolve(flatten(charts));
         }).catch(reject);
-      });
+      }).catch(reject);
     });
   }
 
