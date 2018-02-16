@@ -62,7 +62,6 @@ class Charts extends Component {
       selectChart,
       user,
       createProject,
-      initializeInsights,
       setError
     } = this.props;
     const { showAddProject, failed } = this.state;
@@ -108,7 +107,7 @@ class Charts extends Component {
           </div>
         </div>}
         {!loadProjects && !showAddProject && <NoProjects showAddProject={this.showAddProject} />}
-        {loadProjects && !loadCharts && <NoChart initializeInsights={initializeInsights} />}
+        {loadProjects && !loadCharts && <NoChart />}
         {showAddProject && <CreateProject
           user={user}
           close={this.closeAddProject}

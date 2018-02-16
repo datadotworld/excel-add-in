@@ -29,7 +29,7 @@ class NoProject extends Component {
   }
 
   showAddProject = () => {
-    analytics.track('exceladdin.insights.create_project_button.click');
+    analytics.track('exceladdin.no_project.create_project_button.click');
     this.props.showAddProject();
   }
 

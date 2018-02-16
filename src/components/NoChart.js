@@ -17,17 +17,14 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import './NoChart.css';
+import analytics from '../analytics';
 
 class NoChart extends Component {
-  static propTypes = {
-    initializeInsights: PropTypes.func
-  }
-
   refresh = () => {
+    analytics.track('exceladdin.no_chart.refresh_button.click');
     window.location.pathname = '/insights';
   }
 
