@@ -21,6 +21,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import './NoChart.css';
+import analytics from '../analytics';
 
 class NoProject extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class NoProject extends Component {
   }
 
   showAddProject = () => {
+    analytics.track('exceladdin.insights.create_project_button.click');
     this.props.showAddProject();
   }
 

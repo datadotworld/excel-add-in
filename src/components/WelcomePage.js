@@ -29,9 +29,8 @@ import insightsIcon from '../static/img/icon_insight_round.svg';
 import datasetIcon from '../static/img/icon_dataset_round.svg';
 import importIcon from '../static/img/icon_import_round.svg';
 
-import analytics from '../analytics';
-
 import './WelcomePage.css';
+import analytics from '../analytics';
 
 class WelcomePage extends Component {
 
