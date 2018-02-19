@@ -73,3 +73,22 @@ export function groupAndSortProjects(projects) {
 
   return projects;
 }
+
+export function generateChartError(charts, failedToLoad) {
+  if (charts.length > 1) {
+    // All the charts failed to load
+    if (charts.length === failedToLoad) {
+      return `${failedToLoad} charts were detected but cannot be displayed. To use them in insights, try changing their chart type.`;
+    } else {
+      // Some charts failed to load
+      if (failedToLoad === 1) {
+        return '1 additional chart was detected but cannot be displayed. To use it in insights, try changing its chart type.';
+      } else {
+        return `${failedToLoad} additional charts were detected but cannot be displayed. To use them in insights, try changing their chart type.`;
+      }
+    }
+  } else {
+    // Only one chart present and it failed to load
+    return '1 chart was detected but cannot be displayed. To use it in insights, try changing its chart type.';
+  }
+}

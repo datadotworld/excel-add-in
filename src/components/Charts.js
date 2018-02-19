@@ -23,6 +23,7 @@ import Chart from './Chart';
 import NoChart from './NoChart';
 import NoProjects from './NoProjects';
 import CreateProject from './CreateProjectModal';
+import { generateChartError } from '../util';
 
 import './Charts.css';
 import analytics from '../analytics';
@@ -76,15 +77,6 @@ class Charts extends Component {
     const loadCharts = charts.length > 0;
     const loadProjects = projects.length > 0;
 
-    let errorMessage;
-    if (charts.length > 1) {
-      errorMessage = failedToLoad > 1 ?
-        `${failedToLoad} additional charts were detected but cannot be displayed. To use them in insights, try changing their chart type.` :
-        `1 additional chart was detected but cannot be displayed. To use it in insights, try changing its chart type.`;
-    } else {
-      errorMessage = `${failedToLoad} chart was detected but cannot be displayed. To use it in insights, try changing its chart type.`;
-    }
-
     return (
       <Row className="charts-container">
         {loadProjects && loadCharts && <div className="container">
@@ -105,7 +97,7 @@ class Charts extends Component {
             }
           </div>
           {failedToLoad > 0 && <Alert bsStyle="danger" className="charts-failed">
-            {errorMessage}
+            {generateChartError(charts, failedToLoad)}
           </Alert>}
           <div className="insight-button-container">
             <Button
