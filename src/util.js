@@ -61,13 +61,17 @@ export function groupAndSortProjects(projects) {
   // Sort projects first by owner then by id
   projects.sort((firstProject, secondProject) => {
     if (firstProject.owner === secondProject.owner) {
-      return (firstProject.id < secondProject.id) ?
-        -1 :
-        (firstProject.id > secondProject.id) ?
-          1 :
-          0;
+      if (firstProject.id < secondProject.id) {
+        return -1;
+      } else if (firstProject.id > secondProject.id) {
+        return 1;
+      }
+      return 0;
     } else {
-      return (firstProject.owner < secondProject.owner) ? -1 : 1;
+      if (firstProject.owner < secondProject.owner) {
+        return -1;
+      }
+      return 1;
     }
   });
 
