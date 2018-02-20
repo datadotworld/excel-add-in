@@ -16,42 +16,22 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.login-header {
-  background-color: #335c8c;
-  height: 50px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
 
-.login-header .dw-logo {
-  height: 40px;
-}
+import Published from '../../components/Published';
 
-.login-header .dropdown {
-  margin-left: auto;
-}
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Published />, div);
+});
 
-.login-header .dropdown.btn-group button {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  line-height: 1;
-  height: auto;
-  font-size: 16px;
-  color: #fff !important;
-  background-image: none;
-}
+it('renders published insight', () => {
 
-.login-header .dropdown-menu {
-  z-index: 1060;
-}
-
-.insights {
-  background-color: #8671ad
-}
-
-.import {
-  background-color: #43984c;
-}
+  expect(renderer.create(<Published
+    chart={'b64ImageString'}
+    uri={'https://data.world/path/to/insight'}
+  />).toJSON()).toMatchSnapshot()
+});

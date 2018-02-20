@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 data.world, Inc.
+ * Copyright 2018 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,41 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.login-header {
-  background-color: #335c8c;
-  height: 50px;
-  color: #fff;
+.published-container {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 30%;
+}
+
+.published-title {
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+}
+
+.published-chart {
+  margin: 0;
+  padding-top: 10px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.published-buttons {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  justify-content: space-between;
+  margin-top: 25px;
 }
 
-.login-header .dw-logo {
-  height: 40px;
+.published-link {
+  color: white;
+  width: 47.25%;
 }
 
-.login-header .dropdown {
-  margin-left: auto;
+.published-back-button {
+  width: 47.25%;
 }
 
-.login-header .dropdown.btn-group button {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  line-height: 1;
-  height: auto;
-  font-size: 16px;
-  color: #fff !important;
-  background-image: none;
-}
-
-.login-header .dropdown-menu {
-  z-index: 1060;
-}
-
-.insights {
-  background-color: #8671ad
-}
-
-.import {
-  background-color: #43984c;
+.published-link-button {
+  width: 100%;
 }

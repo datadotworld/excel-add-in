@@ -296,4 +296,58 @@ export default class OfficeConnector {
       binding.getDataAsync(options, handleData(options));
     });
   }
+
+  getCharts(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        // Load all charts in the specified worksheet
+        let charts = ctx.workbook.worksheets.getItem(sheetName).charts;
+        charts.load('items');
+        return ctx.sync().then(() => {
+          charts = charts.items.map(chart => {
+            return { sheet: sheetName, chartName: chart.name }
+          });
+
+          // Return array of objects containing the chart names and worksheet
+          resolve(charts);
+        }).catch (reject);
+      });
+    });
+  }
+
+  getImageAndTitle(sheetId, chartName) {
+    return new Promise((resolve, reject) => {
+      Excel.run((ctx) => {
+        // Get chart using the sheet id and chart name
+        const chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
+
+        // Load the chart's title and b64 image string
+        const title = chart.title;
+        title.load('text');
+        const image = chart.getImage();
+        return ctx.sync().then(() => {
+          // Return the base64 string representation of the chart
+          resolve({ image: image.value, title: title.text });
+        }).catch (reject);
+      });
+    });
+  }
+
+  getWorksheets() {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        const worksheets = ctx.workbook.worksheets;
+        worksheets.load('items');
+        return ctx.sync().then(() => {
+          resolve(worksheets.items);
+        }).catch(reject)
+      });
+    });
+  }
 }

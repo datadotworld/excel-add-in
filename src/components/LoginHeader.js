@@ -23,10 +23,10 @@ import {
   MenuItem
 } from 'react-bootstrap';
 
-import analytics from '../analytics';
+import dwLogo from '../static/img/dw-logo.png';
 
 import './LoginHeader.css';
-import LogoFull from './icons/LogoFull';
+import analytics from '../analytics';
 
 class LoginHeader extends Component {
 
@@ -41,11 +41,11 @@ class LoginHeader extends Component {
   }
 
   render () {
-    const { user } = this.props;
+    const { user, page } = this.props;
 
     return (
-      <div className='login-header'>
-        <LogoFull />
+      <div className={`login-header ${page}`}>
+        <img src={dwLogo} alt="data world logo" className="dw-logo" />
         {user && <DropdownButton title={`@${user.id}`} pullRight bsSize='small' onSelect={this.userMenuChanged} id='dropdown-user'>
           <MenuItem eventKey='signout'>Sign out</MenuItem>
         </DropdownButton>}
