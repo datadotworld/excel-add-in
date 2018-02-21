@@ -699,7 +699,7 @@ class App extends Component {
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
-        {showStartPage && <WelcomePage page={page} />}
+        {showStartPage && <WelcomePage dataset={dataset} page={page} />}
         {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
