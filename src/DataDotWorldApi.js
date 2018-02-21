@@ -18,6 +18,7 @@
  */
 import axios from 'axios';
 import papa from 'papaparse';
+import { b64toBlob, groupAndSortProjects } from './util';
 
 const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/
 
@@ -60,6 +61,34 @@ export default class DataDotWorldApi {
     });
   }
 
+  getProjects () {
+    return new Promise((resolve, reject) => {
+      let projects = [];
+      Promise.all([
+        this.api.get('/user/projects/own', {params: {limit: 500}}),
+        this.api.get('/user/projects/contributing', {params: {limit: 500}})
+      ]).then((results) => {
+        results.forEach((result) => {
+          projects = projects.concat(result.data.records);
+        });
+
+        // Only display projects for which the user has write rights
+        projects = projects.filter(project => {
+          const { accessLevel } = project;
+          if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
+            return true;
+          }
+
+          return false;
+        })
+
+        // Sort the projects before resolving
+        projects = groupAndSortProjects(projects);
+        resolve(projects);
+      }).catch(reject);
+    });
+  }
+
   getUser () {
     return new Promise((resolve, reject) => {
       this.api.get('/user').then((result) => {
@@ -71,6 +100,14 @@ export default class DataDotWorldApi {
   createDataset (userId, dataset) {
     return new Promise((resolve, reject) => {
       this.api.post(`/datasets/${userId}`, dataset).then((result) => {
+        resolve(result.data);
+      }).catch(reject);
+    });
+  }
+
+  createProject (userId, project) {
+    return new Promise((resolve, reject) => {
+      this.api.post(`/projects/${userId}`, project).then((result) => {
         resolve(result.data);
       }).catch(reject);
     });
@@ -89,5 +126,43 @@ export default class DataDotWorldApi {
     formData.append('file', blob, filename);
 
     return this.api.post(`/uploads/${datasetSlug}/files`, formData);
+  }
+
+  uploadInsight(options) {
+    const { title, project, description } = options;
+    return new Promise((resolve, reject) => {
+      const uriTitle = encodeURIComponent(title);
+      this.api.post(`/insights/${project.owner}/${project.id}`, {
+        title,
+        description,
+        body: {
+          imageUrl:
+            `https://data.world/api/${project.owner}/dataset/${project.id}/file/raw/${uriTitle}.png`
+        }
+      }).then((result) => {
+        // Return the URL to the newly created insight
+        resolve(result.data.uri);
+      }).catch(reject);
+    });
+  }
+
+  uploadChart (imageString, options) {
+    const { title, project } = options;
+    return new Promise((resolve, reject) => {
+      // Convert base64 string into a binary large object
+      const blob = b64toBlob(imageString);
+
+      // Add blob to a FormData object for uploading
+      var formData = new FormData();
+      formData.append('file', blob, `${title}.png`);
+
+      // First upload the image
+      return this.api.post(`/uploads/${project.owner}/${project.id}/files`, formData).then(res => {
+        // Then use the uploaded image to create an insight
+        this.uploadInsight(options).then(url => {
+          resolve(url);
+        })
+      }).catch(reject)
+    });
   }
 }

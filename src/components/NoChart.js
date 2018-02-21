@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 data.world, Inc.
+ * Copyright 2018 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,30 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.login-header {
-  background-color: #335c8c;
-  height: 50px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+
+import './NoChart.css';
+import analytics from '../analytics';
+
+class NoChart extends Component {
+  refresh = () => {
+    analytics.track('exceladdin.no_chart.refresh_button.click');
+    window.location.pathname = '/insights';
+  }
+
+  render() {
+    return <div className="no-chart">
+      <div>Insert a chart to get started.</div>
+      <Button
+        onClick={this.refresh}
+        bsStyle="primary"
+        className="no-chart-button"
+      >
+        Refresh
+      </Button>
+    </div>
+  }
 }
 
-.login-header .dw-logo {
-  height: 40px;
-}
-
-.login-header .dropdown {
-  margin-left: auto;
-}
-
-.login-header .dropdown.btn-group button {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  line-height: 1;
-  height: auto;
-  font-size: 16px;
-  color: #fff !important;
-  background-image: none;
-}
-
-.login-header .dropdown-menu {
-  z-index: 1060;
-}
-
-.insights {
-  background-color: #8671ad
-}
-
-.import {
-  background-color: #43984c;
-}
+export default NoChart;

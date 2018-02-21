@@ -30,9 +30,10 @@ module.exports = function (server) {
     method: 'GET',
     path: '/authorize',
     handler: function (req, reply) {
+      const originPage = req.query.page;
       const client_id = process.env.OAUTH_CLIENT_ID;
       const redirect_uri = process.env.OAUTH_REDIRECT_URI;
-      reply.redirect(`${endpoint}/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}`);
+      reply.redirect(`${endpoint}/oauth/authorize?client_id=${client_id}&state=${originPage}&redirect_uri=${redirect_uri}`);
     }
   });
 
@@ -58,7 +59,7 @@ module.exports = function (server) {
 
       axios.post(`${endpoint}/oauth/access_token?${queryString}`).then((response) => {
         if (response.data.access_token) {
-          reply().redirect(`${redirectAfterExchange}?token=${response.data.access_token}`);
+          reply().redirect(`${redirectAfterExchange}?token=${response.data.access_token}&page=${req.query.state}`);
         } else {
           const errorMessage = response.data.message || 'UNKNOWN_ERROR';
           reply().redirect(`${redirectAfterExchange}?error=${errorMessage}`);  
