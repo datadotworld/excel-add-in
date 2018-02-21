@@ -17,9 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 .welcome-page {
-  background-color: #5d6f83;
-  height: 100vh;
-  overflow: scroll;
+  background-color: #335c8c;
   color: #fff;
   padding: 3.5rem 15px 0;
   text-align: center;
@@ -56,24 +54,4 @@ h1 {
   background-color: #fff;
   text-align: left;
   color: #000;
-}
-
-.welcome-page .feature {
-  text-align: left;
-  margin-bottom: 1.4rem;
-}
-
-.welcome-page .feature-icon {
-  width: 40px;
-  height: 40px;
-  margin: 0 15px;
-}
-
-.welcome-page .feature-text {
-  display: inline;
-  margin: 0;
-}
-
-.welcome-page .sign-up-link {
-  color: #5dc0de;
 }
