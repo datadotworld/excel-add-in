@@ -95,4 +95,15 @@ module.exports = function (server) {
       }
     }
   });
+
+  /**
+   * Return index.html for everything else
+   */
+  server.ext('onPostHandler', (request, reply) => {
+    const response = request.response;
+    if (response.isBoom && response.output.statusCode === 404) {
+      return reply.file(Path.join(__dirname, '..', 'build', 'index.html'));
+    }
+    return reply.continue();
+  });
 }
