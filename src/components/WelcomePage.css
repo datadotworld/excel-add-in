@@ -26,6 +26,10 @@
   font-weight: 300;
 }
 
+.welcome-page-v2 {
+  background-color: #5d6f83;
+}
+
 .welcome-page .logo-stacked {
   width: 75%;
   margin-bottom: 2rem;

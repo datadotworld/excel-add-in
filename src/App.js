@@ -100,6 +100,9 @@ class App extends Component {
       page = window.location.pathname.substr(1);
     }
 
+    // To be used for rendering the appropriate landing page
+    const version = this.parsedQueryString.v;
+
     this.state = {
       token,
       preferences,
@@ -111,7 +114,8 @@ class App extends Component {
       syncStatus: {},
       page,
       charts: [],
-      projects: []
+      projects: [],
+      version
     };
 
     if (token) {
@@ -675,7 +679,8 @@ class App extends Component {
       user,
       page,
       charts,
-      projects
+      projects,
+      version
     } = this.state;
 
     let errorMessage = error;
@@ -699,7 +704,7 @@ class App extends Component {
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
-        {showStartPage && <WelcomePage dataset={dataset} page={page} />}
+        {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
         {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}

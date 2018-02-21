@@ -18,14 +18,14 @@
     <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://excel.data.world/" />
+    <SourceLocation DefaultValue="https://excel.data.world/?v=1.1.0.0" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
-          <FunctionFile resid="dw.Url" />
+          <FunctionFile resid="dw.DatasetsUrl" />
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <OfficeTab id="TabHome">
               <Group id="dw.Group1">
@@ -107,9 +107,9 @@
         <bt:Image id="dw.importicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/LRvLLUdaQiCWBYmJ8iHX+.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="dw.DatasetsUrl" DefaultValue="https://excel.data.world" />
-        <bt:Url id="dw.InsightsUrl" DefaultValue="https://excel.data.world/insights" />
-        <bt:Url id="dw.ImportUrl" DefaultValue="https://excel.data.world/import" />
+        <bt:Url id="dw.DatasetsUrl" DefaultValue="https://excel.data.world?v=1.1.0.0" />
+        <bt:Url id="dw.InsightsUrl" DefaultValue="https://excel.data.world/insights?v=1.1.0.0" />
+        <bt:Url id="dw.ImportUrl" DefaultValue="https://excel.data.world/import?v=1.1.0.0" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Data" />

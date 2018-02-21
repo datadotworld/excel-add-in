@@ -411,7 +411,7 @@ exports[`renders welcome page - no dataset 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>
@@ -878,7 +878,7 @@ exports[`renders welcome page - with dataset 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>
