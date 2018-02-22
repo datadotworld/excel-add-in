@@ -398,7 +398,6 @@ exports[`renders welcome page - no dataset 1`] = `
     <button
       className="center-block login-button btn btn-primary"
       disabled={false}
-      href={undefined}
       onClick={[Function]}
       type="button"
     >
@@ -412,7 +411,7 @@ exports[`renders welcome page - no dataset 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>
@@ -866,7 +865,6 @@ exports[`renders welcome page - with dataset 1`] = `
     <button
       className="center-block login-button btn btn-primary"
       disabled={false}
-      href={undefined}
       onClick={[Function]}
       type="button"
     >
@@ -880,7 +878,7 @@ exports[`renders welcome page - with dataset 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-         Sign up now
+        Sign up now
       </a>
     </div>
   </div>

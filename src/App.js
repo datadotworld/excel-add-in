@@ -18,6 +18,7 @@
  */
 import React, { Component } from 'react';
 import queryString from 'query-string'
+import { flatten } from 'lodash'
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -33,6 +34,9 @@ import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
+import Insights from './components/Insights';
+import ImportData from './components/ImportData';
+
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
@@ -42,6 +46,8 @@ import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_PREFERENCES = 'DW_PREFERENCES';
 const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
+const INSIGHTS_ROUTE = 'insights';
+const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
 
 class App extends Component {
@@ -61,6 +67,8 @@ class App extends Component {
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
+    this.initializeDatasets = this.initializeDatasets.bind(this);
+    this.initializeInsights = this.initializeInsights.bind(this);
 
     this.parsedQueryString = queryString.parse(window.location.search);
 
@@ -84,6 +92,17 @@ class App extends Component {
       }
     }
 
+    // To be used for rendering the respective pages and header styling
+    let page;
+    if (this.parsedQueryString.page) {
+      page = this.parsedQueryString.page;
+    } else {
+      page = window.location.pathname.substr(1);
+    }
+
+    // To be used for rendering the appropriate landing page
+    const version = this.parsedQueryString.v;
+
     this.state = {
       token,
       preferences,
@@ -92,7 +111,11 @@ class App extends Component {
       loadingDatasets: false,
       loggedIn: !!token,
       officeInitialized: false,
-      syncStatus: {}
+      syncStatus: {},
+      page,
+      charts: [],
+      projects: [],
+      version
     };
 
     if (token) {
@@ -103,13 +126,37 @@ class App extends Component {
     this.initializeOffice();
   }
 
-  async initializeOffice () { 
-    this.office = new OfficeConnector();
+  async initializeOffice() {
+    const { page } = this.state;
     try {
+      this.office = new OfficeConnector();
       await this.office.initialize();
+
+      if (page === INSIGHTS_ROUTE) {
+        this.initializeInsights();
+      } else if (page === IMPORT_ROUTE) {
+        return this.setState({ officeInitialized: true });
+      } else {
+        this.initializeDatasets();
+      }
+    } catch (error) {
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the Office connector, please try again.'
+        }
+      });
+    }
+  }
+
+  async initializeDatasets() {
+    try {
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
+      if (!this.state.loggedIn) {
+        return this.setState({ officeInitialized: true });
+      }
       if (! dataset && this.state.loggedIn) {
         this.getDatasets();
       } else if (this.state.loggedIn) {
@@ -144,7 +191,29 @@ class App extends Component {
       this.setState({
         error: {
           error,
-          message: 'There was an error initializing the Office connector, please try again.'
+          message: 'There was an error initializing the datasets page, please try again.'
+        }
+      });
+    }
+  }
+
+  async initializeInsights() {
+    try {
+      if (this.state.loggedIn) {
+        // Logged in user's projects
+        const projects = await this.api.getProjects();
+
+        // All the charts in the workbook
+        const charts = await this.getCharts();
+        this.setState({ charts, projects, officeInitialized: true });
+      } else {
+        this.setState({ officeInitialized: true });
+      }
+    } catch(error) {
+      this.setState({
+        error: {
+          error,
+          message: 'There was an error initializing the Insights page, please try again.'
         }
       });
     }
@@ -543,6 +612,10 @@ class App extends Component {
     return await this.api.createDataset(this.state.user.id, dataset);
   }
 
+  createProject = (project) => {
+    return this.api.createProject(this.state.user.id, project);
+  }
+
   doesFileExist = (filename) => {
     let fileExists = false;
     this.state.dataset.files.forEach((file) => {
@@ -556,6 +629,34 @@ class App extends Component {
   hasBeenDismissed = (key) => {
     return this.state.preferences.dismissals.find((dismissal) => {
       return dismissal === key;
+    });
+  }
+
+  getCharts = () => {
+    return new Promise((resolve, reject) => {
+      this.office.getWorksheets().then(worksheets => {
+        const promises = worksheets.map(worksheet => this.office.getCharts(worksheet.id));
+        Promise.all(promises).then((allCharts) => {
+          // Some worksheets may not contain charts
+          const charts = allCharts.filter(chart => chart.length > 0);
+
+          // charts is an array of arrays, flatten before resolving
+          resolve(flatten(charts));
+        }).catch(reject);
+      }).catch(reject);
+    });
+  }
+
+  uploadChart = (imageString, options) => {
+    return this.api.uploadChart(imageString, options);
+  }
+
+  setError = (error, message) => {
+    this.setState({
+      error: {
+        error,
+        message
+      }
     });
   }
   
@@ -575,7 +676,11 @@ class App extends Component {
       showCreateDataset,
       syncing,
       syncStatus,
-      user
+      user,
+      page,
+      charts,
+      projects,
+      version
     } = this.state;
 
     let errorMessage = error;
@@ -586,13 +691,21 @@ class App extends Component {
     const showStartPage = officeInitialized && !loggedIn;
     const modalViewOpened = showAddDataModal || showCreateDataset;
 
+    const insights = page === 'insights';
+    const importData = page === 'import';
+
+    const renderBindingsPage = !showStartPage && !modalViewOpened && dataset && !insights;
+    const renderDatasetsView = !showStartPage && !dataset && !showCreateDataset && !insights && !importData;
+    const renderInsights = !showStartPage && insights;
+    const renderImportData = !showStartPage && importData;
+
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
-        {loggedIn && <LoginHeader user={user} logout={this.logout} />}
-        {showStartPage && <WelcomePage dataset={dataset} />}
-        {!showStartPage && !modalViewOpened && dataset && <BindingsPage
+        {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
+        {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
+        {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
           createBinding={this.createBinding}
@@ -605,7 +718,7 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {!showStartPage && !dataset && !showCreateDataset && <DatasetsView 
+        {renderDatasetsView && <DatasetsView
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
@@ -615,7 +728,8 @@ class App extends Component {
         {showCreateDataset && <CreateDatasetModal 
           user={user}
           linkNewDataset={this.linkNewDataset}
-          createDataset={this.createDataset} close={() => this.setState({showCreateDataset: false})} 
+          createDataset={this.createDataset}
+          close={() => this.setState({showCreateDataset: false})} 
         />}
 
         {showAddDataModal && <AddDataModal 
@@ -629,6 +743,19 @@ class App extends Component {
           updateBinding={this.updateBinding}
           doesFileExist={this.doesFileExist}
         />}
+
+        {renderInsights && <Insights
+          getImageAndTitle={this.office.getImageAndTitle}
+          charts={charts}
+          user={user}
+          officeInitialized={officeInitialized}
+          projects={projects}
+          createProject={this.createProject}
+          uploadChart={this.uploadChart}
+          setError={this.setError}
+        />}
+
+        {renderImportData && <ImportData />}
         <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
       </div>
     );
