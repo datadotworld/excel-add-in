@@ -83,27 +83,27 @@ module.exports = function (server) {
   });
 
   /**
-   * Serves up the react front end UI
+   * Serves up the react static content
    */
   server.route({
     method: 'GET',
-    path: '/{path*}',
+    path: '/static/{path*}',
     handler: {
       directory: {
-        path: Path.join(__dirname, '..', 'build'),
+        path: Path.join(__dirname, '..', 'build', 'static'),
         listing: false
       }
     }
   });
 
   /**
-   * Return index.html for everything else
+   * Serves up the react front end UI
    */
-  server.ext('onPostHandler', (request, reply) => {
-    const response = request.response;
-    if (response.isBoom && response.output.statusCode === 404) {
+  server.route({
+    method: 'GET',
+    path: '/{path*}',
+    handler: function (req, reply) {
       return reply.file(Path.join(__dirname, '..', 'build', 'index.html'));
     }
-    return reply.continue();
   });
 }
