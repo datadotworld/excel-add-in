@@ -44,6 +44,7 @@ import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
+const DW_APP_VERSION = 'DW_APP_VERSION';
 const DW_PREFERENCES = 'DW_PREFERENCES';
 const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
 const INSIGHTS_ROUTE = 'insights';
@@ -102,6 +103,9 @@ class App extends Component {
 
     // To be used for rendering the appropriate landing page
     const version = this.parsedQueryString.v;
+    if (version) {
+      localStorage.setItem(DW_APP_VERSION, version);
+    }
 
     this.state = {
       token,
@@ -220,9 +224,14 @@ class App extends Component {
   }
 
   logout = () => {
+    // To aid in showing the correct welcome screen after logging out
+    const version = localStorage.getItem(DW_APP_VERSION);
+
+    localStorage.setItem(DW_APP_VERSION, '');
     localStorage.setItem(DW_API_TOKEN, '');
     this.setState({token: null, loggedIn: false, user: null});
-    window.location = `https://data.world/embed/logout?next=${encodeURIComponent('https://excel.data.world')}`;
+
+    window.location = `https://data.world/embed/logout?next=${encodeURIComponent(`https://excel.data.world?v=${version}`)}`;
   }
 
   listenForChangesToBinding = (binding) => {
