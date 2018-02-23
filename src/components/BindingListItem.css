@@ -107,15 +107,16 @@
 }
 
 .file .link-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 2rem;
   padding: 0;
   border: 1px solid #5ab962;
   border-radius: 50%;
   box-shadow: none;
   height: 2rem;
+}
+
+.file .link-button .link {
+  margin-left: 0.43rem;
 }
 
 .file .link-button span {
