@@ -72,6 +72,11 @@
   border-color: #6290c3;
 }
 
+.insight-upload .dropdown-toggle .caret{
+  margin: auto 0;
+  margin-left: 50%;
+}
+
 .projects {
   width: 100%;
   display: flex;
