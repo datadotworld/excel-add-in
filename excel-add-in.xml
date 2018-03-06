@@ -22,6 +22,11 @@
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <Sets DefaultMinVersion="1.4">
+        <Set Name="ExcelApi" MinVersion="1.4"/>
+      </Sets>
+    </Requirements>
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
