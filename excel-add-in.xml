@@ -17,16 +17,16 @@
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
+  <Requirements>
+    <Sets DefaultMinVersion="1.4">
+      <Set Name="ExcelApi" MinVersion="1.4"/>
+    </Sets>
+  </Requirements>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://excel.data.world/?v=1.1.0.0" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
-    <Requirements>
-      <Sets DefaultMinVersion="1.4">
-        <Set Name="ExcelApi" MinVersion="1.4"/>
-      </Sets>
-    </Requirements>
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
