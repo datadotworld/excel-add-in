@@ -40,9 +40,9 @@ class NotOfficeView extends Component {
         <Col md={6} mdOffset={3} xs={10} xsOffset={1}>
           <img src={sparkle} alt='data.world sparkle logo'/>
           <h2>
-          Welcome to data.world's Excel add-in.
+          data.world + Excel
           </h2>
-          <p>Install the Excel add-in from the Microsoft <a 
+          <p>Install the data.world add-in for Excel from Microsoft <a
             href='https://appsource.microsoft.com/en-us/product/office/WA104381270?src=office&tab=Overview'
             target='_blank'
             onClick={this.installLinkClick}
@@ -54,7 +54,7 @@ class NotOfficeView extends Component {
             onClick={this.supportLinkClick}
             rel="noopener noreferrer"
           >
-            Learn more about the data.world add-in
+            Learn more
           </a>
         </Col>
       </Grid>
