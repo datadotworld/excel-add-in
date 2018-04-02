@@ -36,6 +36,7 @@ import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import Insights from './components/Insights';
 import ImportData from './components/ImportData';
+import NotOfficeView from './components/NotOfficeView';
 
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
@@ -128,6 +129,7 @@ class App extends Component {
     }
 
     this.initializeOffice();
+    this.handleNoOfficeTimeout();
   }
 
   async initializeOffice() {
@@ -153,13 +155,23 @@ class App extends Component {
     }
   }
 
+  handleNoOfficeTimeout = () => {
+    setTimeout(() => {
+      if (!this.state.officeInitialized) {
+        this.setState({
+          outsideOffice: true
+        });
+      }
+    }, 2000);
+  }
+
   async initializeDatasets() {
     try {
       const settings = this.office.getSettings();
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
       if (!this.state.loggedIn) {
-        return this.setState({ officeInitialized: true });
+        return this.setState({ officeInitialized: true, outsideOffice: false });
       }
       if (! dataset && this.state.loggedIn) {
         this.getDatasets();
@@ -187,6 +199,7 @@ class App extends Component {
         syncStatus,
         excelApiSupported: this.office.isExcelApiSupported(),
         officeInitialized: true,
+        outsideOffice: false,
         csvMode: this.office.isCSV()
       });
 
@@ -689,7 +702,8 @@ class App extends Component {
       page,
       charts,
       projects,
-      version
+      version,
+      outsideOffice
     } = this.state;
 
     let errorMessage = error;
@@ -707,6 +721,10 @@ class App extends Component {
     const renderDatasetsView = !showStartPage && !dataset && !showCreateDataset && !insights && !importData;
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
+
+    if (outsideOffice) {
+      return (<NotOfficeView />);
+    }
 
     return (
       <div>
