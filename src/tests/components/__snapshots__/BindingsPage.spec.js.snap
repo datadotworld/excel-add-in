@@ -155,19 +155,19 @@ exports[`renders binding page - insufficient access 1`] = `
         </span>
         Save
       </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        type="button"
+      <a
+        className="link button-link"
+        href="https://data.world/test/test"
+        target="_blank"
       >
-        <a
-          className="link button-link"
-          href="https://data.world/test/test"
-          target="_blank"
+        <button
+          className="btn btn-default"
+          disabled={false}
+          type="button"
         >
           View on Web
-        </a>
-      </button>
+        </button>
+      </a>
     </div>
   </div>
   <div
@@ -358,19 +358,19 @@ exports[`renders bindings page - dataset with files 1`] = `
         </span>
         Save
       </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        type="button"
+      <a
+        className="link button-link"
+        href="https://data.world/test/test"
+        target="_blank"
       >
-        <a
-          className="link button-link"
-          href="https://data.world/test/test"
-          target="_blank"
+        <button
+          className="btn btn-default"
+          disabled={false}
+          type="button"
         >
           View on Web
-        </a>
-      </button>
+        </button>
+      </a>
     </div>
   </div>
   <div
@@ -988,19 +988,19 @@ exports[`renders bindings page - dataset with files, bindings 1`] = `
         </span>
         Save
       </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        type="button"
+      <a
+        className="link button-link"
+        href="https://data.world/test/test"
+        target="_blank"
       >
-        <a
-          className="link button-link"
-          href="https://data.world/test/test"
-          target="_blank"
+        <button
+          className="btn btn-default"
+          disabled={false}
+          type="button"
         >
           View on Web
-        </a>
-      </button>
+        </button>
+      </a>
     </div>
   </div>
   <div
@@ -1601,19 +1601,19 @@ exports[`renders bindings page - syncing 1`] = `
         />
         Saving...
       </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        type="button"
+      <a
+        className="link button-link"
+        href="https://data.world/test/test"
+        target="_blank"
       >
-        <a
-          className="link button-link"
-          href="https://data.world/test/test"
-          target="_blank"
+        <button
+          className="btn btn-default"
+          disabled={false}
+          type="button"
         >
           View on Web
-        </a>
-      </button>
+        </button>
+      </a>
     </div>
   </div>
   <div
@@ -2199,19 +2199,19 @@ exports[`renders bindings page 1`] = `
         </span>
         Save
       </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        type="button"
+      <a
+        className="link button-link"
+        href="https://data.world/test/test"
+        target="_blank"
       >
-        <a
-          className="link button-link"
-          href="https://data.world/test/test"
-          target="_blank"
+        <button
+          className="btn btn-default"
+          disabled={false}
+          type="button"
         >
           View on Web
-        </a>
-      </button>
+        </button>
+      </a>
     </div>
   </div>
   <div

@@ -189,15 +189,13 @@ class BindingsPage extends Component {
               <div className='loader-icon'></div>
                 Saving...
               </Button>}
-            <Button>
-              <a
-                href={`https://data.world/${dataset.owner}/${dataset.id}`}
-                target='_blank'
-                className='link button-link'
-              >
-                View on Web
-              </a>
-            </Button>
+            <a
+              href={`https://data.world/${dataset.owner}/${dataset.id}`}
+              target='_blank'
+              className='link button-link'
+            >
+              <Button>View on Web</Button>
+            </a>
           </div>
         </Row>
         {!!bindingEntries.length && canEdit &&
