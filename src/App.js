@@ -108,6 +108,21 @@ class App extends Component {
       localStorage.setItem(DW_APP_VERSION, version);
     }
 
+    // To be used to display NotOfficeView
+    let outsideOffice;
+
+    // window.OfficeHelpers will be undefined when running tests
+    if (window.OfficeHelpers) {
+      if (window.OfficeHelpers.Utilities.host !== 'EXCEL') {
+        outsideOffice = true;
+      } else {
+        outsideOffice = false;
+      }
+    } else {
+      outsideOffice = false
+    }
+
+
     this.state = {
       token,
       preferences,
@@ -120,7 +135,8 @@ class App extends Component {
       page,
       charts: [],
       projects: [],
-      version
+      version,
+      outsideOffice
     };
 
     if (token) {
@@ -129,7 +145,6 @@ class App extends Component {
     }
 
     this.initializeOffice();
-    this.handleNoOfficeTimeout();
   }
 
   async initializeOffice() {
@@ -153,16 +168,6 @@ class App extends Component {
         }
       });
     }
-  }
-
-  handleNoOfficeTimeout = () => {
-    setTimeout(() => {
-      if (!this.state.officeInitialized) {
-        this.setState({
-          outsideOffice: true
-        });
-      }
-    }, 2000);
   }
 
   async initializeDatasets() {
