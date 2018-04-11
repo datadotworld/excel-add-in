@@ -108,6 +108,21 @@ class App extends Component {
       localStorage.setItem(DW_APP_VERSION, version);
     }
 
+    // To be used to display NotOfficeView
+    let insideOffice;
+
+    // window.OfficeHelpers will be undefined when running tests
+    if (window.OfficeHelpers) {
+      if (window.OfficeHelpers.Utilities.host === 'EXCEL') {
+        insideOffice = true;
+      } else {
+        insideOffice = false;
+      }
+    } else {
+      insideOffice = true;
+    }
+
+
     this.state = {
       token,
       preferences,
@@ -120,7 +135,8 @@ class App extends Component {
       page,
       charts: [],
       projects: [],
-      version
+      version,
+      insideOffice
     };
 
     if (token) {
@@ -129,7 +145,6 @@ class App extends Component {
     }
 
     this.initializeOffice();
-    this.handleNoOfficeTimeout();
   }
 
   async initializeOffice() {
@@ -153,16 +168,6 @@ class App extends Component {
         }
       });
     }
-  }
-
-  handleNoOfficeTimeout = () => {
-    setTimeout(() => {
-      if (!this.state.officeInitialized) {
-        this.setState({
-          outsideOffice: true
-        });
-      }
-    }, 2000);
   }
 
   async initializeDatasets() {
@@ -703,7 +708,7 @@ class App extends Component {
       charts,
       projects,
       version,
-      outsideOffice
+      insideOffice
     } = this.state;
 
     let errorMessage = error;
@@ -722,7 +727,7 @@ class App extends Component {
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
 
-    if (outsideOffice) {
+    if (!insideOffice) {
       return (<NotOfficeView />);
     }
 
