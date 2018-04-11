@@ -109,17 +109,17 @@ class App extends Component {
     }
 
     // To be used to display NotOfficeView
-    let outsideOffice;
+    let insideOffice;
 
     // window.OfficeHelpers will be undefined when running tests
     if (window.OfficeHelpers) {
-      if (window.OfficeHelpers.Utilities.host !== 'EXCEL') {
-        outsideOffice = true;
+      if (window.OfficeHelpers.Utilities.host === 'EXCEL') {
+        insideOffice = true;
       } else {
-        outsideOffice = false;
+        insideOffice = false;
       }
     } else {
-      outsideOffice = false
+      insideOffice = true;
     }
 
 
@@ -136,7 +136,7 @@ class App extends Component {
       charts: [],
       projects: [],
       version,
-      outsideOffice
+      insideOffice
     };
 
     if (token) {
@@ -708,7 +708,7 @@ class App extends Component {
       charts,
       projects,
       version,
-      outsideOffice
+      insideOffice
     } = this.state;
 
     let errorMessage = error;
@@ -727,7 +727,7 @@ class App extends Component {
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
 
-    if (outsideOffice) {
+    if (!insideOffice) {
       return (<NotOfficeView />);
     }
 
