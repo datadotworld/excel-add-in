@@ -25,7 +25,7 @@ import UploadInsight from '../../components/UploadInsight';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<UploadInsight projects={[{ owner: 'owner', id: "project"}]}/>, div);
+  ReactDOM.render(<UploadInsight projects={[{ owner: 'owner', id: 'project'}]}/>, div);
 });
 
 it('renders upload insight view', () => {
@@ -37,10 +37,10 @@ it('renders upload insight view', () => {
 
   const selectedChart = 'b64ImageString'
   const projects = [
-    { owner: 'firstOwner', id: "firstProject"},
-    { owner: 'firstOwner', id: "secondProject"},
-    { owner: 'secondOwner', id: "firstProject"},
-    { owner: 'secondOwner', id: "secondProject"},
+    { owner: 'firstOwner', id: 'firstProject', title: 'first title'},
+    { owner: 'firstOwner', id: 'secondProject', title: 'second title'},
+    { owner: 'secondOwner', id: 'firstProject', title: 'third title'},
+    { owner: 'secondOwner', id: 'secondProject', title: 'forth title'},
   ]
 
   expect(renderer.create(<UploadInsight

@@ -98,12 +98,12 @@ class UploadInsight extends Component {
             <DropdownButton
               id="projects-dropdown"
               className="projects"
-              title={`${project.owner}/${project.id}`}
+              title={`${project.owner}/${project.title}`}
               onSelect={this.onSelect}
             >
               {
                 this.props.projects.map((project, index) => {
-                  return <MenuItem eventKey={index} key={index}>{`${project.owner}/${project.id}`}</MenuItem>
+                  return <MenuItem eventKey={index} key={index}>{`${project.owner}/${project.title}`}</MenuItem>
                 })
               }
             </DropdownButton>
