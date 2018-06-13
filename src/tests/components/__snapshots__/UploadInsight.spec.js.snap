@@ -35,7 +35,7 @@ exports[`renders upload insight view 1`] = `
           role="button"
           type="button"
         >
-          firstOwner/firstProject
+          firstOwner/first title
            
           <span
             className="caret"
@@ -58,7 +58,7 @@ exports[`renders upload insight view 1`] = `
               role="menuitem"
               tabIndex="-1"
             >
-              firstOwner/firstProject
+              firstOwner/first title
             </a>
           </li>
           <li
@@ -73,7 +73,7 @@ exports[`renders upload insight view 1`] = `
               role="menuitem"
               tabIndex="-1"
             >
-              firstOwner/secondProject
+              firstOwner/second title
             </a>
           </li>
           <li
@@ -88,7 +88,7 @@ exports[`renders upload insight view 1`] = `
               role="menuitem"
               tabIndex="-1"
             >
-              secondOwner/firstProject
+              secondOwner/third title
             </a>
           </li>
           <li
@@ -103,7 +103,7 @@ exports[`renders upload insight view 1`] = `
               role="menuitem"
               tabIndex="-1"
             >
-              secondOwner/secondProject
+              secondOwner/forth title
             </a>
           </li>
         </ul>
