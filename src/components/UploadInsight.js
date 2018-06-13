@@ -62,7 +62,8 @@ class UploadInsight extends Component {
     const projects = this.props.projects;
     const selected = {
       owner: projects[eventKey].owner,
-      id: projects[eventKey].id
+      id: projects[eventKey].id,
+      title: projects[eventKey].title
     };
 
     this.setState({ project: selected });
