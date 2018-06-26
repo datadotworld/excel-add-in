@@ -89,20 +89,17 @@ exports[`renders modal 1`] = `
               name="privacy"
               onChange={[Function]}
               type="radio"
-              value="PRIVATE"
+              value="OPEN"
             />
             <div
               className="radio-label"
             >
-              Private 
-              <span
-                className="glyphicon glyphicon-lock"
-              />
+              Open
             </div>
             <div
               className="radio-option-description"
             >
-              Will only be shared with others you invite.
+              Publicly available data that anyone can view, query, or download.
             </div>
           </label>
         </div>
@@ -119,17 +116,20 @@ exports[`renders modal 1`] = `
               name="privacy"
               onChange={[Function]}
               type="radio"
-              value="OPEN"
+              value="PRIVATE"
             />
             <div
               className="radio-label"
             >
-              Open
+              Private 
+              <span
+                className="glyphicon glyphicon-lock"
+              />
             </div>
             <div
               className="radio-option-description"
             >
-              Publicly available data that anyone can view, query, or download.
+              Will only be shared with others you invite. Use for personal or sensitive information.
             </div>
           </label>
         </div>

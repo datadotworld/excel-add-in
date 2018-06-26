@@ -153,7 +153,7 @@ class CreateDatasetModal extends Component {
                 className={visibility === 'PRIVATE' ? 'checked' : ''}
                 value='PRIVATE' >
                 <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
-                <div className='radio-option-description'>Will only be shared with others you invite.</div>
+                <div className='radio-option-description'>Will only be shared with others you invite. Use for personal or sensitive information.</div>
               </Radio>
             </FormGroup>
             <div className='button-group'>

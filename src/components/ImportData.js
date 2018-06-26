@@ -48,7 +48,7 @@ const ImportData = () => {
             bsStyle="primary"
             className="import-button"
           >
-            See an example!
+            Try it out
           </Button>
         </a>
       </Row>
