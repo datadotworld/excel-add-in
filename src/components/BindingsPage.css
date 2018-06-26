@@ -162,6 +162,7 @@
 
 .bindings-page button.syncing-button {
   color: #8c9caf;
+  pointer-events: none;
 }
 .bindings-page button .loader-icon {
   display: inline-block;
