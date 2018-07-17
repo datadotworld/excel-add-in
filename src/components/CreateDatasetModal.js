@@ -51,7 +51,7 @@ class CreateDatasetModal extends Component {
   state = {
     isSubmitting: false,
     title: '',
-    visibility: 'OPEN',
+    visibility: 'PRIVATE',
     error: null
   }
 
@@ -137,6 +137,15 @@ class CreateDatasetModal extends Component {
               </HelpBlock>  
             </FormGroup>
             <FormGroup>
+            <Radio
+                name='privacy'
+                onChange={this.visibilityChanged}
+                checked={visibility === 'PRIVATE'}
+                className={visibility === 'PRIVATE' ? 'checked' : ''}
+                value='PRIVATE' >
+                <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
+                <div className='radio-option-description'>Will only be shared with others you invite.</div>
+              </Radio>
               <Radio
                 name='privacy'
                 onChange={this.visibilityChanged}
@@ -145,15 +154,6 @@ class CreateDatasetModal extends Component {
                 value='OPEN'>
                 <div className='radio-label'>Open</div>
                 <div className='radio-option-description'>Publicly available data that anyone can view, query, or download.</div>
-              </Radio>
-              <Radio
-                name='privacy'
-                onChange={this.visibilityChanged}
-                checked={visibility === 'PRIVATE'}
-                className={visibility === 'PRIVATE' ? 'checked' : ''}
-                value='PRIVATE' >
-                <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
-                <div className='radio-option-description'>Will only be shared with others you invite. Use for personal or sensitive information.</div>
               </Radio>
             </FormGroup>
             <div className='button-group'>
