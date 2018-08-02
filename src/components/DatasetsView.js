@@ -24,9 +24,10 @@ import {
   DropdownButton,
   Grid,
   MenuItem,
-  Row
+  Row,
+  ControlLabel
 } from 'react-bootstrap';
-
+import UploadModal from './UploadModal';
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
 import LoadingAnimation from './LoadingAnimation';
@@ -85,10 +86,6 @@ class DatasetsView extends Component {
     this.setState({sortKey})
   }
 
-  linkDataset = (dataset) => {
-    this.props.linkDataset(dataset);
-  }
-
   createDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_button.click');
     this.props.createDataset();
@@ -101,24 +98,20 @@ class DatasetsView extends Component {
 
   render () {
     const { sortKey } = this.state;
-    const { datasets, loadingDatasets } = this.props;
+    const { datasets, loadingDatasets,excelApiSupported, range, showCreateDataset, linkDataset } = this.props;
     const sortedDatasets = this.sortDatasets();
-
     const datasetEntries = sortedDatasets.map((d) =>{
-      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={this.linkDataset} />);
+      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={linkDataset} />);
     });
 
     return (
       <Grid className='datasets-view'>
         <div className='dataset-selector'>
           <Row className='center-block section-header'>
-            <div className='title'>
-              Select a dataset to link
-            </div>
-            <Button onClick={this.addDatasetClick}>
-              <Icon icon='add' />
-              New
-            </Button>
+            <ControlLabel>
+              Select a dataset or project
+            </ControlLabel>
+            <Button bsStyle='default' onClick={() => this.props.showDatasets()}>Cancel</Button>
           </Row>
           {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
           {!!datasets.length && !loadingDatasets &&
@@ -137,8 +130,8 @@ class DatasetsView extends Component {
                 </div>
               </div>
               <div>
+                <DatasetItem buttonText='Link' dataset={{isCreate: true}} buttonHandler={showCreateDataset}/>
                 {datasetEntries}
-                <Button className='bottom-button' onClick={this.createDatasetClick}>Create a new dataset</Button>
               </div>
             </Row>}
           {!datasets.length && !loadingDatasets &&

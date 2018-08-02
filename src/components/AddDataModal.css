@@ -22,17 +22,19 @@
 
 .selection {
   display: flex;
-  border: 1px solid #a3afbf;
   justify-content: space-between;
   align-items: center;
 }
 
 .selection span {
   margin: 0;
-  padding-left: 6px;
+  padding-left: 0.125rem;
+  height: 30px;
   display: flex;
   align-items: center;
   font-weight: normal;
+  font-size: 0.8125rem;
+  font-weight: 700;
 }
 
 .selection span::before {
@@ -41,8 +43,10 @@
   width: 1em;
   height: 1em;
   border-radius: 1em;
-  border: 1px solid grey;
+  border: 1px solid lightgray;
   margin-right: 0.75em;
+  background: #fff;
+  font-weight: 700;
 }
 
 .selection input[type=radio] {
@@ -56,8 +60,11 @@
 
 .selection .radio-button {
   display: flex;
-  padding: 12px;
   align-items: center;
+}
+
+.selection .radio-button span {
+  font-weight: 700;
 }
 
 .selection .selection-info {

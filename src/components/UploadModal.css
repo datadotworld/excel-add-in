@@ -1,0 +1,122 @@
+/*
+ * Copyright 2017 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+ .upload-modal {
+    top: 50px;
+  }
+  
+  .selection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .selection span {
+    margin: 0;
+    padding-left: 2px;
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+  }
+  
+  .selection span::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    margin-right: 0.75em;
+  }
+  
+  .selection input[type=radio] {
+    display: none;
+  }
+  
+  .selection input[type=radio]:checked + span::before {
+    border: 4.5px solid #328df3;
+    background: white;
+  }
+  
+  .selection .radio-button {
+    display: flex;
+    align-items: center;
+  }
+  
+  .selection .selection-info {
+    display: flex;
+    padding: 12px;
+    color: #969696;
+    font-size: 11px;
+  }
+  
+  .select-sheet {
+    background-color: aliceblue;
+  }
+  
+  .full-screen-modal .center-block .selection-form {
+    padding: 0;
+  }
+
+  .url {
+      display: flex;
+  }
+
+  .url-group {
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray
+  }
+
+  .url-group .body {
+    margin-top: 1rem;
+  }
+
+  .category-title {
+    background-color: #fff;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    padding-left: 0.9375rem;
+    font-size: 0.9375rem;
+    border-bottom: 1px solid lightgray;
+  }
+  
+  .category-title .control-label {
+    margin-bottom: 0;
+  }
+
+  .browse-button {
+    width: 25% !important;
+    margin-left: 0.625rem;
+    padding: 0 0.625rem;
+    height: 2rem;
+    font-size: 0.8125rem;
+    background: white;
+  }
+
+  .help-block {
+    font-size: 0.6875rem;
+    margin-top: 0.3125rem;
+  }
+
+  .upload-modal .control-label {
+    font-size: 0.8125rem;
+  }
+
+  .upload-modal .form-control {
+    height: 2rem;
+  }

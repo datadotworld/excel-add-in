@@ -44,7 +44,6 @@ class CreateDatasetModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createDataset: PropTypes.func,
-    linkNewDataset: PropTypes.func,
     user: PropTypes.object
   }
 
@@ -56,6 +55,7 @@ class CreateDatasetModal extends Component {
   }
 
   submit = (event) => {
+    console.log("submitting")
     analytics.track('exceladdin.create_dataset.submit.click');
     event.preventDefault();
     this.setState({isSubmitting: true});
@@ -64,9 +64,8 @@ class CreateDatasetModal extends Component {
       visibility: this.state.visibility
     };
     this.props.createDataset(dataset).then((createdDataset) => {
-      this.props.linkNewDataset(createdDataset.uri).then(() => {
-        this.props.close();
-      });
+      this.props.linkDataset(createdDataset.uri)
+      this.props.close();
     }).catch((error) => {
       if (error && error.response && error.response.data && error.response.data.message === 'Attempted to create an entity that already exists.') {
         error = {message: 'A dataset with that name already exists, please try again.'};
@@ -101,6 +100,12 @@ class CreateDatasetModal extends Component {
 
   dismissError = () => {
     this.setState({error: null});
+  }
+  componentDidMount() {
+    this.props.showDatasets()
+  }
+  componentWillUnmount() {
+    this.cancelClicked
   }
 
   render () {

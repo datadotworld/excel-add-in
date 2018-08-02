@@ -87,10 +87,6 @@ body {
   padding-left: 1rem;
 }
 
-.full-screen-modal {
-  background-color: #fff;
-}
-
 .full-screen-modal .header {
   padding: 15px;
   border-bottom: 1px solid #dfe3e9;
@@ -191,4 +187,8 @@ body {
 
 .center-modal .modal-footer.save .btn+.btn {
   margin-left: 1rem;
+}
+
+.help-block {
+  font-size: 0.6875rem;
 }

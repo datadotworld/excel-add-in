@@ -43,6 +43,7 @@ import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
 import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
+import UploadModal from './components/UploadModal';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
@@ -65,7 +66,6 @@ class App extends Component {
     this.removeBinding = this.removeBinding.bind(this);
     this.unlinkDataset = this.unlinkDataset.bind(this);
     this.createDataset = this.createDataset.bind(this);
-    this.linkNewDataset = this.linkNewDataset.bind(this);
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
@@ -136,7 +136,9 @@ class App extends Component {
       charts: [],
       projects: [],
       version,
-      insideOffice
+      insideOffice,
+      showDatasets: false,
+      url: ''
     };
 
     if (token) {
@@ -346,15 +348,6 @@ class App extends Component {
     }
   }
 
-  async linkNewDataset (datasetUrl) {
-    try {
-      const dataset = await this.api.getDataset(datasetUrl);
-      return await this.linkDataset(dataset);
-    } catch (error) {
-      this.handleDatasetFetchError(error);
-    }
-  }
-
   async linkDataset (dataset) {
     try  {
       const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
@@ -366,6 +359,10 @@ class App extends Component {
     } catch (error) {
       this.handleDatasetFetchError(error);
     }
+  }
+
+  createUrl = (uri) => {
+    this.setState({url: uri, showDatasets: false})
   }
 
   async unlinkDataset () {
@@ -618,6 +615,10 @@ class App extends Component {
     });
   }
 
+  toggleShowDatasets = () => {
+    this.setState({showDatasets: !this.state.showDatasets})
+  }
+
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
     this.setState({showAddDataModal: false, addDataModalOptions: {}});
@@ -708,9 +709,10 @@ class App extends Component {
       charts,
       projects,
       version,
-      insideOffice
+      insideOffice,
+      showDatasets,
+      url
     } = this.state;
-
     let errorMessage = error;
     if (error && typeof error !== 'string') {
       errorMessage = error.message;
@@ -722,21 +724,21 @@ class App extends Component {
     const insights = page === 'insights';
     const importData = page === 'import';
 
-    const renderBindingsPage = !showStartPage && !modalViewOpened && dataset && !insights;
-    const renderDatasetsView = !showStartPage && !dataset && !showCreateDataset && !insights && !importData;
+    const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
+    const renderBindingsPage = !showCreateDataset && !uploadDataView && !showStartPage && !modalViewOpened && dataset && !insights;
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
 
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
-
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
+
         {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
@@ -750,30 +752,30 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {renderDatasetsView && <DatasetsView
-          datasets={datasets}
-          createDataset={this.showCreateDataset}
-          linkDataset={this.linkDataset}
-          loadingDatasets={loadingDatasets}
+        {uploadDataView && <UploadModal
+          excelApiSupported={excelApiSupported}
+          range={currentSelectedRange}
+          showDatasets={this.toggleShowDatasets}
+          unlinkDataset={this.unlinkDataset}
+          url={url}
+          updateBinding={this.updateBinding}
         />}
 
         {showCreateDataset && <CreateDatasetModal 
           user={user}
-          linkNewDataset={this.linkNewDataset}
           createDataset={this.createDataset}
-          close={() => this.setState({showCreateDataset: false})} 
+          close={() => this.setState({showCreateDataset: false})}
+          linkDataset={this.createUrl} 
+          showDatasets={this.toggleShowDatasets}
         />}
 
-        {showAddDataModal && <AddDataModal 
-          sync={this.sync}
-          excelApiSupported={excelApiSupported}
-          range={currentSelectedRange}
-          close={this.closeAddData}
-          options={addDataModalOptions}
-          createBinding={this.createBinding}
-          refreshLinkedDataset={this.refreshLinkedDataset}
-          updateBinding={this.updateBinding}
-          doesFileExist={this.doesFileExist}
+        {showDatasets && <DatasetsView 
+          datasets={datasets}
+          createDataset={this.showCreateDataset}
+          linkDataset={this.createUrl}
+          loadingDatasets={loadingDatasets}
+          showDatasets={this.toggleShowDatasets}
+          showCreateDataset={this.showCreateDataset}
         />}
 
         {renderInsights && <Insights

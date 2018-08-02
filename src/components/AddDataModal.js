@@ -79,6 +79,7 @@ class AddDataModal extends Component {
     showWarningModal: false,
     selectSheet: selectSheetState(this.props.options)
   }
+  
 
   isFormValid = () => {
     const { name } = this.state;
@@ -158,6 +159,21 @@ class AddDataModal extends Component {
     this.props.close();
   }
 
+  getSelectionText(range) {
+    if (range) {
+      // Return number of rows and columns in selection
+      const rowCount = range.rowCount;
+      const columnCount = range.columnCount;
+      const rowText = rowCount === 1 ? 'Row' : 'Rows';
+      const columnText = columnCount === 1 ? 'Column' : 'Columns';
+
+      return `(${rowCount} ${rowText} x ${columnCount} ${columnText})`;
+    }
+
+    // Range not yet loaded, return placeholder text
+    return '(Rows x Columns)';
+  }
+
   getSheetName = (range) => {
     if (range) {
       const address = range.address;
@@ -177,21 +193,6 @@ class AddDataModal extends Component {
     } else if (value === 'sheet') {
       this.setState({ selectSheet: true });
     }
-  }
-
-  getSelectionText(range) {
-    if (range) {
-      // Return number of rows and columns in selection
-      const rowCount = range.rowCount;
-      const columnCount = range.columnCount;
-      const rowText = rowCount === 1 ? 'Row' : 'Rows';
-      const columnText = columnCount === 1 ? 'Column' : 'Columns';
-
-      return `(${rowCount} ${rowText} x ${columnCount} ${columnText})`;
-    }
-
-    // Range not yet loaded, return placeholder text
-    return '(Rows x Columns)';
   }
 
   render () {

@@ -61,6 +61,11 @@ class BindingsPage extends Component {
     sortKey: 'updated'
   }
 
+  componentWillUnmount() {
+    console.log("unmounting")
+    this.props.unlinkDataset()
+  }
+
   getFilenameFromBinding = (binding) => {
     return `${binding.id.replace('dw::', '')}.csv`;
   }
