@@ -62,8 +62,11 @@ class BindingsPage extends Component {
   }
 
   componentWillUnmount() {
-    console.log("unmounting")
     this.props.unlinkDataset()
+  }
+
+  componentDidMount() {
+    console.log("MOUNTING BINDINGS PAGE")
   }
 
   getFilenameFromBinding = (binding) => {

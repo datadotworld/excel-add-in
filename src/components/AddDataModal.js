@@ -29,7 +29,7 @@ import {
   InputGroup,
   Row
 } from 'react-bootstrap';
-
+// CAN DELETE ENTIRE CLASS
 import analytics from '../analytics';
 import { isSheetBinding } from '../util';
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';

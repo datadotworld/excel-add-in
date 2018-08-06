@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 import { 
   Button,
-  DropdownButton,
   Grid,
-  MenuItem,
   Row,
   HelpBlock,
   FormControl,
@@ -16,23 +14,23 @@ import {
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
 import analytics from '../analytics';
 
-import DatasetItem from './DatasetItem';
-import Icon from './icons/Icon';
 import WarningModal from './WarningModal';
 import './UploadModal.css';
-import DatasetsView from './DatasetsView';
 
+const getFilenameWithoutExtension = function (filename) {
+  const dotPos = filename.lastIndexOf('.');
+  return dotPos > -1 ? filename.slice(0, dotPos) : filename;
+}
 
 class UploadModal extends Component {
   static propTypes = {
     excelApiSupported: PropTypes.bool,
     range: PropTypes.object,
-    updateBinding: PropTypes.func
   }
 
   state = {
-    sortKey: 'updated',
-    selectSheet: false
+    selectSheet: false,
+    filename: ''
   }
 
   getSelectionText(range) {
@@ -76,54 +74,68 @@ class UploadModal extends Component {
     const {
       close,
       createBinding,
-      options,
       refreshLinkedDataset,
       sync,
-      updateBinding,
       range
     } = this.props;
-    const { name, selectSheet } = this.state;
-
+    const { filename, selectSheet } = this.state;
     const selection = {
-      name: `${name}.csv`,
+      name: `${filename}.csv`,
       sheetId: range.worksheet.id,
       range: selectSheet ? SHEET_RANGE : range.address
     };
 
-    if (options.binding) {
-      updateBinding(options.binding, selection)
-        .then(sync)
-        .then(refreshLinkedDataset)
-        .then(close);
-    } else {
-      createBinding(selection).then((binding) => {
-        // Binding has been created, but the file does not exist yet, sync the file
-        sync(binding).then(refreshLinkedDataset).then(close);
-      })
-    }
+    console.log("selection", selection)
+
+    createBinding(selection).then((binding) => {
+      // Binding has been created, but the file does not exist yet, sync the file
+      sync(binding).then(refreshLinkedDataset).then(close);
+    })
+
+    // if (options.binding) {
+    //   updateBinding(options.binding, selection)
+    //     .then(sync)
+    //     .then(refreshLinkedDataset)
+    //     .then(close);
+    // } else {
+
+    // }
   }
 
   submit = (event) => {
+    const { filename } = this.state
     analytics.track('exceladdin.add_data.submit.click');
     event.preventDefault();
 
-    if (this.props.options.filename || this.props.doesFileExist(`${this.getFilename(this.state.name)}.csv`)) {
+    if (filename || this.props.doesFileExist(`${this.getFilename(this.state.name)}.csv`)) {
       // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
-      this.submitBinding();
+      this.submitBinding()
     }
+  }
+
+  getFilename = () => {
+    const index = this.state.name.lastIndexOf('.csv');
+    if (index >= 0 && index === this.state.name.length - 4) {
+      return getFilenameWithoutExtension(this.state.name);
+    }
+    return this.state.name;
   }
 
   closeModal = () => {
     this.setState({ showWarningModal: false });
   }
 
+  cancelClicked = () => {
+    analytics.track('exceladdin.add_data.cancel.click');
+    this.props.close();
+  }
+
   render () {
-    const { datasets, excelApiSupported, range, showDatasets } = this.props;
-    const { sortKey, selectSheet } = this.state
-    let validState, displayName, selection;
-    console.log("range", range)
+    const { excelApiSupported, range } = this.props;
+    const { selectSheet, filename } = this.state
+    let validState, selection;
 
     if (selectSheet) {
       selection = range ? this.getSheetName(range) : '';
@@ -181,6 +193,8 @@ class UploadModal extends Component {
               <InputGroup>
                 <div className='url'>
                   <FormControl
+                    className='textField'
+                    placeholder='https://data.world/'
                     value={this.props.url}
                     type='text' />
                   <Button className='browse-button' onClick={() => this.props.showDatasets()}>Browse</Button>
@@ -192,14 +206,18 @@ class UploadModal extends Component {
             </div>
           </FormGroup>
           <FormGroup validationState={validState}>
-            <ControlLabel>File name</ControlLabel>
+            <ControlLabel>File name:</ControlLabel>
             <InputGroup>
               <FormControl
-                // disabled={!!options.filename}
-                type='text' />
+                value={filename}
+                className='textField'
+                type='text'
+                onChange={({ target })  => {
+                  this.setState({filename: target.value})
+                }} />
             </InputGroup>
             <HelpBlock>
-              Must not include slashes, your file will be named <strong>{displayName}.csv</strong>
+              Must not include slashes, your file will be named <strong>{filename}.csv</strong>
               <div className='titleLimit'>max. 128</div>
             </HelpBlock>
           </FormGroup>
@@ -217,7 +235,7 @@ class UploadModal extends Component {
         cancelHandler={this.closeModal}
         successHandler={this.submitBinding}
         analyticsLocation='exceladdin.add_data'>
-        <div><strong>"{displayName}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
+        <div><strong>"{filename}.csv" already exists on data.world.  Do you want to replace it?</strong></div>
         <div>Replacing it will overwrite the file on data.world with the contents from {excelApiSupported ? selection : 'the selected cell range'}</div>
       </WarningModal>
     </Grid>

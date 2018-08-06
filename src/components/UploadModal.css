@@ -120,3 +120,7 @@
   .upload-modal .form-control {
     height: 2rem;
   }
+
+  .textField {
+    font-size: 0.875rem;
+  }

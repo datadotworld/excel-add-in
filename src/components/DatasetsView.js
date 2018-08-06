@@ -27,7 +27,6 @@ import {
   Row,
   ControlLabel
 } from 'react-bootstrap';
-import UploadModal from './UploadModal';
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
 import LoadingAnimation from './LoadingAnimation';
@@ -98,7 +97,7 @@ class DatasetsView extends Component {
 
   render () {
     const { sortKey } = this.state;
-    const { datasets, loadingDatasets,excelApiSupported, range, showCreateDataset, linkDataset } = this.props;
+    const { datasets, loadingDatasets, showCreateDataset, linkDataset } = this.props;
     const sortedDatasets = this.sortDatasets();
     const datasetEntries = sortedDatasets.map((d) =>{
       return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={linkDataset} />);

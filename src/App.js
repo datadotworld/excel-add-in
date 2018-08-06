@@ -28,7 +28,6 @@ import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
 import CSVWarningModal from './components/CSVWarningModal';
-import AddDataModal from './components/AddDataModal';
 import WelcomePage from './components/WelcomePage';
 import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
@@ -44,6 +43,7 @@ import analytics from './analytics';
 import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 import UploadModal from './components/UploadModal';
+import RecentUploads from './components/RecentUploads';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
@@ -138,7 +138,8 @@ class App extends Component {
       version,
       insideOffice,
       showDatasets: false,
-      url: ''
+      url: '',
+      forceShowUpload: false
     };
 
     if (token) {
@@ -146,7 +147,14 @@ class App extends Component {
       this.getUser();
     }
 
-    this.initializeOffice();
+    this.initializeOffice().then(() => {
+      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+        this.setState({currentSelectedRange});
+      });
+      this.office.listenForSelectionChanges((currentSelectedRange) => {
+        this.setState({currentSelectedRange})
+      })
+    })
   }
 
   async initializeOffice() {
@@ -365,6 +373,10 @@ class App extends Component {
     this.setState({url: uri, showDatasets: false})
   }
 
+  addUrl = (url) => {
+    this.setState({url})
+  }
+
   async unlinkDataset () {
     try {
       await this.office.setDataset(null);
@@ -533,6 +545,7 @@ class App extends Component {
    * is provided, then only that binding is saved to data.world.
    */
   async sync(binding) {
+    const {currentSelectedRange} = this.state
     try {
       this.setState({syncing: true});
       // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
@@ -541,15 +554,17 @@ class App extends Component {
       return new Promise((resolve, reject) => {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
+        let excelData;
+        let recentUploadData;
         bindings.forEach((binding) => {
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
-              return this.api.uploadFile({
-                data: trimmedData,
-                dataset: this.state.dataset,
-                filename: binding.id.replace('dw::', '')
-              });
+              console.log("data", data)
+              excelData = {data: trimmedData, dataset: this.state.url, filename: binding.id.replace('dw::', '')}
+              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: currentSelectedRange.address, sheetId: currentSelectedRange.worksheet.id}
+              console.log("excel data", excelData)
+              return this.api.uploadFile(excelData);
             }).then(() => {
               const syncStatus = this.state.syncStatus;
               syncStatus[binding.id].synced = true;
@@ -557,6 +572,24 @@ class App extends Component {
               syncStatus[binding.id].lastSync = new Date();
               this.office.setSyncStatus(syncStatus);
               this.setState({ syncStatus });
+              const toPush = JSON.stringify({[binding.id]: JSON.stringify(recentUploadData)})
+              let parsedHistory = []
+              if (localStorage['history']) {
+                const currentHistory = localStorage.getItem('history')
+                parsedHistory = JSON.parse(currentHistory)
+              }
+              const test = JSON.stringify(JSON.stringify(this.state.currentSelectedRange))
+              console.log("selected range", test)
+              const doesFilenameExist = parsedHistory.find(entry => {
+                const parsedEntry = JSON.parse(entry)
+                return parsedEntry.hasOwnProperty(binding.id)
+              })
+              if (!doesFilenameExist) {
+                parsedHistory.push(toPush)
+              }
+              localStorage.setItem('history', JSON.stringify(parsedHistory))
+              console.log("localhistory'", localStorage)
+
               resolve();
             }).catch((error) => {
               this.setState({error});
@@ -564,10 +597,8 @@ class App extends Component {
               reject();
             });
           });
-
           promises.push(promise);
         });
-
         Promise.all(promises).then(() => {
           this.setState({syncing: false});
           resolve();
@@ -679,6 +710,10 @@ class App extends Component {
     return this.api.uploadChart(imageString, options);
   }
 
+  toggleForceShowUpload = () => {
+    this.setState({forceShowUpload: true})
+  }
+
   setError = (error, message) => {
     this.setState({
       error: {
@@ -711,7 +746,8 @@ class App extends Component {
       version,
       insideOffice,
       showDatasets,
-      url
+      url,
+      forceShowUpload
     } = this.state;
     let errorMessage = error;
     if (error && typeof error !== 'string') {
@@ -725,9 +761,16 @@ class App extends Component {
     const importData = page === 'import';
 
     const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
+
     const renderBindingsPage = !showCreateDataset && !uploadDataView && !showStartPage && !modalViewOpened && dataset && !insights;
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
+    const localHistory = localStorage.getItem('history')
+    let numItemsInHistory = 0
+
+    if (localHistory) {
+      numItemsInHistory = JSON.parse(localHistory).length
+    }
 
     if (!insideOffice) {
       return (<NotOfficeView />);
@@ -752,13 +795,27 @@ class App extends Component {
           syncStatus={syncStatus}
         />}
 
-        {uploadDataView && <UploadModal
+        {(forceShowUpload || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
           excelApiSupported={excelApiSupported}
           range={currentSelectedRange}
           showDatasets={this.toggleShowDatasets}
           unlinkDataset={this.unlinkDataset}
           url={url}
           updateBinding={this.updateBinding}
+          showAddData={this.showAddData}
+          doesFileExist={this.doesFileExist}
+          createBinding={this.createBinding}
+          sync={this.sync}
+          refreshLinkedDataset={this.refreshLinkedDataset}
+          close={this.closeAddData}
+        />}
+
+        {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads
+          refreshLinkedDataset={this.refreshLinkedDataset}
+          sync={this.sync}
+          forceShowUpload={this.toggleForceShowUpload}
+          createBinding={this.createBinding}
+          addUrl={this.addUrl}
         />}
 
         {showCreateDataset && <CreateDatasetModal 

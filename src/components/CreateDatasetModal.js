@@ -101,11 +101,13 @@ class CreateDatasetModal extends Component {
   dismissError = () => {
     this.setState({error: null});
   }
+
   componentDidMount() {
     this.props.showDatasets()
   }
+  
   componentWillUnmount() {
-    this.cancelClicked
+    this.cancelClicked()
   }
 
   render () {
