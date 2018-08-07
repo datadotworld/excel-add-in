@@ -30,7 +30,14 @@ class UploadModal extends Component {
 
   state = {
     selectSheet: false,
-    filename: ''
+    filename: '',
+    currentUrl: this.props.url
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.url !== this.props.url) {
+      this.setState({currentUrl: this.props.url})
+    }
   }
 
   getSelectionText(range) {
@@ -84,14 +91,10 @@ class UploadModal extends Component {
       sheetId: range.worksheet.id,
       range: selectSheet ? SHEET_RANGE : range.address
     };
-
-    console.log("selection", selection)
-
     createBinding(selection).then((binding) => {
       // Binding has been created, but the file does not exist yet, sync the file
       sync(binding).then(refreshLinkedDataset).then(close);
     })
-
     // if (options.binding) {
     //   updateBinding(options.binding, selection)
     //     .then(sync)
@@ -107,7 +110,7 @@ class UploadModal extends Component {
     analytics.track('exceladdin.add_data.submit.click');
     event.preventDefault();
 
-    if (filename || this.props.doesFileExist(`${this.getFilename(this.state.name)}.csv`)) {
+    if (this.props.doesFileExist(`${filename}.csv`)) {
       // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
@@ -132,8 +135,13 @@ class UploadModal extends Component {
     this.props.close();
   }
 
+  handleUrlChange(url) {
+    this.setState({currentUrl: url})
+    this.props.linkDataset(url)
+  }
+
   render () {
-    const { excelApiSupported, range } = this.props;
+    const { excelApiSupported, range, numItemsInHistory } = this.props;
     const { selectSheet, filename } = this.state
     let validState, selection;
 
@@ -195,8 +203,12 @@ class UploadModal extends Component {
                   <FormControl
                     className='textField'
                     placeholder='https://data.world/'
-                    value={this.props.url}
-                    type='text' />
+                    value={this.state.currentUrl}
+                    type='text'
+                    onChange={(event) => {
+                      this.handleUrlChange(event.target.value)
+                    }}
+                    />
                   <Button className='browse-button' onClick={() => this.props.showDatasets()}>Browse</Button>
                 </div>
               </InputGroup>
@@ -222,7 +234,7 @@ class UploadModal extends Component {
             </HelpBlock>
           </FormGroup>
           <div className='button-group'>
-            <Button onClick={this.cancelClicked}>Cancel</Button>
+            {numItemsInHistory !== 0 && <Button className='cancel-button' onClick={this.cancelClicked}>Cancel</Button>}
             <Button
               type='submit'
               // disabled={this.state.isSubmitting || validState !== 'success'}

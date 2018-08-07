@@ -41,6 +41,8 @@
     height: 1em;
     border-radius: 1em;
     margin-right: 0.75em;
+    background: white;
+    border: 1px solid lightgray
   }
   
   .selection input[type=radio] {
@@ -123,4 +125,8 @@
 
   .textField {
     font-size: 0.875rem;
+  }
+
+  .cancel-button {
+    margin-left: 0 !important;
   }

@@ -129,6 +129,11 @@ body {
 
 .full-screen-modal form button {
   width: 47%;
+  margin-left: auto;
+}
+
+.full-screen-modal form button .cancel-button {
+  margin-left: 0 !important;
 }
 
 .loader-icon {

@@ -139,7 +139,8 @@ class App extends Component {
       insideOffice,
       showDatasets: false,
       url: '',
-      forceShowUpload: false
+      forceShowUpload: false,
+      loadingSync: false
     };
 
     if (token) {
@@ -345,15 +346,18 @@ class App extends Component {
   }
 
   async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
-    try {
-      const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
-      this.office.setDataset(dataset);
-      this.setState({ dataset });
-
-      return dataset;
-    } catch (error) {
-      this.handleDatasetFetchError(error);
+    if (datasetToRefresh) {
+      try {
+        const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
+        this.office.setDataset(dataset);
+        this.setState({ dataset });
+  
+        return dataset;
+      } catch (error) {
+        this.handleDatasetFetchError(error);
+      }
     }
+
   }
 
   async linkDataset (dataset) {
@@ -497,7 +501,7 @@ class App extends Component {
    * Replaces all the bindings stored in the state with those stored in Excel
    * while ensuring sheet bindings remain bound to the sheet
    */
-  updateBindings() {
+  async updateBindings() {
     return new Promise((resolve, reject) => {
       this.getExcelBindings().then((excelBindings) => {
         // Get all the current sheet bindings from state
@@ -560,10 +564,8 @@ class App extends Component {
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
-              console.log("data", data)
               excelData = {data: trimmedData, dataset: this.state.url, filename: binding.id.replace('dw::', '')}
-              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: currentSelectedRange.address, sheetId: currentSelectedRange.worksheet.id}
-              console.log("excel data", excelData)
+              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: currentSelectedRange.address, sheetId: currentSelectedRange.worksheet.id, date: new Date()}
               return this.api.uploadFile(excelData);
             }).then(() => {
               const syncStatus = this.state.syncStatus;
@@ -574,12 +576,11 @@ class App extends Component {
               this.setState({ syncStatus });
               const toPush = JSON.stringify({[binding.id]: JSON.stringify(recentUploadData)})
               let parsedHistory = []
-              if (localStorage['history']) {
+              if (localStorage['history'] && localStorage['history'] !== '{}') {
                 const currentHistory = localStorage.getItem('history')
                 parsedHistory = JSON.parse(currentHistory)
               }
               const test = JSON.stringify(JSON.stringify(this.state.currentSelectedRange))
-              console.log("selected range", test)
               const doesFilenameExist = parsedHistory.find(entry => {
                 const parsedEntry = JSON.parse(entry)
                 return parsedEntry.hasOwnProperty(binding.id)
@@ -587,9 +588,8 @@ class App extends Component {
               if (!doesFilenameExist) {
                 parsedHistory.push(toPush)
               }
+              console.log("new history", parsedHistory)
               localStorage.setItem('history', JSON.stringify(parsedHistory))
-              console.log("localhistory'", localStorage)
-
               resolve();
             }).catch((error) => {
               this.setState({error});
@@ -652,7 +652,7 @@ class App extends Component {
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false, addDataModalOptions: {}});
+    this.setState({showAddDataModal: false, addDataModalOptions: {}, forceShowUpload: false, url: ''});
   }
 
   dismissCSVWarning = (options) => {
@@ -677,7 +677,7 @@ class App extends Component {
 
   doesFileExist = (filename) => {
     let fileExists = false;
-    this.state.dataset.files.forEach((file) => {
+    this.state.dataset && this.state.dataset.files.forEach((file) => {
       if (file.name === filename) {
         fileExists = true;
       }
@@ -769,7 +769,7 @@ class App extends Component {
     let numItemsInHistory = 0
 
     if (localHistory) {
-      numItemsInHistory = JSON.parse(localHistory).length
+      numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
     }
 
     if (!insideOffice) {
@@ -779,10 +779,11 @@ class App extends Component {
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
+        {this.state.syncing && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
 
-        {renderBindingsPage && <BindingsPage
+        {/* {renderBindingsPage && <BindingsPage
           bindings={bindings}
           dataset={dataset}
           createBinding={this.createBinding}
@@ -793,21 +794,21 @@ class App extends Component {
           sync={this.sync}
           syncing={syncing}
           syncStatus={syncStatus}
-        />}
+        />} */}
 
-        {(forceShowUpload || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
+        {((forceShowUpload && !showDatasets && !showCreateDataset) || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
           excelApiSupported={excelApiSupported}
           range={currentSelectedRange}
           showDatasets={this.toggleShowDatasets}
-          unlinkDataset={this.unlinkDataset}
           url={url}
           updateBinding={this.updateBinding}
-          showAddData={this.showAddData}
           doesFileExist={this.doesFileExist}
           createBinding={this.createBinding}
           sync={this.sync}
           refreshLinkedDataset={this.refreshLinkedDataset}
           close={this.closeAddData}
+          linkDataset={this.createUrl}
+          numItemsInHistory={numItemsInHistory}
         />}
 
         {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads

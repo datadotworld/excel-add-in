@@ -58,3 +58,30 @@
 .link-icon .stroke {
   fill: #c1c1c1;
 }
+
+.resync-icon {
+  fill: #517fb8;
+  margin-top: 0.125rem;
+  margin-left: 0.25rem;
+}
+
+.icon-border {
+  border: 1px solid lightgray;
+  border-radius: 20px;
+  margin-left: auto;
+  height: 25px;
+  width: 25px;
+}
+
+.upload-button {
+  font-size: 13px;
+  color: #517fb8;
+  padding-right: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.large-header {
+  margin-right: auto;
+}
+
