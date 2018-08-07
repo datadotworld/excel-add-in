@@ -76,6 +76,14 @@
     opacity: 0.4;
     z-index: 3;
   }
+
+  .dw-PaginatedTable :global(nav) {
+    text-align: center;
+  }
+
+  .dw-PaginatedTable :global(.list-group-item) {
+    text-align: center;
+  }
   
   @media (max-width: 767px) {
     .pagination :global(.pagination) {

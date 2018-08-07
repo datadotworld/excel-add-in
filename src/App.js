@@ -140,7 +140,8 @@ class App extends Component {
       showDatasets: false,
       url: '',
       forceShowUpload: false,
-      loadingSync: false
+      loadingSync: false,
+      selectSheet: false
     };
 
     if (token) {
@@ -149,13 +150,22 @@ class App extends Component {
     }
 
     this.initializeOffice().then(() => {
-      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+      this.office.getCurrentlySelectedRange().then(currentSelectedRange => {
         this.setState({currentSelectedRange});
       });
-      this.office.listenForSelectionChanges((currentSelectedRange) => {
+      this.office.listenForSelectionChanges(currentSelectedRange => {
         this.setState({currentSelectedRange})
       })
     })
+  }
+
+  changeSelection = (event) => {
+    const { value } = event.target
+    if (value === 'selection') {
+      this.setState({ selectSheet: false})
+    } else if (value === 'sheet') {
+      this.setState({ selectSheet: true });
+    }
   }
 
   async initializeOffice() {
@@ -565,7 +575,7 @@ class App extends Component {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
               excelData = {data: trimmedData, dataset: this.state.url, filename: binding.id.replace('dw::', '')}
-              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: currentSelectedRange.address, sheetId: currentSelectedRange.worksheet.id, date: new Date()}
+              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: binding.rangeAddress, sheetId: currentSelectedRange.worksheet.id, date: new Date()}
               return this.api.uploadFile(excelData);
             }).then(() => {
               const syncStatus = this.state.syncStatus;
@@ -588,7 +598,6 @@ class App extends Component {
               if (!doesFilenameExist) {
                 parsedHistory.push(toPush)
               }
-              console.log("new history", parsedHistory)
               localStorage.setItem('history', JSON.stringify(parsedHistory))
               resolve();
             }).catch((error) => {
@@ -747,7 +756,8 @@ class App extends Component {
       insideOffice,
       showDatasets,
       url,
-      forceShowUpload
+      forceShowUpload,
+      selectSheet
     } = this.state;
     let errorMessage = error;
     if (error && typeof error !== 'string') {
@@ -809,6 +819,8 @@ class App extends Component {
           close={this.closeAddData}
           linkDataset={this.createUrl}
           numItemsInHistory={numItemsInHistory}
+          changeSelection={this.changeSelection}
+          selectSheet={selectSheet}
         />}
 
         {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads

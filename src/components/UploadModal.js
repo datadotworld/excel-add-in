@@ -29,7 +29,6 @@ class UploadModal extends Component {
   }
 
   state = {
-    selectSheet: false,
     filename: '',
     currentUrl: this.props.url
   }
@@ -66,16 +65,6 @@ class UploadModal extends Component {
     return ''
   }
 
-  changeSelection = (event) => {
-    const { value } = event.target
-
-    if (value === 'selection') {
-      this.setState({ selectSheet: false})
-    } else if (value === 'sheet') {
-      this.setState({ selectSheet: true });
-    }
-  }
-
   submitBinding = () => {
     this.closeModal();
     const {
@@ -83,9 +72,10 @@ class UploadModal extends Component {
       createBinding,
       refreshLinkedDataset,
       sync,
-      range
+      range,
+      selectSheet
     } = this.props;
-    const { filename, selectSheet } = this.state;
+    const { filename } = this.state;
     const selection = {
       name: `${filename}.csv`,
       sheetId: range.worksheet.id,
@@ -95,14 +85,6 @@ class UploadModal extends Component {
       // Binding has been created, but the file does not exist yet, sync the file
       sync(binding).then(refreshLinkedDataset).then(close);
     })
-    // if (options.binding) {
-    //   updateBinding(options.binding, selection)
-    //     .then(sync)
-    //     .then(refreshLinkedDataset)
-    //     .then(close);
-    // } else {
-
-    // }
   }
 
   submit = (event) => {
@@ -141,8 +123,8 @@ class UploadModal extends Component {
   }
 
   render () {
-    const { excelApiSupported, range, numItemsInHistory } = this.props;
-    const { selectSheet, filename } = this.state
+    const { excelApiSupported, range, numItemsInHistory, selectSheet } = this.props;
+    const { filename } = this.state
     let validState, selection;
 
     if (selectSheet) {
@@ -162,7 +144,7 @@ class UploadModal extends Component {
           {excelApiSupported &&
           <FormGroup>
             <ControlLabel>Select the area or sheet to save:</ControlLabel>
-            <div className='selection-form' onClick={this.changeSelection}>
+            <div className='selection-form' onClick={this.props.changeSelection}>
               <div className='selection'>
                 <label className='radio-button'>
                   <input

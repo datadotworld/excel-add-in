@@ -10,7 +10,7 @@ import Icon from './icons/Icon';
 import './DatasetItem.css';
 
 const { localStorage } = window;
-const PAGE_LIMIT = 2
+const PAGE_LIMIT = 5
 
 class RecentItem extends Component {  
 

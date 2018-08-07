@@ -100,7 +100,6 @@ class DatasetsView extends Component {
     const { datasets, loadingDatasets, showCreateDataset, linkDataset } = this.props;
     const sortedDatasets = this.sortDatasets();
     const datasetEntries = sortedDatasets.map((d) =>{
-      console.log('d', d)
       return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={linkDataset} />);
     });
 
