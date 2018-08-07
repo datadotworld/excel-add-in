@@ -95,7 +95,7 @@ class RecentUploads extends Component {
     const parsedHistory = JSON.parse(localStorage.getItem('history')).reverse()
     const test = <tbody>
       {parsedHistory.slice((page - 1) * PAGE_LIMIT, page * PAGE_LIMIT).map((entry, index) => {
-        const parsedEntry = JSON.parse(Object.values(JSON.parse(entry))[0])
+        const parsedEntry = JSON.parse(Object.keys(JSON.parse(entry)).map(key => JSON.parse(entry)[key])[0])
         const dateArray = new Date(parsedEntry.date).toDateString().split(" ")
         const dateToShow = dateArray[1] + " " + dateArray[2]
         return (
