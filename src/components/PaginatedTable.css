@@ -84,6 +84,10 @@
   .dw-PaginatedTable :global(.list-group-item) {
     text-align: center;
   }
+
+  .dw-PaginatedTable :global(.table-responsive) {
+    margin-bottom: 0;
+  }
   
   @media (max-width: 767px) {
     .pagination :global(.pagination) {

@@ -51,5 +51,7 @@
   padding: 0;
   color: #4376b2;
   float: right;
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  padding-bottom: 15px;
 }

@@ -40,12 +40,23 @@ const angleRight =
  </svg>
 
 
-const add = <svg className='add-icon' version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 16 16'>
-  <g>
-    <line className='stroke' x1='8' y1='1' x2='8' y2='15'/>
-    <line className='stroke' x1='15' y1='8' x2='1' y2='8'/>
-  </g>
-</svg>;
+// const add = <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" xml:space="preserve">
+// <g>
+// 	<line class="stroke" x1="8" y1="1" x2="8" y2="15"/>
+// 	<line class="stroke" x1="15" y1="8" x2="1" y2="8"/>
+// </g>
+// </svg>
+
+// const tabular = <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+//  <g>
+//    <polygon class="stroke" points="5.6,3.2 10.4,3.2 8.1,0"/>
+//      <polygon class="stroke" points="12.9,5.6 12.9,10.3 16,8"/>
+//      <polygon class="stroke" points="10.4,12.8 5.6,12.8 8.1,16"/>
+//      <polygon class="stroke" points="3.2,10.3 3.2,5.6 0,8"/>
+//      <ellipse class="stroke" cx="8.1" cy="8" rx="1.6" ry="1.6"/>
+//  </g>
+// </svg>
+
 
 const close = <svg className='close-icon' width='16' height='15' viewBox='0 0 16 15' xmlns='http://www.w3.org/2000/svg'>
   <path className='stroke stroke-medium' d='M15.222 14.222L1 0M1 14.222L15.222 0'/>
@@ -90,7 +101,7 @@ const angleLeft =
 
 
 const ICONS = {
-  add, check, close, datasetSchema, projectSchema, sync, warning, angleLeft, angleRight
+  check, close, datasetSchema, projectSchema, sync, warning, angleLeft, angleRight
 };
 
 export default class Icon extends Component {

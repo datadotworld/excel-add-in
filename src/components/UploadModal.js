@@ -30,7 +30,12 @@ class UploadModal extends Component {
 
   state = {
     filename: '',
-    currentUrl: this.props.url
+    currentUrl: this.props.url,
+    showWarningModal: false
+  }
+
+  componentWillMount() {
+    this.props.linkConnector()
   }
 
   componentDidUpdate(prevProps) {

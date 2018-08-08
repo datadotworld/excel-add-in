@@ -115,19 +115,6 @@ class DatasetsView extends Component {
           {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
           {!!datasets.length && !loadingDatasets &&
             <Row className='center-block'>
-              <div className='list-info'>
-                {datasets.length} datasets
-                <div className='pull-right sort-dropdown'>
-                  <DropdownButton title='Sort' pullRight bsSize='small' onSelect={this.sortChanged} id='dropdown-sort-datasets'>
-                    <MenuItem eventKey='updated' active={sortKey === 'updated'}><Icon icon='check' />Updated: Newest</MenuItem>
-                    <MenuItem eventKey='-updated' active={sortKey === '-updated'}><Icon icon='check' />Updated: Oldest</MenuItem>
-                    <MenuItem eventKey='created' active={sortKey === 'created'}><Icon icon='check' />Created: Newest</MenuItem>
-                    <MenuItem eventKey='-created' active={sortKey === '-created'}><Icon icon='check' />Created: Oldest</MenuItem>
-                    <MenuItem eventKey='title' active={sortKey === 'title'}><Icon icon='check' />Name: A - Z</MenuItem>
-                    <MenuItem eventKey='-title' active={sortKey === '-title'}><Icon icon='check' />Name: Z - A</MenuItem>
-                  </DropdownButton>
-                </div>
-              </div>
               <div>
                 <DatasetItem buttonText='Link' dataset={{isCreate: true}} buttonHandler={showCreateDataset}/>
                 {datasetEntries}

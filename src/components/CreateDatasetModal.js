@@ -55,7 +55,6 @@ class CreateDatasetModal extends Component {
   }
 
   submit = (event) => {
-    console.log("submitting")
     analytics.track('exceladdin.create_dataset.submit.click');
     event.preventDefault();
     this.setState({isSubmitting: true});

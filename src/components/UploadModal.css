@@ -28,10 +28,13 @@
   
   .selection span {
     margin: 0;
-    padding-left: 2px;
+    padding-left: 0.125rem;
+    height: 30px;
     display: flex;
     align-items: center;
     font-weight: normal;
+    font-size: 0.8125rem;
+    font-weight: 700;
   }
   
   .selection span::before {
@@ -121,6 +124,7 @@
 
   .upload-modal .form-control {
     height: 2rem;
+    border-radius: 0.3125rem !important;
   }
 
   .textField {

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import { 
   Button,
-  ControlLabel
+  ControlLabel,
+  Image
 } from 'react-bootstrap';
-import analytics from '../analytics';
 import PaginatedTable from './PaginatedTable'
 import Icon from './icons/Icon';
 import './DatasetItem.css';
@@ -40,29 +40,30 @@ class RecentItem extends Component {
   }
 
   render() {
-    const { filename, dataset, range, sheetId, key, dateToShow, shouldShowDate, manageDates } = this.props
+    const { filename, dataset, range, sheetId, dateToShow, shouldShowDate, manageDates } = this.props
     const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
-
+    const tabular = require('./icons/icon-tabular.svg')
     const match = dataset.match(regexMatch)
     const rangeToShow = range ? range : 'Undefined'
     const datasetSlug = `=${rangeToShow} > ${match[1]}/${match[2]}`
-
+    const date = `Last modified: ${dateToShow}`
     return (
       <div>
         {/* {shouldShowDate && <h4>{dateToShow}</h4>} */}
-        <div className='dataset'>
-        <Icon icon='datasetSchema'/>
-        <div className='center-info'>
-          <div className='title'>{filename}</div>
-          <div className='info'>{datasetSlug}</div>
-        </div>
-        <div className='icon-border' onClick={() => this.submitBinding(filename, sheetId, range)}>
-          <div className='resync-icon'>
-            <Icon icon='sync' />
+        <div className='dataset recent'>
+          <Image className='tabular-icon' src={tabular}/>
+          <div className='center-info'>
+            <div className='title'>{filename}</div>
+            <div className='info'>{datasetSlug}</div>
+            <div className='info'>{date}</div>
+          </div>
+          <div className='icon-border' onClick={() => this.submitBinding(filename, sheetId, range)}>
+            <div className='resync-icon'>
+              <Icon icon='sync' />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     )
   }
 }
@@ -75,17 +76,14 @@ class RecentUploads extends Component {
     page: 1
   }
 
-  manageDates = async (dateToShow) => {
-    console.log("datetoshow", dateToShow)
-    console.log("previous date", this.state.previousDate)
+  manageDates = (dateToShow) => {
     if (dateToShow === this.state.previousDate) {
-      await this.setState({shouldShowDate: false}) 
-      console.log("in here")
+      this.setState({shouldShowDate: false}) 
     } else {
-      await this.setState({
+      this.setState({
         shouldShowDate: true,
         previousDate: dateToShow
-      }, () => console.log("previous date after setting", this.state.previousDate))
+      })
     }
   }
 

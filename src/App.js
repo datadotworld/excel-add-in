@@ -147,16 +147,9 @@ class App extends Component {
     if (token) {
       this.api = new DataDotWorldApi(token);
       this.getUser();
-    }
+    }     
 
-    this.initializeOffice().then(() => {
-      this.office.getCurrentlySelectedRange().then(currentSelectedRange => {
-        this.setState({currentSelectedRange});
-      });
-      this.office.listenForSelectionChanges(currentSelectedRange => {
-        this.setState({currentSelectedRange})
-      })
-    })
+    this.initializeOffice()
   }
 
   changeSelection = (event) => {
@@ -587,13 +580,10 @@ class App extends Component {
               const toPush = JSON.stringify({[binding.id]: JSON.stringify(recentUploadData)})
               let parsedHistory = []
               if (localStorage['history'] && localStorage['history'] !== '{}') {
-                const currentHistory = localStorage.getItem('history')
-                parsedHistory = JSON.parse(currentHistory)
+                parsedHistory = JSON.parse(localStorage.getItem('history'))
               }
-              const test = JSON.stringify(JSON.stringify(this.state.currentSelectedRange))
               const doesFilenameExist = parsedHistory.find(entry => {
-                const parsedEntry = JSON.parse(entry)
-                return parsedEntry.hasOwnProperty(binding.id)
+                return JSON.parse(entry).hasOwnProperty(binding.id)
               })
               if (!doesFilenameExist) {
                 parsedHistory.push(toPush)
@@ -624,35 +614,6 @@ class App extends Component {
 
   showCreateDataset = () => {
     this.setState({showCreateDataset: true});
-  }
-
-  showAddData = (filename, binding) => {
-
-    if (binding) {
-      // Select non sheet binding range
-      if (!isSheetBinding(binding)) {
-        this.office.select(binding.rangeAddress);
-      } else {
-        // Display the bound sheet
-        const sheet = getSheetName(binding);
-        this.office.activateSheet(sheet);
-      }
-    }
-
-    // Listen for changes to the selected range
-    this.office.listenForSelectionChanges((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
-    });
-
-    // But also grab the current selection
-    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
-    });
-
-    this.setState({
-      showAddDataModal: true,
-      addDataModalOptions: {binding, filename}
-    });
   }
 
   toggleShowDatasets = () => {
@@ -721,6 +682,17 @@ class App extends Component {
 
   toggleForceShowUpload = () => {
     this.setState({forceShowUpload: true})
+  }
+
+  linkConnector = () => {
+    if(this.office) {
+      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+        this.setState({currentSelectedRange});
+      });
+      this.office.listenForSelectionChanges((currentSelectedRange) => {
+        this.setState({currentSelectedRange})
+      })
+    }
   }
 
   setError = (error, message) => {
@@ -821,6 +793,7 @@ class App extends Component {
           numItemsInHistory={numItemsInHistory}
           changeSelection={this.changeSelection}
           selectSheet={selectSheet}
+          linkConnector={this.linkConnector}
         />}
 
         {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads

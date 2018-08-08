@@ -129,7 +129,7 @@ body {
 
 .full-screen-modal form button {
   width: 47%;
-  margin-left: auto;
+  margin-left: 8px;
 }
 
 .full-screen-modal form button .cancel-button {

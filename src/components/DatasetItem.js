@@ -19,7 +19,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {FormattedDate} from 'react-intl';
-
+import { Image } from 'react-bootstrap';
 import analytics from '../analytics';
 
 import './DatasetItem.css';
@@ -48,10 +48,11 @@ class DatasetItem extends Component {
 
   render () {
     const {dataset} = this.props;
+    const add = require('./icons/icon-add.svg')
     if (dataset.isCreate) {
       return (
         <div className='dataset' onClick={this.buttonClick}>
-          <Icon icon={dataset.isProject ? 'projectSchema' : 'datasetSchema'} />
+          <Image className='add-icon' src={add} />
           <div className='center-info'>
             <div className='title'>Create a new dataset</div>
           </div>

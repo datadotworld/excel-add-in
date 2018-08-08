@@ -46,7 +46,6 @@ class PaginatedTable extends React.Component<PaginatedTableProps> {
       page,
       limit,
       itemTotal,
-      className,
       header,
       beforeList,
       afterList,
