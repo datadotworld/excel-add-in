@@ -136,6 +136,10 @@ body {
   margin-left: 0 !important;
 }
 
+.full-screen-modal .button-group .submit-button {
+  margin-left: auto !important;
+}
+
 .loader-icon {
   font-size: 0.5rem;
   text-indent: -9999rem;

@@ -34,10 +34,6 @@ class UploadModal extends Component {
     showWarningModal: false
   }
 
-  componentWillMount() {
-    this.props.linkConnector()
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.url !== this.props.url) {
       this.setState({currentUrl: this.props.url})
@@ -224,6 +220,7 @@ class UploadModal extends Component {
             {numItemsInHistory !== 0 && <Button className='cancel-button' onClick={this.cancelClicked}>Cancel</Button>}
             <Button
               type='submit'
+              className='submit-button'
               // disabled={this.state.isSubmitting || validState !== 'success'}
               bsStyle='primary'>Save file</Button>
           </div>

@@ -35,9 +35,6 @@ class RecentItem extends Component {
       sync(binding).then(refreshLinkedDataset).then(close);
     })
   }
-  componentDidMount() {
-    this.props.manageDates(this.props.dateToShow)
-  }
 
   render() {
     const { filename, dataset, range, sheetId, dateToShow, shouldShowDate, manageDates } = this.props
@@ -49,7 +46,6 @@ class RecentItem extends Component {
     const date = `Last modified: ${dateToShow}`
     return (
       <div>
-        {/* {shouldShowDate && <h4>{dateToShow}</h4>} */}
         <div className='dataset recent'>
           <Image className='tabular-icon' src={tabular}/>
           <div className='center-info'>
@@ -68,7 +64,6 @@ class RecentItem extends Component {
   }
 }
 
-
 class RecentUploads extends Component {
   state = {
     previousDate: '',
@@ -76,23 +71,14 @@ class RecentUploads extends Component {
     page: 1
   }
 
-  manageDates = (dateToShow) => {
-    if (dateToShow === this.state.previousDate) {
-      this.setState({shouldShowDate: false}) 
-    } else {
-      this.setState({
-        shouldShowDate: true,
-        previousDate: dateToShow
-      })
-    }
-  }
-
   render () {
     const { forceShowUpload, createBinding, sync } = this.props
     const { page } = this.state
-    const parsedHistory = JSON.parse(localStorage.getItem('history')).reverse()
-    const test = <tbody>
-      {parsedHistory.slice((page - 1) * PAGE_LIMIT, page * PAGE_LIMIT).map((entry, index) => {
+    const parsedHistory = localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')).reverse() : []
+    const lowerLimit = (page - 1) * PAGE_LIMIT
+    const upperLimit = page * PAGE_LIMIT
+    const itemsToShow = <tbody>
+      {parsedHistory.slice(lowerLimit, upperLimit).map((entry, index) => {
         const parsedEntry = JSON.parse(Object.keys(JSON.parse(entry)).map(key => JSON.parse(entry)[key])[0])
         const dateArray = new Date(parsedEntry.date).toDateString().split(" ")
         const dateToShow = dateArray[1] + " " + dateArray[2]
@@ -109,7 +95,6 @@ class RecentUploads extends Component {
               addUrl={this.props.addUrl}
               dateToShow={dateToShow}
               shouldShowDate={this.state.shouldShowDate}
-              manageDates={this.manageDates}
             />
           </div>
           )
@@ -127,7 +112,7 @@ class RecentUploads extends Component {
           itemTotal={parsedHistory.length}
           limit={PAGE_LIMIT}
           page={page}
-          tbody={test}
+          tbody={itemsToShow}
         />
       </div>
     )

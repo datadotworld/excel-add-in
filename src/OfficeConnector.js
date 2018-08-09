@@ -52,7 +52,7 @@ export default class OfficeConnector {
   }
 
   isExcelApiSupported () {
-    if(Office) {
+    if(Office && Office.context) {
       return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
     }
   }

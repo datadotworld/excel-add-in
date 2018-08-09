@@ -29,7 +29,6 @@ import './static/css/dw-bootstrap.min.css';
 import CreateDatasetModal from './components/CreateDatasetModal';
 import CSVWarningModal from './components/CSVWarningModal';
 import WelcomePage from './components/WelcomePage';
-import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
@@ -149,7 +148,14 @@ class App extends Component {
       this.getUser();
     }     
 
-    this.initializeOffice()
+    this.initializeOffice().then(() => {
+      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+        this.setState({currentSelectedRange});
+      });
+      this.office.listenForSelectionChanges((currentSelectedRange) => {
+        this.setState({currentSelectedRange})
+      })
+    })
   }
 
   changeSelection = (event) => {
@@ -589,6 +595,7 @@ class App extends Component {
                 parsedHistory.push(toPush)
               }
               localStorage.setItem('history', JSON.stringify(parsedHistory))
+              this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
               this.setState({error});
@@ -684,17 +691,6 @@ class App extends Component {
     this.setState({forceShowUpload: true})
   }
 
-  linkConnector = () => {
-    if(this.office) {
-      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-        this.setState({currentSelectedRange});
-      });
-      this.office.listenForSelectionChanges((currentSelectedRange) => {
-        this.setState({currentSelectedRange})
-      })
-    }
-  }
-
   setError = (error, message) => {
     this.setState({
       error: {
@@ -744,7 +740,6 @@ class App extends Component {
 
     const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
 
-    const renderBindingsPage = !showCreateDataset && !uploadDataView && !showStartPage && !modalViewOpened && dataset && !insights;
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
     const localHistory = localStorage.getItem('history')
@@ -765,19 +760,6 @@ class App extends Component {
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
 
-        {/* {renderBindingsPage && <BindingsPage
-          bindings={bindings}
-          dataset={dataset}
-          createBinding={this.createBinding}
-          removeBinding={this.removeBinding}
-          unlinkDataset={this.unlinkDataset}
-          showAddData={this.showAddData}
-          select={this.select}
-          sync={this.sync}
-          syncing={syncing}
-          syncStatus={syncStatus}
-        />} */}
-
         {((forceShowUpload && !showDatasets && !showCreateDataset) || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
           excelApiSupported={excelApiSupported}
           range={currentSelectedRange}
@@ -793,7 +775,7 @@ class App extends Component {
           numItemsInHistory={numItemsInHistory}
           changeSelection={this.changeSelection}
           selectSheet={selectSheet}
-          linkConnector={this.linkConnector}
+          addUrl={this.addUrl}
         />}
 
         {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads
