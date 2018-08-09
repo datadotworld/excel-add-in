@@ -27,6 +27,6 @@ it('renders modal', () => {
   const user = {id: 'test'};
   expect(renderer.create(
     <IntlProvider locale='en'>
-      <CreateDatasetModal user={user} />
+      <CreateDatasetModal user={user} showDatasets={() => {}}/>
     </IntlProvider>).toJSON()).toMatchSnapshot()
 });
