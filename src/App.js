@@ -710,7 +710,6 @@ class App extends Component {
       loadingDatasets,
       loggedIn,
       officeInitialized,
-      showAddDataModal,
       showCreateDataset,
       user,
       page,
