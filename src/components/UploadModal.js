@@ -22,6 +22,8 @@ const getFilenameWithoutExtension = function (filename) {
   return dotPos > -1 ? filename.slice(0, dotPos) : filename;
 }
 
+const filenameRegex = /^[^/]+$/;
+
 class UploadModal extends Component {
   static propTypes = {
     excelApiSupported: PropTypes.bool,
@@ -38,6 +40,15 @@ class UploadModal extends Component {
     if (prevProps.url !== this.props.url) {
       this.setState({currentUrl: this.props.url})
     }
+  }
+
+  isFormValid = () => {
+    const { filename } = this.state;
+    const { excelApiSupported, range } = this.props;
+    if ((excelApiSupported && !range) || !filename) {
+      return false;
+    }
+    return filename.match(filenameRegex) && filename.length < MAX_FILENAME_LENGTH;
   }
 
   getSelectionText(range) {
@@ -127,6 +138,10 @@ class UploadModal extends Component {
     const { excelApiSupported, range, numItemsInHistory, selectSheet } = this.props;
     const { filename } = this.state
     let validState, selection;
+
+    if (filename) {
+      validState = this.isFormValid() ? 'success' : 'warning'
+    }
 
     if (selectSheet) {
       selection = range ? this.getSheetName(range) : '';
