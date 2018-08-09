@@ -1,4 +1,4 @@
-/*
+  /*
  * Copyright 2017 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,7 @@ import PropTypes from 'prop-types';
 
 import { 
   Button,
-  DropdownButton,
   Grid,
-  MenuItem,
   Row,
   ControlLabel
 } from 'react-bootstrap';
@@ -31,8 +29,6 @@ import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
 import LoadingAnimation from './LoadingAnimation';
 import analytics from '../analytics';
-
-import Icon from './icons/Icon';
 
 class DatasetsView extends Component {
 
@@ -96,7 +92,6 @@ class DatasetsView extends Component {
   }
 
   render () {
-    const { sortKey } = this.state;
     const { datasets, loadingDatasets, showCreateDataset, linkDataset } = this.props;
     const sortedDatasets = this.sortDatasets();
     const datasetEntries = sortedDatasets.map((d) =>{

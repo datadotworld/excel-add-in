@@ -146,7 +146,7 @@ class App extends Component {
     if (token) {
       this.api = new DataDotWorldApi(token);
       this.getUser();
-    }     
+    }
 
     this.initializeOffice().then(() => {
       this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
@@ -702,8 +702,6 @@ class App extends Component {
   
   render () {
     const {
-      addDataModalOptions,
-      bindings,
       currentSelectedRange,
       dataset,
       datasets,
@@ -714,8 +712,6 @@ class App extends Component {
       officeInitialized,
       showAddDataModal,
       showCreateDataset,
-      syncing,
-      syncStatus,
       user,
       page,
       charts,
@@ -733,7 +729,6 @@ class App extends Component {
     }
 
     const showStartPage = officeInitialized && !loggedIn;
-    const modalViewOpened = showAddDataModal || showCreateDataset;
 
     const insights = page === 'insights';
     const importData = page === 'import';

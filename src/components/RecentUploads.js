@@ -37,7 +37,7 @@ class RecentItem extends Component {
   }
 
   render() {
-    const { filename, dataset, range, sheetId, dateToShow, shouldShowDate, manageDates } = this.props
+    const { filename, dataset, range, sheetId, dateToShow } = this.props
     const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
     const tabular = require('./icons/icon-tabular.svg')
     const match = dataset.match(regexMatch)
