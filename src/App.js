@@ -198,7 +198,7 @@ class App extends Component {
       if (!this.state.loggedIn) {
         return this.setState({ officeInitialized: true, outsideOffice: false });
       }
-      if (! dataset && this.state.loggedIn) {
+      if (this.state.loggedIn) {
         this.getDatasets();
       } else if (this.state.loggedIn) {
         dataset = await this.refreshLinkedDataset(dataset);
@@ -767,7 +767,6 @@ class App extends Component {
     if (localHistory) {
       numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
     }
-
 
     return (
       <div>
