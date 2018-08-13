@@ -699,6 +699,7 @@ class App extends Component {
       }
     });
   }
+
   
   render () {
     const {
@@ -720,7 +721,8 @@ class App extends Component {
       showDatasets,
       url,
       forceShowUpload,
-      selectSheet
+      selectSheet,
+      bindings
     } = this.state;
     let errorMessage = error;
     if (error && typeof error !== 'string') {
@@ -746,6 +748,26 @@ class App extends Component {
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
+    
+    if (dataset && bindings.length > 0) {
+      let parsedHistory = []
+      if (localStorage['history'] && localStorage['history'] !== '{}') {
+        parsedHistory = JSON.parse(localStorage.getItem('history'))
+      }
+      bindings.forEach((binding) => {
+        const sheedId = getSheetName(binding)
+        const pastBindings = {dataset: `https://data.world/${dataset.owner}/${dataset.id}`, filename: binding.id.replace('dw::', ''), range: binding.rangeAddress, sheetId: sheedId, date: dataset.updated}
+        const toPush = JSON.stringify({[binding.id]: JSON.stringify(pastBindings)})
+        const doesFilenameExist = parsedHistory.find(entry => {
+          return JSON.parse(entry).hasOwnProperty(binding.id)
+        })
+        if (!doesFilenameExist) {
+          parsedHistory.push(toPush)
+        }
+      })
+      localStorage.setItem('history', JSON.stringify(parsedHistory))
+    }
+
     return (
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
