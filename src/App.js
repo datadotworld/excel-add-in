@@ -741,10 +741,6 @@ class App extends Component {
     const localHistory = localStorage.getItem('history')
     let numItemsInHistory = 0
 
-    if (localHistory) {
-      numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
-    }
-
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
@@ -767,6 +763,11 @@ class App extends Component {
       })
       localStorage.setItem('history', JSON.stringify(parsedHistory))
     }
+    
+    if (localHistory) {
+      numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
+    }
+
 
     return (
       <div>
