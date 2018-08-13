@@ -553,6 +553,22 @@ class App extends Component {
     });
   }
 
+  pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
+    const recentUploadData = {dataset: dataset, filename: filename, range: range, sheetId: sheetId, date: date}
+    const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
+    let parsedHistory = []
+    if (localStorage['history'] && localStorage['history'] !== '{}') {
+      parsedHistory = JSON.parse(localStorage.getItem('history'))
+    }
+    const doesFilenameExist = parsedHistory.find(entry => {
+      return JSON.parse(entry).hasOwnProperty(id)
+    })
+    if (!doesFilenameExist) {
+      parsedHistory.push(toPush)
+    }
+    localStorage.setItem('history', JSON.stringify(parsedHistory))
+  }
+
   /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
@@ -568,13 +584,11 @@ class App extends Component {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         let excelData;
-        let recentUploadData;
         bindings.forEach((binding) => {
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
               excelData = {data: trimmedData, dataset: this.state.url, filename: binding.id.replace('dw::', '')}
-              recentUploadData = {dataset: this.state.url, filename: binding.id.replace('dw::', ''), range: binding.rangeAddress, sheetId: currentSelectedRange.worksheet.id, date: new Date()}
               return this.api.uploadFile(excelData);
             }).then(() => {
               const syncStatus = this.state.syncStatus;
@@ -583,18 +597,7 @@ class App extends Component {
               syncStatus[binding.id].lastSync = new Date();
               this.office.setSyncStatus(syncStatus);
               this.setState({ syncStatus });
-              const toPush = JSON.stringify({[binding.id]: JSON.stringify(recentUploadData)})
-              let parsedHistory = []
-              if (localStorage['history'] && localStorage['history'] !== '{}') {
-                parsedHistory = JSON.parse(localStorage.getItem('history'))
-              }
-              const doesFilenameExist = parsedHistory.find(entry => {
-                return JSON.parse(entry).hasOwnProperty(binding.id)
-              })
-              if (!doesFilenameExist) {
-                parsedHistory.push(toPush)
-              }
-              localStorage.setItem('history', JSON.stringify(parsedHistory))
+              this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
               this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
@@ -746,24 +749,12 @@ class App extends Component {
     }
     
     if (dataset && bindings.length > 0) {
-      let parsedHistory = []
-      if (localStorage['history'] && localStorage['history'] !== '{}') {
-        parsedHistory = JSON.parse(localStorage.getItem('history'))
-      }
       bindings.forEach((binding) => {
         const sheedId = getSheetName(binding)
-        const pastBindings = {dataset: `https://data.world/${dataset.owner}/${dataset.id}`, filename: binding.id.replace('dw::', ''), range: binding.rangeAddress, sheetId: sheedId, date: dataset.updated}
-        const toPush = JSON.stringify({[binding.id]: JSON.stringify(pastBindings)})
-        const doesFilenameExist = parsedHistory.find(entry => {
-          return JSON.parse(entry).hasOwnProperty(binding.id)
-        })
-        if (!doesFilenameExist) {
-          parsedHistory.push(toPush)
-        }
-      })
-      localStorage.setItem('history', JSON.stringify(parsedHistory))
-    }
-    
+        this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
+    })
+  }
+  
     if (localHistory) {
       numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
     }
