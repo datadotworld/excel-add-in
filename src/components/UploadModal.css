@@ -99,6 +99,12 @@
     font-size: 0.9375rem;
     border-bottom: 1px solid lightgray;
   }
+  .category-reminder {
+    font-size: 0.9375rem;
+    padding: 1rem;
+    text-align: center;
+    color: lightgray;
+  }
   
   .category-title .control-label {
     margin-bottom: 0;

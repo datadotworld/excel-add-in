@@ -31,6 +31,13 @@
   cursor: default;
 }
 
+.date {
+  font-size: 0.8125rem;
+  color: gray;
+  padding: 0.5rem;
+  padding-left: 1rem;
+}
+
 .dataset .center-info {
   margin-left: 15px;
   max-width: 210px;
@@ -74,6 +81,13 @@
   fill: #517fb8;
   margin-top: 0.125rem;
   margin-left: 0.25rem;
+}
+.loading-border {
+  width: 10px;
+  height: 10px;
+}
+.icon-border:hover{
+  background-color: lightgray;
 }
 
 .icon-border {

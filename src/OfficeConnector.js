@@ -352,4 +352,19 @@ export default class OfficeConnector {
       });
     });
   }
+
+  getWorkbookName() {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        const workbookName = ctx.workbook.name
+        console.log('name', workbookName)
+        return ctx.sync().then(() => {
+          resolve(workbookName)
+        }).catch(reject)
+      })
+    })
+  }
 }

@@ -13,6 +13,7 @@ import {
 } from 'react-bootstrap';
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
 import analytics from '../analytics';
+import LoadingAnimation from './LoadingAnimation';
 
 import WarningModal from './WarningModal';
 import './UploadModal.css';
@@ -233,11 +234,16 @@ class UploadModal extends Component {
           </FormGroup>
           <div className='button-group'>
             {numItemsInHistory !== 0 && <Button className='cancel-button' onClick={this.cancelClicked}>Cancel</Button>}
-            <Button
+            {this.props.loading ? <Button
+              type='submit'
+              className='submit-button'
+              disabled
+              bsStyle='primary'>Saving</Button>
+              : <Button
               type='submit'
               className='submit-button'
               // disabled={this.state.isSubmitting || validState !== 'success'}
-              bsStyle='primary'>Save file</Button>
+              bsStyle='primary'>Save file</Button>}
           </div>
         </form>
       </Row>

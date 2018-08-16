@@ -147,7 +147,7 @@
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Data" />
+        <bt:String id="dw.DatasetsButton.Label" DefaultValue="Upload Data" />
         <bt:String id="dw.InsightsButton.Label" DefaultValue="Publish Insights" />
         <bt:String id="dw.ImportButton.Label" DefaultValue="Import Data" />
         <bt:String id="dw.Group1Label" DefaultValue="data.world" />

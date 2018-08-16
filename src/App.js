@@ -172,7 +172,6 @@ class App extends Component {
     try {
       this.office = new OfficeConnector();
       await this.office.initialize();
-
       if (page === INSIGHTS_ROUTE) {
         this.initializeInsights();
       } else if (page === IMPORT_ROUTE) {
@@ -193,6 +192,7 @@ class App extends Component {
   async initializeDatasets() {
     try {
       const settings = this.office.getSettings();
+      console.log('settings', settings)
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
       if (!this.state.loggedIn) {
@@ -268,7 +268,6 @@ class App extends Component {
     localStorage.setItem(DW_APP_VERSION, '');
     localStorage.setItem(DW_API_TOKEN, '');
     this.setState({token: null, loggedIn: false, user: null});
-
     window.location = `https://data.world/embed/logout?next=${encodeURIComponent(`https://excel.data.world?v=${version}`)}`;
   }
 
@@ -293,7 +292,7 @@ class App extends Component {
       }
 
       await this.office.getBindingRange(binding);
-
+      await this.office.getWorkbookName();
       const syncStatus = this.state.syncStatus;
       syncStatus[binding.id] = {
         synced: false,
@@ -554,7 +553,7 @@ class App extends Component {
   }
 
   pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
-    const recentUploadData = {dataset: dataset, filename: filename, range: range, sheetId: sheetId, date: date}
+    const recentUploadData = {dataset: dataset, filename: filename, range: range, sheetId: sheetId, date: date, userId: this.state.user.id}
     const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
     let parsedHistory = []
     if (localStorage['history'] && localStorage['history'] !== '{}') {
@@ -564,7 +563,12 @@ class App extends Component {
       return JSON.parse(entry).hasOwnProperty(id)
     })
     if (!doesFilenameExist) {
-      parsedHistory.push(toPush)
+      if (parsedHistory.length > 9) {
+        parsedHistory.shift()
+        parsedHistory.push(toPush)
+      } else {
+        parsedHistory.push(toPush)
+      }
     }
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
@@ -703,6 +707,13 @@ class App extends Component {
     });
   }
 
+  async getWorkbookName() {
+    this.office.getWorkbookName().then(workbookName => {
+      this.setState({workbookName})
+    })
+    console.log("name", this.state.workbookName)
+  }
+
   
   render () {
     const {
@@ -738,12 +749,12 @@ class App extends Component {
     const importData = page === 'import';
 
     const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
-
+    const userId = user ? user.id : 'Undefined'
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
     const localHistory = localStorage.getItem('history')
     let numItemsInHistory = 0
-
+    console.log('workboo name', this.state.workbookName)
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
@@ -763,7 +774,7 @@ class App extends Component {
       <div>
         {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
-        {this.state.syncing && <LoadingAnimation />}
+        {/* {this.state.syncing && <LoadingAnimation />} */}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
 
@@ -783,14 +794,16 @@ class App extends Component {
           changeSelection={this.changeSelection}
           selectSheet={selectSheet}
           addUrl={this.addUrl}
+          loading={this.state.syncing}
         />}
 
-        {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && <RecentUploads
+        {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && !showStartPage && <RecentUploads
           refreshLinkedDataset={this.refreshLinkedDataset}
           sync={this.sync}
           forceShowUpload={this.toggleForceShowUpload}
           createBinding={this.createBinding}
           addUrl={this.addUrl}
+          user={userId}
         />}
 
         {showCreateDataset && <CreateDatasetModal 
@@ -801,7 +814,7 @@ class App extends Component {
           showDatasets={this.toggleShowDatasets}
         />}
 
-        {showDatasets && <DatasetsView 
+        {!showStartPage && showDatasets && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.createUrl}
