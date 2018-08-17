@@ -570,14 +570,10 @@ class App extends Component {
       parsedHistory = JSON.parse(localStorage.getItem('history'))
     }
     const doesFilenameExist = parsedHistory.find(entry => {
-      const parsedEntry = JSON.parse(entry) 
-      return parsedEntry.hasOwnProperty(id) && parsedEntry[id].userId === this.state.user.id && parsedEntry[id].workbook === this.state.workbookName
+      return JSON.parse(entry).hasOwnProperty(id)
     })
-
     if (!doesFilenameExist) {
       parsedHistory.push(toPush)
-    } else {
-      parsedHistory[doesFilenameExist] = toPush
     }
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
@@ -765,7 +761,7 @@ class App extends Component {
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
-    
+    // Adds past bindings to local storage for migration purposes so user dont lose their old bindings
     if (dataset && bindings.length > 0) {
       bindings.forEach((binding) => {
         const sheedId = getSheetName(binding)
@@ -773,7 +769,7 @@ class App extends Component {
       })
     }
     const localHistory = localStorage.getItem('history')
-    let matchedFiles
+    let matchedFiles // all files which has the same username and workspace id as the current user
     if (localHistory) {
       const allFiles = JSON.parse(localHistory)
       if (allFiles) {
