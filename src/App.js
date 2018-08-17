@@ -606,7 +606,7 @@ class App extends Component {
               syncStatus[binding.id].lastSync = new Date();
               this.office.setSyncStatus(syncStatus);
               this.setState({ syncStatus });
-              //this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
+              this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
               this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
@@ -833,7 +833,7 @@ class App extends Component {
           showDatasets={this.toggleShowDatasets}
         />}
 
-        {!showStartPage && showDatasets && <DatasetsView 
+        {!showStartPage && showDatasets && !dataset && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
