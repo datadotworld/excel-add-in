@@ -833,7 +833,7 @@ class App extends Component {
           showDatasets={this.toggleShowDatasets}
         />}
 
-        {!showStartPage && showDatasets && !dataset && <DatasetsView 
+        {!showStartPage && showDatasets && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
           linkDataset={this.linkDataset}
