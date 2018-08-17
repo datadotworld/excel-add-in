@@ -610,7 +610,6 @@ class App extends Component {
               this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
-              console.log("error", error)
               this.setState({error});
               this.setState({syncing: false});
               reject();
@@ -622,14 +621,12 @@ class App extends Component {
           this.setState({syncing: false});
           resolve();
         }).catch((error) => {
-          console.log("error", error)
           this.setState({error});
           this.setState({syncing: false});
           reject();
         });
       });
     } catch(error) {
-      console.log("error", error)
       this.setState({syncing: false, error});
     }
   }
@@ -669,10 +666,7 @@ class App extends Component {
 
   doesFileExist = (filename) => {
     let fileExists = false;
-    console.log("in here")
-    console.log("huh", this.state.dataset)
     this.state.dataset && this.state.dataset.files.forEach((file) => {
-      console.log('checking if exists', file.name, filename)
       if (file.name === filename) {
         fileExists = true;
       }
