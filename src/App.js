@@ -570,10 +570,14 @@ class App extends Component {
       parsedHistory = JSON.parse(localStorage.getItem('history'))
     }
     const doesFilenameExist = parsedHistory.find(entry => {
-      return JSON.parse(entry).hasOwnProperty(id)
+      const parsedEntry = JSON.parse(entry) 
+      return parsedEntry.hasOwnProperty(id) && parsedEntry[id].userId === this.state.user.id && parsedEntry[id].workbook === this.state.workbookName
     })
+
     if (!doesFilenameExist) {
       parsedHistory.push(toPush)
+    } else {
+      parsedHistory[doesFilenameExist] = toPush
     }
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
