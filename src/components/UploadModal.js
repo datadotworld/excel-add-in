@@ -13,7 +13,6 @@ import {
 } from 'react-bootstrap';
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
 import analytics from '../analytics';
-import LoadingAnimation from './LoadingAnimation';
 
 import WarningModal from './WarningModal';
 import './UploadModal.css';
@@ -106,7 +105,7 @@ class UploadModal extends Component {
     event.preventDefault();
 
     if (this.props.doesFileExist(`${filename}.csv`)) {
-      // Show warning modal
+    // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
       this.submitBinding()
@@ -238,7 +237,7 @@ class UploadModal extends Component {
               type='submit'
               className='submit-button'
               disabled
-              bsStyle='primary'>Saving</Button>
+              bsStyle='primary'>Saving...</Button>
               : <Button
               type='submit'
               className='submit-button'

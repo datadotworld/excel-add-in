@@ -76,6 +76,21 @@ export default class OfficeConnector {
     });
   }
 
+  getWorkbookName () {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+      Excel.run((ctx) => {
+        const workbook = ctx.workbook;
+        workbook.load('name')
+        return ctx.sync().then(() => {
+          resolve(workbook.name)
+        }).catch(reject)
+      })
+    })
+  }
+
   getBindings () {
     return new Promise((resolve, reject) => {
       Office.context.document.bindings.getAllAsync((result) => {
@@ -351,20 +366,5 @@ export default class OfficeConnector {
         }).catch(reject)
       });
     });
-  }
-
-  getWorkbookName() {
-    return new Promise((resolve, reject) => {
-      if (!this.isExcelApiSupported()) {
-        return resolve();
-      }
-      Excel.run((ctx) => {
-        const workbookName = ctx.workbook.name
-        console.log('name', workbookName)
-        return ctx.sync().then(() => {
-          resolve(workbookName)
-        }).catch(reject)
-      })
-    })
   }
 }

@@ -82,6 +82,12 @@
   margin-top: 0.125rem;
   margin-left: 0.25rem;
 }
+
+.unsync-icon {
+  fill: red;
+  margin-top: 0.125rem;
+  margin-left: 0.25rem;
+}
 .loading-border {
   width: 10px;
   height: 10px;

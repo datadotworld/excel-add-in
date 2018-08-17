@@ -70,7 +70,7 @@ class App extends Component {
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
     this.initializeInsights = this.initializeInsights.bind(this);
-
+    this.getWorkbookName = this.getWorkbookName.bind(this);
     this.parsedQueryString = queryString.parse(window.location.search);
 
     let token;
@@ -179,6 +179,7 @@ class App extends Component {
       } else {
         this.initializeDatasets();
       }
+      this.getWorkbookName();
     } catch (error) {
       this.setState({
         error: {
@@ -192,7 +193,6 @@ class App extends Component {
   async initializeDatasets() {
     try {
       const settings = this.office.getSettings();
-      console.log('settings', settings)
       let syncStatus = settings.syncStatus;
       let dataset = settings.dataset;
       if (!this.state.loggedIn) {
@@ -292,7 +292,6 @@ class App extends Component {
       }
 
       await this.office.getBindingRange(binding);
-      await this.office.getWorkbookName();
       const syncStatus = this.state.syncStatus;
       syncStatus[binding.id] = {
         synced: false,
@@ -369,8 +368,11 @@ class App extends Component {
   }
 
   async linkDataset (dataset) {
+    this.setState({url: dataset, showDatasets: false})
+    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
+    const match = dataset.match(regexMatch)
     try  {
-      const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
+      const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
       this.setState({ dataset: freshDataset });
       if (this.state.csvMode && !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)) {
         this.setState({showCSVWarning: true});
@@ -553,7 +555,15 @@ class App extends Component {
   }
 
   pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
-    const recentUploadData = {dataset: dataset, filename: filename, range: range, sheetId: sheetId, date: date, userId: this.state.user.id}
+    const recentUploadData = {
+      dataset: dataset,
+      filename: filename,
+      range: range,
+      sheetId: sheetId,
+      date: date,
+      userId: this.state.user.id,
+      workbook: this.state.workbookName
+    }
     const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
     let parsedHistory = []
     if (localStorage['history'] && localStorage['history'] !== '{}') {
@@ -563,12 +573,7 @@ class App extends Component {
       return JSON.parse(entry).hasOwnProperty(id)
     })
     if (!doesFilenameExist) {
-      if (parsedHistory.length > 9) {
-        parsedHistory.shift()
-        parsedHistory.push(toPush)
-      } else {
-        parsedHistory.push(toPush)
-      }
+      parsedHistory.push(toPush)
     }
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
@@ -605,6 +610,7 @@ class App extends Component {
               this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
+              console.log("error", error)
               this.setState({error});
               this.setState({syncing: false});
               reject();
@@ -616,12 +622,14 @@ class App extends Component {
           this.setState({syncing: false});
           resolve();
         }).catch((error) => {
+          console.log("error", error)
           this.setState({error});
           this.setState({syncing: false});
           reject();
         });
       });
     } catch(error) {
+      console.log("error", error)
       this.setState({syncing: false, error});
     }
   }
@@ -661,7 +669,10 @@ class App extends Component {
 
   doesFileExist = (filename) => {
     let fileExists = false;
+    console.log("in here")
+    console.log("huh", this.state.dataset)
     this.state.dataset && this.state.dataset.files.forEach((file) => {
+      console.log('checking if exists', file.name, filename)
       if (file.name === filename) {
         fileExists = true;
       }
@@ -711,7 +722,6 @@ class App extends Component {
     this.office.getWorkbookName().then(workbookName => {
       this.setState({workbookName})
     })
-    console.log("name", this.state.workbookName)
   }
 
   
@@ -736,7 +746,8 @@ class App extends Component {
       url,
       forceShowUpload,
       selectSheet,
-      bindings
+      bindings,
+      syncStatus
     } = this.state;
     let errorMessage = error;
     if (error && typeof error !== 'string') {
@@ -754,7 +765,6 @@ class App extends Component {
     const renderImportData = !showStartPage && importData;
     const localHistory = localStorage.getItem('history')
     let numItemsInHistory = 0
-    console.log('workboo name', this.state.workbookName)
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
@@ -763,18 +773,23 @@ class App extends Component {
       bindings.forEach((binding) => {
         const sheedId = getSheetName(binding)
         this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
-    })
-  }
-  
-    if (localHistory) {
-      numItemsInHistory = JSON.parse(localHistory).length ? JSON.parse(localHistory).length : 0
+      })
     }
-
+    let matchedFiles
+    if (localHistory) {
+      const allFiles = JSON.parse(localHistory)
+      if (allFiles) {
+        matchedFiles = allFiles.filter(file => {
+          const parsedEntry = JSON.parse(Object.keys(JSON.parse(file)).map(key => JSON.parse(file)[key])[0])
+          return (this.state.user && parsedEntry.userId === this.state.user.id) && parsedEntry.workbook === this.state.workbookName
+        }).reverse()
+        numItemsInHistory = matchedFiles.length
+      }
+    }
     return (
       <div>
-        {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
+        {error && <Alert bsStyle='danger' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
-        {/* {this.state.syncing && <LoadingAnimation />} */}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
 
@@ -804,6 +819,10 @@ class App extends Component {
           createBinding={this.createBinding}
           addUrl={this.addUrl}
           user={userId}
+          workbook={this.state.workbookName}
+          matchedFiles={matchedFiles}
+          bindings={bindings}
+          syncStatus={syncStatus}
         />}
 
         {showCreateDataset && <CreateDatasetModal 
@@ -817,7 +836,7 @@ class App extends Component {
         {!showStartPage && showDatasets && <DatasetsView 
           datasets={datasets}
           createDataset={this.showCreateDataset}
-          linkDataset={this.createUrl}
+          linkDataset={this.linkDataset}
           loadingDatasets={loadingDatasets}
           showDatasets={this.toggleShowDatasets}
           showCreateDataset={this.showCreateDataset}
