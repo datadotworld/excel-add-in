@@ -86,7 +86,7 @@ class RecentUploads extends Component {
           <ControlLabel className='large-header'>Recent Uploads</ControlLabel>
           <Button bsStyle='link' className='upload-button' onClick={() => forceShowUpload()}>+ New upload </Button>
         </div>
-        {matchedFiles.slice(0, 10).map((entry, index) => {
+        {matchedFiles && matchedFiles.slice(0, 10).map((entry, index) => {
           const parsedEntry = JSON.parse(Object.keys(JSON.parse(entry)).map(key => JSON.parse(entry)[key])[0])
           if (parsedEntry.userId === user && parsedEntry.workbook === workbook) {
             const binding = this.findBindingForFile(parsedEntry)

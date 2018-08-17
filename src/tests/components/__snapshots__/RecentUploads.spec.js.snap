@@ -21,8 +21,9 @@ exports[`renders modal 1`] = `
     </button>
   </div>
   <div
-    className="dw-PaginatedTable panel panel-default"
-    id={undefined}
-  />
+    className="category-reminder"
+  >
+    Showing 10 most recent uploads
+  </div>
 </div>
 `;
