@@ -27,7 +27,6 @@ class RecentItem extends Component {
       addUrl,
       dataset
     } = this.props;
-    const { loading } = this.state
     const selection = {
       name: filename,
       sheetId: sheetId,
@@ -42,8 +41,7 @@ class RecentItem extends Component {
   }
 
   render() {
-    const { filename, dataset, range, sheetId, dateToShow, unsynced } = this.props
-    const { shouldShowDate, loading } = this.state
+    const { filename, dataset, range, sheetId, unsynced } = this.props
     const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
     const tabular = require('./icons/icon-tabular.svg')
     const match = dataset ? dataset.match(regexMatch) : 'Undefined'
@@ -82,7 +80,6 @@ class RecentUploads extends Component {
 
   render () {
     const { forceShowUpload, createBinding, sync, user, workbook, matchedFiles, syncStatus } = this.props
-    const parsedHistory = localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')).reverse() : []
     let previousDate = ''
     let showDate = true
     return (
@@ -122,6 +119,8 @@ class RecentUploads extends Component {
                   unsynced={unsynced}
                 />
               </div>) 
+          } else {
+            return null
           }
         })}
         <div className='category-reminder'>
