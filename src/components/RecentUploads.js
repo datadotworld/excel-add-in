@@ -48,7 +48,8 @@ class RecentItem extends Component {
     const tabular = require('./icons/icon-tabular.svg')
     const match = dataset ? dataset.match(regexMatch) : 'Undefined'
     const rangeToShow = range ? range : 'Undefined'
-    const datasetSlug = `=${rangeToShow} > ${match[1]}/${match[2]}`
+    const datasetSlug = `=${rangeToShow}`
+    const datasetLocation = `${match[1]}/${match[2]}`
     return (
       <div>
         <div className='dataset recent'>
@@ -58,6 +59,7 @@ class RecentItem extends Component {
               <div className='title'>{filename}</div>
             </div>
             <div className='info'>{datasetSlug}</div>
+            <div className='info'>{datasetLocation}</div>
           </div>
           {this.state.loading ? <div className='icon-border'> <LoadingAnimation/> </div>
           : <div className='icon-border' onClick={() => this.submitBinding(filename, sheetId, range)}>

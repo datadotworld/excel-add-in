@@ -606,7 +606,7 @@ class App extends Component {
               syncStatus[binding.id].lastSync = new Date();
               this.office.setSyncStatus(syncStatus);
               this.setState({ syncStatus });
-              this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
+              //this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
               this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
@@ -763,7 +763,6 @@ class App extends Component {
     const userId = user ? user.id : 'Undefined'
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
-    const localHistory = localStorage.getItem('history')
     let numItemsInHistory = 0
     if (!insideOffice) {
       return (<NotOfficeView />);
@@ -775,13 +774,14 @@ class App extends Component {
         this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
       })
     }
+    const localHistory = localStorage.getItem('history')
     let matchedFiles
     if (localHistory) {
       const allFiles = JSON.parse(localHistory)
       if (allFiles) {
         matchedFiles = allFiles.filter(file => {
           const parsedEntry = JSON.parse(Object.keys(JSON.parse(file)).map(key => JSON.parse(file)[key])[0])
-          return (this.state.user && parsedEntry.userId === this.state.user.id) && parsedEntry.workbook === this.state.workbookName
+          return (this.state.user && this.state.user.id === parsedEntry.userId) && parsedEntry.workbook === this.state.workbookName
         }).reverse()
         numItemsInHistory = matchedFiles.length
       }
