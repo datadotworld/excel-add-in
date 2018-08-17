@@ -9,8 +9,6 @@ import Icon from './icons/Icon';
 import './DatasetItem.css';
 import LoadingAnimation from './LoadingAnimation';
 
-const { localStorage } = window;
-
 class RecentItem extends Component {  
 
   state = {
