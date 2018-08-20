@@ -241,7 +241,7 @@ class UploadModal extends Component {
               : <Button
               type='submit'
               className='submit-button'
-              // disabled={this.state.isSubmitting || validState !== 'success'}
+              disabled={validState !== 'success'}
               bsStyle='primary'>Save file</Button>}
           </div>
         </form>
