@@ -158,6 +158,16 @@ class App extends Component {
     })
   }
 
+  componentDidMount() {
+    const {dataset, bindings} = this.state
+    if (dataset && bindings.length > 0) {
+      bindings.forEach((binding) => {
+        const sheedId = getSheetName(binding)
+        this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
+      })
+    }
+  }
+
   changeSelection = (event) => {
     const { value } = event.target
     if (value === 'selection') {
@@ -569,12 +579,23 @@ class App extends Component {
     if (localStorage['history'] && localStorage['history'] !== '{}') {
       parsedHistory = JSON.parse(localStorage.getItem('history'))
     }
-    const doesFilenameExist = parsedHistory.find(entry => {
-      return JSON.parse(entry).hasOwnProperty(id)
+    const doesFilenameExist = parsedHistory.findIndex(entry => {
+      console.log('id', id)
+      const parsedEntry = JSON.parse(entry)
+      if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
+        console.log('we in here for some reason')
+        const parsedObject = JSON.parse(parsedEntry[id])
+        return parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookName
+      }
+     // return JSON.parse(entry).hasOwnProperty(id)
     })
-    if (!doesFilenameExist) {
+    console.log('index: ', doesFilenameExist)
+    if (doesFilenameExist === -1) {
       parsedHistory.push(toPush)
+    } else {
+      parsedHistory[doesFilenameExist] = toPush
     }
+    console.log("why", parsedHistory)
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
 
@@ -763,13 +784,7 @@ class App extends Component {
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
-    // Adds past bindings to local storage for migration purposes so user dont lose their old bindings
-    if (dataset && bindings.length > 0) {
-      bindings.forEach((binding) => {
-        const sheedId = getSheetName(binding)
-        this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
-      })
-    }
+
     const localHistory = localStorage.getItem('history')
     let matchedFiles // all files which has the same username and workspace id as the current user
     if (localHistory) {
