@@ -580,22 +580,18 @@ class App extends Component {
       parsedHistory = JSON.parse(localStorage.getItem('history'))
     }
     const doesFilenameExist = parsedHistory.findIndex(entry => {
-      console.log('id', id)
       const parsedEntry = JSON.parse(entry)
       if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
-        console.log('we in here for some reason')
         const parsedObject = JSON.parse(parsedEntry[id])
         return parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookName
       }
-     // return JSON.parse(entry).hasOwnProperty(id)
+      return false
     })
-    console.log('index: ', doesFilenameExist)
     if (doesFilenameExist === -1) {
       parsedHistory.push(toPush)
     } else {
       parsedHistory[doesFilenameExist] = toPush
     }
-    console.log("why", parsedHistory)
     localStorage.setItem('history', JSON.stringify(parsedHistory))
   }
 
