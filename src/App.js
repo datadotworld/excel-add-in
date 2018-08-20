@@ -511,7 +511,7 @@ class App extends Component {
    * Replaces all the bindings stored in the state with those stored in Excel
    * while ensuring sheet bindings remain bound to the sheet
    */
-  async updateBindings() {
+  updateBindings() {
     return new Promise((resolve, reject) => {
       this.getExcelBindings().then((excelBindings) => {
         // Get all the current sheet bindings from state
@@ -592,13 +592,15 @@ class App extends Component {
       return new Promise((resolve, reject) => {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
-        let excelData;
         bindings.forEach((binding) => {
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
-              excelData = {data: trimmedData, dataset: this.state.url, filename: binding.id.replace('dw::', '')}
-              return this.api.uploadFile(excelData);
+              return this.api.uploadFile({
+                data: trimmedData,
+                dataset: this.state.url,
+                filename: binding.id.replace('dw::', '')
+              });
             }).then(() => {
               const syncStatus = this.state.syncStatus;
               syncStatus[binding.id].synced = true;
