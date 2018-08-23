@@ -23,7 +23,7 @@ import renderer from 'react-test-renderer';
 import UploadModal from '../../components/UploadModal';
 
 it('renders modal', () => {
-  expect(renderer.create(<UploadModal />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<UploadModal getSelectionRange = {() => {}}/>).toJSON()).toMatchSnapshot()
 });
 
 it('renders modal - with range', () => {
@@ -36,6 +36,7 @@ it('renders modal - with range', () => {
       }}
       excelApiSupported
       linkConnector = {() => {}}
+      getSelectionRange = {() => {}}
     />
   ).toJSON()).toMatchSnapshot()
 });
@@ -54,6 +55,7 @@ it('renders modal - with options', () => {
       options={options}
       excelApiSupported
       linkConnector = {() => {}}
+      getSelectionRange = {() => {}}
     />
   ).toJSON()).toMatchSnapshot()
 });

@@ -23,7 +23,9 @@ exports[`renders modal 1`] = `
   <div
     className="category-reminder"
   >
-    Showing 10 most recent uploads
+    Showing 
+    0
+     most recent uploads
   </div>
 </div>
 `;

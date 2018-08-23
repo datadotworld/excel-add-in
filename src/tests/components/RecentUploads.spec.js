@@ -10,5 +10,5 @@ const localStorageMock = {
 global.localStorage = localStorageMock;
 
 it('renders modal', () => {
-  expect(renderer.create(<RecentUploads />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<RecentUploads matchedFiles={[]}/>).toJSON()).toMatchSnapshot()
 });
