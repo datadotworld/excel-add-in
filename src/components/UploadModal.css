@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     font-weight: normal;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 700;
   }
   
@@ -60,6 +60,7 @@
   .selection .radio-button {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   
   .selection .selection-info {
@@ -96,11 +97,12 @@
     display: flex;
     align-items: center;
     padding-left: 0.9375rem;
-    font-size: 0.9375rem;
+    font-size: 18px;
     border-bottom: 1px solid lightgray;
   }
   .category-reminder {
     font-size: 0.9375rem;
+    font-weight: 700;
     padding: 1rem;
     text-align: center;
     color: lightgray;
@@ -125,7 +127,7 @@
   }
 
   .upload-modal .control-label {
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
   }
 
   .upload-modal .form-control {

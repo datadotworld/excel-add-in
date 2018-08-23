@@ -41,6 +41,11 @@ class UploadModal extends Component {
       this.setState({currentUrl: this.props.url})
     }
   }
+  
+  componentDidMount() {
+    this.props.getSelectionRange()
+  }
+
 
   isFormValid = () => {
     const { filename } = this.state;
@@ -138,7 +143,6 @@ class UploadModal extends Component {
     const { excelApiSupported, range, numItemsInHistory, selectSheet } = this.props;
     const { filename } = this.state
     let validState, selection;
-
     if (filename) {
       validState = this.isFormValid() ? 'success' : 'warning'
     }
@@ -235,12 +239,12 @@ class UploadModal extends Component {
             {numItemsInHistory !== 0 && <Button className='cancel-button' onClick={this.cancelClicked}>Cancel</Button>}
             {this.props.loading ? <Button
               type='submit'
-              className='submit-button'
+              className={numItemsInHistory !== 0 ? 'submit-button' : 'full-submit-button'}
               disabled
               bsStyle='primary'>Saving...</Button>
               : <Button
               type='submit'
-              className='submit-button'
+              className={numItemsInHistory !== 0 ? 'submit-button' : 'full-submit-button'}
               disabled={validState !== 'success'}
               bsStyle='primary'>Save file</Button>}
           </div>

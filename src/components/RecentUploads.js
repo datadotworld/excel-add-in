@@ -7,7 +7,6 @@ import {
 } from 'react-bootstrap';
 import Icon from './icons/Icon';
 import './DatasetItem.css';
-import LoadingAnimation from './LoadingAnimation';
 
 class RecentItem extends Component {  
 
@@ -39,13 +38,18 @@ class RecentItem extends Component {
   }
 
   render() {
-    const { filename, dataset, range, sheetId, unsynced } = this.props
-    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
+    const { filename, dataset, range, sheetId } = this.props
+    
+
+    const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/
+    const filteredDataset = dataset ? dataset.match(regexFilter)[1] : 'Undefined'
+    const match = filteredDataset.split('/')
+    const datasetLocation = `${match[0]}/${match[1]}`
+
     const tabular = require('./icons/icon-tabular.svg')
-    const match = dataset ? dataset.match(regexMatch) : 'Undefined'
+
     const rangeToShow = range ? range : 'Undefined'
     const datasetSlug = `=${rangeToShow}`
-    const datasetLocation = `${match[1]}/${match[2]}`
     return (
       <div>
         <div className='dataset recent'>
@@ -55,14 +59,20 @@ class RecentItem extends Component {
               <div className='title'>{filename}</div>
             </div>
             <div className='info'>{datasetSlug}</div>
+            <a
+              href={`https://data.world/${datasetLocation}/workspace/file?filename=${filename}`}
+              target='_blank'
+              className='link button-link'
+            >
             <div className='info'>{datasetLocation}</div>
+            </a>
           </div>
-          {this.state.loading ? <div className='icon-border'> <LoadingAnimation/> </div>
-          : <div className='icon-border' onClick={() => this.submitBinding(filename, sheetId, range)}>
-            <div className={unsynced ? 'unsync-icon' : 'resync-icon'}>
-              <Icon icon='sync' />
+          <div className='icon-border' onClick={() => this.submitBinding(filename, sheetId, range)}>
+            <div className='resync-icon'>
+            {this.state.loading ?
+              <div className='loader-icon'></div> : <Icon icon='sync' />}
             </div>
-          </div>}
+          </div>
         </div>
       </div>
     )
@@ -70,14 +80,8 @@ class RecentItem extends Component {
 }
 
 class RecentUploads extends Component {
-  findBindingForFile = (file) => {
-    return this.props.bindings.find((binding) => {
-      return binding.id === `dw::${file.filename}`;
-    });
-  }
-
   render () {
-    const { forceShowUpload, createBinding, sync, user, workbook, matchedFiles, syncStatus } = this.props
+    const { forceShowUpload, createBinding, sync, user, workbook, matchedFiles } = this.props
     let previousDate = ''
     let showDate = true
     return (
@@ -89,11 +93,6 @@ class RecentUploads extends Component {
         {matchedFiles && matchedFiles.slice(0, 10).map((entry, index) => {
           const parsedEntry = JSON.parse(Object.keys(JSON.parse(entry)).map(key => JSON.parse(entry)[key])[0])
           if (parsedEntry.userId === user && parsedEntry.workbook === workbook) {
-            const binding = this.findBindingForFile(parsedEntry)
-            let unsynced = false
-            if (binding && !syncStatus[binding.id].synced) {
-              unsynced = true
-            }
             const dateArray = new Date(parsedEntry.date).toDateString().split(" ")
             let dateToShow = dateArray[1] + " " + dateArray[2]
             if (dateToShow !== previousDate) {
@@ -114,7 +113,6 @@ class RecentUploads extends Component {
                   createBinding={createBinding}
                   sync={sync}
                   addUrl={this.props.addUrl}
-                  unsynced={unsynced}
                 />
               </div>) 
           } else {
@@ -122,7 +120,7 @@ class RecentUploads extends Component {
           }
         })}
         <div className='category-reminder'>
-          Showing 10 most recent uploads
+          Showing {matchedFiles.length} most recent uploads
         </div>
       </div>
     )

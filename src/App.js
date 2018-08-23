@@ -147,25 +147,18 @@ class App extends Component {
       this.api = new DataDotWorldApi(token);
       this.getUser();
     }
-
     this.initializeOffice().then(() => {
-      this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-        this.setState({currentSelectedRange});
-      });
-      this.office.listenForSelectionChanges((currentSelectedRange) => {
-        this.setState({currentSelectedRange})
-      })
+      this.getSelectionRange()
     })
   }
 
-  componentDidMount() {
-    const {dataset, bindings} = this.state
-    if (dataset && bindings.length > 0) {
-      bindings.forEach((binding) => {
-        const sheedId = getSheetName(binding)
-        this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, binding.id.replace('dw::', ''), binding.rangeAddress, sheedId, dataset.updated)
-      })
-    }
+  getSelectionRange = () => {
+    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+      this.setState({currentSelectedRange});
+    });
+    this.office.listenForSelectionChanges((currentSelectedRange) => {
+      this.setState({currentSelectedRange})
+    })
   }
 
   changeSelection = (event) => {
@@ -227,6 +220,17 @@ class App extends Component {
           };
         }
       });
+
+      if (dataset && bindings.length > 0) {
+        const datasetFiles = dataset.files.map(entry => entry.name)
+        bindings.forEach((binding) => {
+          const sheetId = getSheetName(binding)
+          const filename = binding.id.replace('dw::', '')
+          if (datasetFiles.includes(filename)) {
+            this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, filename, binding.rangeAddress, sheetId, dataset.updated)
+          }
+        })
+      }
 
       this.setState({
         bindings,
@@ -817,6 +821,8 @@ class App extends Component {
           selectSheet={selectSheet}
           addUrl={this.addUrl}
           loading={this.state.syncing}
+          getSelectionRange={this.getSelectionRange}
+          error={error}
         />}
 
         {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && !showStartPage && <RecentUploads

@@ -32,7 +32,7 @@
 }
 
 .date {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   color: gray;
   padding: 0.5rem;
   padding-left: 1rem;
@@ -83,30 +83,18 @@
   margin-left: 0.25rem;
 }
 
-.unsync-icon {
-  fill: red;
-  margin-top: 0.125rem;
-  margin-left: 0.25rem;
-}
 .loading-border {
   width: 10px;
   height: 10px;
 }
-.icon-border:hover{
-  background-color: lightgray;
-}
 
 .icon-border {
-  border: 1px solid lightgray;
-  border-radius: 20px;
   margin-left: auto;
-  height: 25px;
-  width: 25px;
   cursor: pointer;
 }
 
 .upload-button {
-  font-size: 13px;
+  font-size: 15px;
   color: #517fb8;
   padding-right: 0.9375rem;
   font-weight: 700;
