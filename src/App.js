@@ -585,17 +585,17 @@ class App extends Component {
     }
 
     var doesFilenameExist = -1
-    parsedHistory.some(function(entry, i) {
-      const parsedEntry = JSON.parse(entry)
+    for (var i = 0; i < parsedHistory.length; ++i) {
+      const parsedEntry = JSON.parse(parsedHistory[i])
       if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
         const parsedObject = JSON.parse(parsedEntry[id])
         if (parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId) {
           doesFilenameExist = i
-          return true
+          break
         }
       }
-    })
-
+    }
+        
     if (doesFilenameExist === -1) {
       parsedHistory.push(toPush)
     } else {
@@ -619,6 +619,7 @@ class App extends Component {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         bindings.forEach((binding) => {
+          console.log("binding", binding)
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);

@@ -91,7 +91,6 @@ export default class OfficeConnector {
         return resolve();
       }
       Excel.run((ctx) => {
-        Office = window.Office
         const uuid = Office.context.document.settings.get('WorkbookId')
         return ctx.sync().then(() => {
           resolve(uuid)
