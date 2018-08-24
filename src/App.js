@@ -644,7 +644,6 @@ class App extends Component {
           this.setState({syncing: false});
           resolve();
         }).catch((error) => {
-          this.setState({error});
           this.setState({syncing: false});
           reject();
         });
@@ -664,7 +663,7 @@ class App extends Component {
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false, addDataModalOptions: {}, forceShowUpload: false, url: ''});
+    this.setState({showAddDataModal: false, addDataModalOptions: {}, forceShowUpload: false, url: '', error: null});
   }
 
   dismissCSVWarning = (options) => {
