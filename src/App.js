@@ -70,7 +70,7 @@ class App extends Component {
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
     this.initializeInsights = this.initializeInsights.bind(this);
-    this.getWorkbookName = this.getWorkbookName.bind(this);
+    this.getWorkbookId = this.getWorkbookId.bind(this);
     this.parsedQueryString = queryString.parse(window.location.search);
 
     let token;
@@ -182,7 +182,7 @@ class App extends Component {
       } else {
         this.initializeDatasets();
       }
-      this.getWorkbookName();
+      this.getWorkbookId();
     } catch (error) {
       this.setState({
         error: {
@@ -576,7 +576,7 @@ class App extends Component {
       sheetId: sheetId,
       date: date,
       userId: this.state.user.id,
-      workbook: this.state.workbookName
+      workbook: this.state.workbookId
     }
     const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
     let parsedHistory = []
@@ -587,7 +587,7 @@ class App extends Component {
       const parsedEntry = JSON.parse(entry)
       if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
         const parsedObject = JSON.parse(parsedEntry[id])
-        return parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookName
+        return parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId
       }
       return false
     })
@@ -734,9 +734,9 @@ class App extends Component {
     });
   }
 
-  async getWorkbookName() {
-    this.office.getWorkbookName().then(workbookName => {
-      this.setState({workbookName})
+  async getWorkbookId() {
+    this.office.getWorkbookId().then(workbookId => {
+      this.setState({workbookId})
     })
   }
 
@@ -791,7 +791,7 @@ class App extends Component {
       if (allFiles) {
         matchedFiles = allFiles.filter(file => {
           const parsedEntry = JSON.parse(Object.keys(JSON.parse(file)).map(key => JSON.parse(file)[key])[0])
-          return (this.state.user && this.state.user.id === parsedEntry.userId) && parsedEntry.workbook === this.state.workbookName
+          return (this.state.user && this.state.user.id === parsedEntry.userId) && parsedEntry.workbook === this.state.workbookId
         }).reverse()
         numItemsInHistory = matchedFiles.length
       }
@@ -831,7 +831,7 @@ class App extends Component {
           createBinding={this.createBinding}
           addUrl={this.addUrl}
           user={userId}
-          workbook={this.state.workbookName}
+          workbook={this.state.workbookId}
           matchedFiles={matchedFiles}
           bindings={bindings}
           syncStatus={syncStatus}
