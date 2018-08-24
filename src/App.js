@@ -583,14 +583,19 @@ class App extends Component {
     if (localStorage['history'] && localStorage['history'] !== '{}') {
       parsedHistory = JSON.parse(localStorage.getItem('history'))
     }
-    const doesFilenameExist = parsedHistory.findIndex(entry => {
+
+    var doesFilenameExist = -1
+    parsedHistory.some(function(entry, i) {
       const parsedEntry = JSON.parse(entry)
       if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
         const parsedObject = JSON.parse(parsedEntry[id])
-        return parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId
+        if (parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId) {
+          doesFilenameExist = i
+          return true
+        }
       }
-      return false
     })
+
     if (doesFilenameExist === -1) {
       parsedHistory.push(toPush)
     } else {
