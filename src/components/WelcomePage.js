@@ -43,7 +43,7 @@ class WelcomePage extends Component {
 
   constructor (props) {
     super();
-    this.oauthURI = `${process.env.REACT_APP_OAUTH_URI}?page=${props.page}`;
+    this.oauthURI = `${process.env.REACT_APP_OAUTH_URI || '/authorize'}?page=${props.page}`;
   }
 
   startAuthFlow = () => {
