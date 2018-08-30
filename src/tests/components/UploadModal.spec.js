@@ -20,21 +20,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 
-import AddDataModal from '../../components/AddDataModal';
+import UploadModal from '../../components/UploadModal';
 
 it('renders modal', () => {
-  expect(renderer.create(<AddDataModal />).toJSON()).toMatchSnapshot()
+  expect(renderer.create(<UploadModal getSelectionRange = {() => {}}/>).toJSON()).toMatchSnapshot()
 });
 
 it('renders modal - with range', () => {
   expect(renderer.create(
-    <AddDataModal
+    <UploadModal
       range={{
         rowCount: 4,
         columnCount: 2,
         address: 'Sheet1!A2:B5'
       }}
       excelApiSupported
+      linkConnector = {() => {}}
+      getSelectionRange = {() => {}}
     />
   ).toJSON()).toMatchSnapshot()
 });
@@ -44,7 +46,7 @@ it('renders modal - with options', () => {
     filename: 'test1.csv'
   };
   expect(renderer.create(
-    <AddDataModal
+    <UploadModal
       range={{
         rowCount: 4,
         columnCount: 2,
@@ -52,18 +54,20 @@ it('renders modal - with options', () => {
       }}
       options={options}
       excelApiSupported
+      linkConnector = {() => {}}
+      getSelectionRange = {() => {}}
     />
   ).toJSON()).toMatchSnapshot()
 });
 
 it ('removes trailing .csv from filenames', () => {
-  const modal = new AddDataModal({options: {}});
+  const modal = new UploadModal({options: {}});
   modal.state.name = 'testing.csv'
   expect(modal.getFilename()).toBe('testing');
 });
 
 it ('does not impact filenames without trailing .csv', () => {
-  const modal = new AddDataModal({options: {}});
+  const modal = new UploadModal({options: {}});
   modal.state.name = 'testingwithoutextension'
   expect(modal.getFilename()).toBe('testingwithoutextension');
 });

@@ -28,9 +28,7 @@ import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
 import CSVWarningModal from './components/CSVWarningModal';
-import AddDataModal from './components/AddDataModal';
 import WelcomePage from './components/WelcomePage';
-import BindingsPage from './components/BindingsPage';
 import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
@@ -43,6 +41,8 @@ import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
 import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
+import UploadModal from './components/UploadModal';
+import RecentUploads from './components/RecentUploads';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
@@ -65,13 +65,12 @@ class App extends Component {
     this.removeBinding = this.removeBinding.bind(this);
     this.unlinkDataset = this.unlinkDataset.bind(this);
     this.createDataset = this.createDataset.bind(this);
-    this.linkNewDataset = this.linkNewDataset.bind(this);
     this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
     this.updateBinding = this.updateBinding.bind(this);
     this.sync = this.sync.bind(this);
     this.initializeDatasets = this.initializeDatasets.bind(this);
     this.initializeInsights = this.initializeInsights.bind(this);
-
+    this.getWorkbookId = this.getWorkbookId.bind(this);
     this.parsedQueryString = queryString.parse(window.location.search);
 
     let token;
@@ -136,15 +135,39 @@ class App extends Component {
       charts: [],
       projects: [],
       version,
-      insideOffice
+      insideOffice,
+      showDatasets: false,
+      url: '',
+      forceShowUpload: false,
+      loadingSync: false,
+      selectSheet: false
     };
 
     if (token) {
       this.api = new DataDotWorldApi(token);
       this.getUser();
     }
+    this.initializeOffice().then(() => {
+      this.getSelectionRange()
+    })
+  }
 
-    this.initializeOffice();
+  getSelectionRange = () => {
+    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+      this.setState({currentSelectedRange});
+    });
+    this.office.listenForSelectionChanges((currentSelectedRange) => {
+      this.setState({currentSelectedRange})
+    })
+  }
+
+  changeSelection = (event) => {
+    const { value } = event.target
+    if (value === 'selection') {
+      this.setState({ selectSheet: false})
+    } else if (value === 'sheet') {
+      this.setState({ selectSheet: true });
+    }
   }
 
   async initializeOffice() {
@@ -152,7 +175,6 @@ class App extends Component {
     try {
       this.office = new OfficeConnector();
       await this.office.initialize();
-
       if (page === INSIGHTS_ROUTE) {
         this.initializeInsights();
       } else if (page === IMPORT_ROUTE) {
@@ -160,6 +182,7 @@ class App extends Component {
       } else {
         this.initializeDatasets();
       }
+      this.getWorkbookId();
     } catch (error) {
       this.setState({
         error: {
@@ -178,7 +201,7 @@ class App extends Component {
       if (!this.state.loggedIn) {
         return this.setState({ officeInitialized: true, outsideOffice: false });
       }
-      if (! dataset && this.state.loggedIn) {
+      if (this.state.loggedIn) {
         this.getDatasets();
       } else if (this.state.loggedIn) {
         dataset = await this.refreshLinkedDataset(dataset);
@@ -197,6 +220,17 @@ class App extends Component {
           };
         }
       });
+
+      if (dataset && bindings.length > 0) {
+        const datasetFiles = dataset.files.map(entry => entry.name)
+        bindings.forEach((binding) => {
+          const sheetId = getSheetName(binding)
+          const filename = binding.id.replace('dw::', '')
+          if (datasetFiles.includes(filename)) {
+            this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, filename, binding.rangeAddress, sheetId, dataset.updated)
+          }
+        })
+      }
 
       this.setState({
         bindings,
@@ -248,7 +282,6 @@ class App extends Component {
     localStorage.setItem(DW_APP_VERSION, '');
     localStorage.setItem(DW_API_TOKEN, '');
     this.setState({token: null, loggedIn: false, user: null});
-
     window.location = `https://data.world/embed/logout?next=${encodeURIComponent(`https://excel.data.world?v=${version}`)}`;
   }
 
@@ -273,7 +306,6 @@ class App extends Component {
       }
 
       await this.office.getBindingRange(binding);
-
       const syncStatus = this.state.syncStatus;
       syncStatus[binding.id] = {
         synced: false,
@@ -335,29 +367,26 @@ class App extends Component {
   }
 
   async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
-    try {
-      const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
-      this.office.setDataset(dataset);
-      this.setState({ dataset });
-
-      return dataset;
-    } catch (error) {
-      this.handleDatasetFetchError(error);
+    if (datasetToRefresh) {
+      try {
+        const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
+        this.office.setDataset(dataset);
+        this.setState({ dataset });
+  
+        return dataset;
+      } catch (error) {
+        this.handleDatasetFetchError(error);
+      }
     }
-  }
 
-  async linkNewDataset (datasetUrl) {
-    try {
-      const dataset = await this.api.getDataset(datasetUrl);
-      return await this.linkDataset(dataset);
-    } catch (error) {
-      this.handleDatasetFetchError(error);
-    }
   }
 
   async linkDataset (dataset) {
+    this.setState({url: dataset, showDatasets: false})
+    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
+    const match = dataset.match(regexMatch)
     try  {
-      const freshDataset = await this.api.getDataset(`${dataset.owner}/${dataset.id}`);
+      const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
       this.setState({ dataset: freshDataset });
       if (this.state.csvMode && !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)) {
         this.setState({showCSVWarning: true});
@@ -366,6 +395,14 @@ class App extends Component {
     } catch (error) {
       this.handleDatasetFetchError(error);
     }
+  }
+
+  createUrl = (uri) => {
+    this.setState({url: uri, showDatasets: false})
+  }
+
+  addUrl = (url) => {
+    this.setState({url})
   }
 
   async unlinkDataset () {
@@ -531,11 +568,48 @@ class App extends Component {
     });
   }
 
+  pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
+    const recentUploadData = {
+      dataset: dataset,
+      filename: filename,
+      range: range,
+      sheetId: sheetId,
+      date: date,
+      userId: this.state.user.id,
+      workbook: this.state.workbookId
+    }
+    const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
+    let parsedHistory = []
+    if (localStorage['history'] && localStorage['history'] !== '{}') {
+      parsedHistory = JSON.parse(localStorage.getItem('history'))
+    }
+
+    var doesFilenameExist = -1
+    for (var i = 0; i < parsedHistory.length; ++i) {
+      const parsedEntry = JSON.parse(parsedHistory[i])
+      if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
+        const parsedObject = JSON.parse(parsedEntry[id])
+        if (parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId) {
+          doesFilenameExist = i
+          break
+        }
+      }
+    }
+        
+    if (doesFilenameExist === -1) {
+      parsedHistory.push(toPush)
+    } else {
+      parsedHistory[doesFilenameExist] = toPush
+    }
+    localStorage.setItem('history', JSON.stringify(parsedHistory))
+  }
+
   /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
   async sync(binding) {
+    const {currentSelectedRange} = this.state
     try {
       this.setState({syncing: true});
       // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
@@ -545,12 +619,13 @@ class App extends Component {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         bindings.forEach((binding) => {
+          console.log("binding", binding)
           const promise = new Promise((resolve, reject) => {
             this.office.getData(binding).then((data) => {
               const trimmedData = this.trimFile(data);
               return this.api.uploadFile({
                 data: trimmedData,
-                dataset: this.state.dataset,
+                dataset: this.state.url,
                 filename: binding.id.replace('dw::', '')
               });
             }).then(() => {
@@ -560,6 +635,8 @@ class App extends Component {
               syncStatus[binding.id].lastSync = new Date();
               this.office.setSyncStatus(syncStatus);
               this.setState({ syncStatus });
+              this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
+              this.setState({url: '', selectSheet: false})
               resolve();
             }).catch((error) => {
               this.setState({error});
@@ -567,15 +644,12 @@ class App extends Component {
               reject();
             });
           });
-
           promises.push(promise);
         });
-
         Promise.all(promises).then(() => {
           this.setState({syncing: false});
           resolve();
         }).catch((error) => {
-          this.setState({error});
           this.setState({syncing: false});
           reject();
         });
@@ -589,38 +663,13 @@ class App extends Component {
     this.setState({showCreateDataset: true});
   }
 
-  showAddData = (filename, binding) => {
-
-    if (binding) {
-      // Select non sheet binding range
-      if (!isSheetBinding(binding)) {
-        this.office.select(binding.rangeAddress);
-      } else {
-        // Display the bound sheet
-        const sheet = getSheetName(binding);
-        this.office.activateSheet(sheet);
-      }
-    }
-
-    // Listen for changes to the selected range
-    this.office.listenForSelectionChanges((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
-    });
-
-    // But also grab the current selection
-    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
-    });
-
-    this.setState({
-      showAddDataModal: true,
-      addDataModalOptions: {binding, filename}
-    });
+  toggleShowDatasets = () => {
+    this.setState({showDatasets: !this.state.showDatasets})
   }
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false, addDataModalOptions: {}});
+    this.setState({showAddDataModal: false, addDataModalOptions: {}, forceShowUpload: false, url: '', error: null});
   }
 
   dismissCSVWarning = (options) => {
@@ -645,7 +694,7 @@ class App extends Component {
 
   doesFileExist = (filename) => {
     let fileExists = false;
-    this.state.dataset.files.forEach((file) => {
+    this.state.dataset && this.state.dataset.files.forEach((file) => {
       if (file.name === filename) {
         fileExists = true;
       }
@@ -678,6 +727,10 @@ class App extends Component {
     return this.api.uploadChart(imageString, options);
   }
 
+  toggleForceShowUpload = () => {
+    this.setState({forceShowUpload: true})
+  }
+
   setError = (error, message) => {
     this.setState({
       error: {
@@ -686,11 +739,16 @@ class App extends Component {
       }
     });
   }
+
+  async getWorkbookId() {
+    this.office.getWorkbookId().then(workbookId => {
+      this.setState({workbookId})
+    })
+  }
+
   
   render () {
     const {
-      addDataModalOptions,
-      bindings,
       currentSelectedRange,
       dataset,
       datasets,
@@ -699,81 +757,107 @@ class App extends Component {
       loadingDatasets,
       loggedIn,
       officeInitialized,
-      showAddDataModal,
       showCreateDataset,
-      syncing,
-      syncStatus,
       user,
       page,
       charts,
       projects,
       version,
-      insideOffice
+      insideOffice,
+      showDatasets,
+      url,
+      forceShowUpload,
+      selectSheet,
+      bindings,
+      syncStatus
     } = this.state;
-
     let errorMessage = error;
     if (error && typeof error !== 'string') {
       errorMessage = error.message;
     }
 
     const showStartPage = officeInitialized && !loggedIn;
-    const modalViewOpened = showAddDataModal || showCreateDataset;
 
     const insights = page === 'insights';
     const importData = page === 'import';
 
-    const renderBindingsPage = !showStartPage && !modalViewOpened && dataset && !insights;
-    const renderDatasetsView = !showStartPage && !dataset && !showCreateDataset && !insights && !importData;
+    const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
+    const userId = user ? user.id : 'Undefined'
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
-
+    let numItemsInHistory = 0
     if (!insideOffice) {
       return (<NotOfficeView />);
     }
 
+    const localHistory = localStorage.getItem('history')
+    let matchedFiles // all files which has the same username and workspace id as the current user
+    if (localHistory) {
+      const allFiles = JSON.parse(localHistory)
+      if (allFiles) {
+        matchedFiles = allFiles.filter(file => {
+          const parsedEntry = JSON.parse(Object.keys(JSON.parse(file)).map(key => JSON.parse(file)[key])[0])
+          return (this.state.user && this.state.user.id === parsedEntry.userId) && parsedEntry.workbook === this.state.workbookId
+        }).reverse()
+        numItemsInHistory = matchedFiles.length
+      }
+    }
     return (
       <div>
-        {error && <Alert bsStyle='warning' onDismiss={this.dismissError}>{errorMessage}</Alert>}
+        {error && <Alert bsStyle='danger' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
-        {renderBindingsPage && <BindingsPage
-          bindings={bindings}
-          dataset={dataset}
+
+        {((forceShowUpload && !showDatasets && !showCreateDataset) || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
+          excelApiSupported={excelApiSupported}
+          range={currentSelectedRange}
+          showDatasets={this.toggleShowDatasets}
+          url={url}
+          updateBinding={this.updateBinding}
+          doesFileExist={this.doesFileExist}
           createBinding={this.createBinding}
-          removeBinding={this.removeBinding}
-          unlinkDataset={this.unlinkDataset}
-          showAddData={this.showAddData}
-          select={this.select}
           sync={this.sync}
-          syncing={syncing}
-          syncStatus={syncStatus}
+          refreshLinkedDataset={this.refreshLinkedDataset}
+          close={this.closeAddData}
+          linkDataset={this.createUrl}
+          numItemsInHistory={numItemsInHistory}
+          changeSelection={this.changeSelection}
+          selectSheet={selectSheet}
+          addUrl={this.addUrl}
+          loading={this.state.syncing}
+          getSelectionRange={this.getSelectionRange}
+          error={error}
         />}
 
-        {renderDatasetsView && <DatasetsView
-          datasets={datasets}
-          createDataset={this.showCreateDataset}
-          linkDataset={this.linkDataset}
-          loadingDatasets={loadingDatasets}
+        {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && !showStartPage && <RecentUploads
+          refreshLinkedDataset={this.refreshLinkedDataset}
+          sync={this.sync}
+          forceShowUpload={this.toggleForceShowUpload}
+          createBinding={this.createBinding}
+          addUrl={this.addUrl}
+          user={userId}
+          workbook={this.state.workbookId}
+          matchedFiles={matchedFiles}
+          bindings={bindings}
+          syncStatus={syncStatus}
         />}
 
         {showCreateDataset && <CreateDatasetModal 
           user={user}
-          linkNewDataset={this.linkNewDataset}
           createDataset={this.createDataset}
-          close={() => this.setState({showCreateDataset: false})} 
+          close={() => this.setState({showCreateDataset: false})}
+          linkDataset={this.createUrl} 
+          showDatasets={this.toggleShowDatasets}
         />}
 
-        {showAddDataModal && <AddDataModal 
-          sync={this.sync}
-          excelApiSupported={excelApiSupported}
-          range={currentSelectedRange}
-          close={this.closeAddData}
-          options={addDataModalOptions}
-          createBinding={this.createBinding}
-          refreshLinkedDataset={this.refreshLinkedDataset}
-          updateBinding={this.updateBinding}
-          doesFileExist={this.doesFileExist}
+        {!showStartPage && showDatasets && <DatasetsView 
+          datasets={datasets}
+          createDataset={this.showCreateDataset}
+          linkDataset={this.linkDataset}
+          loadingDatasets={loadingDatasets}
+          showDatasets={this.toggleShowDatasets}
+          showCreateDataset={this.showCreateDataset}
         />}
 
         {renderInsights && <Insights

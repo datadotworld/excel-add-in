@@ -80,7 +80,6 @@ class BindingsListItem extends Component {
 
   render () {
     const { file, binding, syncing, syncStatus } = this.props;
-
     let dotPos = file ? file.name.lastIndexOf('.') : -1;
     let extension = dotPos > -1 ? file.name.slice(dotPos + 1).toUpperCase() : '';
 

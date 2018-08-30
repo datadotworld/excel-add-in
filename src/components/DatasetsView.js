@@ -1,4 +1,4 @@
-/*
+  /*
  * Copyright 2017 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,18 +21,14 @@ import PropTypes from 'prop-types';
 
 import { 
   Button,
-  DropdownButton,
   Grid,
-  MenuItem,
-  Row
+  Row,
+  ControlLabel
 } from 'react-bootstrap';
-
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
 import LoadingAnimation from './LoadingAnimation';
 import analytics from '../analytics';
-
-import Icon from './icons/Icon';
 
 class DatasetsView extends Component {
 
@@ -85,10 +81,6 @@ class DatasetsView extends Component {
     this.setState({sortKey})
   }
 
-  linkDataset = (dataset) => {
-    this.props.linkDataset(dataset);
-  }
-
   createDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_button.click');
     this.props.createDataset();
@@ -100,45 +92,27 @@ class DatasetsView extends Component {
   }
 
   render () {
-    const { sortKey } = this.state;
-    const { datasets, loadingDatasets } = this.props;
+    const { datasets, loadingDatasets, showCreateDataset, linkDataset } = this.props;
     const sortedDatasets = this.sortDatasets();
-
     const datasetEntries = sortedDatasets.map((d) =>{
-      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={this.linkDataset} />);
+      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={linkDataset} />);
     });
 
     return (
       <Grid className='datasets-view'>
         <div className='dataset-selector'>
           <Row className='center-block section-header'>
-            <div className='title'>
-              Select a dataset to link
-            </div>
-            <Button onClick={this.addDatasetClick}>
-              <Icon icon='add' />
-              New
-            </Button>
+            <ControlLabel>
+              Select a dataset or project
+            </ControlLabel>
+            <Button bsStyle='default' onClick={() => this.props.showDatasets()}>Cancel</Button>
           </Row>
           {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
           {!!datasets.length && !loadingDatasets &&
             <Row className='center-block'>
-              <div className='list-info'>
-                {datasets.length} datasets
-                <div className='pull-right sort-dropdown'>
-                  <DropdownButton title='Sort' pullRight bsSize='small' onSelect={this.sortChanged} id='dropdown-sort-datasets'>
-                    <MenuItem eventKey='updated' active={sortKey === 'updated'}><Icon icon='check' />Updated: Newest</MenuItem>
-                    <MenuItem eventKey='-updated' active={sortKey === '-updated'}><Icon icon='check' />Updated: Oldest</MenuItem>
-                    <MenuItem eventKey='created' active={sortKey === 'created'}><Icon icon='check' />Created: Newest</MenuItem>
-                    <MenuItem eventKey='-created' active={sortKey === '-created'}><Icon icon='check' />Created: Oldest</MenuItem>
-                    <MenuItem eventKey='title' active={sortKey === 'title'}><Icon icon='check' />Name: A - Z</MenuItem>
-                    <MenuItem eventKey='-title' active={sortKey === '-title'}><Icon icon='check' />Name: Z - A</MenuItem>
-                  </DropdownButton>
-                </div>
-              </div>
               <div>
+                <DatasetItem buttonText='Link' dataset={{isCreate: true}} buttonHandler={showCreateDataset}/>
                 {datasetEntries}
-                <Button className='bottom-button' onClick={this.createDatasetClick}>Create a new dataset</Button>
               </div>
             </Row>}
           {!datasets.length && !loadingDatasets &&

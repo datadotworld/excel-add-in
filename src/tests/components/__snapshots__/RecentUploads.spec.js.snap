@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders modal 1`] = `
+<div>
+  <div
+    className="full-screen-modal category-title"
+  >
+    <label
+      className="large-header control-label"
+      htmlFor={undefined}
+    >
+      Recent Uploads
+    </label>
+    <button
+      className="upload-button btn btn-link"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      + New upload 
+    </button>
+  </div>
+  <div
+    className="category-reminder"
+  >
+    Showing 
+    0
+     most recent uploads
+  </div>
+</div>
+`;

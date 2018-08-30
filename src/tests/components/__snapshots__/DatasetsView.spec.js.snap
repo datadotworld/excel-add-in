@@ -10,313 +10,64 @@ exports[`renders datasets view - datasets 1`] = `
     <div
       className="center-block section-header row"
     >
-      <div
-        className="title"
+      <label
+        className="control-label"
+        htmlFor={undefined}
       >
-        Select a dataset to link
-      </div>
+        Select a dataset or project
+      </label>
       <button
         className="btn btn-default"
         disabled={false}
         onClick={[Function]}
         type="button"
       >
-        <span
-          className="svg-icon "
-          onClick={undefined}
-        >
-          <svg
-            className="add-icon"
-            version="1.1"
-            viewBox="0 0 16 16"
-            x="0px"
-            xmlns="http://www.w3.org/2000/svg"
-            y="0px"
-          >
-            <g>
-              <line
-                className="stroke"
-                x1="8"
-                x2="8"
-                y1="1"
-                y2="15"
-              />
-              <line
-                className="stroke"
-                x1="15"
-                x2="1"
-                y1="8"
-                y2="8"
-              />
-            </g>
-          </svg>
-        </span>
-        New
+        Cancel
       </button>
     </div>
     <div
       className="center-block row"
     >
-      <div
-        className="list-info"
-      >
-        3
-         datasets
+      <div>
         <div
-          className="pull-right sort-dropdown"
+          className="dataset"
+          onClick={[Function]}
         >
+          <img
+            className="add-icon"
+            src="icon-add.svg"
+          />
           <div
-            className="dropdown btn-group btn-group-sm"
+            className="center-info"
           >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-sm btn-default"
-              disabled={false}
-              id="dropdown-sort-datasets"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              type="button"
+            <div
+              className="title"
             >
-              Sort
-               
-              <span
-                className="caret"
-              />
-            </button>
-            <ul
-              aria-labelledby="dropdown-sort-datasets"
-              className="dropdown-menu dropdown-menu-right"
-              role="menu"
+              Create a new dataset
+            </div>
+          </div>
+          <div
+            className="link-icon"
+          >
+            <span
+              className="svg-icon "
+              onClick={undefined}
             >
-              <li
-                className="active"
-                role="presentation"
-                style={undefined}
+              <svg
+                className="angle-right"
+                height="40"
+                viewBox="0 0 40 40"
+                width="40"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Updated: Newest
-                </a>
-              </li>
-              <li
-                className=""
-                role="presentation"
-                style={undefined}
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Updated: Oldest
-                </a>
-              </li>
-              <li
-                className=""
-                role="presentation"
-                style={undefined}
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Created: Newest
-                </a>
-              </li>
-              <li
-                className=""
-                role="presentation"
-                style={undefined}
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Created: Oldest
-                </a>
-              </li>
-              <li
-                className=""
-                role="presentation"
-                style={undefined}
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Name: A - Z
-                </a>
-              </li>
-              <li
-                className=""
-                role="presentation"
-                style={undefined}
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  <span
-                    className="svg-icon "
-                    onClick={undefined}
-                  >
-                    <svg
-                      className="check-icon"
-                      height="16px"
-                      version="1.1"
-                      viewBox="0 0 16 16"
-                      width="16px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          className="stroke"
-                          points="1 7.2 5.9 12.1 15 3"
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                  Name: Z - A
-                </a>
-              </li>
-            </ul>
+                <path
+                  className="stroke"
+                  d="m26.3 21.4q0 0.3-0.2 0.5l-10.4 10.4q-0.3 0.3-0.6 0.3t-0.5-0.3l-1.1-1.1q-0.2-0.2-0.2-0.5t0.2-0.5l8.8-8.8-8.8-8.7q-0.2-0.3-0.2-0.6t0.2-0.5l1.1-1.1q0.3-0.2 0.5-0.2t0.6 0.2l10.4 10.4q0.2 0.2 0.2 0.5z"
+                />
+              </svg>
+            </span>
           </div>
         </div>
-      </div>
-      <div>
         <div
           className="dataset"
           onClick={[Function]}
@@ -500,14 +251,6 @@ exports[`renders datasets view - datasets 1`] = `
             </span>
           </div>
         </div>
-        <button
-          className="bottom-button btn btn-default"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Create a new dataset
-        </button>
       </div>
     </div>
   </div>
@@ -524,48 +267,19 @@ exports[`renders datasets view - loading state 1`] = `
     <div
       className="center-block section-header row"
     >
-      <div
-        className="title"
+      <label
+        className="control-label"
+        htmlFor={undefined}
       >
-        Select a dataset to link
-      </div>
+        Select a dataset or project
+      </label>
       <button
         className="btn btn-default"
         disabled={false}
         onClick={[Function]}
         type="button"
       >
-        <span
-          className="svg-icon "
-          onClick={undefined}
-        >
-          <svg
-            className="add-icon"
-            version="1.1"
-            viewBox="0 0 16 16"
-            x="0px"
-            xmlns="http://www.w3.org/2000/svg"
-            y="0px"
-          >
-            <g>
-              <line
-                className="stroke"
-                x1="8"
-                x2="8"
-                y1="1"
-                y2="15"
-              />
-              <line
-                className="stroke"
-                x1="15"
-                x2="1"
-                y1="8"
-                y2="8"
-              />
-            </g>
-          </svg>
-        </span>
-        New
+        Cancel
       </button>
     </div>
     <div
@@ -600,48 +314,19 @@ exports[`renders datasets view - no datasets 1`] = `
     <div
       className="center-block section-header row"
     >
-      <div
-        className="title"
+      <label
+        className="control-label"
+        htmlFor={undefined}
       >
-        Select a dataset to link
-      </div>
+        Select a dataset or project
+      </label>
       <button
         className="btn btn-default"
         disabled={false}
         onClick={[Function]}
         type="button"
       >
-        <span
-          className="svg-icon "
-          onClick={undefined}
-        >
-          <svg
-            className="add-icon"
-            version="1.1"
-            viewBox="0 0 16 16"
-            x="0px"
-            xmlns="http://www.w3.org/2000/svg"
-            y="0px"
-          >
-            <g>
-              <line
-                className="stroke"
-                x1="8"
-                x2="8"
-                y1="1"
-                y2="15"
-              />
-              <line
-                className="stroke"
-                x1="15"
-                x2="1"
-                y1="8"
-                y2="8"
-              />
-            </g>
-          </svg>
-        </span>
-        New
+        Cancel
       </button>
     </div>
     <div

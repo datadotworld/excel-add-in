@@ -17,10 +17,8 @@
  * data.world, Inc. (http://data.world/).
  */
 .datasets-view .dataset-selector .section-header {
-  padding: 15px;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
 }
 
 .datasets-view .dataset-selector .section-header .add-icon {
@@ -53,5 +51,8 @@
   padding: 0;
   color: #4376b2;
   float: right;
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: -8px;
+  margin-bottom: 4px;
 }
