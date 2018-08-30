@@ -5,7 +5,7 @@
   <Version>1.1.0.0</Version>
   <ProviderName>data.world</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="data.world - Datasets and Insights" />
+  <DisplayName DefaultValue="data.world - Local" />
   <Description DefaultValue="Publish charts as Insights, save your data on data.world, and access thousands of datasets."/>
   <!-- TODO: IconUrl needs to be changed before submitting to the office store -->
   <IconUrl DefaultValue="https://cdn.filepicker.io/api/file/ymdxFDOnSRSzCwqiAEke+.png" />
@@ -150,7 +150,7 @@
         <bt:String id="dw.DatasetsButton.Label" DefaultValue="Upload Data" />
         <bt:String id="dw.InsightsButton.Label" DefaultValue="Publish Insights" />
         <bt:String id="dw.ImportButton.Label" DefaultValue="Import Data" />
-        <bt:String id="dw.Group1Label" DefaultValue="data.world" />
+        <bt:String id="dw.Group1Label" DefaultValue="dw-local" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
