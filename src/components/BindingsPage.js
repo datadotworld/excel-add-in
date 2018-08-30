@@ -27,10 +27,13 @@ import {
   Glyphicon,
   Grid,
   MenuItem,
-  Row
+  Tooltip,
+  Row,
+  OverlayTrigger
 } from 'react-bootstrap';
 
 import analytics from '../analytics';
+import { FormattedMessage } from 'react-intl'
 
 import './BindingsPage.css';
 import BindingListItem from './BindingListItem';
@@ -135,6 +138,7 @@ class BindingsPage extends Component {
 
     let bindingEntries = [];
     let unsyncedFileCount = 0;
+    let notSyncedFileCount = 0;
     if (dataset && dataset.files.length) {
       const sortedFiles = this.sortFiles();
       
@@ -142,6 +146,9 @@ class BindingsPage extends Component {
         const binding = this.findBindingForFile(file);
         if (binding && !syncStatus[binding.id].synced) {
           unsyncedFileCount += 1;
+        }
+        if(!binding) {
+          notSyncedFileCount += 1;
         }
         return (<BindingListItem binding={binding} file={file}
           key={file.name}
@@ -152,6 +159,18 @@ class BindingsPage extends Component {
           editBinding={showAddData} />);
       });
     }
+
+    const tooltip = (
+      <Tooltip>
+        <FormattedMessage
+          id='auto_sync_file_options.tooltip'
+          description='Text in tooltip for autosync'
+          defaultMessage="Click the '+' button to link an existing file, or 'Add File' to create a new one."
+        />
+      </Tooltip>
+    )
+
+    const disableButton = notSyncedFileCount === bindingEntries.length
 
     return (
       <Grid className='bindings-page'>
@@ -180,11 +199,25 @@ class BindingsPage extends Component {
               <Icon icon='add' />
               Add File
             </Button>
-            {!syncing && <Button onClick={this.syncClicked} disabled={!bindingEntries.length}>
-              <Icon icon='sync' />
-                Save
-              {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
-            </Button>}
+
+            {disableButton && !syncing &&
+              <OverlayTrigger show={false} placement='top' overlay={tooltip} trigger='hover'>
+                <div>
+                  <Button className='syncing-button' disabled>
+                    <Icon icon='sync' />
+                      Save
+                    {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
+                  </Button>
+                </div>
+              </OverlayTrigger>
+            }
+            
+            {!disableButton && !syncing && <Button onClick={this.syncClicked}>
+                <Icon icon='sync' />
+                  Save
+                {!!unsyncedFileCount && <Badge bsStyle='danger'>{unsyncedFileCount}</Badge>}
+              </Button>}
+
             {syncing && <Button className='syncing-button'>
               <div className='loader-icon'></div>
                 Saving...
