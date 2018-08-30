@@ -24,7 +24,7 @@
     </Sets>
   </Requirements>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/?v=1.1.0.0" />
+    <SourceLocation DefaultValue="https://dwexceladdin-staging.herokuapp.com/?v=1.1.0.0" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -141,9 +141,9 @@
         <bt:Image id="dw.importicon_80x80" DefaultValue="https://cdn.filepicker.io/api/file/LRvLLUdaQiCWBYmJ8iHX+.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="dw.DatasetsUrl" DefaultValue="https://localhost:3000?v=1.1.0.0" />
-        <bt:Url id="dw.InsightsUrl" DefaultValue="https://localhost:3000/insights?v=1.1.0.0" />
-        <bt:Url id="dw.ImportUrl" DefaultValue="https://localhost:3000/import?v=1.1.0.0" />
+        <bt:Url id="dw.DatasetsUrl" DefaultValue="https://dwexceladdin-staging.herokuapp.com?v=1.1.0.0" />
+        <bt:Url id="dw.InsightsUrl" DefaultValue="https://dwexceladdin-staging.herokuapp.com/insights?v=1.1.0.0" />
+        <bt:Url id="dw.ImportUrl" DefaultValue="https://dwexceladdin-staging.herokuapp.com/import?v=1.1.0.0" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
