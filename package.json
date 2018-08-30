@@ -30,7 +30,8 @@
     "build": "react-scripts build",
     "prod": "nodemon server/server.js",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-prebuild": "yarn install --frozen-lockfile && yarn build"
   },
   "repository": {
     "type": "git",
