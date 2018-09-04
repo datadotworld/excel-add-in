@@ -175,7 +175,8 @@ export default class OfficeConnector {
   getSettings () {
     return {
       dataset: Office.context.document.settings.get('dataset'),
-      syncStatus: Office.context.document.settings.get('syncStatus')
+      syncStatus: Office.context.document.settings.get('syncStatus'),
+      migratedBindings: Office.context.document.settings.get('migratedBindings'),
     };
   }
 
@@ -197,6 +198,11 @@ export default class OfficeConnector {
 
   setDataset (dataset) {
     Office.context.document.settings.set('dataset', dataset);
+    return this.saveSettings();
+  }
+
+  setMigratedBindings (migratedBindings) {
+    Office.context.document.settings.set('migratedBindings', migratedBindings);
     return this.saveSettings();
   }
 

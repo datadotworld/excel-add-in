@@ -196,8 +196,8 @@ class App extends Component {
   async initializeDatasets() {
     try {
       const settings = this.office.getSettings();
-      let syncStatus = settings.syncStatus;
-      let dataset = settings.dataset;
+      let { syncStatus, dataset, migratedBindings } = settings
+
       if (!this.state.loggedIn) {
         return this.setState({ officeInitialized: true, outsideOffice: false });
       }
@@ -221,15 +221,24 @@ class App extends Component {
         }
       });
 
-      if (dataset && bindings.length > 0) {
-        const datasetFiles = dataset.files.map(entry => entry.name)
+      if (!migratedBindings && dataset && bindings.length > 0) {
+        const datasetFiles = dataset.files.map(entry => entry.name);
         bindings.forEach((binding) => {
-          const sheetId = getSheetName(binding)
-          const filename = binding.id.replace('dw::', '')
+          const sheetId = getSheetName(binding);
+          const filename = binding.id.replace('dw::', '');
           if (datasetFiles.includes(filename)) {
-            this.pushToLocalStorage(binding.id, `https://data.world/${dataset.owner}/${dataset.id}`, filename, binding.rangeAddress, sheetId, dataset.updated)
+            this.pushToLocalStorage(
+              binding.id,
+              `https://data.world/${dataset.owner}/${dataset.id}`,
+              filename,
+              binding.rangeAddress,
+              sheetId,
+              dataset.updated
+            );
           }
-        })
+        });
+
+        this.office.setMigratedBindings(true);
       }
 
       this.setState({
