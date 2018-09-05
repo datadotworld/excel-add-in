@@ -175,7 +175,8 @@ export default class OfficeConnector {
   getSettings () {
     return {
       dataset: Office.context.document.settings.get('dataset'),
-      syncStatus: Office.context.document.settings.get('syncStatus')
+      syncStatus: Office.context.document.settings.get('syncStatus'),
+      nextMigrationIndex: Office.context.document.settings.get('nextMigrationIndex'),
     };
   }
 
@@ -197,6 +198,11 @@ export default class OfficeConnector {
 
   setDataset (dataset) {
     Office.context.document.settings.set('dataset', dataset);
+    return this.saveSettings();
+  }
+
+  setNextMigrationIndex (idx) {
+    Office.context.document.settings.set('nextMigrationIndex', idx);
     return this.saveSettings();
   }
 
