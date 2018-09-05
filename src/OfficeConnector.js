@@ -176,7 +176,7 @@ export default class OfficeConnector {
     return {
       dataset: Office.context.document.settings.get('dataset'),
       syncStatus: Office.context.document.settings.get('syncStatus'),
-      migratedBindings: Office.context.document.settings.get('migratedBindings'),
+      nextMigrationIndex: Office.context.document.settings.get('nextMigrationIndex'),
     };
   }
 
@@ -201,8 +201,8 @@ export default class OfficeConnector {
     return this.saveSettings();
   }
 
-  setMigratedBindings (migratedBindings) {
-    Office.context.document.settings.set('migratedBindings', migratedBindings);
+  setNextMigrationIndex (idx) {
+    Office.context.document.settings.set('nextMigrationIndex', idx);
     return this.saveSettings();
   }
 

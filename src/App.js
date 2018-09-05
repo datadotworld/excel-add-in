@@ -43,6 +43,7 @@ import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 import UploadModal from './components/UploadModal';
 import RecentUploads from './components/RecentUploads';
+import migrations from './migrations'
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
@@ -196,7 +197,8 @@ class App extends Component {
   async initializeDatasets() {
     try {
       const settings = this.office.getSettings();
-      let { syncStatus, dataset, migratedBindings } = settings
+      const { pushToLocalStorage, office } = this;
+      let { syncStatus, dataset, nextMigrationIndex } = settings;
 
       if (!this.state.loggedIn) {
         return this.setState({ officeInitialized: true, outsideOffice: false });
@@ -221,24 +223,18 @@ class App extends Component {
         }
       });
 
-      if (!migratedBindings && dataset && bindings.length > 0) {
-        const datasetFiles = dataset.files.map(entry => entry.name);
-        bindings.forEach((binding) => {
-          const sheetId = getSheetName(binding);
-          const filename = binding.id.replace('dw::', '');
-          if (datasetFiles.includes(filename)) {
-            this.pushToLocalStorage(
-              binding.id,
-              `https://data.world/${dataset.owner}/${dataset.id}`,
-              filename,
-              binding.rangeAddress,
-              sheetId,
-              dataset.updated
-            );
-          }
+      if (dataset) {
+        migrations
+          .slice(nextMigrationIndex)
+          .forEach((migrationFn, idx) => {
+            migrationFn({
+              bindings,
+              pushToLocalStorage,
+              getSheetName,
+              dataset
+            });
+            office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
         });
-
-        this.office.setMigratedBindings(true);
       }
 
       this.setState({
