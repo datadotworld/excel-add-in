@@ -809,7 +809,7 @@ class App extends Component {
     }
     return (
       <div>
-        {error && <Alert bsStyle='danger' onDismiss={this.dismissError}>{errorMessage}</Alert>}
+        {error && <Alert className="error-alert" bsStyle='danger' onDismiss={this.dismissError}>{errorMessage}</Alert>}
         {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
         {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
