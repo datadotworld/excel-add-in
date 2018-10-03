@@ -17,8 +17,8 @@
  * data.world, Inc. (http://data.world/).
  */
 import React, { Component } from 'react';
-import queryString from 'query-string'
-import { flatten } from 'lodash'
+import queryString from 'query-string';
+import { flatten } from 'lodash';
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -43,7 +43,7 @@ import { isSheetBinding, getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 import UploadModal from './components/UploadModal';
 import RecentUploads from './components/RecentUploads';
-import migrations from './migrations'
+import migrations from './migrations';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
@@ -54,26 +54,11 @@ const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
 
 class App extends Component {
-
-  constructor () {
+  constructor() {
     super();
-
     find.shim();
 
-    this.createBinding = this.createBinding.bind(this);
-    this.getDatasets = this.getDatasets.bind(this);
-    this.linkDataset = this.linkDataset.bind(this);
-    this.removeBinding = this.removeBinding.bind(this);
-    this.unlinkDataset = this.unlinkDataset.bind(this);
-    this.createDataset = this.createDataset.bind(this);
-    this.refreshLinkedDataset = this.refreshLinkedDataset.bind(this);
-    this.updateBinding = this.updateBinding.bind(this);
-    this.sync = this.sync.bind(this);
-    this.initializeDatasets = this.initializeDatasets.bind(this);
-    this.initializeInsights = this.initializeInsights.bind(this);
-    this.getWorkbookId = this.getWorkbookId.bind(this);
     this.parsedQueryString = queryString.parse(window.location.search);
-
     let token;
     if (this.parsedQueryString.token) {
       token = this.parsedQueryString.token;
@@ -84,23 +69,19 @@ class App extends Component {
     }
 
     let preferences;
-    try  {
+    try {
       preferences = JSON.parse(localStorage.getItem(DW_PREFERENCES));
     } catch (e) {
       // ignore error
     } finally {
-      if (! preferences) {
+      if (!preferences) {
         preferences = { dismissals: [] };
       }
     }
 
     // To be used for rendering the respective pages and header styling
-    let page;
-    if (this.parsedQueryString.page) {
-      page = this.parsedQueryString.page;
-    } else {
-      page = window.location.pathname.substr(1);
-    }
+    const page =
+      this.parsedQueryString.page || window.location.pathname.substr(1);
 
     // To be used for rendering the appropriate landing page
     const version = this.parsedQueryString.v;
@@ -110,7 +91,6 @@ class App extends Component {
 
     // To be used to display NotOfficeView
     let insideOffice;
-
     // window.OfficeHelpers will be undefined when running tests
     if (window.OfficeHelpers) {
       if (window.OfficeHelpers.Utilities.host === 'EXCEL') {
@@ -121,7 +101,6 @@ class App extends Component {
     } else {
       insideOffice = true;
     }
-
 
     this.state = {
       token,
@@ -149,29 +128,30 @@ class App extends Component {
       this.getUser();
     }
     this.initializeOffice().then(() => {
-      this.getSelectionRange()
-    })
+      this.getSelectionRange();
+    });
   }
 
   getSelectionRange = () => {
     this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
-      this.setState({currentSelectedRange});
+      this.setState({ currentSelectedRange });
     });
+
     this.office.listenForSelectionChanges((currentSelectedRange) => {
-      this.setState({currentSelectedRange})
-    })
-  }
+      this.setState({ currentSelectedRange });
+    });
+  };
 
   changeSelection = (event) => {
-    const { value } = event.target
+    const { value } = event.target;
     if (value === 'selection') {
-      this.setState({ selectSheet: false})
+      this.setState({ selectSheet: false });
     } else if (value === 'sheet') {
       this.setState({ selectSheet: true });
     }
-  }
+  };
 
-  async initializeOffice() {
+  initializeOffice = async () => {
     const { page } = this.state;
     try {
       this.office = new OfficeConnector();
@@ -185,16 +165,14 @@ class App extends Component {
       }
       this.getWorkbookId();
     } catch (error) {
-      this.setState({
-        error: {
-          error,
-          message: 'There was an error initializing the Office connector, please try again.'
-        }
-      });
+      this.setError(
+        error,
+        'There was an error initializing the Office connector, please try again.'
+      );
     }
-  }
+  };
 
-  async initializeDatasets() {
+  initializeDatasets = async () => {
     try {
       const settings = this.office.getSettings();
       const { pushToLocalStorage, office } = this;
@@ -208,25 +186,24 @@ class App extends Component {
       } else if (this.state.loggedIn) {
         dataset = await this.refreshLinkedDataset(dataset);
       }
-      if (! syncStatus) {
+      if (!syncStatus) {
         syncStatus = {};
       }
 
-      const bindings = await this.office.getBindings();
-      bindings.forEach((binding) => {
-        if (!syncStatus[binding.id]) {
-          syncStatus[binding.id] = {
-            synced: false,
-            changes: 1,
-            lastSync: null
-          };
-        }
-      });
+      try {
+        const bindings = await this.office.getBindings();
+        bindings.forEach((binding) => {
+          if (!syncStatus[binding.id]) {
+            syncStatus[binding.id] = {
+              synced: false,
+              changes: 1,
+              lastSync: null
+            };
+          }
+        });
 
-      if (dataset) {
-        migrations
-          .slice(nextMigrationIndex)
-          .forEach((migrationFn, idx) => {
+        if (dataset) {
+          migrations.slice(nextMigrationIndex).forEach((migrationFn, idx) => {
             migrationFn({
               bindings,
               pushToLocalStorage,
@@ -234,51 +211,60 @@ class App extends Component {
               dataset
             });
             office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
-        });
-      }
-
-      this.setState({
-        bindings,
-        dataset,
-        syncStatus,
-        excelApiSupported: this.office.isExcelApiSupported(),
-        officeInitialized: true,
-        outsideOffice: false,
-        csvMode: this.office.isCSV()
-      });
-
-      bindings.forEach(this.listenForChangesToBinding);
-    } catch (error) {
-      this.setState({
-        error: {
-          error,
-          message: 'There was an error initializing the datasets page, please try again.'
+          });
         }
-      });
-    }
-  }
 
-  async initializeInsights() {
-    try {
-      if (this.state.loggedIn) {
+        this.setState({
+          bindings,
+          dataset,
+          syncStatus,
+          excelApiSupported: this.office.isExcelApiSupported(),
+          officeInitialized: true,
+          outsideOffice: false,
+          csvMode: this.office.isCSV()
+        });
+
+        bindings.forEach(this.listenForChangesToBinding);
+      } catch (getBindingsError) {
+        this.setError(
+          getBindingsError,
+          'There was an error getting the bindings, please try again.'
+        );
+      }
+    } catch (refreshDatasetsError) {
+      this.setError(
+        refreshDatasetsError,
+        'There was an error refreshing the linked datasets, please try again.'
+      );
+    }
+  };
+
+  initializeInsights = async () => {
+    if (this.state.loggedIn) {
+      try {
         // Logged in user's projects
         const projects = await this.api.getProjects();
 
-        // All the charts in the workbook
-        const charts = await this.getCharts();
-        this.setState({ charts, projects, officeInitialized: true });
-      } else {
-        this.setState({ officeInitialized: true });
-      }
-    } catch(error) {
-      this.setState({
-        error: {
-          error,
-          message: 'There was an error initializing the Insights page, please try again.'
+        try {
+          // All the charts in the workbook
+          const charts = await this.getCharts();
+          this.setState({ charts, projects, officeInitialized: true });
+        } catch (getChartsError) {
+          this.setError(
+            getChartsError,
+            'There was an error fetching the charts, please try again.'
+          );
         }
-      });
+      } catch (getProjectsError) {
+        this.setError(
+          getProjectsError,
+          'There was an error fetching the projects, please try again.'
+        );
+      }
+    } else {
+      this.setState({ officeInitialized: true });
     }
-  }
+  };
 
   logout = () => {
     // To aid in showing the correct welcome screen after logging out
@@ -286,9 +272,11 @@ class App extends Component {
 
     localStorage.setItem(DW_APP_VERSION, '');
     localStorage.setItem(DW_API_TOKEN, '');
-    this.setState({token: null, loggedIn: false, user: null});
-    window.location = `https://data.world/embed/logout?next=${encodeURIComponent(`https://excel.data.world?v=${version}`)}`;
-  }
+    this.setState({ token: null, loggedIn: false, user: null });
+    window.location = `https://data.world/embed/logout?next=${encodeURIComponent(
+      `https://excel.data.world?v=${version}`
+    )}`;
+  };
 
   listenForChangesToBinding = (binding) => {
     this.office.listenForChanges(binding, (event) => {
@@ -299,39 +287,71 @@ class App extends Component {
       this.office.setSyncStatus(syncStatus);
       this.setState({ syncStatus });
     });
-  }
+  };
 
-  async createBinding (selection) {
+  createBinding = async (selection) => {
     try {
-      const namedItem = await this.office.createSelectionRange(selection.sheetId, selection.range)
-      const binding = await this.office.createBinding(selection.name, namedItem);
-      if (binding.columnCount > MAX_COLUMNS) {
-        await this.office.removeBinding(binding);
-        throw new Error(MAX_COLUMNS_ERROR);
+      const namedItem = await this.office.createSelectionRange(
+        selection.sheetId,
+        selection.range
+      );
+
+      try {
+        const binding = await this.office.createBinding(
+          selection.name,
+          namedItem
+        );
+
+        if (binding.columnCount > MAX_COLUMNS) {
+          try {
+            await this.office.removeBinding(binding);
+            throw new Error(MAX_COLUMNS_ERROR);
+          } catch (removeBindingError) {
+            this.setError(
+              removeBindingError,
+              'There was an error removing the binding, please try again.'
+            );
+          }
+        }
+
+        try {
+          await this.office.getBindingRange(binding);
+          const syncStatus = this.state.syncStatus;
+          syncStatus[binding.id] = {
+            synced: false,
+            lastSync: null,
+            changes: 1
+          };
+
+          this.state.bindings.push(binding);
+          this.listenForChangesToBinding(binding);
+          this.setState({
+            syncStatus,
+            bindings: this.state.bindings
+          });
+
+          return binding;
+        } catch (getBindingError) {
+          this.setError(
+            getBindingError,
+            'There was an error getting the binding, please try again.'
+          );
+        }
+      } catch (bindingError) {
+        this.setError(
+          bindingError,
+          'There was an error creating the binding, please try again.'
+        );
       }
-
-      await this.office.getBindingRange(binding);
-      const syncStatus = this.state.syncStatus;
-      syncStatus[binding.id] = {
-        synced: false,
-        lastSync: null,
-        changes: 1
-      };
-
-      this.state.bindings.push(binding);
-      this.listenForChangesToBinding(binding);
-      this.setState({
-        syncStatus,
-        bindings: this.state.bindings
-      });
-
-      return binding;
-    } catch (error) {
-      this.setState({error});
+    } catch (selectionError) {
+      this.setError(
+        selectionError,
+        'There was an error creating the selection range, please try again.'
+      );
     }
-  }
+  };
 
-  async removeBinding (binding) {
+  removeBinding = async (binding) => {
     try {
       await this.office.removeBinding(binding);
       const { bindings } = this.state;
@@ -339,78 +359,91 @@ class App extends Component {
         bindings.splice(bindings.indexOf(binding), 1);
         this.setState({ bindings });
       }
-    } catch (error) {
-      this.setState({error});
+    } catch (removeBindingError) {
+      this.setError(
+        removeBindingError,
+        'There was an error removing the binding, please try again.'
+      );
     }
-  }
+  };
 
-  async getDatasets () {
+  getDatasets = async () => {
     try {
-      this.setState({loadingDatasets: true});
+      this.setState({ loadingDatasets: true });
       const datasets = await this.api.getDatasets();
       this.setState({
         datasets,
         loadingDatasets: false
       });
-    } catch (error) {
+    } catch (getDatasetsError) {
       this.setState({
-        error,
+        error: {
+          error: getDatasetsError,
+          message: 'There was an error fetching the datasets, please try again.'
+        },
         loadingDatasets: false
       });
     }
-  }
+  };
 
-  handleDatasetFetchError(error) {
+  handleDatasetFetchError = (error) => {
     if (error.response && error.response.status === 401) {
       this.logout();
     } else if (error.response && error.response.status === 404) {
       this.unlinkDataset();
-      this.setState({error: 'Dataset not found'})
+      this.setError('Dataset not found');
     } else {
-      this.setState({error});
+      this.setError(
+        error,
+        'There was an error fetching the dataset, please try again.'
+      );
     }
-  }
+  };
 
-  async refreshLinkedDataset (datasetToRefresh = this.state.dataset) {
+  refreshLinkedDataset = async (datasetToRefresh = this.state.dataset) => {
     if (datasetToRefresh) {
       try {
-        const dataset = await this.api.getDataset(`${datasetToRefresh.owner}/${datasetToRefresh.id}`);
+        const dataset = await this.api.getDataset(
+          `${datasetToRefresh.owner}/${datasetToRefresh.id}`
+        );
         this.office.setDataset(dataset);
         this.setState({ dataset });
-  
+
         return dataset;
       } catch (error) {
         this.handleDatasetFetchError(error);
       }
     }
+  };
 
-  }
-
-  async linkDataset (dataset) {
-    this.setState({url: dataset, showDatasets: false})
-    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/
-    const match = dataset.match(regexMatch)
-    try  {
+  linkDataset = async (dataset) => {
+    this.setState({ url: dataset, showDatasets: false });
+    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/;
+    const match = dataset.match(regexMatch);
+    try {
       const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
       this.setState({ dataset: freshDataset });
-      if (this.state.csvMode && !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)) {
-        this.setState({showCSVWarning: true});
+      if (
+        this.state.csvMode &&
+        !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)
+      ) {
+        this.setState({ showCSVWarning: true });
       }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
       this.handleDatasetFetchError(error);
     }
-  }
+  };
 
   createUrl = (uri) => {
-    this.setState({url: uri, showDatasets: false})
-  }
+    this.setState({ url: uri, showDatasets: false });
+  };
 
   addUrl = (url) => {
-    this.setState({url})
-  }
+    this.setState({ url });
+  };
 
-  async unlinkDataset () {
+  async unlinkDataset() {
     try {
       await this.office.setDataset(null);
       await this.office.setSyncStatus({});
@@ -424,48 +457,59 @@ class App extends Component {
         syncStatus: {}
       });
     } catch (error) {
-      this.setState({error});
+      this.setError(
+        error,
+        'There was an error unlinking the dataset, please try again.'
+      );
     }
   }
 
   /**
    * Gets the user from the data.world API and sets it on the state
    */
-  async getUser () {
+  getUser = async () => {
     try {
       const user = await this.api.getUser();
-      this.setState({user});
+      this.setState({ user });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         this.logout();
       }
+
+      this.setError(
+        error,
+        'There was an error fetching the user, please try again.'
+      );
     }
-  }
+  };
 
   /**
    * Removes and then recreates a binding with the active selection.
    * There is not currently a way to update the range for an existing binding
    * in the office API.
    */
-  async updateBinding (binding, selection) {
+  updateBinding = async (binding, selection) => {
     try {
       await this.removeBinding(binding);
       return this.createBinding(selection);
     } catch (error) {
-      this.setState({ error });
+      this.setError(
+        error,
+        'There was an error updating the binding, please try again.'
+      );
     }
-  }
+  };
 
   /**
    * Highlights the address provided in the excel document
    */
   select = (address) => {
     this.office.select(address);
-  }
+  };
 
   dismissError = () => {
     this.setState({ error: null });
-  }
+  };
 
   /**
    * Removes blank rows and columns around the data
@@ -480,26 +524,25 @@ class App extends Component {
       lastRow: 0,
       firstColumn: numberOfColumns,
       lastColumn: 0
-    }
+    };
 
     for (let row = 0; row < numberOfRows; row++) {
       for (let column = 0; column < numberOfColumns; column++) {
-
         // If current cell contains data
         if (grid[row][column]) {
           if (row < paramaters.firstRow) {
-            paramaters.firstRow = row
+            paramaters.firstRow = row;
           }
           if (row > paramaters.lastRow) {
-            paramaters.lastRow = row
+            paramaters.lastRow = row;
           }
 
           if (column < paramaters.firstColumn) {
-            paramaters.firstColumn = column
+            paramaters.firstColumn = column;
           }
 
           if (column > paramaters.lastColumn) {
-            paramaters.lastColumn = column
+            paramaters.lastColumn = column;
           }
         }
       }
@@ -507,30 +550,32 @@ class App extends Component {
 
     // Remove blank rows and columns
     const trimmedRows = grid.slice(paramaters.firstRow, paramaters.lastRow + 1);
-    const trimmedColumns = trimmedRows.map(row => {
+    const trimmedColumns = trimmedRows.map((row) => {
       return row.slice(paramaters.firstColumn, paramaters.lastColumn + 1);
-    })
+    });
 
-    const result = trimmedColumns.length > 0 ? trimmedColumns : [['']]
+    const result = trimmedColumns.length > 0 ? trimmedColumns : [['']];
     return result;
-  }
+  };
 
   getExcelBindings() {
     return new Promise((resolve, reject) => {
-      this.office.getBindings().then((bindings) => {
-        resolve(bindings);
-      })
-      .catch((error) => {
-        reject(error);
-      })
-    })
+      this.office
+        .getBindings()
+        .then((bindings) => {
+          resolve(bindings);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   }
 
   /**
    * Replaces all the bindings stored in the state with those stored in Excel
    * while ensuring sheet bindings remain bound to the sheet
    */
-  updateBindings() {
+  updateBindings = () => {
     return new Promise((resolve, reject) => {
       this.getExcelBindings().then((excelBindings) => {
         // Get all the current sheet bindings from state
@@ -540,12 +585,15 @@ class App extends Component {
         const sheetBindingIds = sheetBindings.map((binding) => binding.id);
 
         // Remove all the current state bindings for replacement
-        this.setState({bindings: []});
+        this.setState({ bindings: [] });
         const promises = [];
 
         excelBindings.forEach((binding) => {
           // Find sheet bindings whose binding range has changed in Excel but not in the state
-          if (sheetBindingIds.indexOf(binding.id) > -1 && !isSheetBinding(binding)) {
+          if (
+            sheetBindingIds.indexOf(binding.id) > -1 &&
+            !isSheetBinding(binding)
+          ) {
             // Rebind changed bindings to the sheet
             const promise = new Promise((resolve, reject) => {
               // Sheet ID unavailable, use the sheet name instead
@@ -554,7 +602,7 @@ class App extends Component {
               const name = binding.id.replace('dw::', '');
               const range = SHEET_RANGE;
 
-              this.updateBinding(binding, {sheetId: sheet, range, name})
+              this.updateBinding(binding, { sheetId: sheet, range, name })
                 .then(resolve)
                 .catch(reject);
             });
@@ -562,8 +610,8 @@ class App extends Component {
           } else {
             // Simply add all other bindings to the state
             const stateBindings = this.state.bindings;
-            stateBindings.push(binding)
-            this.setState({bindings: stateBindings});
+            stateBindings.push(binding);
+            this.setState({ bindings: stateBindings });
           }
         });
         Promise.all(promises)
@@ -571,7 +619,7 @@ class App extends Component {
           .catch(reject);
       });
     });
-  }
+  };
 
   pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
     const recentUploadData = {
@@ -582,41 +630,47 @@ class App extends Component {
       date: date,
       userId: this.state.user.id,
       workbook: this.state.workbookId
-    }
-    const toPush = JSON.stringify({[id]: JSON.stringify(recentUploadData)})
-    let parsedHistory = []
+    };
+    const toPush = JSON.stringify({ [id]: JSON.stringify(recentUploadData) });
+    let parsedHistory = [];
     if (localStorage['history'] && localStorage['history'] !== '{}') {
-      parsedHistory = JSON.parse(localStorage.getItem('history'))
+      parsedHistory = JSON.parse(localStorage.getItem('history'));
     }
 
-    var doesFilenameExist = -1
+    var doesFilenameExist = -1;
     for (var i = 0; i < parsedHistory.length; ++i) {
-      const parsedEntry = JSON.parse(parsedHistory[i])
-      if (parsedEntry.hasOwnProperty(id) && JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')) {
-        const parsedObject = JSON.parse(parsedEntry[id])
-        if (parsedObject.userId === this.state.user.id && parsedObject.workbook === this.state.workbookId) {
-          doesFilenameExist = i
-          break
+      const parsedEntry = JSON.parse(parsedHistory[i]);
+      if (
+        parsedEntry.hasOwnProperty(id) &&
+        JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')
+      ) {
+        const parsedObject = JSON.parse(parsedEntry[id]);
+        if (
+          parsedObject.userId === this.state.user.id &&
+          parsedObject.workbook === this.state.workbookId
+        ) {
+          doesFilenameExist = i;
+          break;
         }
       }
     }
-        
+
     if (doesFilenameExist === -1) {
-      parsedHistory.push(toPush)
+      parsedHistory.push(toPush);
     } else {
-      parsedHistory[doesFilenameExist] = toPush
+      parsedHistory[doesFilenameExist] = toPush;
     }
-    localStorage.setItem('history', JSON.stringify(parsedHistory))
-  }
+    localStorage.setItem('history', JSON.stringify(parsedHistory));
+  };
 
   /**
    * Saves bindings to their associated files on data.world.  If a binding
    * is provided, then only that binding is saved to data.world.
    */
-  async sync(binding) {
-    const {currentSelectedRange} = this.state
+  sync = async (binding) => {
+    const { currentSelectedRange } = this.state;
     try {
-      this.setState({syncing: true});
+      this.setState({ syncing: true });
       // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
       // to change, bindings must therefore be updated before a sync is attempted
       await this.updateBindings();
@@ -624,117 +678,159 @@ class App extends Component {
         const bindings = binding ? [binding] : this.state.bindings;
         const promises = [];
         bindings.forEach((binding) => {
-          console.log("binding", binding)
           const promise = new Promise((resolve, reject) => {
-            this.office.getData(binding).then((data) => {
-              const trimmedData = this.trimFile(data);
-              return this.api.uploadFile({
-                data: trimmedData,
-                dataset: this.state.url,
-                filename: binding.id.replace('dw::', '')
+            this.office
+              .getData(binding)
+              .then((data) => {
+                const trimmedData = this.trimFile(data);
+                return this.api.uploadFile({
+                  data: trimmedData,
+                  dataset: this.state.url,
+                  filename: binding.id.replace('dw::', '')
+                });
+              })
+              .then(() => {
+                const syncStatus = this.state.syncStatus;
+                syncStatus[binding.id].synced = true;
+                syncStatus[binding.id].changes = 0;
+                syncStatus[binding.id].lastSync = new Date();
+                this.office.setSyncStatus(syncStatus);
+                this.setState({ syncStatus });
+                this.pushToLocalStorage(
+                  binding.id,
+                  this.state.url,
+                  binding.id.replace('dw::', ''),
+                  binding.rangeAddress,
+                  currentSelectedRange.worksheet.id,
+                  new Date()
+                );
+                this.setState({ url: '', selectSheet: false });
+                resolve();
+              })
+              .catch((error) => {
+                this.setState({ error });
+                this.setState({ syncing: false });
+                reject();
               });
-            }).then(() => {
-              const syncStatus = this.state.syncStatus;
-              syncStatus[binding.id].synced = true;
-              syncStatus[binding.id].changes = 0;
-              syncStatus[binding.id].lastSync = new Date();
-              this.office.setSyncStatus(syncStatus);
-              this.setState({ syncStatus });
-              this.pushToLocalStorage(binding.id, this.state.url, binding.id.replace('dw::', ''), binding.rangeAddress, currentSelectedRange.worksheet.id, new Date())
-              this.setState({url: '', selectSheet: false})
-              resolve();
-            }).catch((error) => {
-              this.setState({error});
-              this.setState({syncing: false});
-              reject();
-            });
           });
           promises.push(promise);
         });
-        Promise.all(promises).then(() => {
-          this.setState({syncing: false});
-          resolve();
-        }).catch((error) => {
-          this.setState({syncing: false});
-          reject();
-        });
+        Promise.all(promises)
+          .then(() => {
+            this.setState({ syncing: false });
+            resolve();
+          })
+          .catch((error) => {
+            this.setState({ syncing: false });
+            reject();
+          });
       });
-    } catch(error) {
-      this.setState({syncing: false, error});
+    } catch (updateBindingError) {
+      this.setState({
+        syncing: false,
+        error: {
+          error: updateBindingError,
+          message: 'There was an error updating the bindings, please try again.'
+        }
+      });
     }
-  }
+  };
 
   showCreateDataset = () => {
-    this.setState({showCreateDataset: true});
-  }
+    this.setState({ showCreateDataset: true });
+  };
 
   toggleShowDatasets = () => {
-    this.setState({showDatasets: !this.state.showDatasets})
-  }
+    this.setState({ showDatasets: !this.state.showDatasets });
+  };
 
   closeAddData = () => {
     this.office.stopListeningForSelectionChanges();
-    this.setState({showAddDataModal: false, addDataModalOptions: {}, forceShowUpload: false, url: '', error: null});
-  }
+    this.setState({
+      showAddDataModal: false,
+      addDataModalOptions: {},
+      forceShowUpload: false,
+      url: '',
+      error: null
+    });
+  };
 
   dismissCSVWarning = (options) => {
     if (options.dismissWarning) {
       this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
-      localStorage.setItem(DW_PREFERENCES, JSON.stringify(this.state.preferences));
+      localStorage.setItem(
+        DW_PREFERENCES,
+        JSON.stringify(this.state.preferences)
+      );
     }
 
     this.setState({
       showCSVWarning: false,
       preferences: this.state.preferences
     });
-  }
+  };
 
-  async createDataset (dataset) {
-    return await this.api.createDataset(this.state.user.id, dataset);
-  }
+  createDataset = async (dataset) => {
+    try {
+      return await this.api.createDataset(this.state.user.id, dataset);
+    } catch (datasetError) {
+      this.setError(
+        datasetError,
+        'There was an error creating the dataset, please try again.'
+      );
+    }
+  };
 
   createProject = (project) => {
     return this.api.createProject(this.state.user.id, project);
-  }
+  };
 
   doesFileExist = (filename) => {
     let fileExists = false;
-    this.state.dataset && this.state.dataset.files.forEach((file) => {
-      if (file.name === filename) {
-        fileExists = true;
-      }
-    });
+    this.state.dataset &&
+      this.state.dataset.files.forEach((file) => {
+        if (file.name === filename) {
+          fileExists = true;
+        }
+      });
     return fileExists;
-  }
+  };
 
   hasBeenDismissed = (key) => {
     return this.state.preferences.dismissals.find((dismissal) => {
       return dismissal === key;
     });
-  }
+  };
 
   getCharts = () => {
     return new Promise((resolve, reject) => {
-      this.office.getWorksheets().then(worksheets => {
-        const promises = worksheets.map(worksheet => this.office.getCharts(worksheet.id));
-        Promise.all(promises).then((allCharts) => {
-          // Some worksheets may not contain charts
-          const charts = allCharts.filter(chart => chart.length > 0);
+      this.office
+        .getWorksheets()
+        .then((worksheets) => {
+          const promises = worksheets.map((worksheet) =>
+            this.office.getCharts(worksheet.id)
+          );
+          Promise.all(promises)
+            .then((allCharts) => {
+              // Some worksheets may not contain charts
+              const charts = allCharts.filter((chart) => chart.length > 0);
 
-          // charts is an array of arrays, flatten before resolving
-          resolve(flatten(charts));
-        }).catch(reject);
-      }).catch(reject);
+              // charts is an array of arrays, flatten before resolving
+              resolve(flatten(charts));
+            })
+            .catch(reject);
+        })
+        .catch(reject);
     });
-  }
+  };
 
   uploadChart = (imageString, options) => {
     return this.api.uploadChart(imageString, options);
-  }
+  };
 
   toggleForceShowUpload = () => {
-    this.setState({forceShowUpload: true})
-  }
+    this.setState({ forceShowUpload: true });
+  };
 
   setError = (error, message) => {
     this.setState({
@@ -743,16 +839,14 @@ class App extends Component {
         message
       }
     });
-  }
+  };
 
-  async getWorkbookId() {
-    this.office.getWorkbookId().then(workbookId => {
-      this.setState({workbookId})
-    })
-  }
+  getWorkbookId = async () => {
+    const workbookId = await this.office.getWorkbookId();
+    this.setState({ workbookId });
+  };
 
-  
-  render () {
+  render() {
     const {
       currentSelectedRange,
       dataset,
@@ -776,6 +870,7 @@ class App extends Component {
       bindings,
       syncStatus
     } = this.state;
+
     let errorMessage = error;
     if (error && typeof error !== 'string') {
       errorMessage = error.message;
@@ -786,98 +881,139 @@ class App extends Component {
     const insights = page === 'insights';
     const importData = page === 'import';
 
-    const uploadDataView = !showStartPage && !showCreateDataset && !insights && !importData && !showDatasets;
-    const userId = user ? user.id : 'Undefined'
+    const uploadDataView =
+      !showStartPage &&
+      !showCreateDataset &&
+      !insights &&
+      !importData &&
+      !showDatasets;
+    const userId = user ? user.id : 'Undefined';
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
-    let numItemsInHistory = 0
+    let numItemsInHistory = 0;
     if (!insideOffice) {
-      return (<NotOfficeView />);
+      return <NotOfficeView />;
     }
 
-    const localHistory = localStorage.getItem('history')
-    let matchedFiles // all files which has the same username and workspace id as the current user
+    const localHistory = localStorage.getItem('history');
+    let matchedFiles; // all files which has the same username and workspace id as the current user
     if (localHistory) {
-      const allFiles = JSON.parse(localHistory)
+      const allFiles = JSON.parse(localHistory);
       if (allFiles) {
-        matchedFiles = allFiles.filter(file => {
-          const parsedEntry = JSON.parse(Object.keys(JSON.parse(file)).map(key => JSON.parse(file)[key])[0])
-          return (this.state.user && this.state.user.id === parsedEntry.userId) && parsedEntry.workbook === this.state.workbookId
-        }).reverse()
-        numItemsInHistory = matchedFiles.length
+        matchedFiles = allFiles
+          .filter((file) => {
+            const parsedEntry = JSON.parse(
+              Object.keys(JSON.parse(file)).map(
+                (key) => JSON.parse(file)[key]
+              )[0]
+            );
+            return (
+              this.state.user &&
+              this.state.user.id === parsedEntry.userId &&
+              parsedEntry.workbook === this.state.workbookId
+            );
+          })
+          .reverse();
+        numItemsInHistory = matchedFiles.length;
       }
     }
     return (
       <div>
-        {error && <Alert className="error-alert" bsStyle='danger' onDismiss={this.dismissError}>{errorMessage}</Alert>}
+        {error && (
+          <Alert bsStyle="danger" onDismiss={this.dismissError}>
+            {errorMessage}
+          </Alert>
+        )}
         {!officeInitialized && !error && <LoadingAnimation />}
-        {loggedIn && <LoginHeader user={user} logout={this.logout} page={page} />}
-        {showStartPage && <WelcomePage dataset={dataset} page={page} version={version} />}
+        {loggedIn && (
+          <LoginHeader user={user} logout={this.logout} page={page} />
+        )}
+        {showStartPage && (
+          <WelcomePage dataset={dataset} page={page} version={version} />
+        )}
 
-        {((forceShowUpload && !showDatasets && !showCreateDataset) || (uploadDataView && numItemsInHistory === 0)) && <UploadModal
-          excelApiSupported={excelApiSupported}
-          range={currentSelectedRange}
-          showDatasets={this.toggleShowDatasets}
-          url={url}
-          updateBinding={this.updateBinding}
-          doesFileExist={this.doesFileExist}
-          createBinding={this.createBinding}
-          sync={this.sync}
-          refreshLinkedDataset={this.refreshLinkedDataset}
-          close={this.closeAddData}
-          linkDataset={this.createUrl}
-          numItemsInHistory={numItemsInHistory}
-          changeSelection={this.changeSelection}
-          selectSheet={selectSheet}
-          addUrl={this.addUrl}
-          loading={this.state.syncing}
-          getSelectionRange={this.getSelectionRange}
-          error={error}
-        />}
+        {((forceShowUpload && !showDatasets && !showCreateDataset) ||
+          (uploadDataView && numItemsInHistory === 0)) && (
+          <UploadModal
+            excelApiSupported={excelApiSupported}
+            range={currentSelectedRange}
+            showDatasets={this.toggleShowDatasets}
+            url={url}
+            updateBinding={this.updateBinding}
+            doesFileExist={this.doesFileExist}
+            createBinding={this.createBinding}
+            sync={this.sync}
+            refreshLinkedDataset={this.refreshLinkedDataset}
+            close={this.closeAddData}
+            linkDataset={this.createUrl}
+            numItemsInHistory={numItemsInHistory}
+            changeSelection={this.changeSelection}
+            selectSheet={selectSheet}
+            addUrl={this.addUrl}
+            loading={this.state.syncing}
+            getSelectionRange={this.getSelectionRange}
+            error={error}
+          />
+        )}
 
-        {!forceShowUpload && uploadDataView && numItemsInHistory > 0 && !showStartPage && <RecentUploads
-          refreshLinkedDataset={this.refreshLinkedDataset}
-          sync={this.sync}
-          forceShowUpload={this.toggleForceShowUpload}
-          createBinding={this.createBinding}
-          addUrl={this.addUrl}
-          user={userId}
-          workbook={this.state.workbookId}
-          matchedFiles={matchedFiles}
-          bindings={bindings}
-          syncStatus={syncStatus}
-        />}
+        {!forceShowUpload &&
+          uploadDataView &&
+          numItemsInHistory > 0 &&
+          !showStartPage && (
+            <RecentUploads
+              refreshLinkedDataset={this.refreshLinkedDataset}
+              sync={this.sync}
+              forceShowUpload={this.toggleForceShowUpload}
+              createBinding={this.createBinding}
+              addUrl={this.addUrl}
+              user={userId}
+              workbook={this.state.workbookId}
+              matchedFiles={matchedFiles}
+              bindings={bindings}
+              syncStatus={syncStatus}
+            />
+          )}
 
-        {showCreateDataset && <CreateDatasetModal 
-          user={user}
-          createDataset={this.createDataset}
-          close={() => this.setState({showCreateDataset: false})}
-          linkDataset={this.createUrl} 
-          showDatasets={this.toggleShowDatasets}
-        />}
+        {showCreateDataset && (
+          <CreateDatasetModal
+            user={user}
+            createDataset={this.createDataset}
+            close={() => this.setState({ showCreateDataset: false })}
+            linkDataset={this.createUrl}
+            showDatasets={this.toggleShowDatasets}
+          />
+        )}
 
-        {!showStartPage && showDatasets && <DatasetsView 
-          datasets={datasets}
-          createDataset={this.showCreateDataset}
-          linkDataset={this.linkDataset}
-          loadingDatasets={loadingDatasets}
-          showDatasets={this.toggleShowDatasets}
-          showCreateDataset={this.showCreateDataset}
-        />}
+        {!showStartPage &&
+          showDatasets && (
+            <DatasetsView
+              datasets={datasets}
+              createDataset={this.showCreateDataset}
+              linkDataset={this.linkDataset}
+              loadingDatasets={loadingDatasets}
+              showDatasets={this.toggleShowDatasets}
+              showCreateDataset={this.showCreateDataset}
+            />
+          )}
 
-        {renderInsights && <Insights
-          getImageAndTitle={this.office.getImageAndTitle}
-          charts={charts}
-          user={user}
-          officeInitialized={officeInitialized}
-          projects={projects}
-          createProject={this.createProject}
-          uploadChart={this.uploadChart}
-          setError={this.setError}
-        />}
+        {renderInsights && (
+          <Insights
+            getImageAndTitle={this.office.getImageAndTitle}
+            charts={charts}
+            user={user}
+            officeInitialized={officeInitialized}
+            projects={projects}
+            createProject={this.createProject}
+            uploadChart={this.uploadChart}
+            setError={this.setError}
+          />
+        )}
 
         {renderImportData && <ImportData />}
-        <CSVWarningModal show={this.state.showCSVWarning} successHandler={this.dismissCSVWarning} />
+        <CSVWarningModal
+          show={this.state.showCSVWarning}
+          successHandler={this.dismissCSVWarning}
+        />
       </div>
     );
   }
