@@ -114,7 +114,7 @@ class App extends Component {
       page,
       charts: [],
       projects: [],
-      version,
+      version: localStorage.getItem(DW_APP_VERSION, version),
       insideOffice,
       showDatasets: false,
       url: '',
