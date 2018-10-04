@@ -86,7 +86,9 @@ class App extends Component {
     // To be used for rendering the appropriate landing page
     const version = this.parsedQueryString.v;
     if (version) {
-      localStorage.setItem(DW_APP_VERSION, version);
+      // Extra version information is attached on Excel desktop
+      // e.g. "1.1.0.0?_host_Info=Excel$Mac$16.01$en-US"
+      localStorage.setItem(DW_APP_VERSION, version.split('?')[0]);
     }
 
     // To be used to display NotOfficeView
