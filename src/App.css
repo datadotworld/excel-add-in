@@ -206,3 +206,7 @@ body {
 .help-block {
   font-size: 0.6875rem;
 }
+
+.error-alert {
+  margin-bottom: 0 !important;
+}
