@@ -394,7 +394,7 @@ export default class App extends Component {
 
   linkDataset = async (dataset) => {
     this.setState({ url: dataset, showDatasets: false });
-    const regexMatch = /https:\/\/data\.world\/(.*)\/(.*)/;
+    const regexMatch = /https:\/\/data\.world\/([^\/\?#]*)\/([^\/\?#]*)?/;
     const match = dataset.match(regexMatch);
     try {
       const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
