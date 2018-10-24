@@ -53,7 +53,7 @@ const INSIGHTS_ROUTE = 'insights';
 const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
 
-class App extends Component {
+export default class App extends Component {
   constructor() {
     super();
     find.shim();
@@ -105,6 +105,7 @@ class App extends Component {
     }
 
     this.state = {
+      error: null,
       token,
       preferences,
       bindings: [],
@@ -129,6 +130,7 @@ class App extends Component {
       this.api = new DataDotWorldApi(token);
       this.getUser();
     }
+
     this.initializeOffice().then(() => {
       this.getSelectionRange();
     });
@@ -167,10 +169,7 @@ class App extends Component {
       }
       this.getWorkbookId();
     } catch (error) {
-      this.setError(
-        error,
-        'There was an error initializing the Office connector, please try again.'
-      );
+      this.setError(error);
     }
   };
 
@@ -228,16 +227,10 @@ class App extends Component {
 
         bindings.forEach(this.listenForChangesToBinding);
       } catch (getBindingsError) {
-        this.setError(
-          getBindingsError,
-          'There was an error getting the bindings, please try again.'
-        );
+        this.setError(getBindingsError);
       }
     } catch (refreshDatasetsError) {
-      this.setError(
-        refreshDatasetsError,
-        'There was an error refreshing the linked datasets, please try again.'
-      );
+      this.setError(refreshDatasetsError);
     }
   };
 
@@ -252,16 +245,10 @@ class App extends Component {
           const charts = await this.getCharts();
           this.setState({ charts, projects, officeInitialized: true });
         } catch (getChartsError) {
-          this.setError(
-            getChartsError,
-            'There was an error fetching the charts, please try again.'
-          );
+          this.setError(getChartsError);
         }
       } catch (getProjectsError) {
-        this.setError(
-          getProjectsError,
-          'There was an error fetching the projects, please try again.'
-        );
+        this.setError(getProjectsError);
       }
     } else {
       this.setState({ officeInitialized: true });
@@ -309,10 +296,7 @@ class App extends Component {
             await this.office.removeBinding(binding);
             throw new Error(MAX_COLUMNS_ERROR);
           } catch (removeBindingError) {
-            this.setError(
-              removeBindingError,
-              'There was an error removing the binding, please try again.'
-            );
+            this.setError(removeBindingError);
           }
         }
 
@@ -334,22 +318,13 @@ class App extends Component {
 
           return binding;
         } catch (getBindingError) {
-          this.setError(
-            getBindingError,
-            'There was an error getting the binding, please try again.'
-          );
+          this.setError(getBindingError);
         }
       } catch (bindingError) {
-        this.setError(
-          bindingError,
-          'There was an error creating the binding, please try again.'
-        );
+        this.setError(bindingError);
       }
     } catch (selectionError) {
-      this.setError(
-        selectionError,
-        'There was an error creating the selection range, please try again.'
-      );
+      this.setError(selectionError);
     }
   };
 
@@ -362,10 +337,7 @@ class App extends Component {
         this.setState({ bindings });
       }
     } catch (removeBindingError) {
-      this.setError(
-        removeBindingError,
-        'There was an error removing the binding, please try again.'
-      );
+      this.setError(removeBindingError);
     }
   };
 
@@ -393,12 +365,9 @@ class App extends Component {
       this.logout();
     } else if (error.response && error.response.status === 404) {
       this.unlinkDataset();
-      this.setError('Dataset not found');
+      this.setError(new Error('Dataset not found'));
     } else {
-      this.setError(
-        error,
-        'There was an error fetching the dataset, please try again.'
-      );
+      this.setError(error);
     }
   };
 
@@ -459,10 +428,7 @@ class App extends Component {
         syncStatus: {}
       });
     } catch (error) {
-      this.setError(
-        error,
-        'There was an error unlinking the dataset, please try again.'
-      );
+      this.setError(error);
     }
   }
 
@@ -478,10 +444,7 @@ class App extends Component {
         this.logout();
       }
 
-      this.setError(
-        error,
-        'There was an error fetching the user, please try again.'
-      );
+      this.setError(error);
     }
   };
 
@@ -495,10 +458,7 @@ class App extends Component {
       await this.removeBinding(binding);
       return this.createBinding(selection);
     } catch (error) {
-      this.setError(
-        error,
-        'There was an error updating the binding, please try again.'
-      );
+      this.setError(error);
     }
   };
 
@@ -776,10 +736,7 @@ class App extends Component {
     try {
       return await this.api.createDataset(this.state.user.id, dataset);
     } catch (datasetError) {
-      this.setError(
-        datasetError,
-        'There was an error creating the dataset, please try again.'
-      );
+      this.setError(datasetError);
     }
   };
 
@@ -834,12 +791,9 @@ class App extends Component {
     this.setState({ forceShowUpload: true });
   };
 
-  setError = (error, message) => {
+  setError = (error) => {
     this.setState({
-      error: {
-        error,
-        message
-      }
+      error
     });
   };
 
@@ -849,6 +803,9 @@ class App extends Component {
   };
 
   render() {
+    if (this.state.error) {
+      throw this.state.error;
+    }
     const {
       currentSelectedRange,
       dataset,
@@ -1020,5 +977,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
