@@ -394,7 +394,7 @@ export default class App extends Component {
 
   linkDataset = async (dataset) => {
     this.setState({ url: dataset, showDatasets: false });
-    const regexMatch = /https:\/\/data\.world\/([^\/\?#]*)\/([^\/\?#]*)?/;
+    const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
     const match = dataset.match(regexMatch);
     try {
       const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
@@ -419,7 +419,7 @@ export default class App extends Component {
     this.setState({ url });
   };
 
-  async unlinkDataset() {
+  unlinkDataset = async () => {
     try {
       await this.office.setDataset(null);
       await this.office.setSyncStatus({});
@@ -435,7 +435,7 @@ export default class App extends Component {
     } catch (error) {
       this.setError(error);
     }
-  }
+  };
 
   /**
    * Gets the user from the data.world API and sets it on the state
