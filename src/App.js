@@ -604,23 +604,28 @@ export default class App extends Component {
       parsedHistory = JSON.parse(localStorage.getItem('history'));
     }
 
-    var doesFilenameExist = -1;
-    for (var i = 0; i < parsedHistory.length; ++i) {
-      const parsedEntry = JSON.parse(parsedHistory[i]);
-      if (
-        parsedEntry.hasOwnProperty(id) &&
-        JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')
-      ) {
-        const parsedObject = JSON.parse(parsedEntry[id]);
+    const doesFilenameExist = parsedHistory.findIndex((element) => {
+      try {
+        const parsedEntry = JSON.parse(element);
         if (
-          parsedObject.userId === this.state.user.id &&
-          parsedObject.workbook === this.state.workbookId
+          parsedEntry.hasOwnProperty(id) &&
+          JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')
         ) {
-          doesFilenameExist = i;
-          break;
+          const parsedObject = JSON.parse(parsedEntry[id]);
+          if (
+            parsedObject.userId === this.state.user.id &&
+            parsedObject.workbook === this.state.workbookId
+          ) {
+            return true;
+          }
         }
+
+        return false;
+      } catch (parsingError) {
+        this.setError(parsingError);
+        return false;
       }
-    }
+    });
 
     if (doesFilenameExist === -1) {
       parsedHistory.push(toPush);
