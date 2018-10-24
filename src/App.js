@@ -204,14 +204,18 @@ export default class App extends Component {
         });
 
         if (dataset) {
-          migrations.slice(nextMigrationIndex).forEach((migrationFn, idx) => {
-            migrationFn({
-              bindings,
-              pushToLocalStorage,
-              getSheetName,
-              dataset
-            });
-            office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+          migrations.slice(0).forEach((migrationFn, idx) => {
+            try {
+              migrationFn({
+                bindings,
+                pushToLocalStorage,
+                getSheetName,
+                dataset
+              });
+              office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+            } catch (migrationError) {
+              this.setError(migrationError);
+            }
           });
         }
 
