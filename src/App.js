@@ -298,9 +298,10 @@ export default class App extends Component {
         if (binding.columnCount > MAX_COLUMNS) {
           try {
             await this.office.removeBinding(binding);
-            throw new Error(MAX_COLUMNS_ERROR);
           } catch (removeBindingError) {
             this.setError(removeBindingError);
+          } finally {
+            this.setState({ errorMessage: MAX_COLUMNS_ERROR });
           }
         }
 
@@ -831,13 +832,9 @@ export default class App extends Component {
       forceShowUpload,
       selectSheet,
       bindings,
-      syncStatus
+      syncStatus,
+      errorMessage
     } = this.state;
-
-    let errorMessage = error;
-    if (error && typeof error !== 'string') {
-      errorMessage = error.message;
-    }
 
     const showStartPage = officeInitialized && !loggedIn;
 
@@ -882,7 +879,7 @@ export default class App extends Component {
     }
     return (
       <div>
-        {error && (
+        {errorMessage && (
           <Alert bsStyle="danger" onDismiss={this.dismissError}>
             {errorMessage}
           </Alert>
