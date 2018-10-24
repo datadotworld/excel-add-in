@@ -18,7 +18,7 @@
  */
 
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import './ErrorModal.css';
@@ -63,6 +63,15 @@ export default class ErrorBoundary extends Component {
             </a>
           </div>
         </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Reload
+          </Button>
+        </Modal.Footer>
       </Modal>
     );
   }
