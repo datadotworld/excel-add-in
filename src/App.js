@@ -689,7 +689,7 @@ export default class App extends Component {
           })
           .catch((error) => {
             this.setState({ syncing: false });
-            reject();
+            reject(error);
           });
       });
     } catch (updateBindingError) {
