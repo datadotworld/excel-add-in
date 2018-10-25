@@ -131,19 +131,20 @@ export default class App extends Component {
       this.getUser();
     }
 
-    this.initializeOffice().then(() => {
-      this.getSelectionRange();
-    });
+    this.initializeOffice();
   }
 
-  getSelectionRange = () => {
-    this.office.getCurrentlySelectedRange().then((currentSelectedRange) => {
+  getSelectionRange = async () => {
+    try {
+      const currentSelectedRange = await this.office.getCurrentlySelectedRange();
       this.setState({ currentSelectedRange });
-    });
 
-    this.office.listenForSelectionChanges((currentSelectedRange) => {
-      this.setState({ currentSelectedRange });
-    });
+      this.office.listenForSelectionChanges((currentSelectedRange) => {
+        this.setState({ currentSelectedRange });
+      });
+    } catch (selectionRangeError) {
+      this.setError(selectionRangeError);
+    }
   };
 
   changeSelection = (event) => {
@@ -525,67 +526,71 @@ export default class App extends Component {
     return result;
   };
 
-  getExcelBindings() {
-    return new Promise((resolve, reject) => {
-      this.office
-        .getBindings()
-        .then((bindings) => {
-          resolve(bindings);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
+  getExcelBindings = async () => {
+    try {
+      const bindings = await this.office.getBindings();
+      return bindings;
+    } catch (getBindingsError) {
+      this.setError(getBindingsError);
+    }
+  };
 
   /**
    * Replaces all the bindings stored in the state with those stored in Excel
    * while ensuring sheet bindings remain bound to the sheet
    */
-  updateBindings = () => {
-    return new Promise((resolve, reject) => {
-      this.getExcelBindings().then((excelBindings) => {
-        // Get all the current sheet bindings from state
-        const sheetBindings = this.state.bindings.filter((binding) => {
-          return isSheetBinding(binding);
-        });
-        const sheetBindingIds = sheetBindings.map((binding) => binding.id);
+  updateBindings = async () => {
+    const excelBindings = await this.getExcelBindings();
 
-        // Remove all the current state bindings for replacement
-        this.setState({ bindings: [] });
-        const promises = [];
+    // Get all the current sheet bindings from state
+    const sheetBindings = this.state.bindings.filter((binding) => {
+      return isSheetBinding(binding);
+    });
+    const sheetBindingIds = sheetBindings.map((binding) => binding.id);
 
-        excelBindings.forEach((binding) => {
-          // Find sheet bindings whose binding range has changed in Excel but not in the state
-          if (
-            sheetBindingIds.indexOf(binding.id) > -1 &&
-            !isSheetBinding(binding)
-          ) {
-            // Rebind changed bindings to the sheet
-            const promise = new Promise((resolve, reject) => {
-              // Sheet ID unavailable, use the sheet name instead
-              const sheet = getSheetName(binding);
-              // Extract file name from the binding id
-              const name = binding.id.replace('dw::', '');
-              const range = SHEET_RANGE;
+    // Remove all the current state bindings for replacement
+    this.setState({ bindings: [] });
+    const promises = [];
 
-              this.updateBinding(binding, { sheetId: sheet, range, name })
-                .then(resolve)
-                .catch(reject);
+    excelBindings.forEach((binding) => {
+      // Find sheet bindings whose binding range has changed in Excel but not in the state
+      if (
+        sheetBindingIds.indexOf(binding.id) > -1 &&
+        !isSheetBinding(binding)
+      ) {
+        // Rebind changed bindings to the sheet
+        const promise = new Promise(async (resolve, reject) => {
+          // Sheet ID unavailable, use the sheet name instead
+          const sheet = getSheetName(binding);
+          // Extract file name from the binding id
+          const name = binding.id.replace('dw::', '');
+          const range = SHEET_RANGE;
+
+          try {
+            await this.updateBinding(binding, {
+              sheetId: sheet,
+              range,
+              name
             });
-            promises.push(promise);
-          } else {
-            // Simply add all other bindings to the state
-            const stateBindings = this.state.bindings;
-            stateBindings.push(binding);
-            this.setState({ bindings: stateBindings });
+            resolve();
+          } catch (updateBindingError) {
+            reject(updateBindingError);
           }
         });
-        Promise.all(promises)
-          .then(resolve)
-          .catch(reject);
-      });
+        promises.push(promise);
+      } else {
+        // Simply add all other bindings to the state
+        const stateBindings = this.state.bindings;
+        stateBindings.push(binding);
+        this.setState({ bindings: stateBindings });
+      }
     });
+
+    try {
+      await Promise.all(promises);
+    } catch (updateBindingsError) {
+      this.setError(updateBindingsError);
+    }
   };
 
   pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
@@ -640,70 +645,66 @@ export default class App extends Component {
    * is provided, then only that binding is saved to data.world.
    */
   sync = async (binding) => {
-    const { currentSelectedRange } = this.state;
     try {
       this.setState({ syncing: true });
+      const currentSelectedRange = await this.office.getCurrentlySelectedRange();
+
       // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
       // to change, bindings must therefore be updated before a sync is attempted
       await this.updateBindings();
-      return new Promise((resolve, reject) => {
-        const bindings = binding ? [binding] : this.state.bindings;
-        const promises = [];
-        bindings.forEach((binding) => {
-          const promise = new Promise((resolve, reject) => {
-            this.office
-              .getData(binding)
-              .then((data) => {
-                const trimmedData = this.trimFile(data);
-                return this.api.uploadFile({
-                  data: trimmedData,
-                  dataset: this.state.url,
-                  filename: binding.id.replace('dw::', '')
-                });
-              })
-              .then(() => {
-                const syncStatus = this.state.syncStatus;
-                syncStatus[binding.id].synced = true;
-                syncStatus[binding.id].changes = 0;
-                syncStatus[binding.id].lastSync = new Date();
-                this.office.setSyncStatus(syncStatus);
-                this.setState({ syncStatus });
-                this.pushToLocalStorage(
-                  binding.id,
-                  this.state.url,
-                  binding.id.replace('dw::', ''),
-                  binding.rangeAddress,
-                  currentSelectedRange.worksheet.id,
-                  new Date()
-                );
-                this.setState({ url: '', selectSheet: false });
-                resolve();
-              })
-              .catch((error) => {
-                this.setState({ error });
-                this.setState({ syncing: false });
-                reject();
+      const bindings = binding ? [binding] : this.state.bindings;
+      const promises = [];
+      bindings.forEach(async (binding) => {
+        const promise = new Promise(async (resolve, reject) => {
+          try {
+            const data = await this.office.getData(binding);
+            const trimmedData = this.trimFile(data);
+
+            try {
+              await this.api.uploadFile({
+                data: trimmedData,
+                dataset: this.state.url,
+                filename: binding.id.replace('dw::', '')
               });
-          });
-          promises.push(promise);
+
+              const syncStatus = this.state.syncStatus;
+              syncStatus[binding.id].synced = true;
+              syncStatus[binding.id].changes = 0;
+              syncStatus[binding.id].lastSync = new Date();
+              this.office.setSyncStatus(syncStatus);
+              this.setState({ syncStatus });
+              this.pushToLocalStorage(
+                binding.id,
+                this.state.url,
+                binding.id.replace('dw::', ''),
+                binding.rangeAddress,
+                currentSelectedRange.worksheet.id,
+                new Date()
+              );
+              this.setState({ url: '', selectSheet: false });
+              resolve();
+            } catch (uploadFileError) {
+              this.setState({ syncing: false });
+              reject(uploadFileError);
+            }
+          } catch (getDataError) {
+            this.setState({ syncing: false });
+            reject(getDataError);
+          }
         });
-        Promise.all(promises)
-          .then(() => {
-            this.setState({ syncing: false });
-            resolve();
-          })
-          .catch((error) => {
-            this.setState({ syncing: false });
-            reject(error);
-          });
+        promises.push(promise);
       });
+
+      try {
+        await Promise.all(promises);
+        this.setState({ syncing: false });
+      } catch (bindingError) {
+        this.setState({ syncing: false, error: bindingError });
+      }
     } catch (updateBindingError) {
       this.setState({
         syncing: false,
-        error: {
-          error: updateBindingError,
-          message: 'There was an error updating the bindings, please try again.'
-        }
+        error: updateBindingError
       });
     }
   };
@@ -771,26 +772,27 @@ export default class App extends Component {
     });
   };
 
-  getCharts = () => {
-    return new Promise((resolve, reject) => {
-      this.office
-        .getWorksheets()
-        .then((worksheets) => {
-          const promises = worksheets.map((worksheet) =>
-            this.office.getCharts(worksheet.id)
-          );
-          Promise.all(promises)
-            .then((allCharts) => {
-              // Some worksheets may not contain charts
-              const charts = allCharts.filter((chart) => chart.length > 0);
+  getCharts = async () => {
+    try {
+      const worksheets = await this.office.getWorksheets();
+      const promises = worksheets.map((worksheet) =>
+        this.office.getCharts(worksheet.id)
+      );
 
-              // charts is an array of arrays, flatten before resolving
-              resolve(flatten(charts));
-            })
-            .catch(reject);
-        })
-        .catch(reject);
-    });
+      try {
+        const allCharts = await Promise.all(promises);
+
+        // Some worksheets may not contain charts
+        const charts = allCharts.filter((chart) => chart.length > 0);
+
+        // charts is an array of arrays, flatten before resolving
+        return flatten(charts);
+      } catch (getChartsError) {
+        this.setError(getChartsError);
+      }
+    } catch (getWorksheetsError) {
+      this.setError(getWorksheetsError);
+    }
   };
 
   uploadChart = (imageString, options) => {
@@ -908,6 +910,7 @@ export default class App extends Component {
             doesFileExist={this.doesFileExist}
             createBinding={this.createBinding}
             sync={this.sync}
+            setError={this.setError}
             refreshLinkedDataset={this.refreshLinkedDataset}
             close={this.closeAddData}
             linkDataset={this.createUrl}
@@ -928,6 +931,7 @@ export default class App extends Component {
             <RecentUploads
               refreshLinkedDataset={this.refreshLinkedDataset}
               sync={this.sync}
+              setError={this.setError}
               forceShowUpload={this.toggleForceShowUpload}
               createBinding={this.createBinding}
               addUrl={this.addUrl}

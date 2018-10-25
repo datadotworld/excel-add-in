@@ -9,7 +9,7 @@ exports[`renders modal - with options 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload to data.world continuosuly
     </label>
   </div>
   <div
@@ -148,7 +148,8 @@ exports[`renders modal - with options 1`] = `
           <span
             className="help-block"
           >
-            Must not include slashes, your file will be named 
+            Must not include slashes, your file will be named
+             
             <strong>
               
               .csv
@@ -197,7 +198,7 @@ exports[`renders modal - with range 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload to data.world continuosuly
     </label>
   </div>
   <div
@@ -336,7 +337,8 @@ exports[`renders modal - with range 1`] = `
           <span
             className="help-block"
           >
-            Must not include slashes, your file will be named 
+            Must not include slashes, your file will be named
+             
             <strong>
               
               .csv
@@ -385,7 +387,7 @@ exports[`renders modal 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload to data.world continuosuly
     </label>
   </div>
   <div
@@ -463,7 +465,8 @@ exports[`renders modal 1`] = `
           <span
             className="help-block"
           >
-            Must not include slashes, your file will be named 
+            Must not include slashes, your file will be named
+             
             <strong>
               
               .csv

@@ -17,7 +17,8 @@ exports[`renders modal 1`] = `
       onClick={[Function]}
       type="button"
     >
-      + New upload 
+      + New upload
+       
     </button>
   </div>
   <div
