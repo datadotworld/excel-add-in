@@ -55,7 +55,7 @@ export default class ErrorBoundary extends Component {
           </div>
           <div className="modal-contact-support">
             <a
-              href="https://www.google.com"
+              href="https://data.world/contact/"
               target="_blank"
               rel="noopener noreferrer"
             >
