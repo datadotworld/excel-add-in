@@ -810,8 +810,12 @@ export default class App extends Component {
   };
 
   getWorkbookId = async () => {
-    const workbookId = await this.office.getWorkbookId();
-    this.setState({ workbookId });
+    try {
+      const workbookId = await this.office.getWorkbookId();
+      this.setState({ workbookId });
+    } catch (getWorkbookIdError) {
+      this.setError(this.getWorkbookIdError);
+    }
   };
 
   render() {
