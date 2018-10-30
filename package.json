@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
+    "husky": "^1.1.2",
     "office-addin-validator": "^1.0.1",
     "react-test-renderer": "^16.6.0",
     "selfsigned": "^1.10.1"
@@ -29,9 +30,15 @@
     "start": "concurrently \"react-scripts start\" \"node server/server.js\"",
     "build": "react-scripts build",
     "prod": "node server/server.js",
-    "test": "react-scripts test --env=jsdom",
+    "test": "CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "heroku-prebuild": "yarn install --frozen-lockfile && yarn build"
+    "heroku-prebuild": "yarn install --frozen-lockfile && yarn build",
+    "precommit": "npm run test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "repository": {
     "type": "git",
