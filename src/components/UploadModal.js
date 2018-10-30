@@ -43,7 +43,14 @@ export default class UploadModal extends Component {
   }
 
   componentDidMount() {
-    this.props.getSelectionRange();
+    this.props
+      .getSelectionRange()
+      .then(() => {
+        // Ignore
+      })
+      .catch((error) => {
+        this.props.setError(error);
+      });
   }
 
   isFormValid = () => {
