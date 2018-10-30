@@ -128,10 +128,22 @@ export default class App extends Component {
 
     if (token) {
       this.api = new DataDotWorldApi(token);
-      this.getUser();
+      this.getUser()
+        .then(() => {
+          // Ignore
+        })
+        .catch((error) => {
+          this.setError(error);
+        });
     }
 
-    this.initializeOffice();
+    this.initializeOffice()
+      .then(() => {
+        // Ignore
+      })
+      .catch((error) => {
+        this.setError(error);
+      });
   }
 
   getSelectionRange = async () => {
@@ -162,13 +174,13 @@ export default class App extends Component {
       this.office = new OfficeConnector();
       await this.office.initialize();
       if (page === INSIGHTS_ROUTE) {
-        this.initializeInsights();
+        await this.initializeInsights();
       } else if (page === IMPORT_ROUTE) {
         return this.setState({ officeInitialized: true });
       } else {
-        this.initializeDatasets();
+        await this.initializeDatasets();
       }
-      this.getWorkbookId();
+      await this.getWorkbookId();
     } catch (error) {
       this.setError(error);
     }
@@ -184,7 +196,7 @@ export default class App extends Component {
         return this.setState({ officeInitialized: true, outsideOffice: false });
       }
       if (this.state.loggedIn) {
-        this.getDatasets();
+        await this.getDatasets();
       } else if (this.state.loggedIn) {
         dataset = await this.refreshLinkedDataset(dataset);
       }
@@ -273,7 +285,7 @@ export default class App extends Component {
   };
 
   listenForChangesToBinding = (binding) => {
-    this.office.listenForChanges(binding, (event) => {
+    this.office.listenForChanges(binding, () => {
       const { syncStatus } = this.state;
       syncStatus[binding.id].changes += 1;
       syncStatus[binding.id].synced = false;
@@ -366,14 +378,14 @@ export default class App extends Component {
     }
   };
 
-  handleDatasetFetchError = (error) => {
+  handleDatasetFetchError = async (error) => {
     if (error.response && error.response.status === 401) {
-      this.logout();
+      return this.logout();
     } else if (error.response && error.response.status === 404) {
-      this.unlinkDataset();
-      this.setError(new Error('Dataset not found'));
+      await this.unlinkDataset();
+      return this.setError(new Error('Dataset not found'));
     } else {
-      this.setError(error);
+      return this.setError(error);
     }
   };
 
@@ -388,7 +400,7 @@ export default class App extends Component {
 
         return dataset;
       } catch (error) {
-        this.handleDatasetFetchError(error);
+        await this.handleDatasetFetchError(error);
       }
     }
   };
@@ -408,7 +420,7 @@ export default class App extends Component {
       }
       return await this.office.setDataset(freshDataset);
     } catch (error) {
-      this.handleDatasetFetchError(error);
+      await this.handleDatasetFetchError(error);
     }
   };
 
@@ -424,10 +436,10 @@ export default class App extends Component {
     try {
       await this.office.setDataset(null);
       await this.office.setSyncStatus({});
-      this.state.bindings.forEach((binding) => {
-        this.office.removeBinding(binding);
+      this.state.bindings.forEach(async (binding) => {
+        return await this.office.removeBinding(binding);
       });
-      this.getDatasets();
+      await this.getDatasets();
       this.setState({
         dataset: null,
         bindings: [],
@@ -462,7 +474,7 @@ export default class App extends Component {
   updateBinding = async (binding, selection) => {
     try {
       await this.removeBinding(binding);
-      return this.createBinding(selection);
+      return await this.createBinding(selection);
     } catch (error) {
       this.setError(error);
     }
