@@ -865,6 +865,7 @@ export default class App extends Component {
     const importData = page === 'import';
 
     const uploadDataView =
+      officeInitialized &&
       !showStartPage &&
       !showCreateDataset &&
       !insights &&

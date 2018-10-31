@@ -76,7 +76,7 @@ export default class UploadModal extends Component {
     }
 
     // Range not yet loaded, return placeholder text
-    return '(Rows x Columns)';
+    return '(6 Rows x 7 Columns)';
   }
 
   getSheetName = (range) => {
@@ -177,7 +177,7 @@ export default class UploadModal extends Component {
     return (
       <div>
         <div className="full-screen-modal category-title">
-          <ControlLabel>Upload to data.world continuosuly</ControlLabel>
+          <ControlLabel>Upload to data.world</ControlLabel>
         </div>
         <Grid className="upload-modal full-screen-modal  ">
           <Row className="center-block">
