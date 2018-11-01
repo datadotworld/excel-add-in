@@ -488,7 +488,7 @@ export default class App extends Component {
   };
 
   dismissError = () => {
-    this.setState({ error: null });
+    this.setState({ errorMessage: null });
   };
 
   /**
@@ -711,7 +711,7 @@ export default class App extends Component {
         await Promise.all(promises);
         this.setState({ syncing: false });
       } catch (bindingError) {
-        this.setState({ syncing: false, error: bindingError });
+        this.setState({ syncing: false });
       }
     } catch (updateBindingError) {
       this.setState({
@@ -904,7 +904,11 @@ export default class App extends Component {
     return (
       <div>
         {errorMessage && (
-          <Alert bsStyle="danger" onDismiss={this.dismissError}>
+          <Alert
+            bsStyle="danger"
+            className="error-alert"
+            onDismiss={this.dismissError}
+          >
             {errorMessage}
           </Alert>
         )}
