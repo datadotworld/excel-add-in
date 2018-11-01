@@ -66,10 +66,6 @@ export default class OfficeConnector {
 
   isExcelApiSupported() {
     if (Office && Office.context) {
-      console.log(
-        'Good so far',
-        Office.context.requirements.isSetSupported('ExcelApi', '1.1')
-      );
       return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
     }
   }

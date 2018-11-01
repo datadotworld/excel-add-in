@@ -76,7 +76,7 @@ export default class UploadModal extends Component {
     }
 
     // Range not yet loaded, return placeholder text
-    return '(6 Rows x 7 Columns)';
+    return '(Rows x Columns)';
   }
 
   getSheetName = (range) => {
@@ -112,9 +112,11 @@ export default class UploadModal extends Component {
 
     try {
       const binding = await createBinding(selection);
-      await sync(binding);
-      await refreshLinkedDataset();
-      await close();
+      if (binding) {
+        await sync(binding);
+        await refreshLinkedDataset();
+        await close();
+      }
     } catch (bindingError) {
       setError(bindingError);
     }
