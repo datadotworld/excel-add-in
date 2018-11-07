@@ -272,7 +272,7 @@ export default class OfficeConnector {
       Excel.run((ctx) => {
         const range = ctx.workbook
           .getSelectedRange()
-          .load(['columnCount', 'rowCount', 'address', 'worksheet']);
+          .load(['columnCount', 'rowCount', 'address', 'worksheet', 'values']);
         return ctx
           .sync()
           .then(() => {

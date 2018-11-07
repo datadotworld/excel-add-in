@@ -42,17 +42,6 @@ export default class UploadModal extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props
-      .getSelectionRange()
-      .then(() => {
-        // Ignore
-      })
-      .catch((error) => {
-        this.props.setError(error);
-      });
-  }
-
   isFormValid = () => {
     const { filename } = this.state;
     const { excelApiSupported, range } = this.props;
@@ -101,24 +90,25 @@ export default class UploadModal extends Component {
       sync,
       setError,
       range,
-      selectSheet
+      selectSheet,
+      getSelectionRange
     } = this.props;
     const { filename } = this.state;
-    const selection = {
-      name: `${filename}.csv`,
-      sheetId: range.worksheet.id,
-      range: selectSheet ? SHEET_RANGE : range.address
-    };
+    // const selection = {
+    //   name: `${filename}.csv`,
+    //   sheetId: range.worksheet.id,
+    //   range: selectSheet ? SHEET_RANGE : range.address
+    // };
 
     try {
-      const binding = await createBinding(selection);
-      if (binding) {
-        await sync(binding);
+      const range = await getSelectionRange();
+      if (range.values) {
+        await sync(`${filename}.csv`, range.values);
         await refreshLinkedDataset();
         await close();
       }
-    } catch (bindingError) {
-      setError(bindingError);
+    } catch (selectionRangeError) {
+      setError(selectionRangeError);
     }
   };
 
@@ -303,7 +293,6 @@ export default class UploadModal extends Component {
                         ? 'submit-button'
                         : 'full-submit-button'
                     }
-                    disabled={validState !== 'success'}
                     bsStyle="primary"
                   >
                     Save file

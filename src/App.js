@@ -149,11 +149,8 @@ export default class App extends Component {
   getSelectionRange = async () => {
     try {
       const currentSelectedRange = await this.office.getCurrentlySelectedRange();
-      this.setState({ currentSelectedRange });
 
-      this.office.listenForSelectionChanges((currentSelectedRange) => {
-        this.setState({ currentSelectedRange });
-      });
+      return currentSelectedRange;
     } catch (selectionRangeError) {
       this.setError(selectionRangeError);
     }
@@ -653,70 +650,21 @@ export default class App extends Component {
   };
 
   /**
-   * Saves bindings to their associated files on data.world.  If a binding
-   * is provided, then only that binding is saved to data.world.
+   * Saves data in specified range to its associated file on data.world.
    */
-  sync = async (binding) => {
+  sync = async (filename, values) => {
     try {
       this.setState({ syncing: true });
-      const currentSelectedRange = await this.office.getCurrentlySelectedRange();
-
-      // Actions such as deleting a column and renaming a sheet cause the value of Excel's bindings
-      // to change, bindings must therefore be updated before a sync is attempted
-      await this.updateBindings();
-      const bindings = binding ? [binding] : this.state.bindings;
-      const promises = [];
-      bindings.forEach(async (binding) => {
-        const promise = new Promise(async (resolve, reject) => {
-          try {
-            const data = await this.office.getData(binding);
-            const trimmedData = this.trimFile(data);
-
-            try {
-              await this.api.uploadFile({
-                data: trimmedData,
-                dataset: this.state.url,
-                filename: binding.id.replace('dw::', '')
-              });
-
-              const syncStatus = this.state.syncStatus;
-              syncStatus[binding.id].synced = true;
-              syncStatus[binding.id].changes = 0;
-              syncStatus[binding.id].lastSync = new Date();
-              this.office.setSyncStatus(syncStatus);
-              this.setState({ syncStatus });
-              this.pushToLocalStorage(
-                binding.id,
-                this.state.url,
-                binding.id.replace('dw::', ''),
-                binding.rangeAddress,
-                currentSelectedRange.worksheet.id,
-                new Date()
-              );
-              this.setState({ url: '', selectSheet: false });
-              resolve();
-            } catch (uploadFileError) {
-              this.setState({ syncing: false });
-              reject(uploadFileError);
-            }
-          } catch (getDataError) {
-            this.setState({ syncing: false });
-            reject(getDataError);
-          }
-        });
-        promises.push(promise);
+      const trimmedData = this.trimFile(values);
+      await this.api.uploadFile({
+        data: trimmedData,
+        dataset: this.state.url,
+        filename
       });
-
-      try {
-        await Promise.all(promises);
-        this.setState({ syncing: false });
-      } catch (bindingError) {
-        this.setState({ syncing: false });
-      }
-    } catch (updateBindingError) {
+    } catch (uploadError) {
       this.setState({
         syncing: false,
-        error: updateBindingError
+        error: uploadError
       });
     }
   };

@@ -174,7 +174,7 @@ exports[`renders modal - with options 1`] = `
           </button>
           <button
             className="submit-button btn btn-primary"
-            disabled={true}
+            disabled={false}
             type="submit"
           >
             Save file
@@ -363,7 +363,7 @@ exports[`renders modal - with range 1`] = `
           </button>
           <button
             className="submit-button btn btn-primary"
-            disabled={true}
+            disabled={false}
             type="submit"
           >
             Save file
@@ -491,7 +491,7 @@ exports[`renders modal 1`] = `
           </button>
           <button
             className="submit-button btn btn-primary"
-            disabled={true}
+            disabled={false}
             type="submit"
           >
             Save file
