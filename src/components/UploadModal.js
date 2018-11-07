@@ -35,6 +35,10 @@ export default class UploadModal extends Component {
     currentUrl: this.props.url,
     showWarningModal: false
   };
+  componentDidMount() {
+    // To show number of rows and columns selected
+    this.props.getSelectionRange();
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.url !== this.props.url) {

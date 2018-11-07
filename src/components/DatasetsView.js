@@ -1,4 +1,4 @@
-  /*
+/*
  * Copyright 2017 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,33 +19,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
-  Button,
-  Grid,
-  Row,
-  ControlLabel
-} from 'react-bootstrap';
+import { Button, Grid, Row, ControlLabel } from 'react-bootstrap';
 import './DatasetsView.css';
 import DatasetItem from './DatasetItem';
 import LoadingAnimation from './LoadingAnimation';
 import analytics from '../analytics';
 
 class DatasetsView extends Component {
-
   static propTypes = {
     createDataset: PropTypes.func,
     datasets: PropTypes.array,
     linkDataset: PropTypes.func,
     loadingDatasets: PropTypes.bool
-  }
+  };
 
   static defaultProps = {
     datasets: [],
     loadingDatasets: true
-  }
+  };
 
   state = {
     sortKey: 'updated'
+  };
+
+  componentDidMount() {
+    this.props.getDatasets();
   }
 
   sortDatasets = () => {
@@ -56,7 +54,7 @@ class DatasetsView extends Component {
     sortedDatasets.sort((a, b) => {
       if (sortKey.indexOf('title') >= 0) {
         if (a.title < b.title) {
-          return reverseSort ?  1 : -1;
+          return reverseSort ? 1 : -1;
         } else if (a.title > b.title) {
           return reverseSort ? -1 : 1;
         }
@@ -74,55 +72,80 @@ class DatasetsView extends Component {
       }
     });
     return sortedDatasets;
-  }
+  };
 
   sortChanged = (sortKey) => {
-    analytics.track('exceladdin.datasets.sort.change', {sort: sortKey});
-    this.setState({sortKey})
-  }
+    analytics.track('exceladdin.datasets.sort.change', { sort: sortKey });
+    this.setState({ sortKey });
+  };
 
   createDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_button.click');
     this.props.createDataset();
-  }
+  };
 
   addDatasetClick = () => {
     analytics.track('exceladdin.datasets.create_dataset_add.click');
     this.props.createDataset();
-  }
+  };
 
-  render () {
-    const { datasets, loadingDatasets, showCreateDataset, linkDataset } = this.props;
+  render() {
+    const {
+      datasets,
+      loadingDatasets,
+      showCreateDataset,
+      linkDataset
+    } = this.props;
     const sortedDatasets = this.sortDatasets();
-    const datasetEntries = sortedDatasets.map((d) =>{
-      return (<DatasetItem dataset={d} key={`${d.owner}/${d.id}`} buttonText='Link' buttonHandler={linkDataset} />);
+    const datasetEntries = sortedDatasets.map((d) => {
+      return (
+        <DatasetItem
+          dataset={d}
+          key={`${d.owner}/${d.id}`}
+          buttonText="Link"
+          buttonHandler={linkDataset}
+        />
+      );
     });
 
     return (
-      <Grid className='datasets-view'>
-        <div className='dataset-selector'>
-          <Row className='center-block section-header'>
-            <ControlLabel>
-              Select a dataset or project
-            </ControlLabel>
-            <Button bsStyle='default' onClick={() => this.props.showDatasets()}>Cancel</Button>
+      <Grid className="datasets-view">
+        <div className="dataset-selector">
+          <Row className="center-block section-header">
+            <ControlLabel>Select a dataset or project</ControlLabel>
+            <Button bsStyle="default" onClick={() => this.props.showDatasets()}>
+              Cancel
+            </Button>
           </Row>
-          {loadingDatasets && <LoadingAnimation label='Fetching datasets...' />}
-          {!!datasets.length && !loadingDatasets &&
-            <Row className='center-block'>
-              <div>
-                <DatasetItem buttonText='Link' dataset={{isCreate: true}} buttonHandler={showCreateDataset}/>
-                {datasetEntries}
-              </div>
-            </Row>}
-          {!datasets.length && !loadingDatasets &&
-            <Row className='center-block no-datasets'>
-              <div className='message'>
-                You haven't created any datasets to link data to.
-              </div>
-              <Button className='bottom-button' bsStyle='primary' onClick={this.createDatasetClick}>Create a new dataset</Button>
-            </Row>
-          }
+          {loadingDatasets && <LoadingAnimation label="Fetching datasets..." />}
+          {!!datasets.length &&
+            !loadingDatasets && (
+              <Row className="center-block">
+                <div>
+                  <DatasetItem
+                    buttonText="Link"
+                    dataset={{ isCreate: true }}
+                    buttonHandler={showCreateDataset}
+                  />
+                  {datasetEntries}
+                </div>
+              </Row>
+            )}
+          {!datasets.length &&
+            !loadingDatasets && (
+              <Row className="center-block no-datasets">
+                <div className="message">
+                  You haven't created any datasets to link data to.
+                </div>
+                <Button
+                  className="bottom-button"
+                  bsStyle="primary"
+                  onClick={this.createDatasetClick}
+                >
+                  Create a new dataset
+                </Button>
+              </Row>
+            )}
         </div>
       </Grid>
     );

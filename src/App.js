@@ -149,7 +149,11 @@ export default class App extends Component {
   getSelectionRange = async () => {
     try {
       const currentSelectedRange = await this.office.getCurrentlySelectedRange();
+      this.office.listenForSelectionChanges((newSelectedRange) => {
+        this.setState({ currentSelectedRange: newSelectedRange });
+      });
 
+      this.setState({ currentSelectedRange });
       return currentSelectedRange;
     } catch (selectionRangeError) {
       this.setError(selectionRangeError);
@@ -184,68 +188,16 @@ export default class App extends Component {
   };
 
   initializeDatasets = async () => {
-    try {
-      const settings = this.office.getSettings();
-      const { pushToLocalStorage, office } = this;
-      let { syncStatus, dataset, nextMigrationIndex } = settings;
-
-      if (!this.state.loggedIn) {
-        return this.setState({ officeInitialized: true, outsideOffice: false });
-      }
-      if (this.state.loggedIn) {
-        await this.getDatasets();
-      } else if (this.state.loggedIn) {
-        dataset = await this.refreshLinkedDataset(dataset);
-      }
-      if (!syncStatus) {
-        syncStatus = {};
-      }
-
-      try {
-        const bindings = await this.office.getBindings();
-        bindings.forEach((binding) => {
-          if (!syncStatus[binding.id]) {
-            syncStatus[binding.id] = {
-              synced: false,
-              changes: 1,
-              lastSync: null
-            };
-          }
-        });
-
-        if (dataset) {
-          migrations.slice(0).forEach((migrationFn, idx) => {
-            try {
-              migrationFn({
-                bindings,
-                pushToLocalStorage,
-                getSheetName,
-                dataset
-              });
-              office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
-            } catch (migrationError) {
-              this.setError(migrationError);
-            }
-          });
-        }
-
-        this.setState({
-          bindings,
-          dataset,
-          syncStatus,
-          excelApiSupported: this.office.isExcelApiSupported(),
-          officeInitialized: true,
-          outsideOffice: false,
-          csvMode: this.office.isCSV()
-        });
-
-        bindings.forEach(this.listenForChangesToBinding);
-      } catch (getBindingsError) {
-        this.setError(getBindingsError);
-      }
-    } catch (refreshDatasetsError) {
-      this.setError(refreshDatasetsError);
+    if (!this.state.loggedIn) {
+      return this.setState({ officeInitialized: true, outsideOffice: false });
     }
+
+    this.setState({
+      excelApiSupported: this.office.isExcelApiSupported(),
+      officeInitialized: true,
+      outsideOffice: false,
+      csvMode: this.office.isCSV()
+    });
   };
 
   initializeInsights = async () => {
@@ -281,95 +233,14 @@ export default class App extends Component {
     )}`;
   };
 
-  listenForChangesToBinding = (binding) => {
-    this.office.listenForChanges(binding, () => {
-      const { syncStatus } = this.state;
-      syncStatus[binding.id].changes += 1;
-      syncStatus[binding.id].synced = false;
-
-      this.office.setSyncStatus(syncStatus);
-      this.setState({ syncStatus });
-    });
-  };
-
-  createBinding = async (selection) => {
-    try {
-      const namedItem = await this.office.createSelectionRange(
-        selection.sheetId,
-        selection.range
-      );
-
-      try {
-        const binding = await this.office.createBinding(
-          selection.name,
-          namedItem
-        );
-
-        if (binding.columnCount > MAX_COLUMNS) {
-          try {
-            await this.office.removeBinding(binding);
-          } catch (removeBindingError) {
-            this.setError(removeBindingError);
-          } finally {
-            this.setState({ errorMessage: MAX_COLUMNS_ERROR });
-          }
-        }
-
-        try {
-          await this.office.getBindingRange(binding);
-          const syncStatus = this.state.syncStatus;
-          syncStatus[binding.id] = {
-            synced: false,
-            lastSync: null,
-            changes: 1
-          };
-
-          this.state.bindings.push(binding);
-          this.listenForChangesToBinding(binding);
-          this.setState({
-            syncStatus,
-            bindings: this.state.bindings
-          });
-
-          return binding;
-        } catch (getBindingError) {
-          this.setError(getBindingError);
-        }
-      } catch (bindingError) {
-        this.setError(bindingError);
-      }
-    } catch (selectionError) {
-      this.setError(selectionError);
-    }
-  };
-
-  removeBinding = async (binding) => {
-    try {
-      await this.office.removeBinding(binding);
-      const { bindings } = this.state;
-      if (bindings.indexOf(binding) > -1) {
-        bindings.splice(bindings.indexOf(binding), 1);
-        this.setState({ bindings });
-      }
-    } catch (removeBindingError) {
-      this.setError(removeBindingError);
-    }
-  };
-
   getDatasets = async () => {
     try {
       this.setState({ loadingDatasets: true });
       const datasets = await this.api.getDatasets();
-      this.setState({
-        datasets,
-        loadingDatasets: false
-      });
+      this.setState({ datasets, loadingDatasets: false });
     } catch (getDatasetsError) {
       this.setState({
-        error: {
-          error: getDatasetsError,
-          message: 'There was an error fetching the datasets, please try again.'
-        },
+        error: getDatasetsError,
         loadingDatasets: false
       });
     }
@@ -931,6 +802,7 @@ export default class App extends Component {
               loadingDatasets={loadingDatasets}
               showDatasets={this.toggleShowDatasets}
               showCreateDataset={this.showCreateDataset}
+              getDatasets={this.getDatasets}
             />
           )}
 
