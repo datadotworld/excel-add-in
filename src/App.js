@@ -652,7 +652,17 @@ export default class App extends Component {
               file.workbook === this.state.workbookId
             );
           })
-          .reverse();
+          .sort((a, b) => {
+            // Sort by date
+            if (a.date < b.date) {
+              return 1;
+            }
+            if (a.date > b.date) {
+              return -1;
+            }
+
+            return 0;
+          });
       } catch (parsingError) {
         this.setError(parsingError);
       }
