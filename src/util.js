@@ -16,33 +16,40 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import { MAX_ROWS, MAX_COLUMNS } from './constants';
-
-export function isSheetBinding(binding) {
-  if (binding.rowCount === MAX_ROWS && binding.columnCount === MAX_COLUMNS) {
-    return true;
-  } else {
-    return false;
-  }
-}
+import { MAX_ROWS, MAX_COLUMNS, SHEET_RANGE } from './constants';
 
 export function getSheetName(binding) {
-  const rangeAddress = binding.rangeAddress
-  return rangeAddress
-    // Extract sheet name from cell range
-    .substring(0, rangeAddress.indexOf('!'))
-    // Remove quotation marks from sheet names containing a space
-    .replace(/'/g, '');
+  const rangeAddress = binding.rangeAddress;
+  return (
+    rangeAddress
+      // Extract sheet name from cell range
+      .substring(0, rangeAddress.indexOf('!'))
+      // Remove quotation marks from sheet names containing a space
+      .replace(/'/g, '')
+  );
+}
+
+export function getDisplayRange(rangeAddress) {
+  if (rangeAddress) {
+    const [sheet, range] = rangeAddress.split('!');
+    if (range === SHEET_RANGE) {
+      return sheet;
+    }
+
+    return rangeAddress;
+  } else {
+    return 'Undefined';
+  }
 }
 
 export function b64toBlob(imageString) {
   const sliceSize = 512;
   const byteCharacters = atob(imageString);
   const byteArrays = [];
-  
+
   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
     const slice = byteCharacters.slice(offset, offset + sliceSize);
-    
+
     let byteNumbers = new Array(slice.length);
     for (let i = 0; i < slice.length; i++) {
       byteNumbers[i] = slice.charCodeAt(i);
@@ -52,7 +59,7 @@ export function b64toBlob(imageString) {
     byteArrays.push(byteArray);
   }
 
-  const blob = new Blob(byteArrays, {type: 'image/png'});
+  const blob = new Blob(byteArrays, { type: 'image/png' });
 
   return blob;
 }

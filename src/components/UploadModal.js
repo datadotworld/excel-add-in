@@ -35,6 +35,7 @@ export default class UploadModal extends Component {
     currentUrl: this.props.url,
     showWarningModal: false
   };
+
   componentDidMount() {
     // To show number of rows and columns selected
     this.props.getSelectionRange();
@@ -85,7 +86,7 @@ export default class UploadModal extends Component {
     return '';
   };
 
-  submitBinding = async () => {
+  submitFile = async () => {
     this.closeModal();
     const {
       close,
@@ -106,8 +107,14 @@ export default class UploadModal extends Component {
 
     try {
       const range = await getSelectionRange();
-      if (range.address) {
-        await sync(`${filename}.csv`, range.address, this.state.currentUrl);
+      let rangeAddress = range.address;
+      if (rangeAddress) {
+        if (selectSheet) {
+          const [sheet] = rangeAddress.split('!');
+          rangeAddress = `${sheet}!${SHEET_RANGE}`;
+        }
+
+        await sync(`${filename}.csv`, rangeAddress, this.state.currentUrl);
         await refreshLinkedDataset();
         await close();
       }
@@ -125,7 +132,7 @@ export default class UploadModal extends Component {
       // Show warning modal
       this.setState({ showWarningModal: true });
     } else {
-      this.submitBinding();
+      this.submitFile();
     }
   };
 

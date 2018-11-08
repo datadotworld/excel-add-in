@@ -39,7 +39,7 @@ import NotOfficeView from './components/NotOfficeView';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
-import { isSheetBinding, getSheetName } from './util';
+import { getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 import UploadModal from './components/UploadModal';
 import RecentUploads from './components/RecentUploads';

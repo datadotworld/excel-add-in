@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Button, ControlLabel, Image } from 'react-bootstrap';
+import { getDisplayRange } from '../util';
 import Icon from './icons/Icon';
 import './DatasetItem.css';
 
@@ -32,7 +33,7 @@ class RecentItem extends Component {
 
     const tabular = require('./icons/icon-tabular.svg');
 
-    const rangeToShow = rangeAddress ? rangeAddress : 'Undefined';
+    const rangeToShow = getDisplayRange(rangeAddress);
     const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
