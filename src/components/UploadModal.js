@@ -90,20 +90,13 @@ export default class UploadModal extends Component {
     this.closeModal();
     const {
       close,
-      createBinding,
       refreshLinkedDataset,
       sync,
       setError,
-      range,
       selectSheet,
       getSelectionRange
     } = this.props;
     const { filename } = this.state;
-    // const selection = {
-    //   name: `${filename}.csv`,
-    //   sheetId: range.worksheet.id,
-    //   range: selectSheet ? SHEET_RANGE : range.address
-    // };
 
     try {
       const range = await getSelectionRange();

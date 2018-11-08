@@ -16,7 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import { MAX_ROWS, MAX_COLUMNS, SHEET_RANGE } from './constants';
+import { SHEET_RANGE } from './constants';
 
 export function getDisplayRange(rangeAddress) {
   if (rangeAddress) {
