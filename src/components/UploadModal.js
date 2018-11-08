@@ -106,8 +106,8 @@ export default class UploadModal extends Component {
 
     try {
       const range = await getSelectionRange();
-      if (range.values) {
-        await sync(`${filename}.csv`, range.values);
+      if (range.address) {
+        await sync(`${filename}.csv`, range.address, this.state.currentUrl);
         await refreshLinkedDataset();
         await close();
       }

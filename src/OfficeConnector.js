@@ -441,4 +441,26 @@ export default class OfficeConnector {
       });
     });
   }
+
+  getRangeValues(rangeAddress) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const [sheet, range] = rangeAddress.split('!');
+        const workSheet = ctx.workbook.worksheets.getItem(sheet);
+        const rangeObject = workSheet.getRange(range);
+        rangeObject.load('values');
+
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(rangeObject.values);
+          })
+          .catch(reject);
+      });
+    });
+  }
 }

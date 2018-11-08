@@ -335,20 +335,6 @@ export default class App extends Component {
   };
 
   /**
-   * Removes and then recreates a binding with the active selection.
-   * There is not currently a way to update the range for an existing binding
-   * in the office API.
-   */
-  updateBinding = async (binding, selection) => {
-    try {
-      await this.removeBinding(binding);
-      return await this.createBinding(selection);
-    } catch (error) {
-      this.setError(error);
-    }
-  };
-
-  /**
    * Highlights the address provided in the excel document
    */
   select = (address) => {
@@ -406,132 +392,65 @@ export default class App extends Component {
     return result;
   };
 
-  getExcelBindings = async () => {
-    try {
-      const bindings = await this.office.getBindings();
-      return bindings;
-    } catch (getBindingsError) {
-      this.setError(getBindingsError);
-    }
-  };
+  pushToLocalStorage = (dataset, filename, rangeAddress) => {
+    const recentUploads = localStorage.getItem('history')
+      ? JSON.parse(localStorage.getItem('history'))
+      : [];
 
-  /**
-   * Replaces all the bindings stored in the state with those stored in Excel
-   * while ensuring sheet bindings remain bound to the sheet
-   */
-  updateBindings = async () => {
-    const excelBindings = await this.getExcelBindings();
-
-    // Get all the current sheet bindings from state
-    const sheetBindings = this.state.bindings.filter((binding) => {
-      return isSheetBinding(binding);
-    });
-    const sheetBindingIds = sheetBindings.map((binding) => binding.id);
-
-    // Remove all the current state bindings for replacement
-    this.setState({ bindings: [] });
-    const promises = [];
-
-    excelBindings.forEach((binding) => {
-      // Find sheet bindings whose binding range has changed in Excel but not in the state
-      if (
-        sheetBindingIds.indexOf(binding.id) > -1 &&
-        !isSheetBinding(binding)
-      ) {
-        // Rebind changed bindings to the sheet
-        const promise = new Promise(async (resolve, reject) => {
-          // Sheet ID unavailable, use the sheet name instead
-          const sheet = getSheetName(binding);
-          // Extract file name from the binding id
-          const name = binding.id.replace('dw::', '');
-          const range = SHEET_RANGE;
-
-          try {
-            await this.updateBinding(binding, {
-              sheetId: sheet,
-              range,
-              name
-            });
-            resolve();
-          } catch (updateBindingError) {
-            reject(updateBindingError);
-          }
-        });
-        promises.push(promise);
-      } else {
-        // Simply add all other bindings to the state
-        const stateBindings = this.state.bindings;
-        stateBindings.push(binding);
-        this.setState({ bindings: stateBindings });
-      }
-    });
-
-    try {
-      await Promise.all(promises);
-    } catch (updateBindingsError) {
-      this.setError(updateBindingsError);
-    }
-  };
-
-  pushToLocalStorage = (id, dataset, filename, range, sheetId, date) => {
-    const recentUploadData = {
-      dataset: dataset,
-      filename: filename,
-      range: range,
-      sheetId: sheetId,
-      date: date,
+    const newUpload = {
+      dataset,
+      filename,
+      rangeAddress,
       userId: this.state.user.id,
       workbook: this.state.workbookId
     };
-    const toPush = JSON.stringify({ [id]: JSON.stringify(recentUploadData) });
-    let parsedHistory = [];
-    if (localStorage['history'] && localStorage['history'] !== '{}') {
-      parsedHistory = JSON.parse(localStorage.getItem('history'));
-    }
 
-    const doesFilenameExist = parsedHistory.findIndex((element) => {
-      try {
-        const parsedEntry = JSON.parse(element);
+    const fileIndex = recentUploads.findIndex((upload) => {
+      if (upload.filename === filename) {
         if (
-          parsedEntry.hasOwnProperty(id) &&
-          JSON.parse(parsedEntry[id]).filename === id.replace('dw::', '')
+          upload.userId === this.state.user.id &&
+          upload.workbook === this.state.workbookId
         ) {
-          const parsedObject = JSON.parse(parsedEntry[id]);
-          if (
-            parsedObject.userId === this.state.user.id &&
-            parsedObject.workbook === this.state.workbookId
-          ) {
-            return true;
-          }
+          return true;
         }
-
-        return false;
-      } catch (parsingError) {
-        this.setError(parsingError);
-        return false;
       }
+
+      return false;
     });
 
-    if (doesFilenameExist === -1) {
-      parsedHistory.push(toPush);
+    if (fileIndex === -1) {
+      recentUploads.push(newUpload);
     } else {
-      parsedHistory[doesFilenameExist] = toPush;
+      recentUploads[fileIndex] = newUpload;
     }
-    localStorage.setItem('history', JSON.stringify(parsedHistory));
+
+    localStorage.setItem('history', JSON.stringify(recentUploads));
+  };
+
+  getRangeValues = async (rangeAddress) => {
+    try {
+      const values = await this.office.getRangeValues(rangeAddress);
+      return values;
+    } catch (rangeValuesError) {
+      this.setError(rangeValuesError);
+    }
   };
 
   /**
    * Saves data in specified range to its associated file on data.world.
    */
-  sync = async (filename, values) => {
+  sync = async (filename, rangeAddress, dataset) => {
     try {
       this.setState({ syncing: true });
+      const values = await this.getRangeValues(rangeAddress);
       const trimmedData = this.trimFile(values);
       await this.api.uploadFile({
         data: trimmedData,
-        dataset: this.state.url,
+        dataset,
         filename
       });
+
+      this.pushToLocalStorage(dataset, filename, rangeAddress);
       this.setState({ syncing: false });
     } catch (uploadError) {
       this.setState({
@@ -694,33 +613,33 @@ export default class App extends Component {
     const userId = user ? user.id : 'Undefined';
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && importData;
-    let numItemsInHistory = 0;
+
     if (!insideOffice) {
       return <NotOfficeView />;
     }
 
-    const localHistory = localStorage.getItem('history');
-    let matchedFiles; // all files which has the same username and workspace id as the current user
-    if (localHistory) {
-      const allFiles = JSON.parse(localHistory);
-      if (allFiles) {
+    const recentUploads = localStorage.getItem('history');
+    let matchedFiles = [];
+
+    // all files which has the same username and workspace id as the current user
+    if (recentUploads) {
+      try {
+        const allFiles = JSON.parse(recentUploads);
         matchedFiles = allFiles
           .filter((file) => {
-            const parsedEntry = JSON.parse(
-              Object.keys(JSON.parse(file)).map(
-                (key) => JSON.parse(file)[key]
-              )[0]
-            );
             return (
               this.state.user &&
-              this.state.user.id === parsedEntry.userId &&
-              parsedEntry.workbook === this.state.workbookId
+              this.state.user.id === file.userId &&
+              file.workbook === this.state.workbookId
             );
           })
           .reverse();
-        numItemsInHistory = matchedFiles.length;
+      } catch (parsingError) {
+        this.setError(parsingError);
       }
     }
+
+    const numItemsInHistory = matchedFiles.length;
     return (
       <div>
         {errorMessage && (

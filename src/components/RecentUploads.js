@@ -9,34 +9,19 @@ class RecentItem extends Component {
     loading: false
   };
 
-  submitBinding = async (filename, sheetId, range) => {
+  sync = async (filename, rangeAddress, dataset) => {
     this.setState({ loading: true });
-    const {
-      createBinding,
-      refreshLinkedDataset,
-      sync,
-      setError,
-      addUrl,
-      dataset
-    } = this.props;
-    const selection = {
-      name: filename,
-      sheetId: sheetId,
-      range: range
-    };
-    addUrl(dataset);
+
     try {
-      const binding = await createBinding(selection);
-      await sync(binding);
-      await refreshLinkedDataset();
+      await this.props.sync(filename, rangeAddress, dataset);
       this.setState({ loading: false });
     } catch (syncError) {
-      setError(syncError);
+      this.props.setError(syncError);
     }
   };
 
   render() {
-    const { filename, dataset, range, sheetId } = this.props;
+    const { filename, dataset, rangeAddress } = this.props;
 
     const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/;
     const filteredDataset = dataset
@@ -47,7 +32,7 @@ class RecentItem extends Component {
 
     const tabular = require('./icons/icon-tabular.svg');
 
-    const rangeToShow = range ? range : 'Undefined';
+    const rangeToShow = rangeAddress ? rangeAddress : 'Undefined';
     const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
@@ -68,7 +53,7 @@ class RecentItem extends Component {
           </div>
           <div
             className="icon-border"
-            onClick={() => this.submitBinding(filename, sheetId, range)}
+            onClick={() => this.sync(filename, rangeAddress, dataset)}
           >
             <div className="resync-icon">
               {this.state.loading ? (
@@ -88,16 +73,10 @@ export default class RecentUploads extends Component {
   render() {
     const {
       forceShowUpload,
-      createBinding,
-      refreshLinkedDataset,
-      sync,
-      setError,
-      user,
-      workbook,
+
       matchedFiles
     } = this.props;
-    let previousDate = '';
-    let showDate = true;
+
     return (
       <div>
         <div className="full-screen-modal category-title">
@@ -110,48 +89,20 @@ export default class RecentUploads extends Component {
             + New upload{' '}
           </Button>
         </div>
-        {matchedFiles &&
-          matchedFiles.slice(0, 10).map((entry, index) => {
-            const parsedEntry = JSON.parse(
-              Object.keys(JSON.parse(entry)).map(
-                (key) => JSON.parse(entry)[key]
-              )[0]
-            );
-            if (
-              parsedEntry.userId === user &&
-              parsedEntry.workbook === workbook
-            ) {
-              const dateArray = new Date(parsedEntry.date)
-                .toDateString()
-                .split(' ');
-              let dateToShow = dateArray[1] + ' ' + dateArray[2];
-              if (dateToShow !== previousDate) {
-                previousDate = dateToShow;
-                showDate = true;
-              } else {
-                showDate = false;
-              }
-              return (
-                <div key={index}>
-                  {showDate && <div className="date">{dateToShow}</div>}
-                  <RecentItem
-                    filename={parsedEntry.filename}
-                    dataset={parsedEntry.dataset}
-                    bindingInfo={parsedEntry.bindingInfo}
-                    sheetId={parsedEntry.sheetId}
-                    range={parsedEntry.range}
-                    createBinding={createBinding}
-                    refreshLinkedDataset={refreshLinkedDataset}
-                    sync={sync}
-                    setError={setError}
-                    addUrl={this.props.addUrl}
-                  />
-                </div>
-              );
-            } else {
-              return null;
-            }
-          })}
+        {matchedFiles.map((file) => {
+          return (
+            <div>
+              <RecentItem
+                filename={file.filename}
+                dataset={file.dataset}
+                rangeAddress={file.rangeAddress}
+                sync={this.props.sync}
+                setError={this.props.setError}
+              />
+            </div>
+          );
+        })}
+
         <div className="category-reminder">
           Showing {matchedFiles.length} most recent uploads
         </div>
