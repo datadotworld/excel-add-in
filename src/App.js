@@ -457,15 +457,22 @@ export default class App extends Component {
     try {
       this.setState({ syncing: true });
       const values = await this.getRangeValues(rangeAddress);
-      const trimmedData = this.trimFile(values);
-      await this.api.uploadFile({
-        data: trimmedData,
-        dataset,
-        filename
-      });
+      if (values) {
+        const trimmedData = this.trimFile(values);
+        await this.api.uploadFile({
+          data: trimmedData,
+          dataset,
+          filename
+        });
 
-      this.pushToLocalStorage(dataset, filename, rangeAddress, new Date());
-      this.setState({ syncing: false });
+        this.pushToLocalStorage(dataset, filename, rangeAddress, new Date());
+        this.setState({ syncing: false });
+      } else {
+        this.setState({
+          syncing: false,
+          error: new Error('Error retrieving data from specified selection')
+        });
+      }
     } catch (uploadError) {
       this.setState({
         syncing: false,
