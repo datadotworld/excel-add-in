@@ -41,6 +41,7 @@ import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
 import UploadModal from './components/UploadModal';
 import RecentUploads from './components/RecentUploads';
+
 import migrations from './migrations';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
@@ -106,7 +107,6 @@ export default class App extends Component {
       error: null,
       token,
       preferences,
-      bindings: [],
       datasets: [],
       loadingDatasets: false,
       loggedIn: !!token,
@@ -321,14 +321,9 @@ export default class App extends Component {
   unlinkDataset = async () => {
     try {
       await this.office.setDataset(null);
-      await this.office.setSyncStatus({});
-      this.state.bindings.forEach(async (binding) => {
-        return await this.office.removeBinding(binding);
-      });
       await this.getDatasets();
       this.setState({
         dataset: null,
-        bindings: [],
         syncStatus: {}
       });
     } catch (error) {
@@ -611,8 +606,6 @@ export default class App extends Component {
       url,
       forceShowUpload,
       selectSheet,
-      bindings,
-      syncStatus,
       errorMessage
     } = this.state;
 
@@ -684,9 +677,7 @@ export default class App extends Component {
             range={currentSelectedRange}
             showDatasets={this.toggleShowDatasets}
             url={url}
-            updateBinding={this.updateBinding}
             doesFileExist={this.doesFileExist}
-            createBinding={this.createBinding}
             sync={this.sync}
             setError={this.setError}
             refreshLinkedDataset={this.refreshLinkedDataset}
@@ -711,13 +702,10 @@ export default class App extends Component {
               sync={this.sync}
               setError={this.setError}
               forceShowUpload={this.toggleForceShowUpload}
-              createBinding={this.createBinding}
               addUrl={this.addUrl}
               user={userId}
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
-              bindings={bindings}
-              syncStatus={syncStatus}
             />
           )}
 

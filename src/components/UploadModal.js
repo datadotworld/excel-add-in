@@ -12,6 +12,7 @@ import {
   FormGroup
 } from 'react-bootstrap';
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
+import { getDisplayRange } from '../utilutil';
 import analytics from '../analytics';
 
 import WarningModal from './WarningModal';
@@ -308,7 +309,7 @@ export default class UploadModal extends Component {
           <WarningModal
             show={this.state.showWarningModal}
             cancelHandler={this.closeModal}
-            successHandler={this.submitBinding}
+            successHandler={this.submitFile}
             analyticsLocation="exceladdin.add_data"
           >
             <div>
@@ -320,7 +321,9 @@ export default class UploadModal extends Component {
             <div>
               Replacing it will overwrite the file on data.world with the
               contents from{' '}
-              {excelApiSupported ? selection : 'the selected cell range'}
+              {excelApiSupported
+                ? getDisplayRange(selection)
+                : 'the selected cell range'}
             </div>
           </WarningModal>
         </Grid>
