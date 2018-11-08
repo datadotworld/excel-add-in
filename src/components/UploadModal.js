@@ -108,7 +108,11 @@ export default class UploadModal extends Component {
           rangeAddress = `${sheet}!${SHEET_RANGE}`;
         }
 
-        await sync(`${filename}.csv`, rangeAddress, this.state.currentUrl);
+        await sync(
+          `${filename}.csv`,
+          rangeAddress.replace(/'/g, ''),
+          this.state.currentUrl
+        );
         await refreshLinkedDataset();
         await close();
       }

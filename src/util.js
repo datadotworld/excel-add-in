@@ -22,10 +22,10 @@ export function getDisplayRange(rangeAddress) {
   if (rangeAddress) {
     const [sheet, range] = rangeAddress.split('!');
     if (range === SHEET_RANGE) {
-      return sheet;
+      return sheet.replace(/'/g, '');
     }
 
-    return rangeAddress;
+    return rangeAddress.replace(/'/g, '');
   } else {
     return 'Undefined';
   }
