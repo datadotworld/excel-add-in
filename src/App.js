@@ -39,7 +39,6 @@ import NotOfficeView from './components/NotOfficeView';
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
 import analytics from './analytics';
-import { getSheetName } from './util';
 import { MAX_COLUMNS, MAX_COLUMNS_ERROR, SHEET_RANGE } from './constants';
 import UploadModal from './components/UploadModal';
 import RecentUploads from './components/RecentUploads';
@@ -190,6 +189,26 @@ export default class App extends Component {
   initializeDatasets = async () => {
     if (!this.state.loggedIn) {
       return this.setState({ officeInitialized: true, outsideOffice: false });
+    }
+
+    const { pushToLocalStorage, office } = this;
+    const settings = this.office.getSettings();
+
+    let { dataset, nextMigrationIndex } = settings;
+    const bindings = await this.office.getBindings();
+    if (dataset) {
+      migrations.slice(0).forEach((migrationFn, idx) => {
+        try {
+          migrationFn({
+            bindings,
+            pushToLocalStorage,
+            dataset
+          });
+          office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+        } catch (migrationError) {
+          this.setError(migrationError);
+        }
+      });
     }
 
     this.setState({

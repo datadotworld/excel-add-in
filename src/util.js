@@ -18,17 +18,6 @@
  */
 import { MAX_ROWS, MAX_COLUMNS, SHEET_RANGE } from './constants';
 
-export function getSheetName(binding) {
-  const rangeAddress = binding.rangeAddress;
-  return (
-    rangeAddress
-      // Extract sheet name from cell range
-      .substring(0, rangeAddress.indexOf('!'))
-      // Remove quotation marks from sheet names containing a space
-      .replace(/'/g, '')
-  );
-}
-
 export function getDisplayRange(rangeAddress) {
   if (rangeAddress) {
     const [sheet, range] = rangeAddress.split('!');

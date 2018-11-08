@@ -94,6 +94,7 @@ export default class RecentUploads extends Component {
           return (
             <div>
               <RecentItem
+                key={file.filename}
                 filename={file.filename}
                 dataset={file.dataset}
                 rangeAddress={file.rangeAddress}
