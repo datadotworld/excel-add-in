@@ -12,7 +12,7 @@ import {
   FormGroup
 } from 'react-bootstrap';
 import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
-import { getDisplayRange } from '../utilutil';
+import { getDisplayRange } from '../util';
 import analytics from '../analytics';
 
 import WarningModal from './WarningModal';

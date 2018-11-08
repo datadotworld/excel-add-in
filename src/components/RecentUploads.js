@@ -78,6 +78,9 @@ export default class RecentUploads extends Component {
       matchedFiles
     } = this.props;
 
+    let previousDate = '';
+    let showDate;
+
     return (
       <div>
         <div className="full-screen-modal category-title">
@@ -91,10 +94,19 @@ export default class RecentUploads extends Component {
           </Button>
         </div>
         {matchedFiles.map((file) => {
+          const dateArray = new Date(file.date).toDateString().split(' ');
+          let dateToShow = dateArray[1] + ' ' + dateArray[2];
+          if (dateToShow !== previousDate) {
+            previousDate = dateToShow;
+            showDate = true;
+          } else {
+            showDate = false;
+          }
+
           return (
-            <div>
+            <div key={file.filename}>
+              {showDate && <div className="date">{dateToShow}</div>}
               <RecentItem
-                key={file.filename}
                 filename={file.filename}
                 dataset={file.dataset}
                 rangeAddress={file.rangeAddress}

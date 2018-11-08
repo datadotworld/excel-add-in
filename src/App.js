@@ -405,7 +405,7 @@ export default class App extends Component {
     return result;
   };
 
-  pushToLocalStorage = (dataset, filename, rangeAddress) => {
+  pushToLocalStorage = (dataset, filename, rangeAddress, date) => {
     const recentUploads = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
       : [];
@@ -415,7 +415,8 @@ export default class App extends Component {
       filename,
       rangeAddress,
       userId: this.state.user.id,
-      workbook: this.state.workbookId
+      workbook: this.state.workbookId,
+      date
     };
 
     const fileIndex = recentUploads.findIndex((upload) => {
@@ -463,7 +464,7 @@ export default class App extends Component {
         filename
       });
 
-      this.pushToLocalStorage(dataset, filename, rangeAddress);
+      this.pushToLocalStorage(dataset, filename, rangeAddress, new Date());
       this.setState({ syncing: false });
     } catch (uploadError) {
       this.setState({
