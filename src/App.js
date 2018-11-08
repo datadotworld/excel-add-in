@@ -532,6 +532,7 @@ export default class App extends Component {
         dataset: this.state.url,
         filename
       });
+      this.setState({ syncing: false });
     } catch (uploadError) {
       this.setState({
         syncing: false,
@@ -793,18 +794,17 @@ export default class App extends Component {
           />
         )}
 
-        {!showStartPage &&
-          showDatasets && (
-            <DatasetsView
-              datasets={datasets}
-              createDataset={this.showCreateDataset}
-              linkDataset={this.linkDataset}
-              loadingDatasets={loadingDatasets}
-              showDatasets={this.toggleShowDatasets}
-              showCreateDataset={this.showCreateDataset}
-              getDatasets={this.getDatasets}
-            />
-          )}
+        {!showStartPage && showDatasets && (
+          <DatasetsView
+            datasets={datasets}
+            createDataset={this.showCreateDataset}
+            linkDataset={this.linkDataset}
+            loadingDatasets={loadingDatasets}
+            showDatasets={this.toggleShowDatasets}
+            showCreateDataset={this.showCreateDataset}
+            getDatasets={this.getDatasets}
+          />
+        )}
 
         {renderInsights && (
           <Insights
