@@ -389,7 +389,7 @@ export default class App extends Component {
     return result;
   };
 
-  pushToLocalStorage = (dataset, filename, rangeAddress, date) => {
+  pushToLocalStorage = (dataset, filename, rangeAddress, worksheetId, date) => {
     const recentUploads = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
       : [];
@@ -400,6 +400,7 @@ export default class App extends Component {
       rangeAddress,
       userId: this.state.user.id,
       workbook: this.state.workbookId,
+      worksheetId,
       date
     };
 

@@ -54,7 +54,9 @@ class RecentItem extends Component {
           </div>
           <div
             className="icon-border"
-            onClick={() => this.sync(filename, rangeAddress, dataset)}
+            onClick={() =>
+              this.sync(filename, rangeAddress, dataset, worksheetId)
+            }
           >
             <div className="resync-icon">
               {this.state.loading ? (
@@ -72,11 +74,7 @@ class RecentItem extends Component {
 
 export default class RecentUploads extends Component {
   render() {
-    const {
-      forceShowUpload,
-
-      matchedFiles
-    } = this.props;
+    const { forceShowUpload, matchedFiles } = this.props;
 
     let previousDate = '';
     let showDate;
