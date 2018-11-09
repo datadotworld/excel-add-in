@@ -434,13 +434,36 @@ export default class App extends Component {
     }
   };
 
+  createBinding = async (worksheetId, range) => {
+    try {
+      const namedItem = await this.office.createSelectionRange(
+        worksheetId,
+        range
+      );
+      const binding = await this.office.createBinding(
+        new Date().toString(),
+        namedItem
+      );
+
+      return binding;
+    } catch (error) {
+      this.setState({ error });
+    }
+  };
+
   /**
    * Saves data in specified range to its associated file on data.world.
    */
-  sync = async (filename, rangeAddress, dataset) => {
+  sync = async (filename, rangeAddress, dataset, worksheetId) => {
     try {
       this.setState({ syncing: true });
-      const values = await this.getRangeValues(rangeAddress);
+
+      const binding = await this.createBinding(
+        worksheetId,
+        rangeAddress.split('!')[1]
+      );
+      const values = await this.office.getData(binding);
+
       if (values) {
         const trimmedData = this.trimFile(values);
         await this.api.uploadFile({
@@ -449,7 +472,22 @@ export default class App extends Component {
           filename
         });
 
-        this.pushToLocalStorage(dataset, filename, rangeAddress, new Date());
+        this.pushToLocalStorage(
+          dataset,
+          filename,
+          rangeAddress,
+          worksheetId,
+          new Date()
+        );
+
+        try {
+          await this.office.removeBinding(binding);
+        } catch (removeBindingError) {
+          this.setState({
+            error: removeBindingError
+          });
+        }
+
         this.setState({ syncing: false });
       } else {
         this.setState({

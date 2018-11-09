@@ -120,7 +120,8 @@ export default class UploadModal extends Component {
           await sync(
             `${filename}.csv`,
             rangeAddress.replace(/'/g, ''),
-            this.state.currentUrl
+            this.state.currentUrl,
+            range.worksheet.id
           );
           await close();
         }

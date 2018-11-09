@@ -16,7 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-export const MAX_ROWS = 6550;
+export const MAX_ROWS = 1048576;
 export const MAX_COLUMNS = 150;
 export const MAX_FILENAME_LENGTH = 128;
 

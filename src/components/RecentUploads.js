@@ -10,11 +10,11 @@ class RecentItem extends Component {
     loading: false
   };
 
-  sync = async (filename, rangeAddress, dataset) => {
+  sync = async (filename, rangeAddress, dataset, worksheetId) => {
     this.setState({ loading: true });
 
     try {
-      await this.props.sync(filename, rangeAddress, dataset);
+      await this.props.sync(filename, rangeAddress, dataset, worksheetId);
       this.setState({ loading: false });
     } catch (syncError) {
       this.props.setError(syncError);
@@ -22,7 +22,7 @@ class RecentItem extends Component {
   };
 
   render() {
-    const { filename, dataset, rangeAddress } = this.props;
+    const { filename, dataset, rangeAddress, worksheetId } = this.props;
 
     const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/;
     const filteredDataset = dataset
@@ -107,9 +107,7 @@ export default class RecentUploads extends Component {
             <div key={file.filename}>
               {showDate && <div className="date">{dateToShow}</div>}
               <RecentItem
-                filename={file.filename}
-                dataset={file.dataset}
-                rangeAddress={file.rangeAddress}
+                {...file}
                 sync={this.props.sync}
                 setError={this.props.setError}
               />
