@@ -21,4 +21,4 @@ export const MAX_COLUMNS = 150;
 export const MAX_FILENAME_LENGTH = 128;
 
 export const SHEET_RANGE = `A1:ET${MAX_ROWS}`;
-export const MAX_COLUMNS_ERROR = `The maximum number of columns is ${MAX_COLUMNS}.  If you need to bind to more columns than that, please upload your Excel file to data.world directly. `;
+export const MAX_COLUMNS_ERROR = `The maximum number of columns that can be saved is ${MAX_COLUMNS}.  If you need to save more columns than that, please upload your Excel file to data.world directly. `;

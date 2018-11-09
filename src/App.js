@@ -275,22 +275,6 @@ export default class App extends Component {
     }
   };
 
-  refreshLinkedDataset = async (datasetToRefresh = this.state.dataset) => {
-    if (datasetToRefresh) {
-      try {
-        const dataset = await this.api.getDataset(
-          `${datasetToRefresh.owner}/${datasetToRefresh.id}`
-        );
-        this.office.setDataset(dataset);
-        this.setState({ dataset });
-
-        return dataset;
-      } catch (error) {
-        await this.handleDatasetFetchError(error);
-      }
-    }
-  };
-
   linkDataset = async (dataset) => {
     this.setState({ url: dataset, showDatasets: false });
     const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
@@ -581,6 +565,12 @@ export default class App extends Component {
     });
   };
 
+  setErrorMessage = (errorMessage) => {
+    this.setState({
+      errorMessage
+    });
+  };
+
   getWorkbookId = async () => {
     try {
       const workbookId = await this.office.getWorkbookId();
@@ -698,7 +688,7 @@ export default class App extends Component {
             doesFileExist={this.doesFileExist}
             sync={this.sync}
             setError={this.setError}
-            refreshLinkedDataset={this.refreshLinkedDataset}
+            setErrorMessage={this.setErrorMessage}
             close={this.closeAddData}
             linkDataset={this.createUrl}
             numItemsInHistory={numItemsInHistory}
@@ -716,7 +706,6 @@ export default class App extends Component {
           numItemsInHistory > 0 &&
           !showStartPage && (
             <RecentUploads
-              refreshLinkedDataset={this.refreshLinkedDataset}
               sync={this.sync}
               setError={this.setError}
               forceShowUpload={this.toggleForceShowUpload}

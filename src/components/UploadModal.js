@@ -11,7 +11,12 @@ import {
   ControlLabel,
   FormGroup
 } from 'react-bootstrap';
-import { MAX_FILENAME_LENGTH, SHEET_RANGE } from '../constants';
+import {
+  MAX_FILENAME_LENGTH,
+  SHEET_RANGE,
+  MAX_COLUMNS,
+  MAX_COLUMNS_ERROR
+} from '../constants';
 import { getDisplayRange } from '../util';
 import analytics from '../analytics';
 
@@ -91,7 +96,6 @@ export default class UploadModal extends Component {
     this.closeModal();
     const {
       close,
-      refreshLinkedDataset,
       sync,
       setError,
       selectSheet,
@@ -101,20 +105,25 @@ export default class UploadModal extends Component {
 
     try {
       const range = await getSelectionRange();
-      let rangeAddress = range.address;
-      if (rangeAddress) {
-        if (selectSheet) {
-          const [sheet] = rangeAddress.split('!');
-          rangeAddress = `${sheet}!${SHEET_RANGE}`;
-        }
+      const { columnCount } = range;
 
-        await sync(
-          `${filename}.csv`,
-          rangeAddress.replace(/'/g, ''),
-          this.state.currentUrl
-        );
-        await refreshLinkedDataset();
-        await close();
+      if (columnCount >= MAX_COLUMNS) {
+        this.props.setErrorMessage(MAX_COLUMNS_ERROR);
+      } else {
+        let rangeAddress = range.address;
+        if (rangeAddress) {
+          if (selectSheet) {
+            const [sheet] = rangeAddress.split('!');
+            rangeAddress = `${sheet}!${SHEET_RANGE}`;
+          }
+
+          await sync(
+            `${filename}.csv`,
+            rangeAddress.replace(/'/g, ''),
+            this.state.currentUrl
+          );
+          await close();
+        }
       }
     } catch (selectionRangeError) {
       setError(selectionRangeError);
