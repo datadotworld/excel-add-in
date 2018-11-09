@@ -88,7 +88,7 @@ export default class OfficeConnector {
           .sync()
           .then(() => {
             binding.rangeAddress = range.address;
-            resolve();
+            resolve(range.address);
           })
           .catch(resolve);
       });
@@ -278,6 +278,20 @@ export default class OfficeConnector {
           .then(() => {
             resolve(range);
           })
+          .catch(reject);
+      });
+    });
+  }
+
+  getSheetId(rangeAddress) {
+    return new Promise((resolve, reject) => {
+      Excel.run(function(ctx) {
+        // Sheet names with spaces have quotes around them
+        const sheetName = rangeAddress.split('!')[0].replace(/'/g, '');
+        const worksheet = ctx.workbook.worksheets.getItem(sheetName);
+        return ctx
+          .sync()
+          .then(() => resolve(worksheet.id))
           .catch(reject);
       });
     });

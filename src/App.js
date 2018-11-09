@@ -194,16 +194,22 @@ export default class App extends Component {
     const settings = this.office.getSettings();
 
     let { dataset, nextMigrationIndex } = settings;
+    nextMigrationIndex = nextMigrationIndex || 0;
     const bindings = await this.office.getBindings();
+
     if (dataset) {
-      migrations.slice(0).forEach((migrationFn, idx) => {
+      migrations.slice(nextMigrationIndex).forEach((migrationFn, idx) => {
         try {
           migrationFn({
             bindings,
             pushToLocalStorage,
-            dataset
+            dataset,
+            getSheetId: office.getSheetId
           });
           office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+
+          // To show migrated files
+          window.location.reload();
         } catch (migrationError) {
           this.setError(migrationError);
         }
@@ -389,17 +395,25 @@ export default class App extends Component {
     return result;
   };
 
-  pushToLocalStorage = (dataset, filename, rangeAddress, worksheetId, date) => {
+  pushToLocalStorage = async (
+    dataset,
+    filename,
+    rangeAddress,
+    worksheetId,
+    date
+  ) => {
     const recentUploads = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
       : [];
+    const workbook =
+      this.state.workbookId || (await this.office.getWorkbookId());
 
     const newUpload = {
       dataset,
       filename,
       rangeAddress,
       userId: this.state.user.id,
-      workbook: this.state.workbookId,
+      workbook,
       worksheetId,
       date
     };
@@ -435,16 +449,13 @@ export default class App extends Component {
     }
   };
 
-  createBinding = async (worksheetId, range) => {
+  createBinding = async (worksheetId, range, filename) => {
     try {
       const namedItem = await this.office.createSelectionRange(
         worksheetId,
         range
       );
-      const binding = await this.office.createBinding(
-        new Date().toString(),
-        namedItem
-      );
+      const binding = await this.office.createBinding(filename, namedItem);
 
       return binding;
     } catch (error) {
@@ -461,7 +472,8 @@ export default class App extends Component {
 
       const binding = await this.createBinding(
         worksheetId,
-        rangeAddress.split('!')[1]
+        rangeAddress.split('!')[1],
+        filename
       );
       const values = await this.office.getData(binding);
 
