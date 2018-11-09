@@ -113,7 +113,7 @@ class CreateProjectModal extends Component {
     return (
       <Grid className="create-project-modal full-screen-modal show">
         <Row className="center-block header">
-          <div className="title">
+          <div className="create-project-title">
             Create a new project{' '}
             <Icon
               icon="close"
