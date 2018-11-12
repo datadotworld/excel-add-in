@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 data.world, Inc.
+ * Copyright 2018 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,25 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-export const MAX_ROWS = 1048576;
-export const MAX_COLUMNS = 150;
-export const MAX_FILENAME_LENGTH = 128;
+.modal-custom {
+  margin-top: 50%;
+}
 
-export const SHEET_RANGE = `A1:ET${MAX_ROWS}`;
-export const MAX_COLUMNS_ERROR = `The maximum number of columns that can be saved is ${MAX_COLUMNS}.  If you need to save more columns than that, please upload your Excel file to data.world directly. `;
+.modal-header-custom {
+  background-color: #de4839;
+  color: white;
+  font-size: 1rem;
+}
+
+.modal-title-custom {
+  font-size: 1rem;
+}
+
+.modal-error-details {
+  white-space: pre-wrap;
+  margin-top: 20px;
+}
+
+.modal-contact-support {
+  margin-top: 20px;
+}

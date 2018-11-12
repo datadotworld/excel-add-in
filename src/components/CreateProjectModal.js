@@ -42,139 +42,156 @@ class CreateProjectModal extends Component {
     user: PropTypes.object,
     close: PropTypes.func,
     createProject: PropTypes.func
-  }
+  };
 
   state = {
     title: '',
     objective: '',
     visibility: 'OPEN'
-  }
+  };
 
   closeClicked = () => {
     analytics.track('exceladdin.create_project.close.click');
     this.props.close();
-  }
+  };
 
   cancelClicked = () => {
     analytics.track('exceladdin.create_project.cancel_button.click');
     this.props.close();
-  }
+  };
 
   handleChange = (event) => {
     const { name, value } = event.target;
 
     if (name === 'VISIBILITY') {
-      analytics.track(
-        'exceladdin.create_project.visibility.change',
-        { visibility: value }
-      );
+      analytics.track('exceladdin.create_project.visibility.change', {
+        visibility: value
+      });
     }
 
     this.setState({ [name]: value });
-  }
+  };
 
   isObjectiveValid = () => {
     const { objective } = this.state;
 
     return objective.length <= 120;
-  }
+  };
 
   isTitleValid = () => {
     const { title } = this.state;
 
     return title.length >= 5 && title.length <= 60;
-  }
+  };
 
   formValid = () => {
     return this.isTitleValid() && this.isObjectiveValid();
-  }
+  };
 
   createProject = () => {
     analytics.track('exceladdin.create_dataset.create_button.click');
     const { title, objective, visibility } = this.state;
 
-    this.props.createProject({
-      title,
-      objective,
-      visibility
-    }).then(res => {
-      window.location.pathname = '/insights';
-    }).catch(error => {
-      this.props.setError(error, 'There was an error creating the project, please try again');
-    });
-  }
+    this.props
+      .createProject({
+        title,
+        objective,
+        visibility
+      })
+      .then((res) => {
+        window.location.pathname = '/insights';
+      })
+      .catch((error) => {
+        this.props.setError(error);
+      });
+  };
 
-  render () {
+  render() {
     const { user } = this.props;
     const { title, objective, visibility } = this.state;
 
     return (
-      <Grid className='create-project-modal full-screen-modal show'>
-        <Row className='center-block header'>
-          <div className='title'>
-            Create a new project <Icon icon='close' className='close-button' onClick={this.closeClicked} />
+      <Grid className="create-project-modal full-screen-modal show">
+        <Row className="center-block header">
+          <div className="create-project-title">
+            Create a new project{' '}
+            <Icon
+              icon="close"
+              className="close-button"
+              onClick={this.closeClicked}
+            />
           </div>
         </Row>
-        <Row className='center-block create-project-form'>
+        <Row className="center-block create-project-form">
           <FormGroup>
-            <ControlLabel>Project name<span className='project-form-info'>min. 5</span></ControlLabel>
+            <ControlLabel>
+              Project name
+              <span className="project-form-info">min. 5</span>
+            </ControlLabel>
             <InputGroup>
               <FormControl
                 onChange={this.handleChange}
                 value={title}
-                name='title'
+                name="title"
                 autoFocus
-                type='text'
+                type="text"
               />
             </InputGroup>
             <HelpBlock>
-              This will also be your project URL: https://data.world/{user.id}/
+              This will also be your project URL: https://data.world/
+              {user.id}/
               <strong>{title ? kebabCase(title) : 'project-name'}</strong>
             </HelpBlock>
           </FormGroup>
           <FormGroup>
             <ControlLabel>
               <div>
-                Project objective <span className='project-form-info'>(optional)</span>
+                Project objective{' '}
+                <span className="project-form-info">(optional)</span>
               </div>
-              <span className='project-form-info'>max. 120</span></ControlLabel>
+              <span className="project-form-info">max. 120</span>
+            </ControlLabel>
             <InputGroup>
               <FormControl
                 onChange={this.handleChange}
                 value={objective}
-                name='objective'
+                name="objective"
                 componentClass="textarea"
-                type='textarea'
+                type="textarea"
               />
             </InputGroup>
           </FormGroup>
           <FormGroup>
             <Radio
-              name='visibility'
+              name="visibility"
               onChange={this.handleChange}
               checked={visibility === 'OPEN'}
               className={visibility === 'OPEN' ? 'checked' : ''}
-              value='OPEN'
+              value="OPEN"
             >
-              <div className='radio-label'>Open</div>
-              <div className='radio-option-description'>
-                Publicly available data that anyone can view, query, or download.
+              <div className="radio-label">Open</div>
+              <div className="radio-option-description">
+                Publicly available data that anyone can view, query, or
+                download.
               </div>
             </Radio>
             <Radio
-              name='visibility'
+              name="visibility"
               onChange={this.handleChange}
               checked={visibility === 'PRIVATE'}
               className={visibility === 'PRIVATE' ? 'checked' : ''}
-              value='PRIVATE'
+              value="PRIVATE"
             >
-              <div className='radio-label'>Private <Glyphicon glyph='lock' /></div>
-              <div className='radio-option-description'>
-                Will only be shared with others you invite. Use for personal or sensitive information.
+              <div className="radio-label">
+                Private <Glyphicon glyph="lock" />
+              </div>
+              <div className="radio-option-description">
+                Will only be shared with others you invite. Use for personal or
+                sensitive information.
               </div>
             </Radio>
           </FormGroup>
-          <div className='insight-upload-buttons'>
+          <div className="insight-upload-buttons">
             <Button
               onClick={this.cancelClicked}
               className="insight-upload-button"
@@ -185,14 +202,14 @@ class CreateProjectModal extends Component {
               className="insight-upload-button"
               onClick={this.createProject}
               disabled={!this.formValid()}
-              bsStyle='primary'
+              bsStyle="primary"
             >
               Create Project
             </Button>
           </div>
         </Row>
       </Grid>
-    )
+    );
   }
 }
 

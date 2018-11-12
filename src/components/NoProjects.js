@@ -26,24 +26,37 @@ import analytics from '../analytics';
 class NoProject extends Component {
   static propTypes = {
     showAddProject: PropTypes.func
-  }
+  };
 
   showAddProject = () => {
     analytics.track('exceladdin.no_project.create_project_button.click');
     this.props.showAddProject();
-  }
+  };
 
   render() {
-    return <div className="no-chart">
-      <div>Create a project for your insight.</div>
-      <Button
-        onClick={this.showAddProject}
-        bsStyle="primary"
-        className="no-chart-button"
-      >
-        Create Project
-      </Button>
-    </div>
+    return (
+      <div className="no-chart">
+        <div>Create a project for your insight.</div>
+        <Button
+          onClick={this.showAddProject}
+          bsStyle="primary"
+          className="no-chart-button"
+        >
+          Create Project
+        </Button>
+        <div>
+          <Button
+            onClick={() => {
+              window.location.pathname = '/insights';
+            }}
+            bsStyle="primary"
+            className="no-chart-button"
+          >
+            Refresh
+          </Button>
+        </div>
+      </div>
+    );
   }
 }
 

@@ -18,7 +18,7 @@
  */
 let Office, Excel;
 
-const lastRowsAreEmpty = function (array) {
+const lastRowsAreEmpty = function(array) {
   if (array.length < 10) {
     return false;
   }
@@ -30,15 +30,16 @@ const lastRowsAreEmpty = function (array) {
   return true;
 };
 
-const generateUUID = function () {
+const generateUUID = function() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c === 'x' ? r : ((r & 0x3) | 0x8);
+    var r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
+};
 
 export default class OfficeConnector {
-  initialize () {
+  initialize() {
     Office = window.Office;
     return new Promise((resolve, reject) => {
       if (Office) {
@@ -49,57 +50,69 @@ export default class OfficeConnector {
           if (!Office.context.document.settings.get('WorkbookId')) {
             Office.context.document.settings.set('WorkbookId', generateUUID());
           }
-          Office.context.document.settings.set('Office.AutoShowTaskpaneWithDocument', true);
+          Office.context.document.settings.set(
+            'Office.AutoShowTaskpaneWithDocument',
+            true
+          );
           Office.context.document.settings.saveAsync();
 
           resolve();
-        }
+        };
       } else {
         reject();
       }
     });
   }
 
-  isExcelApiSupported () {
-    if(Office && Office.context) {
+  isExcelApiSupported() {
+    if (Office && Office.context) {
       return Office.context.requirements.isSetSupported('ExcelApi', '1.1');
     }
   }
 
-  isCSV () {
+  isCSV() {
     return /.*\.csv$/.test(Office.context.document.url.toLowerCase());
   }
 
-  getBindingRange (binding) {
+  getBindingRange(binding) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
       Excel.run((ctx) => {
-        const range = ctx.workbook.bindings.getItem(binding.id).getRange().load('address');
-        return ctx.sync().then(() => {
-          binding.rangeAddress = range.address;
-          resolve();
-        }).catch(resolve);
+        const range = ctx.workbook.bindings
+          .getItem(binding.id)
+          .getRange()
+          .load('address');
+        return ctx
+          .sync()
+          .then(() => {
+            binding.rangeAddress = range.address;
+            resolve(range.address);
+          })
+          .catch(resolve);
       });
     });
   }
 
-  getWorkbookId () {
+  getWorkbookId() {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
       Excel.run((ctx) => {
-        const uuid = Office.context.document.settings.get('WorkbookId')
-        return ctx.sync().then(() => {
-          resolve(uuid)
-        }).catch(reject)
-      })
-    })
+        const uuid = Office.context.document.settings.get('WorkbookId');
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(uuid);
+          })
+          .catch(reject);
+      });
+    });
   }
 
-  getBindings () {
+  getBindings() {
     return new Promise((resolve, reject) => {
       Office.context.document.bindings.getAllAsync((result) => {
         if (result.status === Office.AsyncResultStatus.Failed) {
@@ -113,9 +126,11 @@ export default class OfficeConnector {
             promises.push(this.getBindingRange(binding));
           }
         });
-        Promise.all(promises).then(() => {
-          resolve(bindings);
-        }).catch(reject);
+        Promise.all(promises)
+          .then(() => {
+            resolve(bindings);
+          })
+          .catch(reject);
       });
     });
   }
@@ -133,7 +148,8 @@ export default class OfficeConnector {
           .getRange(rangeAddress);
         const namedItemCollection = ctx.workbook.names;
         namedItemCollection.add(namedItem, range, 'Range as a name');
-        return ctx.sync()
+        return ctx
+          .sync()
           .then(resolve(namedItem))
           .catch(reject);
       });
@@ -144,43 +160,51 @@ export default class OfficeConnector {
     return new Promise((resolve, reject) => {
       // Create binding after Excel sync to have access to newly added nameditem
       Excel.run((ctx) => {
-        return ctx.sync().then(() => {
-          Office.context.document.bindings.addFromNamedItemAsync(
-            namedItem,
-            Office.BindingType.Matrix,
-            { id: `dw::${name}` },
-            result => {
-              if (result.status === Office.AsyncResultStatus.Failed) {
-                return reject(result.error.message);
+        return ctx
+          .sync()
+          .then(() => {
+            Office.context.document.bindings.addFromNamedItemAsync(
+              namedItem,
+              Office.BindingType.Matrix,
+              { id: `dw::${name}` },
+              (result) => {
+                if (result.status === Office.AsyncResultStatus.Failed) {
+                  return reject(result.error.message);
+                }
+                resolve(result.value);
               }
-              resolve(result.value);
-            }
-          );
-        }).catch(reject);
-      });
-    })
-  }
-
-  removeBinding (binding) {
-    return new Promise((resolve, reject) => {
-      Office.context.document.bindings.releaseByIdAsync(binding.id, (result) => {
-        if (result.status === Office.AsyncResultStatus.Failed) {
-          return reject(result.error.message);
-        }
-        resolve();
+            );
+          })
+          .catch(reject);
       });
     });
   }
 
-  getSettings () {
+  removeBinding(binding) {
+    return new Promise((resolve, reject) => {
+      Office.context.document.bindings.releaseByIdAsync(
+        binding.id,
+        (result) => {
+          if (result.status === Office.AsyncResultStatus.Failed) {
+            return reject(result.error.message);
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  getSettings() {
     return {
       dataset: Office.context.document.settings.get('dataset'),
       syncStatus: Office.context.document.settings.get('syncStatus'),
-      nextMigrationIndex: Office.context.document.settings.get('nextMigrationIndex'),
+      nextMigrationIndex: Office.context.document.settings.get(
+        'nextMigrationIndex'
+      )
     };
   }
 
-  saveSettings () {
+  saveSettings() {
     return new Promise((resolve, reject) => {
       Office.context.document.settings.saveAsync((result) => {
         if (result.status === Office.AsyncResultStatus.Failed) {
@@ -191,90 +215,110 @@ export default class OfficeConnector {
     });
   }
 
-  setSyncStatus (syncStatus) {
+  setSyncStatus(syncStatus) {
     Office.context.document.settings.set('syncStatus', syncStatus);
     return this.saveSettings();
   }
 
-  setDataset (dataset) {
+  setDataset(dataset) {
     Office.context.document.settings.set('dataset', dataset);
     return this.saveSettings();
   }
 
-  setNextMigrationIndex (idx) {
+  setNextMigrationIndex(idx) {
     Office.context.document.settings.set('nextMigrationIndex', idx);
     return this.saveSettings();
   }
 
-  listenForChanges (binding, callback) {
-    const bindingId = `bindings#${binding.id}`;
-    Office.select(bindingId).removeHandlerAsync(Office.EventType.BindingDataChanged, () => {
-      Office.select(bindingId).addHandlerAsync(Office.EventType.BindingDataChanged, callback);
-    });
-  }
-
-  listenForSelectionChanges (callback) {
+  listenForSelectionChanges(callback) {
     if (this.isExcelApiSupported()) {
-      Office.context.document.addHandlerAsync('documentSelectionChanged', (e) => {
-        this.getCurrentlySelectedRange().then(callback);
-      });
+      Office.context.document.addHandlerAsync(
+        'documentSelectionChanged',
+        (e) => {
+          this.getCurrentlySelectedRange().then(callback);
+        }
+      );
     }
   }
 
-  stopListeningForSelectionChanges () {
+  stopListeningForSelectionChanges() {
     if (this.isExcelApiSupported()) {
-      Office.context.document.removeHandlerAsync('documentSelectionChanged', {}, () => {});
+      Office.context.document.removeHandlerAsync(
+        'documentSelectionChanged',
+        {},
+        () => {}
+      );
     }
   }
 
-  getCurrentlySelectedRange () {
+  getCurrentlySelectedRange() {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
       Excel.run((ctx) => {
-        const range = ctx.workbook.getSelectedRange()
+        const range = ctx.workbook
+          .getSelectedRange()
           .load(['columnCount', 'rowCount', 'address', 'worksheet']);
-        return ctx.sync().then(() => {
-          resolve(range);
-        });
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(range);
+          })
+          .catch(reject);
       });
     });
   }
 
-  select (address = '') {
+  getSheetId(rangeAddress) {
+    return new Promise((resolve, reject) => {
+      Excel.run(function(ctx) {
+        // Sheet names with spaces have quotes around them
+        const sheetName = rangeAddress.split('!')[0].replace(/'/g, '');
+        const worksheet = ctx.workbook.worksheets.getItem(sheetName);
+        return ctx
+          .sync()
+          .then(() => resolve(worksheet.id))
+          .catch(reject);
+      });
+    });
+  }
+
+  select(address = '') {
     const addressSections = address.split('!');
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
-      Excel.run(function (ctx) {
+      Excel.run(function(ctx) {
         // Sheet names with spaces have quotes around them
         const sheetName = addressSections[0].replace(/'/g, '');
         const rangeAddress = addressSections[1];
-        const range = ctx.workbook.worksheets.getItem(sheetName).getRange(rangeAddress);
+        const range = ctx.workbook.worksheets
+          .getItem(sheetName)
+          .getRange(rangeAddress);
         range.select();
         return ctx.sync().then(resolve);
-      });;
+      });
     });
   }
 
-  activateSheet (sheet) {
+  activateSheet(sheet) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
         return resolve();
       }
-      Excel.run(function (ctx) {
+      Excel.run(function(ctx) {
         var worksheet = ctx.workbook.worksheets.getItem(sheet);
         worksheet.activate();
         return ctx.sync().then(resolve);
-      });;
+      });
     });
   }
 
-  getData (binding) {
+  getData(binding) {
     return new Promise((resolve, reject) => {
-      const {columnCount, rowCount} = binding;
+      const { columnCount, rowCount } = binding;
       const rowInterval = 1000;
       const results = [];
 
@@ -296,23 +340,29 @@ export default class OfficeConnector {
             return reject(result.error.message);
           }
 
-          results.push({options, value: result.value});
+          results.push({ options, value: result.value });
           // Check the last 10 rows for empty values
-          if (options.startRow + options.rowCount < rowCount && !lastRowsAreEmpty(result.value)) {
+          if (
+            options.startRow + options.rowCount < rowCount &&
+            !lastRowsAreEmpty(result.value)
+          ) {
             const newOptions = {
               columnCount,
               startRow: options.startRow + options.rowCount,
               startColumn: 0,
-              rowCount: Math.min(rowInterval, rowCount - (options.startRow + options.rowCount)),
+              rowCount: Math.min(
+                rowInterval,
+                rowCount - (options.startRow + options.rowCount)
+              ),
               valueFormat: Office.ValueFormat.Formatted
             };
             binding.getDataAsync(newOptions, handleData(newOptions));
           } else {
             organizeResults();
           }
-        }
+        };
       };
-      
+
       // The maximum number of columns is 16384
       // https://support.office.com/en-us/article/Excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
       // Experimentation indicates that 1m is the maximum number of cells retrievable at any one time
@@ -337,14 +387,17 @@ export default class OfficeConnector {
         // Load all charts in the specified worksheet
         let charts = ctx.workbook.worksheets.getItem(sheetName).charts;
         charts.load('items');
-        return ctx.sync().then(() => {
-          charts = charts.items.map(chart => {
-            return { sheet: sheetName, chartName: chart.name }
-          });
+        return ctx
+          .sync()
+          .then(() => {
+            charts = charts.items.map((chart) => {
+              return { sheet: sheetName, chartName: chart.name };
+            });
 
-          // Return array of objects containing the chart names and worksheet
-          resolve(charts);
-        }).catch (reject);
+            // Return array of objects containing the chart names and worksheet
+            resolve(charts);
+          })
+          .catch(reject);
       });
     });
   }
@@ -353,16 +406,21 @@ export default class OfficeConnector {
     return new Promise((resolve, reject) => {
       Excel.run((ctx) => {
         // Get chart using the sheet id and chart name
-        const chart = ctx.workbook.worksheets.getItem(sheetId).charts.getItem(chartName);
+        const chart = ctx.workbook.worksheets
+          .getItem(sheetId)
+          .charts.getItem(chartName);
 
         // Load the chart's title and b64 image string
         const title = chart.title;
         title.load('text');
         const image = chart.getImage();
-        return ctx.sync().then(() => {
-          // Return the base64 string representation of the chart
-          resolve({ image: image.value, title: title.text });
-        }).catch (reject);
+        return ctx
+          .sync()
+          .then(() => {
+            // Return the base64 string representation of the chart
+            resolve({ image: image.value, title: title.text });
+          })
+          .catch(reject);
       });
     });
   }
@@ -375,9 +433,34 @@ export default class OfficeConnector {
       Excel.run((ctx) => {
         const worksheets = ctx.workbook.worksheets;
         worksheets.load('items');
-        return ctx.sync().then(() => {
-          resolve(worksheets.items);
-        }).catch(reject)
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(worksheets.items);
+          })
+          .catch(reject);
+      });
+    });
+  }
+
+  getRangeValues(rangeAddress) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const [sheet, range] = rangeAddress.split('!');
+        const workSheet = ctx.workbook.worksheets.getItem(sheet);
+        const rangeObject = workSheet.getRange(range);
+        rangeObject.load('values');
+
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(rangeObject.values);
+          })
+          .catch(reject);
       });
     });
   }

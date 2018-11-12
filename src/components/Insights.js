@@ -24,7 +24,6 @@ import UploadInsight from './UploadInsight';
 
 import './Insights.css';
 
-
 class Insights extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -35,15 +34,15 @@ class Insights extends Component {
     createProject: PropTypes.func,
     uploadChart: PropTypes.func,
     initializeInsights: PropTypes.func
-  }
+  };
 
   state = {
-    selectedChart: '' 
-  }
+    selectedChart: ''
+  };
 
-  selectChart= (imageString, title) => {
+  selectChart = (imageString, title) => {
     this.setState({ selectedChart: { imageString, title } });
-  }
+  };
 
   render() {
     const { selectedChart } = this.state;
@@ -61,31 +60,34 @@ class Insights extends Component {
     if (officeInitialized) {
       return (
         <Grid className="insights-container">
-          <Row className='center-block section-header insight-header'>
-            <div className='insight-title'>
-              New Insight
-            </div>
+          <Row className="center-block section-header insight-header">
+            <div className="insight-title">New Insight</div>
           </Row>
-          {!selectedChart && <Charts
-            charts={charts}
-            projects={projects}
-            getImageAndTitle={getImageAndTitle}
-            user={user}
-            createProject={createProject}
-            selectChart={this.selectChart}
-            setError={setError}
-          />}
-          {selectedChart && <UploadInsight
-            getImageAndTitle={getImageAndTitle}
-            chart={selectedChart.imageString}
-            title={selectedChart.title}
-            uploadChart={uploadChart}
-            projects={projects}
-          />}
+          {!selectedChart && (
+            <Charts
+              charts={charts}
+              projects={projects}
+              getImageAndTitle={getImageAndTitle}
+              user={user}
+              createProject={createProject}
+              selectChart={this.selectChart}
+              setError={setError}
+            />
+          )}
+          {selectedChart && (
+            <UploadInsight
+              getImageAndTitle={getImageAndTitle}
+              chart={selectedChart.imageString}
+              title={selectedChart.title}
+              uploadChart={uploadChart}
+              projects={projects}
+              setError={this.props.setError}
+            />
+          )}
         </Grid>
       );
     } else {
-      return <div />
+      return <div />;
     }
   }
 }

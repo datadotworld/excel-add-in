@@ -18,19 +18,32 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider} from 'react-intl';
-import './index.css';
-import App from './App';
+import { IntlProvider } from 'react-intl';
 import load from 'little-loader';
+
+import ErrorBoundary from './components/ErrorBoundary';
+import App from './App';
+
+import './index.css';
 import './analytics-head';
 
-function loadApp () {
-  ReactDOM.render(<IntlProvider locale="en"><App /></IntlProvider>, document.getElementById('root'));
+function loadApp() {
+  ReactDOM.render(
+    <ErrorBoundary>
+      <IntlProvider locale="en">
+        <App />
+      </IntlProvider>
+    </ErrorBoundary>,
+    document.getElementById('root')
+  );
 }
 
 if (process.env.NODE_ENV === 'production') {
   load('https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js', loadApp);
 } else if (process.env.NODE_ENV === 'development') {
   // Load the office debug tools when in dev mode
-  load('https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js', loadApp);
+  load(
+    'https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js',
+    loadApp
+  );
 }

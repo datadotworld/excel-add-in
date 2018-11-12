@@ -25,15 +25,23 @@ import DatasetsView from '../../components/DatasetsView';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<DatasetsView />, div);
+  ReactDOM.render(<DatasetsView getDatasets={() => {}} />, div);
 });
 
 it('renders datasets view - loading state', () => {
-  expect(renderer.create(<DatasetsView loadingDatasets />).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(<DatasetsView loadingDatasets getDatasets={() => {}} />)
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders datasets view - no datasets', () => {
-  expect(renderer.create(<DatasetsView loadingDatasets={false} />).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(<DatasetsView loadingDatasets={false} getDatasets={() => {}} />)
+      .toJSON()
+  ).toMatchSnapshot();
 });
 
 it('renders datasets view - datasets', () => {
@@ -62,8 +70,17 @@ it('renders datasets view - datasets', () => {
     }
   ];
 
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <DatasetsView datasets={datasets} loadingDatasets={false} />
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <DatasetsView
+            datasets={datasets}
+            loadingDatasets={false}
+            getDatasets={() => {}}
+          />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

@@ -1,21 +1,21 @@
 const migrateBindings = ({
   dataset,
   bindings,
-  getSheetName,
-  pushToLocalStorage
+  pushToLocalStorage,
+  getSheetId
 }) => {
-  const datasetFiles = dataset.files.map(entry => entry.name);
-  bindings.forEach((binding) => {
-    const sheetId = getSheetName(binding);
-    const fileName = binding.id.replace("dw::", "");
+  const datasetFiles = dataset.files.map((entry) => entry.name);
+  bindings.forEach(async (binding) => {
+    const fileName = binding.id.replace('dw::', '');
+    const worksheetId = await getSheetId(binding.rangeAddress);
+
     if (datasetFiles.includes(fileName)) {
       pushToLocalStorage(
-        binding.id,
         `https://data.world/${dataset.owner}/${dataset.id}`,
         fileName,
         binding.rangeAddress,
-        sheetId,
-        dataset.updated
+        worksheetId,
+        new Date()
       );
     }
   });

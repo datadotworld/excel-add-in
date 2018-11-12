@@ -16,44 +16,40 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.create-project-modal {
-  position: absolute;
-  top: 50px;
-}
 
-.create-project-form {
-  padding: 15px;
-}
+import React, { Component } from 'react';
+import ErrorModal from './ErrorModal';
 
-.create-project-modal .control-label {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+export default class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
 
-.project-form-info {
-  font-size: 0.8125rem;
-  font-weight: normal;
-  color: #5d6f85;
-}
+    this.state = {
+      error: null,
+      errorInfo: null
+    };
+  }
 
-.create-project-modal .radio-option-description {
-  color: #5d6f85;
-}
+  componentDidCatch(error, errorInfo) {
+    this.setState({
+      error,
+      errorInfo
+    });
+  }
 
-.create-project-modal .radio:first-child {
-  margin-bottom: 1rem;
-}
+  setError = (error, errorInfo) => {
+    this.setState({
+      error,
+      errorInfo
+    });
+  };
 
-.create-project-modal .radio .radio-label {
-  color: #8c9cb0;
-}
+  render() {
+    const { error, errorInfo } = this.state;
+    if (this.state.error) {
+      return <ErrorModal error={error.toString()} errorInfo={errorInfo} />;
+    }
 
-.create-project-modal .radio.checked .radio-label {
-  color: #608fc5;
-}
-
-.create-project-title {
-  background: white;
+    return this.props.children;
+  }
 }
