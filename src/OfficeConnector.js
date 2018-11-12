@@ -230,19 +230,6 @@ export default class OfficeConnector {
     return this.saveSettings();
   }
 
-  listenForChanges(binding, callback) {
-    const bindingId = `bindings#${binding.id}`;
-    Office.select(bindingId).removeHandlerAsync(
-      Office.EventType.BindingDataChanged,
-      () => {
-        Office.select(bindingId).addHandlerAsync(
-          Office.EventType.BindingDataChanged,
-          callback
-        );
-      }
-    );
-  }
-
   listenForSelectionChanges(callback) {
     if (this.isExcelApiSupported()) {
       Office.context.document.addHandlerAsync(

@@ -126,22 +126,14 @@ export default class App extends Component {
 
     if (token) {
       this.api = new DataDotWorldApi(token);
-      this.getUser()
-        .then(() => {
-          // Ignore
-        })
-        .catch((error) => {
-          this.setError(error);
-        });
-    }
-
-    this.initializeOffice()
-      .then(() => {
-        // Ignore
-      })
-      .catch((error) => {
+      this.getUser().catch((error) => {
         this.setError(error);
       });
+    }
+
+    this.initializeOffice().catch((error) => {
+      this.setError(error);
+    });
   }
 
   getSelectionRange = async () => {
@@ -175,7 +167,7 @@ export default class App extends Component {
       if (page === INSIGHTS_ROUTE) {
         await this.initializeInsights();
       } else if (page === IMPORT_ROUTE) {
-        return this.setState({ officeInitialized: true });
+        this.setState({ officeInitialized: true });
       } else {
         await this.initializeDatasets();
       }
@@ -272,7 +264,7 @@ export default class App extends Component {
 
   handleDatasetFetchError = async (error) => {
     if (error.response && error.response.status === 401) {
-      return this.logout();
+      this.logout();
     } else if (error.response && error.response.status === 404) {
       await this.unlinkDataset();
       return this.setError(new Error('Dataset not found'));
@@ -467,10 +459,11 @@ export default class App extends Component {
    * Saves data in specified range to its associated file on data.world.
    */
   sync = async (filename, rangeAddress, dataset, worksheetId) => {
+    let binding;
     try {
       this.setState({ syncing: true });
 
-      const binding = await this.createBinding(
+      binding = await this.createBinding(
         worksheetId,
         rangeAddress.split('!')[1],
         filename
@@ -493,14 +486,6 @@ export default class App extends Component {
           new Date()
         );
 
-        try {
-          await this.office.removeBinding(binding);
-        } catch (removeBindingError) {
-          this.setState({
-            error: removeBindingError
-          });
-        }
-
         this.setState({ syncing: false });
       } else {
         this.setState({
@@ -513,6 +498,14 @@ export default class App extends Component {
         syncing: false,
         error: uploadError
       });
+    } finally {
+      try {
+        await this.office.removeBinding(binding);
+      } catch (removeBindingError) {
+        this.setState({
+          error: removeBindingError
+        });
+      }
     }
   };
 
