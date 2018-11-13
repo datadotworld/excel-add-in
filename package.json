@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/browser": "^4.3.0",
     "array.prototype.find": "^2.0.4",
     "axios": "0.15.3",
     "classnames": "^2.2.5",

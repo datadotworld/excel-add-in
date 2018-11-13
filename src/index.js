@@ -20,12 +20,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import load from 'little-loader';
+import * as Sentry from '@sentry/browser';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './App';
 
 import './index.css';
 import './analytics-head';
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN
+});
 
 function loadApp() {
   ReactDOM.render(
