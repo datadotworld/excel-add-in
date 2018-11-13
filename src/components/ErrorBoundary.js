@@ -18,6 +18,8 @@
  */
 
 import React, { Component } from 'react';
+import * as Sentry from '@sentry/browser';
+
 import ErrorModal from './ErrorModal';
 
 export default class ErrorBoundary extends Component {
@@ -34,6 +36,13 @@ export default class ErrorBoundary extends Component {
     this.setState({
       error,
       errorInfo
+    });
+
+    Sentry.withScope((scope) => {
+      Object.keys(errorInfo).forEach((key) => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
     });
   }
 
