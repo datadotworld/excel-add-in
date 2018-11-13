@@ -29,7 +29,7 @@ class DatasetsView extends Component {
   static propTypes = {
     createDataset: PropTypes.func,
     datasets: PropTypes.array,
-    linkDataset: PropTypes.func,
+    selectDataset: PropTypes.func,
     loadingDatasets: PropTypes.bool
   };
 
@@ -94,7 +94,7 @@ class DatasetsView extends Component {
       datasets,
       loadingDatasets,
       showCreateDataset,
-      linkDataset
+      selectDataset
     } = this.props;
     const sortedDatasets = this.sortDatasets();
     const datasetEntries = sortedDatasets.map((d) => {
@@ -103,7 +103,7 @@ class DatasetsView extends Component {
           dataset={d}
           key={`${d.owner}/${d.id}`}
           buttonText="Link"
-          buttonHandler={linkDataset}
+          buttonHandler={selectDataset}
         />
       );
     });
@@ -118,34 +118,32 @@ class DatasetsView extends Component {
             </Button>
           </Row>
           {loadingDatasets && <LoadingAnimation label="Fetching datasets..." />}
-          {!!datasets.length &&
-            !loadingDatasets && (
-              <Row className="center-block">
-                <div>
-                  <DatasetItem
-                    buttonText="Link"
-                    dataset={{ isCreate: true }}
-                    buttonHandler={showCreateDataset}
-                  />
-                  {datasetEntries}
-                </div>
-              </Row>
-            )}
-          {!datasets.length &&
-            !loadingDatasets && (
-              <Row className="center-block no-datasets">
-                <div className="message">
-                  You haven't created any datasets to link data to.
-                </div>
-                <Button
-                  className="bottom-button"
-                  bsStyle="primary"
-                  onClick={this.createDatasetClick}
-                >
-                  Create a new dataset
-                </Button>
-              </Row>
-            )}
+          {!!datasets.length && !loadingDatasets && (
+            <Row className="center-block">
+              <div>
+                <DatasetItem
+                  buttonText="Link"
+                  dataset={{ isCreate: true }}
+                  buttonHandler={showCreateDataset}
+                />
+                {datasetEntries}
+              </div>
+            </Row>
+          )}
+          {!datasets.length && !loadingDatasets && (
+            <Row className="center-block no-datasets">
+              <div className="message">
+                You haven't created any datasets to link data to.
+              </div>
+              <Button
+                className="bottom-button"
+                bsStyle="primary"
+                onClick={this.createDatasetClick}
+              >
+                Create a new dataset
+              </Button>
+            </Row>
+          )}
         </div>
       </Grid>
     );

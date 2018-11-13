@@ -36,7 +36,8 @@ exports[`renders dataset - as project 1`] = `
     >
       @
       test
-       · Updated 
+       · Updated
+       
       <span>
         Jul 20, 2017
       </span>
@@ -99,7 +100,8 @@ exports[`renders dataset - button text 1`] = `
     >
       @
       test
-       · Updated 
+       · Updated
+       
       <span>
         Jul 20, 2017
       </span>
@@ -162,7 +164,8 @@ exports[`renders dataset - button text, link 1`] = `
     >
       @
       test
-       · Updated 
+       · Updated
+       
       <span>
         Jul 20, 2017
       </span>
@@ -225,7 +228,8 @@ exports[`renders dataset 1`] = `
     >
       @
       test
-       · Updated 
+       · Updated
+       
       <span>
         Jul 20, 2017
       </span>

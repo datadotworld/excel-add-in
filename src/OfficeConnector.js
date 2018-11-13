@@ -70,10 +70,6 @@ export default class OfficeConnector {
     }
   }
 
-  isCSV() {
-    return /.*\.csv$/.test(Office.context.document.url.toLowerCase());
-  }
-
   getBindingRange(binding) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
@@ -217,11 +213,6 @@ export default class OfficeConnector {
 
   setSyncStatus(syncStatus) {
     Office.context.document.settings.set('syncStatus', syncStatus);
-    return this.saveSettings();
-  }
-
-  setDataset(dataset) {
-    Office.context.document.settings.set('dataset', dataset);
     return this.saveSettings();
   }
 

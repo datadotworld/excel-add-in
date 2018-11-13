@@ -828,7 +828,8 @@ exports[`renders welcome page - with dataset 1`] = `
           >
             @
             test
-             · Updated 
+             · Updated
+             
             <span>
               Jul 20, 2017
             </span>
