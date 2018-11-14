@@ -1,133 +1,144 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders upload insight view 1`] = `
-<div
-  className="upload-row row"
->
+<div>
   <div
-    className="insight-upload"
+    className="center-block section-header insight-header row"
   >
-    <img
-      alt="chart"
-      className="insight-selected"
-      src="data:image/png;base64, b64ImageString"
-    />
     <div
-      className="form-group"
+      className="insight-title"
     >
+      New Insighst
+    </div>
+  </div>
+  <div
+    className="upload-row row"
+  >
+    <div
+      className="insight-upload"
+    >
+      <img
+        alt="chart"
+        className="insight-selected"
+        src="data:image/png;base64, b64ImageString"
+      />
       <div
-        className="body"
+        className="form-group"
+      >
+        <div
+          className="body"
+        >
+          <label
+            className="insight-label control-label"
+            htmlFor={undefined}
+          >
+            Project URL:
+          </label>
+          <span
+            className="input-group"
+          >
+            <div
+              className="url"
+            >
+              <input
+                className="textField form-control"
+                id={undefined}
+                onChange={[Function]}
+                placeholder="https://data.world/"
+                type="text"
+                value="sampleProject"
+              />
+              <button
+                className="browse-button btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Browse
+              </button>
+            </div>
+          </span>
+          <span
+            className="help-block help-block"
+          >
+            Copy/paste the URL of a project, or click "Browse"
+          </span>
+        </div>
+      </div>
+      <div
+        className="form-group"
       >
         <label
           className="insight-label control-label"
           htmlFor={undefined}
         >
-          Project URL:
+          Title 
+          <span
+            className="insight-info"
+          >
+            Max. 60
+          </span>
         </label>
         <span
           className="input-group"
         >
-          <div
-            className="url"
-          >
-            <input
-              className="textField form-control"
-              id={undefined}
-              onChange={[Function]}
-              placeholder="https://data.world/"
-              type="text"
-              value="sampleProject"
-            />
-            <button
-              className="browse-button btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Browse
-            </button>
-          </div>
-        </span>
-        <span
-          className="help-block help-block"
-        >
-          Copy/paste the URL of a project, or click "Browse"
+          <input
+            className="form-control"
+            id={undefined}
+            name="title"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
         </span>
       </div>
-    </div>
-    <div
-      className="form-group"
-    >
-      <label
-        className="insight-label control-label"
-        htmlFor={undefined}
+      <div
+        className="form-group"
       >
-        Title 
-        <span
-          className="insight-info"
+        <label
+          className="insight-label control-label"
+          htmlFor={undefined}
         >
-          Max. 60
-        </span>
-      </label>
-      <span
-        className="input-group"
-      >
-        <input
-          className="form-control"
-          id={undefined}
-          name="title"
-          onChange={[Function]}
-          type="text"
-          value=""
-        />
-      </span>
-    </div>
-    <div
-      className="form-group"
-    >
-      <label
-        className="insight-label control-label"
-        htmlFor={undefined}
-      >
-        Add Comment 
+          Add Comment 
+          <span
+            className="insight-info"
+          >
+            Optional
+          </span>
+        </label>
         <span
-          className="insight-info"
+          className="input-group"
         >
-          Optional
+          <textarea
+            className="form-control"
+            id={undefined}
+            name="description"
+            onChange={[Function]}
+            type="textarea"
+            value=""
+          />
         </span>
-      </label>
-      <span
-        className="input-group"
+      </div>
+      <div
+        className="insight-upload-buttons"
       >
-        <textarea
-          className="form-control"
-          id={undefined}
-          name="description"
-          onChange={[Function]}
-          type="textarea"
-          value=""
-        />
-      </span>
-    </div>
-    <div
-      className="insight-upload-buttons"
-    >
-      <button
-        className="insight-upload-button btn btn-default"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-      <button
-        className="insight-upload-button btn btn-primary"
-        disabled={true}
-        onClick={[Function]}
-        type="button"
-      >
-        OK
-      </button>
+        <button
+          className="insight-upload-button btn btn-default"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="insight-upload-button btn btn-primary"
+          disabled={true}
+          onClick={[Function]}
+          type="button"
+        >
+          OK
+        </button>
+      </div>
     </div>
   </div>
 </div>

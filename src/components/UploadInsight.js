@@ -109,92 +109,99 @@ class UploadInsight extends Component {
     const { uploadComplete, title, uri } = this.state;
     const { chart } = this.props;
     return (
-      <Row className="upload-row">
-        {!uploadComplete && (
-          <div className="insight-upload">
-            <img
-              className="insight-selected"
-              src={`data:image/png;base64, ${chart}`}
-              alt="chart"
-            />
-            <FormGroup>
-              <div className="body">
+      <div>
+        <Row className="center-block section-header insight-header">
+          <div className="insight-title">New Insighst</div>
+        </Row>
+        <Row className="upload-row">
+          {!uploadComplete && (
+            <div className="insight-upload">
+              <img
+                className="insight-selected"
+                src={`data:image/png;base64, ${chart}`}
+                alt="chart"
+              />
+              <FormGroup>
+                <div className="body">
+                  <ControlLabel className="insight-label">
+                    Project URL:
+                  </ControlLabel>
+                  <InputGroup>
+                    <div className="url">
+                      <FormControl
+                        className="textField"
+                        placeholder="https://data.world/"
+                        value={this.props.projectUrl}
+                        type="text"
+                        onChange={(event) => {
+                          this.props.handleUrlChange(event.target.value);
+                        }}
+                      />
+                      <Button
+                        className="browse-button"
+                        onClick={() => this.props.toggleShowProjects()}
+                      >
+                        Browse
+                      </Button>
+                    </div>
+                  </InputGroup>
+                  <HelpBlock className="help-block">
+                    Copy/paste the URL of a project, or click "Browse"
+                  </HelpBlock>
+                </div>
+              </FormGroup>
+              <FormGroup
+                validationState={this.state.title.length > 60 ? 'error' : null}
+              >
                 <ControlLabel className="insight-label">
-                  Project URL:
+                  Title <span className="insight-info">Max. 60</span>
                 </ControlLabel>
                 <InputGroup>
-                  <div className="url">
-                    <FormControl
-                      className="textField"
-                      placeholder="https://data.world/"
-                      value={this.props.projectUrl}
-                      type="text"
-                      onChange={(event) => {
-                        this.props.handleUrlChange(event.target.value);
-                      }}
-                    />
-                    <Button
-                      className="browse-button"
-                      onClick={() => this.props.toggleShowProjects()}
-                    >
-                      Browse
-                    </Button>
-                  </div>
+                  <FormControl
+                    onChange={this.handleChange}
+                    name="title"
+                    value={title}
+                    type="text"
+                  />
                 </InputGroup>
-                <HelpBlock className="help-block">
-                  Copy/paste the URL of a project, or click "Browse"
-                </HelpBlock>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel className="insight-label">
+                  Add Comment <span className="insight-info">Optional</span>
+                </ControlLabel>
+                <InputGroup>
+                  <FormControl
+                    onChange={this.handleChange}
+                    name="description"
+                    value={this.state.description}
+                    componentClass="textarea"
+                    type="textarea"
+                  />
+                </InputGroup>
+              </FormGroup>
+              <div className="insight-upload-buttons">
+                <Button
+                  onClick={this.closeClicked}
+                  className="insight-upload-button"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="insight-upload-button"
+                  onClick={this.upload}
+                  disabled={!this.formValid()}
+                  bsStyle="primary"
+                >
+                  OK
+                </Button>
               </div>
-            </FormGroup>
-            <FormGroup
-              validationState={this.state.title.length > 60 ? 'error' : null}
-            >
-              <ControlLabel className="insight-label">
-                Title <span className="insight-info">Max. 60</span>
-              </ControlLabel>
-              <InputGroup>
-                <FormControl
-                  onChange={this.handleChange}
-                  name="title"
-                  value={title}
-                  type="text"
-                />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel className="insight-label">
-                Add Comment <span className="insight-info">Optional</span>
-              </ControlLabel>
-              <InputGroup>
-                <FormControl
-                  onChange={this.handleChange}
-                  name="description"
-                  value={this.state.description}
-                  componentClass="textarea"
-                  type="textarea"
-                />
-              </InputGroup>
-            </FormGroup>
-            <div className="insight-upload-buttons">
-              <Button
-                onClick={this.closeClicked}
-                className="insight-upload-button"
-              >
-                Cancel
-              </Button>
-              <Button
-                className="insight-upload-button"
-                onClick={this.upload}
-                disabled={!this.formValid()}
-                bsStyle="primary"
-              >
-                OK
-              </Button>
             </div>
-          </div>
-        )}
-        {uploadComplete && <Published chart={chart} uri={uri} title={title} />}
-      </Row>
+          )}
+          {uploadComplete && (
+            <Published chart={chart} uri={uri} title={title} />
+          )}
+        </Row>
+      </div>
     );
   }
 }

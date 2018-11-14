@@ -18,7 +18,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
 import ProjectsView from './ProjectsView';
@@ -87,10 +87,6 @@ class Insights extends Component {
     if (officeInitialized) {
       return (
         <Grid className="insights-container">
-          <Row className="center-block section-header insight-header">
-            <div className="insight-title">New Insight</div>
-          </Row>
-
           {!selectedChart && (
             <Charts
               charts={charts}

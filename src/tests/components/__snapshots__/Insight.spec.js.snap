@@ -4,67 +4,69 @@ exports[`renders charts view - chart 1`] = `
 <div
   className="insights-container container"
 >
-  <div
-    className="center-block section-header insight-header row"
-  >
+  <div>
     <div
-      className="insight-title"
+      className="center-block section-header insight-header row"
     >
-      New Insight
+      <div
+        className="insight-title"
+      >
+        New Insight
+      </div>
     </div>
-  </div>
-  <div
-    className="charts-container row"
-  >
     <div
-      className="container"
+      className="charts-container row"
     >
       <div
-        className="insight-sub-header"
-      >
-        Pick a chart
-      </div>
-      <div
-        className="insight-charts"
+        className="container"
       >
         <div
-          className="loaderoverlay"
+          className="insight-sub-header"
+        >
+          Pick a chart
+        </div>
+        <div
+          className="insight-charts"
         >
           <div
-            className="loader-center"
+            className="loaderoverlay"
           >
             <div
-              className="loader"
+              className="loader-center"
             >
-              Loading...
+              <div
+                className="loader"
+              >
+                Loading...
+              </div>
+            </div>
+          </div>
+          <div
+            className="loaderoverlay"
+          >
+            <div
+              className="loader-center"
+            >
+              <div
+                className="loader"
+              >
+                Loading...
+              </div>
             </div>
           </div>
         </div>
         <div
-          className="loaderoverlay"
+          className="insight-button-container"
         >
-          <div
-            className="loader-center"
+          <button
+            className="refresh-button btn btn-primary"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
           >
-            <div
-              className="loader"
-            >
-              Loading...
-            </div>
-          </div>
+            Refresh
+          </button>
         </div>
-      </div>
-      <div
-        className="insight-button-container"
-      >
-        <button
-          className="refresh-button btn btn-primary"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Refresh
-        </button>
       </div>
     </div>
   </div>
@@ -78,32 +80,34 @@ exports[`renders charts view - no charts 1`] = `
 <div
   className="insights-container container"
 >
-  <div
-    className="center-block section-header insight-header row"
-  >
+  <div>
     <div
-      className="insight-title"
+      className="center-block section-header insight-header row"
     >
-      New Insight
-    </div>
-  </div>
-  <div
-    className="charts-container row"
-  >
-    <div
-      className="no-chart"
-    >
-      <div>
-        Insert a chart to get started.
-      </div>
-      <button
-        className="no-chart-button btn btn-primary"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="insight-title"
       >
-        Refresh
-      </button>
+        New Insight
+      </div>
+    </div>
+    <div
+      className="charts-container row"
+    >
+      <div
+        className="no-chart"
+      >
+        <div>
+          Insert a chart to get started.
+        </div>
+        <button
+          className="no-chart-button btn btn-primary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Refresh
+        </button>
+      </div>
     </div>
   </div>
   

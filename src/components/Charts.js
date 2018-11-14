@@ -55,41 +55,46 @@ class Charts extends Component {
     const loadCharts = charts.length > 0;
 
     return (
-      <Row className="charts-container">
-        {loadCharts && (
-          <div className="container">
-            <div className="insight-sub-header">Pick a chart</div>
-            <div className="insight-charts">
-              {charts.map((chart, index) => {
-                return (
-                  <Chart
-                    key={index}
-                    chart={chart}
-                    getImageAndTitle={getImageAndTitle}
-                    selectChart={selectChart}
-                    incrementFailed={this.incrementFailed}
-                  />
-                );
-              })}
+      <div>
+        <Row className="center-block section-header insight-header">
+          <div className="insight-title">New Insight</div>
+        </Row>
+        <Row className="charts-container">
+          {loadCharts && (
+            <div className="container">
+              <div className="insight-sub-header">Pick a chart</div>
+              <div className="insight-charts">
+                {charts.map((chart, index) => {
+                  return (
+                    <Chart
+                      key={index}
+                      chart={chart}
+                      getImageAndTitle={getImageAndTitle}
+                      selectChart={selectChart}
+                      incrementFailed={this.incrementFailed}
+                    />
+                  );
+                })}
+              </div>
+              {failedToLoad > 0 && (
+                <Alert bsStyle="danger" className="charts-failed">
+                  {generateChartError(charts, failedToLoad)}
+                </Alert>
+              )}
+              <div className="insight-button-container">
+                <Button
+                  onClick={this.refresh}
+                  bsStyle="primary"
+                  className="refresh-button"
+                >
+                  Refresh
+                </Button>
+              </div>
             </div>
-            {failedToLoad > 0 && (
-              <Alert bsStyle="danger" className="charts-failed">
-                {generateChartError(charts, failedToLoad)}
-              </Alert>
-            )}
-            <div className="insight-button-container">
-              <Button
-                onClick={this.refresh}
-                bsStyle="primary"
-                className="refresh-button"
-              >
-                Refresh
-              </Button>
-            </div>
-          </div>
-        )}
-        {!loadCharts && <NoChart />}
-      </Row>
+          )}
+          {!loadCharts && <NoChart />}
+        </Row>
+      </div>
     );
   }
 }
