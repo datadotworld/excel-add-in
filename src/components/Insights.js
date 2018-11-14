@@ -133,7 +133,6 @@ class Insights extends Component {
               handleUrlChange={this.handleUrlChange}
               createProject={createProject}
               closeCreateProject={this.toggleShowCreateProject}
-              closeProjects={this.toggleShowProjects}
               setError={setError}
             />
           )}

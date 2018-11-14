@@ -101,7 +101,6 @@ class CreateProjectModal extends Component {
       .then((res) => {
         this.props.handleUrlChange(res.uri);
         this.props.closeCreateProject();
-        this.props.closeProjects();
       })
       .catch((error) => {
         this.props.setError(error);
