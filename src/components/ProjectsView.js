@@ -96,7 +96,7 @@ class DatasetsView extends Component {
               <Button
                 className="bottom-button"
                 bsStyle="primary"
-                onClick={this.createDatasetClick}
+                onClick={toggleShowCreateProject}
               >
                 Create a new project
               </Button>
