@@ -36,7 +36,7 @@ exports[`renders upload insight view 1`] = `
               onChange={[Function]}
               placeholder="https://data.world/"
               type="text"
-              value={undefined}
+              value="sampleProject"
             />
             <button
               className="browse-button btn btn-default"

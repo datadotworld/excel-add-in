@@ -88,6 +88,15 @@ class UploadInsight extends Component {
     window.location.pathname = '/insights';
   };
 
+  formValid = () => {
+    const { title } = this.state;
+    const { projectUrl } = this.props;
+    const titleValid = title && title.length < 60;
+    const projectValid = projectUrl.length > 0;
+
+    return titleValid && projectValid;
+  };
+
   render() {
     const { uploadComplete, title, uri } = this.state;
     const { chart } = this.props;
@@ -168,7 +177,7 @@ class UploadInsight extends Component {
               <Button
                 className="insight-upload-button"
                 onClick={this.upload}
-                disabled={!title || title.length > 60}
+                disabled={!this.formValid()}
                 bsStyle="primary"
               >
                 OK
