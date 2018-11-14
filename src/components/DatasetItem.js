@@ -24,6 +24,7 @@ import analytics from '../analytics';
 
 import './DatasetItem.css';
 import Icon from './icons/Icon';
+const add = require('./icons/icon-add.svg');
 
 class DatasetItem extends Component {
   static propTypes = {
@@ -49,7 +50,7 @@ class DatasetItem extends Component {
 
   render() {
     const { dataset } = this.props;
-    const add = require('./icons/icon-add.svg');
+
     if (dataset.isCreate) {
       return (
         <div className="dataset" onClick={this.buttonClick}>

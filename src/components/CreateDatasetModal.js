@@ -71,7 +71,7 @@ class CreateDatasetModal extends Component {
 
   isDatasetValid = () => {
     const { title } = this.state;
-    return title && title.length > 0 && title.length <= 60;
+    return title && title.length > 3 && title.length <= 60;
   };
 
   visibilityChanged = (event) => {
