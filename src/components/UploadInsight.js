@@ -44,7 +44,6 @@ class UploadInsight extends Component {
 
   state = {
     title: this.props.title || '',
-    project: this.props.projects[0],
     description: '',
     uploadComplete: false,
     uri: ''
@@ -70,7 +69,16 @@ class UploadInsight extends Component {
   upload = async () => {
     analytics.track('exceladdin.create_project.ok.click');
     const { chart } = this.props;
-    const { title, project, description } = this.state;
+    const { title, description } = this.state;
+    const { projectUrl } = this.props;
+
+    const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
+    const matched = projectUrl.match(regexMatch);
+    const owner = matched[1];
+    const id = matched[2];
+
+    const project = { owner, id };
+
     try {
       const res = await this.props.uploadChart(chart, {
         title,

@@ -511,8 +511,25 @@ export default class App extends Component {
     }
   };
 
-  createProject = (project) => {
-    return this.api.createProject(this.state.user.id, project);
+  createProject = async (project) => {
+    try {
+      const createdProject = await this.api.createProject(
+        this.state.user.id,
+        project
+      );
+
+      return createdProject;
+    } catch (error) {
+      if (error && error.response && error.response.data) {
+        this.setState({
+          errorMessage: error.response.data.message
+        });
+      } else {
+        this.setError(error);
+      }
+
+      throw error;
+    }
   };
 
   doesFileExist = (filename) => {

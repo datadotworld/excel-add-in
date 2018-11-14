@@ -16,11 +16,6 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.create-project-modal {
-  position: absolute;
-  top: 50px;
-  background: white;
-}
 
 .create-project-form {
   padding: 15px;

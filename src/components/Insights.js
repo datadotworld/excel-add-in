@@ -116,7 +116,7 @@ class Insights extends Component {
             />
           )}
 
-          {selectedChart && showProjects && (
+          {selectedChart && !showCreateProject && showProjects && (
             <ProjectsView
               getProjects={getProjects}
               projects={projects}

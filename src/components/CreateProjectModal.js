@@ -52,12 +52,12 @@ class CreateProjectModal extends Component {
 
   closeClicked = () => {
     analytics.track('exceladdin.create_project.close.click');
-    this.props.close();
+    this.props.closeCreateProject();
   };
 
   cancelClicked = () => {
     analytics.track('exceladdin.create_project.cancel_button.click');
-    this.props.close();
+    this.props.closeCreateProject();
   };
 
   handleChange = (event) => {
@@ -88,23 +88,18 @@ class CreateProjectModal extends Component {
     return this.isTitleValid() && this.isObjectiveValid();
   };
 
-  createProject = () => {
+  createProject = async () => {
     analytics.track('exceladdin.create_dataset.create_button.click');
     const { title, objective, visibility } = this.state;
 
-    this.props
-      .createProject({
-        title,
-        objective,
-        visibility
-      })
-      .then((res) => {
-        this.props.handleUrlChange(res.uri);
-        this.props.closeCreateProject();
-      })
-      .catch((error) => {
-        this.props.setError(error);
-      });
+    const createdProject = await this.props.createProject({
+      title,
+      objective,
+      visibility
+    });
+
+    this.props.handleUrlChange(createdProject.uri);
+    this.props.closeCreateProject();
   };
 
   render() {
