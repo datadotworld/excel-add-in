@@ -21,8 +21,6 @@ import PropTypes from 'prop-types';
 import { Row, Button, Alert } from 'react-bootstrap';
 import Chart from './Chart';
 import NoChart from './NoChart';
-import NoProjects from './NoProjects';
-import CreateProject from './CreateProjectModal';
 import { generateChartError } from '../util';
 
 import './Charts.css';
@@ -31,92 +29,66 @@ import analytics from '../analytics';
 class Charts extends Component {
   static propTypes = {
     charts: PropTypes.array,
-    projects: PropTypes.array,
     getImageAndTitle: PropTypes.func,
-    createProject: PropTypes.func,
-    user: PropTypes.object,
     selectChart: PropTypes.func,
     setError: PropTypes.func
-  }
+  };
 
   state = {
-    showAddProject: false,
     failedToLoad: 0
-  }
-
-  showAddProject = () => {
-    this.setState({ showAddProject: true });
-  }
-
-  closeAddProject = () => {
-    this.setState({ showAddProject: false });
-  }
+  };
 
   incrementFailed = () => {
     const { failedToLoad } = this.state;
     this.setState({ failedToLoad: failedToLoad + 1 });
-  }
+  };
 
   refresh = () => {
     analytics.track('exceladdin.charts.refresh_button.click');
-    window.location.pathname = '/insights'
-  }
+    window.location.pathname = '/insights';
+  };
 
   render() {
-    const {
-      charts,
-      projects,
-      getImageAndTitle,
-      selectChart,
-      user,
-      createProject,
-      setError
-    } = this.props;
-    const { showAddProject, failedToLoad } = this.state;
+    const { charts, getImageAndTitle, selectChart } = this.props;
+    const { failedToLoad } = this.state;
 
     const loadCharts = charts.length > 0;
-    const loadProjects = projects.length > 0;
 
     return (
       <Row className="charts-container">
-        {loadProjects && loadCharts && <div className="container">
-          <div className='insight-sub-header'>
-            Pick a chart
+        {loadCharts && (
+          <div className="container">
+            <div className="insight-sub-header">Pick a chart</div>
+            <div className="insight-charts">
+              {charts.map((chart, index) => {
+                return (
+                  <Chart
+                    key={index}
+                    chart={chart}
+                    getImageAndTitle={getImageAndTitle}
+                    selectChart={selectChart}
+                    incrementFailed={this.incrementFailed}
+                  />
+                );
+              })}
+            </div>
+            {failedToLoad > 0 && (
+              <Alert bsStyle="danger" className="charts-failed">
+                {generateChartError(charts, failedToLoad)}
+              </Alert>
+            )}
+            <div className="insight-button-container">
+              <Button
+                onClick={this.refresh}
+                bsStyle="primary"
+                className="refresh-button"
+              >
+                Refresh
+              </Button>
+            </div>
           </div>
-          <div className="insight-charts">
-            {
-              charts.map((chart, index) => {
-                return <Chart
-                  key={index}
-                  chart={chart}
-                  getImageAndTitle={getImageAndTitle}
-                  selectChart={selectChart}
-                  incrementFailed={this.incrementFailed}
-                />
-              })
-            }
-          </div>
-          {failedToLoad > 0 && <Alert bsStyle="danger" className="charts-failed">
-            {generateChartError(charts, failedToLoad)}
-          </Alert>}
-          <div className="insight-button-container">
-            <Button
-              onClick={this.refresh}
-              bsStyle="primary"
-              className="refresh-button"
-            >
-              Refresh
-            </Button>
-          </div>
-        </div>}
-        {!loadProjects && !showAddProject && <NoProjects showAddProject={this.showAddProject} />}
-        {loadProjects && !loadCharts && <NoChart />}
-        {showAddProject && <CreateProject
-          user={user}
-          close={this.closeAddProject}
-          createProject={createProject}
-          setError={setError}
-        />}
+        )}
+        {!loadCharts && <NoChart />}
       </Row>
     );
   }

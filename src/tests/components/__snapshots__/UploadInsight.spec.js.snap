@@ -15,98 +15,44 @@ exports[`renders upload insight view 1`] = `
     <div
       className="form-group"
     >
-      <label
-        className="insight-label control-label"
-        htmlFor={undefined}
-      >
-        Project
-      </label>
       <div
-        className="dropdown btn-group"
+        className="body"
       >
-        <button
-          aria-expanded={false}
-          aria-haspopup={true}
-          className="projects dropdown-toggle btn btn-default"
-          disabled={false}
-          id="projects-dropdown"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="button"
-          type="button"
+        <label
+          className="insight-label control-label"
+          htmlFor={undefined}
         >
-          firstOwner/first title
-           
-          <span
-            className="caret"
-          />
-        </button>
-        <ul
-          aria-labelledby="projects-dropdown"
-          className="dropdown-menu"
-          role="menu"
+          Project URL:
+        </label>
+        <span
+          className="input-group"
         >
-          <li
-            className=""
-            role="presentation"
-            style={undefined}
+          <div
+            className="url"
           >
-            <a
-              href="#"
+            <input
+              className="textField form-control"
+              id={undefined}
+              onChange={[Function]}
+              placeholder="https://data.world/"
+              type="text"
+              value={undefined}
+            />
+            <button
+              className="browse-button btn btn-default"
+              disabled={false}
               onClick={[Function]}
-              onKeyDown={[Function]}
-              role="menuitem"
-              tabIndex="-1"
+              type="button"
             >
-              firstOwner/first title
-            </a>
-          </li>
-          <li
-            className=""
-            role="presentation"
-            style={undefined}
-          >
-            <a
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="menuitem"
-              tabIndex="-1"
-            >
-              firstOwner/second title
-            </a>
-          </li>
-          <li
-            className=""
-            role="presentation"
-            style={undefined}
-          >
-            <a
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="menuitem"
-              tabIndex="-1"
-            >
-              secondOwner/third title
-            </a>
-          </li>
-          <li
-            className=""
-            role="presentation"
-            style={undefined}
-          >
-            <a
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="menuitem"
-              tabIndex="-1"
-            >
-              secondOwner/forth title
-            </a>
-          </li>
-        </ul>
+              Browse
+            </button>
+          </div>
+        </span>
+        <span
+          className="help-block help-block"
+        >
+          Copy/paste the URL of a project, or click "Browse"
+        </span>
       </div>
     </div>
     <div

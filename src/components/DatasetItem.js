@@ -50,13 +50,16 @@ class DatasetItem extends Component {
 
   render() {
     const { dataset } = this.props;
+    const { isProject } = dataset;
 
     if (dataset.isCreate) {
       return (
         <div className="dataset" onClick={this.buttonClick}>
           <Image className="add-icon" src={add} />
           <div className="center-info">
-            <div className="title">Create a new dataset</div>
+            <div className="title">
+              {`Create a new ${isProject ? 'project' : 'dataset'}`}
+            </div>
           </div>
           <div className="link-icon">
             <Icon icon="angleRight" />

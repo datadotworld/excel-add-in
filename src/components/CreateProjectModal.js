@@ -99,7 +99,9 @@ class CreateProjectModal extends Component {
         visibility
       })
       .then((res) => {
-        window.location.pathname = '/insights';
+        this.props.handleUrlChange(res.uri);
+        this.props.closeCreateProject();
+        this.props.closeProjects();
       })
       .catch((error) => {
         this.props.setError(error);

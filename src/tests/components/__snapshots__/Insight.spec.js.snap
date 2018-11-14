@@ -17,22 +17,48 @@ exports[`renders charts view - chart 1`] = `
     className="charts-container row"
   >
     <div
-      className="no-chart"
+      className="container"
     >
-      <div>
-        Create a project for your insight.
-      </div>
-      <button
-        className="no-chart-button btn btn-primary"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="insight-sub-header"
       >
-        Create Project
-      </button>
-      <div>
+        Pick a chart
+      </div>
+      <div
+        className="insight-charts"
+      >
+        <div
+          className="loaderoverlay"
+        >
+          <div
+            className="loader-center"
+          >
+            <div
+              className="loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+        <div
+          className="loaderoverlay"
+        >
+          <div
+            className="loader-center"
+          >
+            <div
+              className="loader"
+            >
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="insight-button-container"
+      >
         <button
-          className="no-chart-button btn btn-primary"
+          className="refresh-button btn btn-primary"
           disabled={false}
           onClick={[Function]}
           type="button"
@@ -42,6 +68,8 @@ exports[`renders charts view - chart 1`] = `
       </div>
     </div>
   </div>
+  
+  
   
 </div>
 `;
@@ -78,6 +106,8 @@ exports[`renders charts view - no charts 1`] = `
       </button>
     </div>
   </div>
+  
+  
   
 </div>
 `;

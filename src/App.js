@@ -107,6 +107,7 @@ export default class App extends Component {
       preferences,
       datasets: [],
       loadingDatasets: false,
+      loadingProjects: false,
       loggedIn: !!token,
       officeInitialized: false,
       syncStatus: {},
@@ -216,18 +217,11 @@ export default class App extends Component {
   initializeInsights = async () => {
     if (this.state.loggedIn) {
       try {
-        // Logged in user's projects
-        const projects = await this.api.getProjects();
-
-        try {
-          // All the charts in the workbook
-          const charts = await this.getCharts();
-          this.setState({ charts, projects, officeInitialized: true });
-        } catch (getChartsError) {
-          this.setError(getChartsError);
-        }
-      } catch (getProjectsError) {
-        this.setError(getProjectsError);
+        // All the charts in the workbook
+        const charts = await this.getCharts();
+        this.setState({ charts, officeInitialized: true });
+      } catch (getChartsError) {
+        this.setError(getChartsError);
       }
     } else {
       this.setState({ officeInitialized: true });
@@ -255,6 +249,20 @@ export default class App extends Component {
       this.setState({
         error: getDatasetsError,
         loadingDatasets: false
+      });
+    }
+  };
+
+  getProjects = async () => {
+    try {
+      this.setState({ loadingProjects: true });
+
+      // Logged in user's projects
+      const projects = await this.api.getProjects();
+      this.setState({ loadingProjects: false, projects });
+    } catch (getProjectsError) {
+      this.setState({
+        error: getProjectsError
       });
     }
   };
@@ -587,6 +595,7 @@ export default class App extends Component {
       error,
       excelApiSupported,
       loadingDatasets,
+      loadingProjects,
       loggedIn,
       officeInitialized,
       showCreateDataset,
@@ -743,6 +752,8 @@ export default class App extends Component {
             createProject={this.createProject}
             uploadChart={this.uploadChart}
             setError={this.setError}
+            getProjects={this.getProjects}
+            loadingProjects={loadingProjects}
           />
         )}
 

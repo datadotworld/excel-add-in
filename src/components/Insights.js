@@ -21,6 +21,8 @@ import PropTypes from 'prop-types';
 import { Grid, Row } from 'react-bootstrap';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
+import ProjectsView from './ProjectsView';
+import CreateProjectModal from './CreateProjectModal';
 
 import './Insights.css';
 
@@ -37,15 +39,38 @@ class Insights extends Component {
   };
 
   state = {
-    selectedChart: ''
+    selectedChart: '',
+    showProjects: false,
+    showCreateProject: false,
+    projectUrl: ''
   };
 
   selectChart = (imageString, title) => {
     this.setState({ selectedChart: { imageString, title } });
   };
 
+  toggleShowProjects = () => {
+    this.setState({ showProjects: !this.state.showProjects });
+  };
+
+  toggleShowCreateProject = () => {
+    this.setState({ showCreateProject: !this.state.showCreateProject });
+  };
+
+  handleUrlChange = (url) => {
+    this.setState({ projectUrl: url });
+    if (this.state.showProjects) {
+      this.toggleShowProjects();
+    }
+  };
+
   render() {
-    const { selectedChart } = this.state;
+    const {
+      selectedChart,
+      showProjects,
+      showCreateProject,
+      projectUrl
+    } = this.state;
     const {
       charts,
       getImageAndTitle,
@@ -54,7 +79,9 @@ class Insights extends Component {
       user,
       createProject,
       officeInitialized,
-      setError
+      setError,
+      getProjects,
+      loadingProjects
     } = this.props;
 
     if (officeInitialized) {
@@ -63,25 +90,51 @@ class Insights extends Component {
           <Row className="center-block section-header insight-header">
             <div className="insight-title">New Insight</div>
           </Row>
+
           {!selectedChart && (
             <Charts
               charts={charts}
               projects={projects}
               getImageAndTitle={getImageAndTitle}
-              user={user}
               createProject={createProject}
               selectChart={this.selectChart}
               setError={setError}
             />
           )}
-          {selectedChart && (
+
+          {selectedChart && !showProjects && (
             <UploadInsight
               getImageAndTitle={getImageAndTitle}
               chart={selectedChart.imageString}
               title={selectedChart.title}
               uploadChart={uploadChart}
               projects={projects}
-              setError={this.props.setError}
+              setError={setError}
+              toggleShowProjects={this.toggleShowProjects}
+              projectUrl={projectUrl}
+              handleUrlChange={this.handleUrlChange}
+            />
+          )}
+
+          {selectedChart && showProjects && (
+            <ProjectsView
+              getProjects={getProjects}
+              projects={projects}
+              loadingProjects={loadingProjects}
+              toggleShowProjects={this.toggleShowProjects}
+              toggleShowCreateProject={this.toggleShowCreateProject}
+              handleUrlChange={this.handleUrlChange}
+            />
+          )}
+
+          {selectedChart && showCreateProject && (
+            <CreateProjectModal
+              user={user}
+              handleUrlChange={this.handleUrlChange}
+              createProject={createProject}
+              closeCreateProject={this.toggleShowCreateProject}
+              closeProjects={this.toggleShowProjects}
+              setError={setError}
             />
           )}
         </Grid>

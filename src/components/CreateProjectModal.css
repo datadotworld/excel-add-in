@@ -19,6 +19,7 @@
 .create-project-modal {
   position: absolute;
   top: 50px;
+  background: white;
 }
 
 .create-project-form {
@@ -52,8 +53,4 @@
 
 .create-project-modal .radio.checked .radio-label {
   color: #608fc5;
-}
-
-.create-project-title {
-  background: white;
 }
