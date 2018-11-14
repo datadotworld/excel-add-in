@@ -100,7 +100,8 @@ exports[`renders datasets view - datasets 1`] = `
             >
               @
               test
-               · Updated 
+               · Updated
+               
               <span>
                 Aug 20, 2017
               </span>
@@ -163,7 +164,8 @@ exports[`renders datasets view - datasets 1`] = `
             >
               @
               test
-               · Updated 
+               · Updated
+               
               <span>
                 Aug 20, 2017
               </span>
@@ -223,7 +225,8 @@ exports[`renders datasets view - datasets 1`] = `
             >
               @
               test
-               · Updated 
+               · Updated
+               
               <span>
                 Jul 20, 2017
               </span>

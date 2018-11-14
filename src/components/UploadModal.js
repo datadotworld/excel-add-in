@@ -163,7 +163,6 @@ export default class UploadModal extends Component {
 
   handleUrlChange(url) {
     this.setState({ currentUrl: url });
-    this.props.linkDataset(url);
   }
 
   render() {

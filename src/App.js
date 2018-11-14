@@ -27,7 +27,6 @@ import './App.css';
 import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
-import CSVWarningModal from './components/CSVWarningModal';
 import WelcomePage from './components/WelcomePage';
 import DatasetsView from './components/DatasetsView';
 import LoadingAnimation from './components/LoadingAnimation';
@@ -47,7 +46,6 @@ import migrations from './migrations';
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
 const DW_PREFERENCES = 'DW_PREFERENCES';
-const DISMISSALS_CSV_WARNING = 'CSV_DISMISSAL_WARNING';
 const INSIGHTS_ROUTE = 'insights';
 const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
@@ -211,8 +209,7 @@ export default class App extends Component {
     this.setState({
       excelApiSupported: this.office.isExcelApiSupported(),
       officeInitialized: true,
-      outsideOffice: false,
-      csvMode: this.office.isCSV()
+      outsideOffice: false
     });
   };
 
@@ -262,55 +259,12 @@ export default class App extends Component {
     }
   };
 
-  handleDatasetFetchError = async (error) => {
-    if (error.response && error.response.status === 401) {
-      this.logout();
-    } else if (error.response && error.response.status === 404) {
-      await this.unlinkDataset();
-      return this.setError(new Error('Dataset not found'));
-    } else {
-      return this.setError(error);
-    }
-  };
-
-  linkDataset = async (dataset) => {
+  selectDataset = (dataset) => {
     this.setState({ url: dataset, showDatasets: false });
-    const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
-    const match = dataset.match(regexMatch);
-    try {
-      const freshDataset = await this.api.getDataset(`${match[1]}/${match[2]}`);
-      this.setState({ dataset: freshDataset });
-      if (
-        this.state.csvMode &&
-        !this.hasBeenDismissed(DISMISSALS_CSV_WARNING)
-      ) {
-        this.setState({ showCSVWarning: true });
-      }
-      return await this.office.setDataset(freshDataset);
-    } catch (error) {
-      await this.handleDatasetFetchError(error);
-    }
-  };
-
-  createUrl = (uri) => {
-    this.setState({ url: uri, showDatasets: false });
   };
 
   addUrl = (url) => {
     this.setState({ url });
-  };
-
-  unlinkDataset = async () => {
-    try {
-      await this.office.setDataset(null);
-      await this.getDatasets();
-      this.setState({
-        dataset: null,
-        syncStatus: {}
-      });
-    } catch (error) {
-      this.setError(error);
-    }
   };
 
   /**
@@ -528,26 +482,24 @@ export default class App extends Component {
     });
   };
 
-  dismissCSVWarning = (options) => {
-    if (options.dismissWarning) {
-      this.state.preferences.dismissals.push(DISMISSALS_CSV_WARNING);
-      localStorage.setItem(
-        DW_PREFERENCES,
-        JSON.stringify(this.state.preferences)
-      );
-    }
-
-    this.setState({
-      showCSVWarning: false,
-      preferences: this.state.preferences
-    });
-  };
-
   createDataset = async (dataset) => {
     try {
-      return await this.api.createDataset(this.state.user.id, dataset);
-    } catch (datasetError) {
-      this.setError(datasetError);
+      const createdDataset = await this.api.createDataset(
+        this.state.user.id,
+        dataset
+      );
+
+      return createdDataset;
+    } catch (error) {
+      if (error && error.response && error.response.data) {
+        this.setState({
+          errorMessage: error.response.data.message
+        });
+      } else {
+        this.setError(error);
+      }
+
+      throw error;
     }
   };
 
@@ -734,7 +686,6 @@ export default class App extends Component {
             setError={this.setError}
             setErrorMessage={this.setErrorMessage}
             close={this.closeAddData}
-            linkDataset={this.createUrl}
             numItemsInHistory={numItemsInHistory}
             changeSelection={this.changeSelection}
             selectSheet={selectSheet}
@@ -765,7 +716,7 @@ export default class App extends Component {
             user={user}
             createDataset={this.createDataset}
             close={() => this.setState({ showCreateDataset: false })}
-            linkDataset={this.createUrl}
+            selectDataset={this.selectDataset}
             showDatasets={this.toggleShowDatasets}
           />
         )}
@@ -774,7 +725,7 @@ export default class App extends Component {
           <DatasetsView
             datasets={datasets}
             createDataset={this.showCreateDataset}
-            linkDataset={this.linkDataset}
+            selectDataset={this.selectDataset}
             loadingDatasets={loadingDatasets}
             showDatasets={this.toggleShowDatasets}
             showCreateDataset={this.showCreateDataset}
@@ -796,10 +747,6 @@ export default class App extends Component {
         )}
 
         {renderImportData && <ImportData />}
-        <CSVWarningModal
-          show={this.state.showCSVWarning}
-          successHandler={this.dismissCSVWarning}
-        />
       </div>
     );
   }

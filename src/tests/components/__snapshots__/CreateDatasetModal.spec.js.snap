@@ -10,7 +10,8 @@ exports[`renders modal 1`] = `
     <div
       className="title"
     >
-      Create a new dataset 
+      Create a new dataset
+       
       <span
         className="svg-icon close-button"
         onClick={[Function]}
