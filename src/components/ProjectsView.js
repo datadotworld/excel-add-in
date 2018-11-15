@@ -20,11 +20,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Grid, Row, ControlLabel } from 'react-bootstrap';
-import './DatasetsView.css';
-import DatasetItem from './DatasetItem';
+import './LibraryView.css';
+import LibraryItem from './LibraryItem';
 import LoadingAnimation from './LoadingAnimation';
 
-class DatasetsView extends Component {
+class LibraryView extends Component {
   static propTypes = {
     createDataset: PropTypes.func,
     datasets: PropTypes.array,
@@ -54,7 +54,7 @@ class DatasetsView extends Component {
     } = this.props;
     const projectEntries = projects.map((project) => {
       return (
-        <DatasetItem
+        <LibraryItem
           dataset={{ ...project, isProject: true }}
           key={`${project.owner}/${project.id}`}
           buttonText="Link"
@@ -79,7 +79,7 @@ class DatasetsView extends Component {
           {!!projects.length && !loadingProjects && (
             <Row className="center-block">
               <div>
-                <DatasetItem
+                <LibraryItem
                   buttonText="Link"
                   dataset={{ isCreate: true, isProject: true }}
                   buttonHandler={toggleShowCreateProject}
@@ -108,4 +108,4 @@ class DatasetsView extends Component {
   }
 }
 
-export default DatasetsView;
+export default LibraryView;

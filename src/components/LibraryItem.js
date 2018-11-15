@@ -22,11 +22,11 @@ import { FormattedDate } from 'react-intl';
 import { Image } from 'react-bootstrap';
 import analytics from '../analytics';
 
-import './DatasetItem.css';
+import './LibraryItem.css';
 import Icon from './icons/Icon';
 const add = require('./icons/icon-add.svg');
 
-class DatasetItem extends Component {
+class LibraryItem extends Component {
   static propTypes = {
     dataset: PropTypes.object,
     buttonText: PropTypes.string,
@@ -90,4 +90,4 @@ class DatasetItem extends Component {
   }
 }
 
-export default DatasetItem;
+export default LibraryItem;

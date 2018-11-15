@@ -18,14 +18,10 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { 
-  Button,
-  Grid,
-  Row
-} from 'react-bootstrap';
+import { Button, Grid, Row } from 'react-bootstrap';
 
 import LogoStacked from './icons/LogoStacked';
-import DatasetItem from './DatasetItem';
+import LibraryItem from './LibraryItem';
 import insightsIcon from '../static/img/icon_insight_round.svg';
 import datasetIcon from '../static/img/icon_dataset_round.svg';
 import importIcon from '../static/img/icon_import_round.svg';
@@ -34,59 +30,85 @@ import './WelcomePage.css';
 import analytics from '../analytics';
 
 class WelcomePage extends Component {
-
   static propTypes = {
     dataset: PropTypes.object,
     page: PropTypes.string,
     version: PropTypes.string
-  }
+  };
 
-  constructor (props) {
+  constructor(props) {
     super();
-    this.oauthURI = `${process.env.REACT_APP_OAUTH_URI || '/authorize'}?page=${props.page}`;
+    this.oauthURI = `${process.env.REACT_APP_OAUTH_URI || '/authorize'}?page=${
+      props.page
+    }`;
   }
 
   startAuthFlow = () => {
     window.location = this.oauthURI;
-  }
+  };
 
   loginClick = () => {
     analytics.track('exceladdin.welcome.login.click');
     this.startAuthFlow();
-  }
+  };
 
   signUpClick = () => {
     analytics.track('exceladdin.welcome.signup.click');
-  }
+  };
 
-  render () {
-    const {dataset, version} = this.props;
+  render() {
+    const { dataset, version } = this.props;
     const v1LandingPage = (
-      <Grid className='welcome-page'>
-        <Row className='center-block'>
+      <Grid className="welcome-page">
+        <Row className="center-block">
           <LogoStacked />
-          {!dataset && <div>
-            <div className='description'>
-              <p>Turn Excel files into<br />data.world datasets</p>
-              <p>Collaborate with<br />other Excel users</p>
-              <p>Sync changes to data.world<br />with a single click</p>
+          {!dataset && (
+            <div>
+              <div className="description">
+                <p>
+                  Turn Excel files into
+                  <br />
+                  data.world datasets
+                </p>
+                <p>
+                  Collaborate with
+                  <br />
+                  other Excel users
+                </p>
+                <p>
+                  Sync changes to data.world
+                  <br />
+                  with a single click
+                </p>
+              </div>
             </div>
-          </div>}
-          {dataset && <div>
-            <div>This file is linked to a dataset on data.world:</div>
-            <DatasetItem dataset={dataset} buttonText='View' buttonLink={`https://data.world/${dataset.owner}/${dataset.id}`} />
-            <div className='message'>Sign in to data.world to save changes as they are made.</div>
-          </div>}
+          )}
+          {dataset && (
+            <div>
+              <div>This file is linked to a dataset on data.world:</div>
+              <LibraryItem
+                dataset={dataset}
+                buttonText="View"
+                buttonLink={`https://data.world/${dataset.owner}/${dataset.id}`}
+              />
+              <div className="message">
+                Sign in to data.world to save changes as they are made.
+              </div>
+            </div>
+          )}
           <Button
-            className='center-block login-button'
+            className="center-block login-button"
             onClick={this.loginClick}
-            bsStyle='primary'>Sign in</Button>
+            bsStyle="primary"
+          >
+            Sign in
+          </Button>
           <div>
             {'New to data.world? '}
             <a
-              href='https://data.world/'
-              target='_blank'
-              rel='noopener noreferrer'
+              href="https://data.world/"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={this.signUpClick}
             >
               {'Sign up now'}
@@ -97,8 +119,8 @@ class WelcomePage extends Component {
     );
 
     const v2LandingPage = (
-      <Grid className='welcome-page welcome-page-v2'>
-        <Row className='center-block'>
+      <Grid className="welcome-page welcome-page-v2">
+        <Row className="center-block">
           <LogoStacked />
           <div className="feature">
             <img
@@ -125,18 +147,18 @@ class WelcomePage extends Component {
             <p className="feature-text">Import datasets into Excel</p>
           </div>
           <Button
-            className='center-block login-button'
+            className="center-block login-button"
             onClick={this.loginClick}
-            bsStyle='primary'
+            bsStyle="primary"
           >
             Sign in
           </Button>
           <div>
             {`New to data.world? `}
             <a
-              href='https://data.world/'
-              target='_blank'
-              rel='noopener noreferrer'
+              href="https://data.world/"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={this.signUpClick}
               className="sign-up-link"
             >

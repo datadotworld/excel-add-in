@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, ControlLabel, Image } from 'react-bootstrap';
 import { getDisplayRange } from '../util';
 import Icon from './icons/Icon';
-import './DatasetItem.css';
+import './LibraryItem.css';
 
 class RecentItem extends Component {
   state = {

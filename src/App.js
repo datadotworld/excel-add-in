@@ -28,7 +28,7 @@ import './static/css/dw-bootstrap.min.css';
 
 import CreateDatasetModal from './components/CreateDatasetModal';
 import WelcomePage from './components/WelcomePage';
-import DatasetsView from './components/DatasetsView';
+import LibraryView from './components/LibraryView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import Insights from './components/Insights';
@@ -748,7 +748,7 @@ export default class App extends Component {
         )}
 
         {!showStartPage && showDatasets && (
-          <DatasetsView
+          <LibraryView
             datasets={datasets}
             createDataset={this.showCreateDataset}
             selectDataset={this.selectDataset}

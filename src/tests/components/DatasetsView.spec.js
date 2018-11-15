@@ -21,17 +21,17 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import { IntlProvider } from 'react-intl';
 
-import DatasetsView from '../../components/DatasetsView';
+import LibraryView from '../../components/LibraryView';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<DatasetsView getDatasets={() => {}} />, div);
+  ReactDOM.render(<LibraryView getDatasets={() => {}} />, div);
 });
 
 it('renders datasets view - loading state', () => {
   expect(
     renderer
-      .create(<DatasetsView loadingDatasets getDatasets={() => {}} />)
+      .create(<LibraryView loadingDatasets getDatasets={() => {}} />)
       .toJSON()
   ).toMatchSnapshot();
 });
@@ -39,7 +39,7 @@ it('renders datasets view - loading state', () => {
 it('renders datasets view - no datasets', () => {
   expect(
     renderer
-      .create(<DatasetsView loadingDatasets={false} getDatasets={() => {}} />)
+      .create(<LibraryView loadingDatasets={false} getDatasets={() => {}} />)
       .toJSON()
   ).toMatchSnapshot();
 });
@@ -74,7 +74,7 @@ it('renders datasets view - datasets', () => {
     renderer
       .create(
         <IntlProvider locale="en">
-          <DatasetsView
+          <LibraryView
             datasets={datasets}
             loadingDatasets={false}
             getDatasets={() => {}}
