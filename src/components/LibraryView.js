@@ -107,6 +107,7 @@ class LibraryView extends Component {
           key={`${library.owner}/${library.id}`}
           buttonText="Link"
           buttonHandler={selectLibrary}
+          isProject={isProjects || library.isProject}
         />
       );
     });
@@ -147,7 +148,7 @@ class LibraryView extends Component {
               <Button
                 className="bottom-button"
                 bsStyle="primary"
-                onClick={this.toggleShowCreateLibrary}
+                onClick={toggleShowCreateLibrary}
               >
                 {isProjects ? 'Create a new project' : 'Create a new dataset'}
               </Button>

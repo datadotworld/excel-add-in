@@ -49,8 +49,7 @@ class LibraryItem extends Component {
   };
 
   render() {
-    const { library } = this.props;
-    const { isProject } = library;
+    const { library, isProject } = this.props;
 
     if (library.isCreate) {
       return (
@@ -69,7 +68,7 @@ class LibraryItem extends Component {
     }
     return (
       <div className="dataset" onClick={this.buttonClick}>
-        <Icon icon={library.isProject ? 'projectSchema' : 'datasetSchema'} />
+        <Icon icon={isProject ? 'projectSchema' : 'datasetSchema'} />
         <div className="center-info">
           <div className="title">{library.title}</div>
           <div className="info">
