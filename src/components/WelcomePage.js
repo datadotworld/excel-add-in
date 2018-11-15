@@ -87,7 +87,7 @@ class WelcomePage extends Component {
             <div>
               <div>This file is linked to a dataset on data.world:</div>
               <LibraryItem
-                dataset={dataset}
+                library={dataset}
                 buttonText="View"
                 buttonLink={`https://data.world/${dataset.owner}/${dataset.id}`}
               />

@@ -749,13 +749,12 @@ export default class App extends Component {
 
         {!showStartPage && showDatasets && (
           <LibraryView
-            datasets={datasets}
-            createDataset={this.showCreateDataset}
-            selectDataset={this.selectDataset}
-            loadingDatasets={loadingDatasets}
-            showDatasets={this.toggleShowDatasets}
-            showCreateDataset={this.showCreateDataset}
-            getDatasets={this.getDatasets}
+            libraries={datasets}
+            selectLibrary={this.selectDataset}
+            loadingLibraries={loadingDatasets}
+            toggleShowLibraries={this.toggleShowDatasets}
+            toggleShowCreateLibrary={this.showCreateDataset}
+            getLibraries={this.getDatasets}
           />
         )}
 

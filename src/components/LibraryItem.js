@@ -28,7 +28,7 @@ const add = require('./icons/icon-add.svg');
 
 class LibraryItem extends Component {
   static propTypes = {
-    dataset: PropTypes.object,
+    library: PropTypes.object,
     buttonText: PropTypes.string,
     buttonHandler: PropTypes.func,
     buttonLink: PropTypes.string
@@ -42,17 +42,17 @@ class LibraryItem extends Component {
       return window.open(this.props.buttonLink);
     }
     if (this.props.buttonHandler) {
-      const { dataset } = this.props;
-      const uri = `https://data.world/${dataset.owner}/${dataset.id}`;
+      const { library } = this.props;
+      const uri = `https://data.world/${library.owner}/${library.id}`;
       this.props.buttonHandler(uri);
     }
   };
 
   render() {
-    const { dataset } = this.props;
-    const { isProject } = dataset;
+    const { library } = this.props;
+    const { isProject } = library;
 
-    if (dataset.isCreate) {
+    if (library.isCreate) {
       return (
         <div className="dataset" onClick={this.buttonClick}>
           <Image className="add-icon" src={add} />
@@ -69,13 +69,13 @@ class LibraryItem extends Component {
     }
     return (
       <div className="dataset" onClick={this.buttonClick}>
-        <Icon icon={dataset.isProject ? 'projectSchema' : 'datasetSchema'} />
+        <Icon icon={library.isProject ? 'projectSchema' : 'datasetSchema'} />
         <div className="center-info">
-          <div className="title">{dataset.title}</div>
+          <div className="title">{library.title}</div>
           <div className="info">
-            @{dataset.owner} &middot; Updated{' '}
+            @{library.owner} &middot; Updated{' '}
             <FormattedDate
-              value={dataset.updated}
+              value={library.updated}
               year="numeric"
               month="short"
               day="2-digit"

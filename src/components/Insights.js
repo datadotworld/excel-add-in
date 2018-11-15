@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 import { Grid } from 'react-bootstrap';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
-import ProjectsView from './ProjectsView';
+import LibraryView from './LibraryView';
 import CreateProjectModal from './CreateProjectModal';
 
 import './Insights.css';
@@ -113,7 +113,7 @@ class Insights extends Component {
           )}
 
           {selectedChart && !showCreateProject && showProjects && (
-            <ProjectsView
+            <LibraryView
               getProjects={getProjects}
               projects={projects}
               loadingProjects={loadingProjects}

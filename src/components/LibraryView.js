@@ -34,8 +34,8 @@ class LibraryView extends Component {
   };
 
   static defaultProps = {
-    datasets: [],
-    loadingDatasets: true
+    Libraries: [],
+    loadingLibraries: true
   };
 
   state = {
@@ -43,15 +43,15 @@ class LibraryView extends Component {
   };
 
   componentDidMount() {
-    this.props.getDatasets();
+    this.props.getLibraries();
   }
 
-  sortDatasets = () => {
+  sortLibraries = () => {
     const sortKey = this.state.sortKey;
-    const sortedDatasets = this.props.datasets.slice();
+    const sortedLibraries = this.props.libraries.slice();
     const reverseSort = sortKey.indexOf('-') === 0;
 
-    sortedDatasets.sort((a, b) => {
+    sortedLibraries.slice().sort((a, b) => {
       if (sortKey.indexOf('title') >= 0) {
         if (a.title < b.title) {
           return reverseSort ? 1 : -1;
@@ -71,7 +71,7 @@ class LibraryView extends Component {
         return reverseSort ? dateA - dateB : dateB - dateA;
       }
     });
-    return sortedDatasets;
+    return sortedLibraries;
   };
 
   sortChanged = (sortKey) => {
@@ -91,19 +91,22 @@ class LibraryView extends Component {
 
   render() {
     const {
-      datasets,
-      loadingDatasets,
-      showCreateDataset,
-      selectDataset
+      libraries,
+      loadingLibraries,
+      toggleShowCreateLibrary,
+      toggleShowLibraries,
+      selectLibrary,
+      isProjects
     } = this.props;
-    const sortedDatasets = this.sortDatasets();
-    const datasetEntries = sortedDatasets.map((d) => {
+
+    const sortedLibraries = this.sortLibraries(libraries);
+    const libraryEntries = sortedLibraries.map((library) => {
       return (
         <LibraryItem
-          dataset={d}
-          key={`${d.owner}/${d.id}`}
+          library={library}
+          key={`${library.owner}/${library.id}`}
           buttonText="Link"
-          buttonHandler={selectDataset}
+          buttonHandler={selectLibrary}
         />
       );
     });
@@ -112,35 +115,41 @@ class LibraryView extends Component {
       <Grid className="datasets-view">
         <div className="dataset-selector">
           <Row className="center-block section-header">
-            <ControlLabel>Select a dataset or project</ControlLabel>
-            <Button bsStyle="default" onClick={() => this.props.showDatasets()}>
+            <ControlLabel>{`Select a ${
+              isProjects ? 'project' : 'dataset or project'
+            }`}</ControlLabel>
+            <Button bsStyle="default" onClick={() => toggleShowLibraries()}>
               Cancel
             </Button>
           </Row>
-          {loadingDatasets && <LoadingAnimation label="Fetching datasets..." />}
-          {!!datasets.length && !loadingDatasets && (
+          {loadingLibraries && (
+            <LoadingAnimation label="Fetching libraries..." />
+          )}
+          {!!libraries.length && !loadingLibraries && (
             <Row className="center-block">
               <div>
                 <LibraryItem
                   buttonText="Link"
-                  dataset={{ isCreate: true }}
-                  buttonHandler={showCreateDataset}
+                  library={{ isCreate: true }}
+                  buttonHandler={toggleShowCreateLibrary}
                 />
-                {datasetEntries}
+                {libraryEntries}
               </div>
             </Row>
           )}
-          {!datasets.length && !loadingDatasets && (
+          {!libraries.length && !loadingLibraries && (
             <Row className="center-block no-datasets">
               <div className="message">
-                You haven't created any datasets to link data to.
+                {isProjects
+                  ? "You haven't created any projects to upload the insight to."
+                  : "You haven't created any datasets to link data to."}
               </div>
               <Button
                 className="bottom-button"
                 bsStyle="primary"
-                onClick={this.createDatasetClick}
+                onClick={this.toggleShowCreateLibrary}
               >
-                Create a new dataset
+                {isProjects ? 'Create a new project' : 'Create a new dataset'}
               </Button>
             </Row>
           )}
