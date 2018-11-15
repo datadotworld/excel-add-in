@@ -768,6 +768,7 @@ export default class App extends Component {
             createProject={this.createProject}
             uploadChart={this.uploadChart}
             setError={this.setError}
+            setErrorMessage={this.setErrorMessage}
             getProjects={this.getProjects}
             loadingProjects={loadingProjects}
           />

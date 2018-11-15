@@ -80,6 +80,7 @@ class Insights extends Component {
       createProject,
       officeInitialized,
       setError,
+      setErrorMessage,
       getProjects,
       loadingProjects
     } = this.props;
@@ -106,6 +107,7 @@ class Insights extends Component {
               uploadChart={uploadChart}
               projects={projects}
               setError={setError}
+              setErrorMessage={setErrorMessage}
               toggleShowProjects={this.toggleShowProjects}
               projectUrl={projectUrl}
               handleUrlChange={this.handleUrlChange}

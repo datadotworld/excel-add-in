@@ -74,20 +74,25 @@ class UploadInsight extends Component {
 
     const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
     const matched = projectUrl.match(regexMatch);
-    const owner = matched[1];
-    const id = matched[2];
 
-    const project = { owner, id };
+    if (matched) {
+      const owner = matched[1];
+      const id = matched[2];
 
-    try {
-      const res = await this.props.uploadChart(chart, {
-        title,
-        project,
-        description
-      });
-      this.setState({ uploadComplete: true, uri: res });
-    } catch (uploadError) {
-      this.props.setError(uploadError);
+      const project = { owner, id };
+
+      try {
+        const res = await this.props.uploadChart(chart, {
+          title,
+          project,
+          description
+        });
+        this.setState({ uploadComplete: true, uri: res });
+      } catch (uploadError) {
+        this.props.setError(uploadError);
+      }
+    } else {
+      this.props.setErrorMessage('Invalid project URL');
     }
   };
 
