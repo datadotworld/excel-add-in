@@ -113,7 +113,7 @@ class Insights extends Component {
 
           {selectedChart && !showCreateProject && showProjects && (
             <LibraryView
-              onSelect={this.handleUrlChange}
+              onSelect={this.selectProject}
               loading={loadingProjects}
               toggleList={this.toggleShowProjects}
               toggleShowForm={this.toggleShowCreateProject}
