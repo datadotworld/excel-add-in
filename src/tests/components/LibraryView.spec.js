@@ -25,14 +25,30 @@ import LibraryView from '../../components/LibraryView';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<LibraryView getLibraries={() => {}} libraries={[]} />, div);
+  ReactDOM.render(
+    <LibraryView
+      getItems={() =>
+        new Promise((resolve) => {
+          resolve([]);
+        })
+      }
+    />,
+    div
+  );
 });
 
 it('renders datasets view - loading state', () => {
   expect(
     renderer
       .create(
-        <LibraryView loadingLibraries getLibraries={() => {}} libraries={[]} />
+        <LibraryView
+          loadingLibraries
+          getItems={() =>
+            new Promise((resolve) => {
+              resolve([]);
+            })
+          }
+        />
       )
       .toJSON()
   ).toMatchSnapshot();
@@ -43,9 +59,12 @@ it('renders datasets view - no datasets', () => {
     renderer
       .create(
         <LibraryView
-          loadingLibraries={false}
-          getLibraries={() => {}}
-          libraries={[]}
+          loading={false}
+          getItems={() =>
+            new Promise((resolve) => {
+              resolve([]);
+            })
+          }
         />
       )
       .toJSON()
@@ -53,39 +72,17 @@ it('renders datasets view - no datasets', () => {
 });
 
 it('renders datasets view - datasets', () => {
-  const datasets = [
-    {
-      owner: 'test',
-      id: 'test',
-      title: 'This is a test',
-      updated: '2017-07-20T14:24:51.762Z',
-      created: '2017-07-20T14:24:51.762Z'
-    },
-    {
-      owner: 'test',
-      id: 'test2',
-      title: 'This is a test too',
-      updated: '2017-08-20T14:24:51.762Z',
-      created: '2017-08-20T14:24:51.762Z'
-    },
-    {
-      owner: 'test',
-      id: 'test3',
-      title: 'This is a test of a project',
-      updated: '2017-08-20T14:24:51.762Z',
-      created: '2017-08-20T14:24:51.762Z',
-      isProject: true
-    }
-  ];
-
   expect(
     renderer
       .create(
         <IntlProvider locale="en">
           <LibraryView
-            libraries={datasets}
-            loadingLibraries={false}
-            getLibraries={() => {}}
+            loading={false}
+            getItems={() =>
+              new Promise((resolve) => {
+                resolve([]);
+              })
+            }
           />
         </IntlProvider>
       )

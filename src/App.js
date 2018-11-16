@@ -26,7 +26,7 @@ import find from 'array.prototype.find';
 import './App.css';
 import './static/css/dw-bootstrap.min.css';
 
-import CreateDatasetModal from './components/CreateDatasetModal';
+import CreateItemModal from './components/CreateItemModal';
 import WelcomePage from './components/WelcomePage';
 import LibraryView from './components/LibraryView';
 import LoadingAnimation from './components/LoadingAnimation';
@@ -105,7 +105,6 @@ export default class App extends Component {
       error: null,
       token,
       preferences,
-      datasets: [],
       loadingDatasets: false,
       loadingProjects: false,
       loggedIn: !!token,
@@ -113,7 +112,6 @@ export default class App extends Component {
       syncStatus: {},
       page,
       charts: [],
-      projects: [],
       version: localStorage.getItem(DW_APP_VERSION, version),
       insideOffice,
       showDatasets: false,
@@ -244,7 +242,8 @@ export default class App extends Component {
     try {
       this.setState({ loadingDatasets: true });
       const datasets = await this.api.getDatasets();
-      this.setState({ datasets, loadingDatasets: false });
+      this.setState({ loadingDatasets: false });
+      return datasets;
     } catch (getDatasetsError) {
       this.setState({
         error: getDatasetsError,
@@ -259,7 +258,8 @@ export default class App extends Component {
 
       // Logged in user's projects
       const projects = await this.api.getProjects();
-      this.setState({ loadingProjects: false, projects });
+      this.setState({ loadingProjects: false });
+      return projects;
     } catch (getProjectsError) {
       this.setState({
         error: getProjectsError
@@ -608,7 +608,6 @@ export default class App extends Component {
     const {
       currentSelectedRange,
       dataset,
-      datasets,
       error,
       excelApiSupported,
       loadingDatasets,
@@ -738,23 +737,23 @@ export default class App extends Component {
           )}
 
         {showCreateDataset && (
-          <CreateDatasetModal
+          <CreateItemModal
             user={user}
-            createDataset={this.createDataset}
+            createItem={this.createDataset}
             close={() => this.setState({ showCreateDataset: false })}
-            selectDataset={this.selectDataset}
-            showDatasets={this.toggleShowDatasets}
+            selectItem={this.selectDataset}
+            showItems={this.toggleShowDatasets}
+            itemType="dataset"
           />
         )}
 
-        {!showStartPage && showDatasets && (
+        {!showStartPage && showDatasets && !showCreateDataset && (
           <LibraryView
-            libraries={datasets}
-            selectLibrary={this.selectDataset}
-            loadingLibraries={loadingDatasets}
-            toggleShowLibraries={this.toggleShowDatasets}
-            toggleShowCreateLibrary={this.showCreateDataset}
-            getLibraries={this.getDatasets}
+            onSelect={this.selectDataset}
+            loading={loadingDatasets}
+            toggleList={this.toggleShowDatasets}
+            toggleShowForm={this.showCreateDataset}
+            getItems={this.getDatasets}
           />
         )}
 

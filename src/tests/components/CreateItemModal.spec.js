@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 data.world, Inc.
+ * Copyright 2017 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,22 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import renderer from 'react-test-renderer';
+import { IntlProvider } from 'react-intl';
 
-.create-project-form {
-  padding: 15px;
-}
+import CreateItemModal from '../../components/CreateItemModal';
 
-.create-project-modal .control-label {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.project-form-info {
-  font-size: 0.8125rem;
-  font-weight: normal;
-  color: #5d6f85;
-}
-
-.create-project-modal .radio-option-description {
-  color: #5d6f85;
-}
-
-.create-project-modal .radio:first-child {
-  margin-bottom: 1rem;
-}
-
-.create-project-modal .radio .radio-label {
-  color: #8c9cb0;
-}
-
-.create-project-modal .radio.checked .radio-label {
-  color: #608fc5;
-}
+it('renders modal', () => {
+  const user = { id: 'test' };
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <CreateItemModal user={user} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
+});

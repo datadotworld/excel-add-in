@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 data.world, Inc.
+ * Copyright 2018 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -34,11 +35,11 @@ import {
 import { kebabCase } from 'lodash';
 
 import Icon from './icons/Icon';
-import './CreateDatasetModal.css';
+import './CreateItemModal.css';
 
 import analytics from '../analytics';
 
-class CreateDatasetModal extends Component {
+class CreateItemModal extends Component {
   static propTypes = {
     close: PropTypes.func,
     createDataset: PropTypes.func,
@@ -48,20 +49,24 @@ class CreateDatasetModal extends Component {
   state = {
     isSubmitting: false,
     title: '',
-    visibility: 'PRIVATE'
+    visibility: 'PRIVATE',
+    objective: ''
   };
 
   submit = async (event) => {
-    analytics.track('exceladdin.create_dataset.submit.click');
+    analytics.track(`exceladdin.create_${this.props.itemType}.submit.click`);
     event.preventDefault();
     this.setState({ isSubmitting: true });
-    const dataset = {
+    const item = {
       title: this.state.title,
-      visibility: this.state.visibility
+      visibility: this.state.visibility,
+      objective: this.state.objective,
+      type: this.props.itemType
     };
+
     try {
-      const createdDataset = await this.props.createDataset(dataset);
-      this.props.selectDataset(createdDataset.uri);
+      const createdItem = await this.props.createItem(item);
+      this.props.selectItem(createdItem.uri);
       this.props.close();
       this.setState({ isSubmitting: false });
     } catch (error) {
@@ -69,50 +74,47 @@ class CreateDatasetModal extends Component {
     }
   };
 
-  isDatasetValid = () => {
+  isItemValid = () => {
     const { title } = this.state;
     return title && title.length > 3 && title.length <= 60;
   };
 
   visibilityChanged = (event) => {
-    analytics.track('exceladdin.create_dataset.visibility.change', {
-      visibility: event.target.value
-    });
+    analytics.track(
+      `exceladdin.create_${this.props.itemType}.visibility.change`,
+      {
+        visibility: event.target.value
+      }
+    );
     this.setState({ visibility: event.target.value });
   };
 
   closeClicked = () => {
-    analytics.track('exceladdin.create_dataset.close.click');
+    analytics.track(`exceladdin.create_${this.props.itemType}.close.click`);
     this.props.close();
   };
 
   cancelClicked = () => {
-    analytics.track('exceladdin.create_dataset.cancel_button.click');
+    analytics.track(
+      `exceladdin.create_${this.props.itemType}.cancel_button.click`
+    );
     this.props.close();
   };
 
-  componentDidMount() {
-    this.props.showDatasets();
-  }
-
-  componentWillUnmount() {
-    this.cancelClicked();
-  }
-
   render() {
-    const { user } = this.props;
-    const { title, visibility } = this.state;
-    let datasetValidState;
+    const { user, itemType } = this.props;
+    const { title, visibility, objective } = this.state;
+    let itemValidState;
 
     if (title) {
-      datasetValidState = this.isDatasetValid() ? 'success' : 'warning';
+      itemValidState = this.isItemValid() ? 'success' : 'warning';
     }
 
     return (
-      <Grid className="create-dataset-modal full-screen-modal show">
+      <Grid className="create-item-modal full-screen-modal show">
         <Row className="center-block header">
           <div className="title">
-            Create a new dataset{' '}
+            {`Create a new ${itemType}`}
             <Icon
               icon="close"
               className="close-button"
@@ -123,8 +125,10 @@ class CreateDatasetModal extends Component {
 
         <Row className="center-block">
           <form onSubmit={this.submit}>
-            <FormGroup validationState={datasetValidState}>
-              <ControlLabel>Dataset title</ControlLabel>
+            <FormGroup validationState={itemValidState}>
+              <ControlLabel className="item-title">{`${
+                this.props.itemType
+              } title`}</ControlLabel>
               <InputGroup>
                 <FormControl
                   onChange={(event) =>
@@ -136,11 +140,37 @@ class CreateDatasetModal extends Component {
                 />
               </InputGroup>
               <HelpBlock>
-                This will also be your dataset URL: data.world/{user.id}/
-                <strong>{title ? kebabCase(title) : 'cool-new-data'}</strong>
+                {`This will also be your ${itemType} URL: https://data.world/${
+                  user.id
+                }/`}
+                <strong>
+                  {title ? kebabCase(title) : `cool-new-${itemType}`}
+                </strong>
                 <div className="titleLimit">max. 60</div>
               </HelpBlock>
             </FormGroup>
+            {itemType === 'project' && (
+              <FormGroup>
+                <ControlLabel className="item-title">
+                  Project objective{' '}
+                  <span className="item-form-info">(optional)</span>
+                </ControlLabel>
+                <InputGroup>
+                  <FormControl
+                    onChange={(event) =>
+                      this.setState({ objective: event.target.value })
+                    }
+                    value={objective}
+                    name="objective"
+                    componentClass="textarea"
+                    type="textarea"
+                  />
+                </InputGroup>
+                <HelpBlock>
+                  <div className="titleLimit">max. 120</div>
+                </HelpBlock>
+              </FormGroup>
+            )}
             <FormGroup>
               <Radio
                 name="privacy"
@@ -175,11 +205,11 @@ class CreateDatasetModal extends Component {
               <Button
                 type="submit"
                 disabled={
-                  this.state.isSubmitting || datasetValidState !== 'success'
+                  this.state.isSubmitting || itemValidState !== 'success'
                 }
                 bsStyle="primary"
               >
-                Create dataset
+                {`Create ${itemType}`}
               </Button>
             </div>
           </form>
@@ -189,4 +219,4 @@ class CreateDatasetModal extends Component {
   }
 }
 
-export default CreateDatasetModal;
+export default CreateItemModal;

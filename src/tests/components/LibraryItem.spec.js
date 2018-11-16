@@ -36,7 +36,7 @@ it('renders dataset', () => {
     renderer
       .create(
         <IntlProvider locale="en">
-          <LibraryItem library={dataset} />
+          <LibraryItem item={dataset} />
         </IntlProvider>
       )
       .toJSON()
@@ -48,7 +48,7 @@ it('renders dataset - button text', () => {
     renderer
       .create(
         <IntlProvider locale="en">
-          <LibraryItem library={dataset} buttonText="test" />
+          <LibraryItem item={dataset} buttonText="test" />
         </IntlProvider>
       )
       .toJSON()
@@ -61,7 +61,7 @@ it('renders dataset - button text, link', () => {
       .create(
         <IntlProvider locale="en">
           <LibraryItem
-            library={dataset}
+            item={dataset}
             buttonText="test"
             buttonLink="https://data.world"
           />
@@ -79,7 +79,7 @@ it('renders dataset - as project', () => {
     renderer
       .create(
         <IntlProvider locale="en">
-          <LibraryItem library={project} />
+          <LibraryItem item={project} />
         </IntlProvider>
       )
       .toJSON()

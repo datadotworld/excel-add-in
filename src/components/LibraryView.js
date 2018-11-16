@@ -23,122 +23,96 @@ import { Button, Grid, Row, ControlLabel } from 'react-bootstrap';
 import './LibraryView.css';
 import LibraryItem from './LibraryItem';
 import LoadingAnimation from './LoadingAnimation';
-import analytics from '../analytics';
 
 class LibraryView extends Component {
   static propTypes = {
-    createDataset: PropTypes.func,
-    datasets: PropTypes.array,
-    selectDataset: PropTypes.func,
-    loadingDatasets: PropTypes.bool
-  };
-
-  static defaultProps = {
-    Libraries: [],
-    loadingLibraries: true
+    onSelect: PropTypes.func,
+    loading: PropTypes.bool,
+    toggleList: PropTypes.func,
+    toggleShowForm: PropTypes.func,
+    getItems: PropTypes.func
   };
 
   state = {
-    sortKey: 'updated'
+    items: []
   };
 
   componentDidMount() {
-    this.props.getLibraries();
+    this.props.getItems().then((items) => {
+      this.setState({ items });
+    });
   }
 
-  sortLibraries = () => {
-    const sortKey = this.state.sortKey;
-    const sortedLibraries = this.props.libraries.slice();
-    const reverseSort = sortKey.indexOf('-') === 0;
+  sortItems = () => {
+    const sortedItems = this.state.items.slice();
 
-    sortedLibraries.slice().sort((a, b) => {
-      if (sortKey.indexOf('title') >= 0) {
-        if (a.title < b.title) {
-          return reverseSort ? 1 : -1;
-        } else if (a.title > b.title) {
-          return reverseSort ? -1 : 1;
-        }
-        return 0;
-      } else {
-        let dateA, dateB;
-        if (sortKey.indexOf('updated') >= 0) {
-          dateA = new Date(a.updated);
-          dateB = new Date(b.updated);
-        } else {
-          dateA = new Date(a.created);
-          dateB = new Date(b.created);
-        }
-        return reverseSort ? dateA - dateB : dateB - dateA;
+    // Sort by updated in descending order
+    sortedItems.sort((a, b) => {
+      const dateA = new Date(a.updated);
+      const dateB = new Date(b.updated);
+
+      if (dateA < dateB) {
+        return 1;
       }
+      if (dateA > dateB) {
+        return -1;
+      }
+
+      return 0;
     });
-    return sortedLibraries;
-  };
 
-  sortChanged = (sortKey) => {
-    analytics.track('exceladdin.datasets.sort.change', { sort: sortKey });
-    this.setState({ sortKey });
-  };
-
-  createDatasetClick = () => {
-    analytics.track('exceladdin.datasets.create_dataset_button.click');
-    this.props.createDataset();
-  };
-
-  addDatasetClick = () => {
-    analytics.track('exceladdin.datasets.create_dataset_add.click');
-    this.props.createDataset();
+    return sortedItems;
   };
 
   render() {
     const {
-      libraries,
-      loadingLibraries,
-      toggleShowCreateLibrary,
-      toggleShowLibraries,
-      selectLibrary,
+      loading,
+      toggleShowForm,
+      toggleList,
+      onSelect,
       isProjects
     } = this.props;
+    const { items } = this.state;
 
-    const sortedLibraries = this.sortLibraries(libraries);
-    const libraryEntries = sortedLibraries.map((library) => {
+    const sortedItems = this.sortItems(items);
+    const entries = sortedItems.map((item) => {
       return (
         <LibraryItem
-          library={library}
-          key={`${library.owner}/${library.id}`}
+          item={item}
+          key={`${item.owner}/${item.id}`}
           buttonText="Link"
-          buttonHandler={selectLibrary}
-          isProject={isProjects || library.isProject}
+          buttonHandler={onSelect}
+          isProject={isProjects || item.isProject}
         />
       );
     });
 
     return (
-      <Grid className="datasets-view">
-        <div className="dataset-selector">
+      <Grid className="items-view">
+        <div className="item-selector">
           <Row className="center-block section-header">
             <ControlLabel>{`Select a ${
               isProjects ? 'project' : 'dataset or project'
             }`}</ControlLabel>
-            <Button bsStyle="default" onClick={() => toggleShowLibraries()}>
+            <Button bsStyle="default" onClick={() => toggleList()}>
               Cancel
             </Button>
           </Row>
-          {loadingLibraries && (
-            <LoadingAnimation label="Fetching libraries..." />
-          )}
-          {!!libraries.length && !loadingLibraries && (
+          {loading && <LoadingAnimation label="Fetching items..." />}
+          {!!items.length && !loading && (
             <Row className="center-block">
               <div>
                 <LibraryItem
                   buttonText="Link"
-                  library={{ isCreate: true }}
-                  buttonHandler={toggleShowCreateLibrary}
+                  item={{ isCreate: true }}
+                  buttonHandler={toggleShowForm}
+                  isProject={isProjects}
                 />
-                {libraryEntries}
+                {entries}
               </div>
             </Row>
           )}
-          {!libraries.length && !loadingLibraries && (
+          {!items.length && !loading && (
             <Row className="center-block no-datasets">
               <div className="message">
                 {isProjects
@@ -148,7 +122,7 @@ class LibraryView extends Component {
               <Button
                 className="bottom-button"
                 bsStyle="primary"
-                onClick={toggleShowCreateLibrary}
+                onClick={toggleShowForm}
               >
                 {isProjects ? 'Create a new project' : 'Create a new dataset'}
               </Button>

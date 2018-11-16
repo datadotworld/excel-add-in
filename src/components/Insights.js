@@ -22,7 +22,7 @@ import { Grid } from 'react-bootstrap';
 import Charts from './Charts';
 import UploadInsight from './UploadInsight';
 import LibraryView from './LibraryView';
-import CreateProjectModal from './CreateProjectModal';
+import CreateItemModal from './CreateItemModal';
 
 import './Insights.css';
 
@@ -57,7 +57,7 @@ class Insights extends Component {
     this.setState({ showCreateProject: !this.state.showCreateProject });
   };
 
-  handleUrlChange = (url) => {
+  selectProject = (url) => {
     this.setState({ projectUrl: url });
     if (this.state.showProjects) {
       this.toggleShowProjects();
@@ -75,7 +75,6 @@ class Insights extends Component {
       charts,
       getImageAndTitle,
       uploadChart,
-      projects,
       user,
       createProject,
       officeInitialized,
@@ -91,7 +90,6 @@ class Insights extends Component {
           {!selectedChart && (
             <Charts
               charts={charts}
-              projects={projects}
               getImageAndTitle={getImageAndTitle}
               createProject={createProject}
               selectChart={this.selectChart}
@@ -105,7 +103,6 @@ class Insights extends Component {
               chart={selectedChart.imageString}
               title={selectedChart.title}
               uploadChart={uploadChart}
-              projects={projects}
               setError={setError}
               setErrorMessage={setErrorMessage}
               toggleShowProjects={this.toggleShowProjects}
@@ -116,23 +113,23 @@ class Insights extends Component {
 
           {selectedChart && !showCreateProject && showProjects && (
             <LibraryView
-              libraries={projects}
-              selectLibrary={this.handleUrlChange}
-              loadingLibraries={loadingProjects}
-              toggleShowLibraries={this.toggleShowProjects}
-              toggleShowCreateLibrary={this.toggleShowCreateProject}
-              getLibraries={getProjects}
+              onSelect={this.handleUrlChange}
+              loading={loadingProjects}
+              toggleList={this.toggleShowProjects}
+              toggleShowForm={this.toggleShowCreateProject}
+              getItems={getProjects}
               isProjects
             />
           )}
 
           {selectedChart && showCreateProject && (
-            <CreateProjectModal
+            <CreateItemModal
               user={user}
-              handleUrlChange={this.handleUrlChange}
-              createProject={createProject}
-              closeCreateProject={this.toggleShowCreateProject}
-              setError={setError}
+              createItem={createProject}
+              close={() => this.setState({ showCreateProject: false })}
+              selectItem={this.selectProject}
+              showItems={this.toggleShowDatasets}
+              itemType="project"
             />
           )}
         </Grid>
