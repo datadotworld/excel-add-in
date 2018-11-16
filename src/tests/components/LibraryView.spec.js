@@ -21,17 +21,35 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import { IntlProvider } from 'react-intl';
 
-import DatasetsView from '../../components/DatasetsView';
+import LibraryView from '../../components/LibraryView';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<DatasetsView getDatasets={() => {}} />, div);
+  ReactDOM.render(
+    <LibraryView
+      getItems={() =>
+        new Promise((resolve) => {
+          resolve([]);
+        })
+      }
+    />,
+    div
+  );
 });
 
 it('renders datasets view - loading state', () => {
   expect(
     renderer
-      .create(<DatasetsView loadingDatasets getDatasets={() => {}} />)
+      .create(
+        <LibraryView
+          loadingLibraries
+          getItems={() =>
+            new Promise((resolve) => {
+              resolve([]);
+            })
+          }
+        />
+      )
       .toJSON()
   ).toMatchSnapshot();
 });
@@ -39,45 +57,32 @@ it('renders datasets view - loading state', () => {
 it('renders datasets view - no datasets', () => {
   expect(
     renderer
-      .create(<DatasetsView loadingDatasets={false} getDatasets={() => {}} />)
+      .create(
+        <LibraryView
+          loading={false}
+          getItems={() =>
+            new Promise((resolve) => {
+              resolve([]);
+            })
+          }
+        />
+      )
       .toJSON()
   ).toMatchSnapshot();
 });
 
 it('renders datasets view - datasets', () => {
-  const datasets = [
-    {
-      owner: 'test',
-      id: 'test',
-      title: 'This is a test',
-      updated: '2017-07-20T14:24:51.762Z',
-      created: '2017-07-20T14:24:51.762Z'
-    },
-    {
-      owner: 'test',
-      id: 'test2',
-      title: 'This is a test too',
-      updated: '2017-08-20T14:24:51.762Z',
-      created: '2017-08-20T14:24:51.762Z'
-    },
-    {
-      owner: 'test',
-      id: 'test3',
-      title: 'This is a test of a project',
-      updated: '2017-08-20T14:24:51.762Z',
-      created: '2017-08-20T14:24:51.762Z',
-      isProject: true
-    }
-  ];
-
   expect(
     renderer
       .create(
         <IntlProvider locale="en">
-          <DatasetsView
-            datasets={datasets}
-            loadingDatasets={false}
-            getDatasets={() => {}}
+          <LibraryView
+            loading={false}
+            getItems={() =>
+              new Promise((resolve) => {
+                resolve([]);
+              })
+            }
           />
         </IntlProvider>
       )

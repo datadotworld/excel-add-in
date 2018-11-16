@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, ControlLabel, Image } from 'react-bootstrap';
 import { getDisplayRange } from '../util';
 import Icon from './icons/Icon';
-import './DatasetItem.css';
+import './RecentUploads.css';
 
 class RecentItem extends Component {
   state = {
@@ -24,26 +24,20 @@ class RecentItem extends Component {
   render() {
     const { filename, dataset, rangeAddress, worksheetId } = this.props;
 
-    const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/;
-    const filteredDataset = dataset
-      ? dataset.match(regexFilter)[1]
-      : 'Undefined';
-    const match = filteredDataset.split('/');
-    const datasetLocation = `${match[0]}/${match[1]}`;
+    const datasetLocation = `${dataset.owner}/${dataset.id}`;
 
     const tabular = require('./icons/icon-tabular.svg');
 
     const rangeToShow = getDisplayRange(rangeAddress);
-    const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
-        <div className="dataset recent">
+        <div className="item recent">
           <Image className="tabular-icon" src={tabular} />
           <div className="center-info">
             <div>
               <div className="title">{filename}</div>
             </div>
-            <div className="info">{datasetSlug}</div>
+            <div className="info">{`=${rangeToShow}`}</div>
             <a
               href={`https://data.world/${datasetLocation}/workspace/file?filename=${filename}`}
               target="_blank"

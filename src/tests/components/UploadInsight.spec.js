@@ -25,26 +25,33 @@ import UploadInsight from '../../components/UploadInsight';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<UploadInsight projects={[{ owner: 'owner', id: 'project'}]}/>, div);
+  ReactDOM.render(
+    <UploadInsight
+      projects={[{ owner: 'owner', id: 'project' }]}
+      projectUrl="sampleProject"
+    />,
+    div
+  );
 });
 
 it('renders upload insight view', () => {
-  const getImageAndTitle = () => {
-    return new Promise((resolve, reject) => {
-      resolve({ image: 'b64string', title: 'A Title' });
-    })
-  }
-
-  const selectedChart = 'b64ImageString'
+  const selectedChart = 'b64ImageString';
   const projects = [
-    { owner: 'firstOwner', id: 'firstProject', title: 'first title'},
-    { owner: 'firstOwner', id: 'secondProject', title: 'second title'},
-    { owner: 'secondOwner', id: 'firstProject', title: 'third title'},
-    { owner: 'secondOwner', id: 'secondProject', title: 'forth title'},
-  ]
+    { owner: 'firstOwner', id: 'firstProject', title: 'first title' },
+    { owner: 'firstOwner', id: 'secondProject', title: 'second title' },
+    { owner: 'secondOwner', id: 'firstProject', title: 'third title' },
+    { owner: 'secondOwner', id: 'secondProject', title: 'forth title' }
+  ];
 
-  expect(renderer.create(<UploadInsight
-    chart={selectedChart}
-    projects={projects}
-  />).toJSON()).toMatchSnapshot()
+  expect(
+    renderer
+      .create(
+        <UploadInsight
+          chart={selectedChart}
+          projects={projects}
+          projectUrl="sampleProject"
+        />
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

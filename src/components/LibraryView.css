@@ -16,28 +16,28 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.datasets-view .dataset-selector .section-header {
+.items-view .item-selector .section-header {
   display: flex;
   justify-content: space-between;
 }
 
-.datasets-view .dataset-selector .section-header .add-icon {
+.items-view .item-selector .section-header .add-icon {
   width: 15px;
   height: 15px;
   margin-right: 5px;
   cursor: pointer;
 }
 
-.datasets-view .dataset-selector .section-header .add-icon .stroke {
+.items-view .item-selector .section-header .add-icon .stroke {
   stroke: #4376b2;
 }
 
-.datasets-view .section-header .title {
+.items-view .section-header .title {
   font-size: 18px;
   font-weight: 700;
 }
 
-.datasets-view .loaderoverlay {
+.items-view .loaderoverlay {
   position: inherit;
   top: initial;
   bottom: initial;
@@ -45,7 +45,7 @@
   right: initial;
 }
 
-.datasets-view .dataset-selector .section-header button {
+.items-view .item-selector .section-header button {
   border: none;
   box-shadow: none;
   padding: 0;
@@ -55,4 +55,8 @@
   font-weight: bold;
   margin-top: -8px;
   margin-bottom: 4px;
+}
+
+.message {
+  padding: 20px;
 }

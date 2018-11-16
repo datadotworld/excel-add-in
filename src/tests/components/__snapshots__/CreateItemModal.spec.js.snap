@@ -2,7 +2,7 @@
 
 exports[`renders modal 1`] = `
 <div
-  className="create-dataset-modal full-screen-modal show container"
+  className="create-item-modal full-screen-modal show container"
 >
   <div
     className="center-block header row"
@@ -10,8 +10,7 @@ exports[`renders modal 1`] = `
     <div
       className="title"
     >
-      Create a new dataset
-       
+      Create a new undefined
       <span
         className="svg-icon close-button"
         onClick={[Function]}
@@ -41,10 +40,10 @@ exports[`renders modal 1`] = `
         className="form-group"
       >
         <label
-          className="control-label"
+          className="item-title control-label"
           htmlFor={undefined}
         >
-          Dataset title
+          undefined title
         </label>
         <span
           className="input-group"
@@ -61,11 +60,9 @@ exports[`renders modal 1`] = `
         <span
           className="help-block"
         >
-          This will also be your dataset URL: data.world/
-          test
-          /
+          This will also be your undefined URL: https://data.world/test/
           <strong>
-            cool-new-data
+            cool-new-undefined
           </strong>
           <div
             className="titleLimit"
@@ -151,7 +148,7 @@ exports[`renders modal 1`] = `
           disabled={true}
           type="submit"
         >
-          Create dataset
+          Create undefined
         </button>
       </div>
     </form>

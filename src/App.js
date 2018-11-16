@@ -26,9 +26,9 @@ import find from 'array.prototype.find';
 import './App.css';
 import './static/css/dw-bootstrap.min.css';
 
-import CreateDatasetModal from './components/CreateDatasetModal';
+import CreateItemModal from './components/CreateItemModal';
 import WelcomePage from './components/WelcomePage';
-import DatasetsView from './components/DatasetsView';
+import LibraryView from './components/LibraryView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import Insights from './components/Insights';
@@ -105,14 +105,13 @@ export default class App extends Component {
       error: null,
       token,
       preferences,
-      datasets: [],
       loadingDatasets: false,
+      loadingProjects: false,
       loggedIn: !!token,
       officeInitialized: false,
       syncStatus: {},
       page,
       charts: [],
-      projects: [],
       version: localStorage.getItem(DW_APP_VERSION, version),
       insideOffice,
       showDatasets: false,
@@ -216,18 +215,11 @@ export default class App extends Component {
   initializeInsights = async () => {
     if (this.state.loggedIn) {
       try {
-        // Logged in user's projects
-        const projects = await this.api.getProjects();
-
-        try {
-          // All the charts in the workbook
-          const charts = await this.getCharts();
-          this.setState({ charts, projects, officeInitialized: true });
-        } catch (getChartsError) {
-          this.setError(getChartsError);
-        }
-      } catch (getProjectsError) {
-        this.setError(getProjectsError);
+        // All the charts in the workbook
+        const charts = await this.getCharts();
+        this.setState({ charts, officeInitialized: true });
+      } catch (getChartsError) {
+        this.setError(getChartsError);
       }
     } else {
       this.setState({ officeInitialized: true });
@@ -250,11 +242,27 @@ export default class App extends Component {
     try {
       this.setState({ loadingDatasets: true });
       const datasets = await this.api.getDatasets();
-      this.setState({ datasets, loadingDatasets: false });
+      this.setState({ loadingDatasets: false });
+      return datasets;
     } catch (getDatasetsError) {
       this.setState({
         error: getDatasetsError,
         loadingDatasets: false
+      });
+    }
+  };
+
+  getProjects = async () => {
+    try {
+      this.setState({ loadingProjects: true });
+
+      // Logged in user's projects
+      const projects = await this.api.getProjects();
+      this.setState({ loadingProjects: false });
+      return projects;
+    } catch (getProjectsError) {
+      this.setState({
+        error: getProjectsError
       });
     }
   };
@@ -503,8 +511,25 @@ export default class App extends Component {
     }
   };
 
-  createProject = (project) => {
-    return this.api.createProject(this.state.user.id, project);
+  createProject = async (project) => {
+    try {
+      const createdProject = await this.api.createProject(
+        this.state.user.id,
+        project
+      );
+
+      return createdProject;
+    } catch (error) {
+      if (error && error.response && error.response.data) {
+        this.setState({
+          errorMessage: error.response.data.message
+        });
+      } else {
+        this.setError(error);
+      }
+
+      throw error;
+    }
   };
 
   doesFileExist = (filename) => {
@@ -583,10 +608,10 @@ export default class App extends Component {
     const {
       currentSelectedRange,
       dataset,
-      datasets,
       error,
       excelApiSupported,
       loadingDatasets,
+      loadingProjects,
       loggedIn,
       officeInitialized,
       showCreateDataset,
@@ -712,24 +737,23 @@ export default class App extends Component {
           )}
 
         {showCreateDataset && (
-          <CreateDatasetModal
+          <CreateItemModal
             user={user}
-            createDataset={this.createDataset}
+            createItem={this.createDataset}
             close={() => this.setState({ showCreateDataset: false })}
-            selectDataset={this.selectDataset}
-            showDatasets={this.toggleShowDatasets}
+            selectItem={this.selectDataset}
+            showItems={this.toggleShowDatasets}
+            itemType="dataset"
           />
         )}
 
-        {!showStartPage && showDatasets && (
-          <DatasetsView
-            datasets={datasets}
-            createDataset={this.showCreateDataset}
-            selectDataset={this.selectDataset}
-            loadingDatasets={loadingDatasets}
-            showDatasets={this.toggleShowDatasets}
-            showCreateDataset={this.showCreateDataset}
-            getDatasets={this.getDatasets}
+        {!showStartPage && showDatasets && !showCreateDataset && (
+          <LibraryView
+            onSelect={this.selectDataset}
+            loading={loadingDatasets}
+            toggleList={this.toggleShowDatasets}
+            toggleShowForm={this.showCreateDataset}
+            getItems={this.getDatasets}
           />
         )}
 
@@ -743,6 +767,9 @@ export default class App extends Component {
             createProject={this.createProject}
             uploadChart={this.uploadChart}
             setError={this.setError}
+            setErrorMessage={this.setErrorMessage}
+            getProjects={this.getProjects}
+            loadingProjects={loadingProjects}
           />
         )}
 

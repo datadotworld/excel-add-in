@@ -16,22 +16,32 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-.create-dataset-modal {
+.create-item-modal {
   top: 50px;
 }
 
-.create-dataset-modal form .radio-option-description {
+.create-item-modal form .radio-option-description {
   color: #5d6f85;
 }
 
-.create-dataset-modal form .radio:first-child {
+.create-item-modal form .radio:first-child {
   margin-bottom: 1rem;
 }
 
-.create-dataset-modal form .radio .radio-label {
+.create-item-modal form .radio .radio-label {
   color: #8c9cb0;
 }
 
-.create-dataset-modal form .radio.checked .radio-label {
+.create-item-modal form .radio.checked .radio-label {
   color: #608fc5;
+}
+
+.item-title:first-letter {
+  text-transform: capitalize;
+}
+
+.item-form-info {
+  font-size: 0.8125rem;
+  font-weight: normal;
+  color: #5d6f85;
 }

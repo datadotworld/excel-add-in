@@ -92,3 +92,26 @@ export function generateChartError(charts, failedToLoad) {
     return '1 chart was detected but cannot be displayed. To use it in insights, try changing its chart type.';
   }
 }
+
+export function getDestination(url) {
+  const parsedPartialUrl = url.split('/');
+
+  if (parsedPartialUrl.length === 2) {
+    return {
+      owner: parsedPartialUrl[0],
+      id: parsedPartialUrl[1]
+    };
+  }
+
+  const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
+  const parsedFullUrl = url.match(regexMatch);
+
+  if (parsedFullUrl) {
+    return {
+      owner: parsedFullUrl[1],
+      id: parsedFullUrl[2]
+    };
+  }
+
+  return null;
+}

@@ -17,7 +17,7 @@ import {
   MAX_COLUMNS,
   MAX_COLUMNS_ERROR
 } from '../constants';
-import { getDisplayRange } from '../util';
+import { getDisplayRange, getDestination } from '../util';
 import analytics from '../analytics';
 
 import WarningModal from './WarningModal';
@@ -98,36 +98,42 @@ export default class UploadModal extends Component {
       close,
       sync,
       setError,
+      setErrorMessage,
       selectSheet,
       getSelectionRange
     } = this.props;
-    const { filename } = this.state;
+    const { filename, currentUrl } = this.state;
+    const dataset = getDestination(currentUrl);
 
-    try {
-      const range = await getSelectionRange();
-      const { columnCount } = range;
+    if (dataset) {
+      try {
+        const range = await getSelectionRange();
+        const { columnCount } = range;
 
-      if (columnCount >= MAX_COLUMNS) {
-        this.props.setErrorMessage(MAX_COLUMNS_ERROR);
-      } else {
-        let rangeAddress = range.address;
-        if (rangeAddress) {
-          if (selectSheet) {
-            const [sheet] = rangeAddress.split('!');
-            rangeAddress = `${sheet}!${SHEET_RANGE}`;
+        if (columnCount >= MAX_COLUMNS) {
+          this.props.setErrorMessage(MAX_COLUMNS_ERROR);
+        } else {
+          let rangeAddress = range.address;
+          if (rangeAddress) {
+            if (selectSheet) {
+              const [sheet] = rangeAddress.split('!');
+              rangeAddress = `${sheet}!${SHEET_RANGE}`;
+            }
+
+            await sync(
+              `${filename}.csv`,
+              rangeAddress.replace(/'/g, ''),
+              dataset,
+              range.worksheet.id
+            );
+            await close();
           }
-
-          await sync(
-            `${filename}.csv`,
-            rangeAddress.replace(/'/g, ''),
-            this.state.currentUrl,
-            range.worksheet.id
-          );
-          await close();
         }
+      } catch (selectionRangeError) {
+        setError(selectionRangeError);
       }
-    } catch (selectionRangeError) {
-      setError(selectionRangeError);
+    } else {
+      setErrorMessage('Invalid dataset or project URL');
     }
   };
 

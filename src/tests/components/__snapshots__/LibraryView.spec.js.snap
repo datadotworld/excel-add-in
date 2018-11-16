@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders datasets view - datasets 1`] = `
+<div
+  className="items-view container"
+>
+  <div
+    className="item-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <label
+        className="control-label"
+        htmlFor={undefined}
+      >
+        Select a dataset or project
+      </label>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      className="center-block no-datasets row"
+    >
+      <div
+        className="message"
+      >
+        You haven't created any datasets to link data to.
+      </div>
+      <button
+        className="bottom-button btn btn-primary"
+        disabled={false}
+        onClick={undefined}
+        type="button"
+      >
+        Create a new dataset
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders datasets view - loading state 1`] = `
+<div
+  className="items-view container"
+>
+  <div
+    className="item-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <label
+        className="control-label"
+        htmlFor={undefined}
+      >
+        Select a dataset or project
+      </label>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      className="center-block no-datasets row"
+    >
+      <div
+        className="message"
+      >
+        You haven't created any datasets to link data to.
+      </div>
+      <button
+        className="bottom-button btn btn-primary"
+        disabled={false}
+        onClick={undefined}
+        type="button"
+      >
+        Create a new dataset
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders datasets view - no datasets 1`] = `
+<div
+  className="items-view container"
+>
+  <div
+    className="item-selector"
+  >
+    <div
+      className="center-block section-header row"
+    >
+      <label
+        className="control-label"
+        htmlFor={undefined}
+      >
+        Select a dataset or project
+      </label>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      className="center-block no-datasets row"
+    >
+      <div
+        className="message"
+      >
+        You haven't created any datasets to link data to.
+      </div>
+      <button
+        className="bottom-button btn btn-primary"
+        disabled={false}
+        onClick={undefined}
+        type="button"
+      >
+        Create a new dataset
+      </button>
+    </div>
+  </div>
+</div>
+`;

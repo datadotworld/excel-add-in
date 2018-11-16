@@ -11,7 +11,7 @@ const migrateBindings = ({
 
     if (datasetFiles.includes(fileName)) {
       pushToLocalStorage(
-        `https://data.world/${dataset.owner}/${dataset.id}`,
+        { owner: dataset.owner, id: dataset.id },
         fileName,
         binding.rangeAddress,
         worksheetId,

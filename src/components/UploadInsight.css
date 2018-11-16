@@ -16,23 +16,24 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
- .upload-row {
-   margin: 0;
-   height: 100vh;
- }
-
- .insight-upload {
-    width: 85%;
-    margin: 0 auto;
-  }
-
- .insight-selected {
-    max-width: 100%;
-    max-height: 100%;
-    margin: 30px 0;
+.upload-row {
+  margin: 0;
+  height: 100vh;
 }
 
-.input-group, .dropdown-menu {
+.insight-upload {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.insight-selected {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 30px 0;
+}
+
+.input-group,
+.dropdown-menu {
   width: 100%;
 }
 
@@ -45,10 +46,10 @@
 }
 
 .insight-info {
- float: right;
- font-weight: normal;
- color: gray;
- font-size: 12px;
+  float: right;
+  font-weight: normal;
+  color: gray;
+  font-size: 12px;
 }
 
 .insight-upload-buttons {
@@ -91,4 +92,9 @@
   box-shadow: none;
   border: 1px solid #a3afbf;
   border-radius: 0;
+}
+
+.insight-upload .form-control {
+  height: 2rem;
+  border-radius: 0.3125rem !important;
 }

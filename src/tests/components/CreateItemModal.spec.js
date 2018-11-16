@@ -21,12 +21,17 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import { IntlProvider } from 'react-intl';
 
-import CreateDatasetModal from '../../components/CreateDatasetModal';
+import CreateItemModal from '../../components/CreateItemModal';
 
 it('renders modal', () => {
-  const user = {id: 'test'};
-  expect(renderer.create(
-    <IntlProvider locale='en'>
-      <CreateDatasetModal user={user} showDatasets={() => {}}/>
-    </IntlProvider>).toJSON()).toMatchSnapshot()
+  const user = { id: 'test' };
+  expect(
+    renderer
+      .create(
+        <IntlProvider locale="en">
+          <CreateItemModal user={user} />
+        </IntlProvider>
+      )
+      .toJSON()
+  ).toMatchSnapshot();
 });

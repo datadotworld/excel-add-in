@@ -22,13 +22,13 @@ import { FormattedDate } from 'react-intl';
 import { Image } from 'react-bootstrap';
 import analytics from '../analytics';
 
-import './DatasetItem.css';
+import './LibraryItem.css';
 import Icon from './icons/Icon';
 const add = require('./icons/icon-add.svg');
 
-class DatasetItem extends Component {
+class LibraryItem extends Component {
   static propTypes = {
-    dataset: PropTypes.object,
+    item: PropTypes.object,
     buttonText: PropTypes.string,
     buttonHandler: PropTypes.func,
     buttonLink: PropTypes.string
@@ -42,21 +42,23 @@ class DatasetItem extends Component {
       return window.open(this.props.buttonLink);
     }
     if (this.props.buttonHandler) {
-      const { dataset } = this.props;
-      const uri = `https://data.world/${dataset.owner}/${dataset.id}`;
+      const { item } = this.props;
+      const uri = `https://data.world/${item.owner}/${item.id}`;
       this.props.buttonHandler(uri);
     }
   };
 
   render() {
-    const { dataset } = this.props;
+    const { item, isProject } = this.props;
 
-    if (dataset.isCreate) {
+    if (item.isCreate) {
       return (
-        <div className="dataset" onClick={this.buttonClick}>
+        <div className="item" onClick={this.buttonClick}>
           <Image className="add-icon" src={add} />
           <div className="center-info">
-            <div className="title">Create a new dataset</div>
+            <div className="title">
+              {`Create a new ${isProject ? 'project' : 'dataset'}`}
+            </div>
           </div>
           <div className="link-icon">
             <Icon icon="angleRight" />
@@ -65,14 +67,14 @@ class DatasetItem extends Component {
       );
     }
     return (
-      <div className="dataset" onClick={this.buttonClick}>
-        <Icon icon={dataset.isProject ? 'projectSchema' : 'datasetSchema'} />
+      <div className="item" onClick={this.buttonClick}>
+        <Icon icon={isProject ? 'projectSchema' : 'datasetSchema'} />
         <div className="center-info">
-          <div className="title">{dataset.title}</div>
+          <div className="title">{item.title}</div>
           <div className="info">
-            @{dataset.owner} &middot; Updated{' '}
+            @{item.owner} &middot; Updated{' '}
             <FormattedDate
-              value={dataset.updated}
+              value={item.updated}
               year="numeric"
               month="short"
               day="2-digit"
@@ -87,4 +89,4 @@ class DatasetItem extends Component {
   }
 }
 
-export default DatasetItem;
+export default LibraryItem;

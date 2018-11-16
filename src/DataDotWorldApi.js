@@ -16,39 +16,41 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import axios from 'axios'
-import papa from 'papaparse'
-import { b64toBlob, groupAndSortProjects } from './util'
+import axios from 'axios';
+import papa from 'papaparse';
+import { b64toBlob, groupAndSortProjects } from './util';
 
-const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/
+const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/;
 
 export default class DataDotWorldApi {
-  constructor (token) {
+  constructor(token) {
     this.api = axios.create({
       baseURL: 'https://api.data.world/v0',
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    })
+    });
   }
 
-  getDataset (dataset) {
-    let slug = dataset
+  getDataset(dataset) {
+    let slug = dataset;
     if (dataset.indexOf('http') >= 0) {
-      slug = dataset.match(datasetRegex)[1]
+      slug = dataset.match(datasetRegex)[1];
     }
     return new Promise((resolve, reject) => {
-      const timestamp = new Date().getTime()
-      this.api.get(`/datasets/${slug}?ts=${timestamp}`).then((result) => {
-        resolve(result.data)
-      }).catch(reject)
-    })
-
+      const timestamp = new Date().getTime();
+      this.api
+        .get(`/datasets/${slug}?ts=${timestamp}`)
+        .then((result) => {
+          resolve(result.data);
+        })
+        .catch(reject);
+    });
   }
 
-  getLibraryRecursive (endpoint, partial = [], next) {
+  getLibraryRecursive(endpoint, partial = [], next) {
     if (next === -1) {
-      return Promise.resolve(partial)
+      return Promise.resolve(partial);
     }
 
     let params = {
@@ -57,134 +59,157 @@ export default class DataDotWorldApi {
         next: next,
         fields: 'id,owner,title,accessLevel,created,updated'
       }
-    }
+    };
 
-    return this.api.get(endpoint, params)
-      .then(result => this.getLibraryRecursive(
-        endpoint, partial.concat(result.data.records), result.data['nextPageToken'] || -1))
+    return this.api
+      .get(endpoint, params)
+      .then((result) =>
+        this.getLibraryRecursive(
+          endpoint,
+          partial.concat(result.data.records),
+          result.data['nextPageToken'] || -1
+        )
+      );
   }
 
-  getDatasets () {
+  getDatasets() {
     return new Promise((resolve, reject) => {
-      let datasets = []
+      let datasets = [];
       Promise.all([
         this.getLibraryRecursive('/user/datasets/own'),
         this.getLibraryRecursive('/user/datasets/contributing')
-      ]).then((results) => {
-        results.forEach((result) => {
-          datasets = datasets.concat(result)
+      ])
+        .then((results) => {
+          results.forEach((result) => {
+            datasets = datasets.concat(result);
+          });
+          resolve(datasets);
         })
-        resolve(datasets)
-      }).catch(reject)
-    })
+        .catch(reject);
+    });
   }
 
-  getProjects () {
+  getProjects() {
     return new Promise((resolve, reject) => {
-      let projects = []
+      let projects = [];
       Promise.all([
         this.getLibraryRecursive('/user/projects/own'),
         this.getLibraryRecursive('/user/projects/contributing')
-      ]).then((results) => {
-        results.forEach((result) => {
-          projects = projects.concat(result)
+      ])
+        .then((results) => {
+          results.forEach((result) => {
+            projects = projects.concat(result);
+          });
+
+          // Only display projects for which the user has write rights
+          projects = projects.filter((project) => {
+            const { accessLevel } = project;
+            if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
+              return true;
+            }
+
+            return false;
+          });
+
+          // Sort the projects before resolving
+          projects = groupAndSortProjects(projects);
+          resolve(projects);
         })
+        .catch(reject);
+    });
+  }
 
-        // Only display projects for which the user has write rights
-        projects = projects.filter(project => {
-          const {accessLevel} = project
-          if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
-            return true
-          }
-
-          return false
+  getUser() {
+    return new Promise((resolve, reject) => {
+      this.api
+        .get('/user')
+        .then((result) => {
+          resolve(result.data);
         })
-
-        // Sort the projects before resolving
-        projects = groupAndSortProjects(projects)
-        resolve(projects)
-      }).catch(reject)
-    })
+        .catch(reject);
+    });
   }
 
-  getUser () {
+  createDataset(userId, { title, visibility }) {
     return new Promise((resolve, reject) => {
-      this.api.get('/user').then((result) => {
-        resolve(result.data)
-      }).catch(reject)
-    })
+      this.api
+        .post(`/datasets/${userId}`, { title, visibility })
+        .then((result) => {
+          resolve(result.data);
+        })
+        .catch(reject);
+    });
   }
 
-  createDataset (userId, dataset) {
+  createProject(userId, { title, visibility, objective }) {
     return new Promise((resolve, reject) => {
-      this.api.post(`/datasets/${userId}`, dataset).then((result) => {
-        resolve(result.data)
-      }).catch(reject)
-    })
+      this.api
+        .post(`/projects/${userId}`, { title, visibility, objective })
+        .then((result) => {
+          resolve(result.data);
+        })
+        .catch(reject);
+    });
   }
 
-  createProject (userId, project) {
-    return new Promise((resolve, reject) => {
-      this.api.post(`/projects/${userId}`, project).then((result) => {
-        resolve(result.data)
-      }).catch(reject)
-    })
-  }
+  uploadFile(options) {
+    const { dataset, filename } = options;
 
-  uploadFile (options) {
-    const {dataset, filename} = options
+    const datasetSlug = `${dataset.owner}/${dataset.id}`;
 
-    const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/
-    const filteredDataset = dataset.match(regexFilter)[1]
-    const match = filteredDataset.split('/')
-    const datasetSlug = `${match[0]}/${match[1]}`
+    const csv = papa.unparse(options.data);
 
-    const csv = papa.unparse(options.data)
-
-    const formData = new FormData()
+    const formData = new FormData();
 
     // Use this structure so that it works correctly in Safari
-    const blob = new Blob([csv])
-    formData.append('file', blob, filename)
+    const blob = new Blob([csv]);
+    formData.append('file', blob, filename);
 
-    return this.api.post(`/uploads/${datasetSlug}/files`, formData)
+    return this.api.post(`/uploads/${datasetSlug}/files`, formData);
   }
 
-  uploadInsight (options) {
-    const {title, project, description} = options
+  uploadInsight(options) {
+    const { title, project, description } = options;
     return new Promise((resolve, reject) => {
-      const uriTitle = encodeURIComponent(title)
-      this.api.post(`/insights/${project.owner}/${project.id}`, {
-        title,
-        description,
-        body: {
-          imageUrl:
-            `https://data.world/api/${project.owner}/dataset/${project.id}/file/raw/${uriTitle}.png`
-        }
-      }).then((result) => {
-        // Return the URL to the newly created insight
-        resolve(result.data.uri)
-      }).catch(reject)
-    })
+      const uriTitle = encodeURIComponent(title);
+      this.api
+        .post(`/insights/${project.owner}/${project.id}`, {
+          title,
+          description,
+          body: {
+            imageUrl: `https://data.world/api/${project.owner}/dataset/${
+              project.id
+            }/file/raw/${uriTitle}.png`
+          }
+        })
+        .then((result) => {
+          // Return the URL to the newly created insight
+          resolve(result.data.uri);
+        })
+        .catch(reject);
+    });
   }
 
-  uploadChart (imageString, options) {
-    const {title, project} = options
+  uploadChart(imageString, options) {
+    const { title, project } = options;
     return new Promise((resolve, reject) => {
       // Convert base64 string into a binary large object
-      const blob = b64toBlob(imageString)
+      const blob = b64toBlob(imageString);
 
       // Add blob to a FormData object for uploading
-      var formData = new FormData()
-      formData.append('file', blob, `${title}.png`)
+      var formData = new FormData();
+      formData.append('file', blob, `${title}.png`);
 
       // First upload the image
-      return this.api.post(`/uploads/${project.owner}/${project.id}/files`, formData).then(res => {
-        // Then use the uploaded image to create an insight
-        this.uploadInsight(options).then(url => {
-          resolve(url)
+      return this.api
+        .post(`/uploads/${project.owner}/${project.id}/files`, formData)
+        .then((res) => {
+          // Then use the uploaded image to create an insight
+          this.uploadInsight(options).then((url) => {
+            resolve(url);
+          });
         })
-      }).catch(reject)
-    })
+        .catch(reject);
+    });
   }
 }
