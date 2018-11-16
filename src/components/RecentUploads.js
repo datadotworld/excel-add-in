@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, ControlLabel, Image } from 'react-bootstrap';
 import { getDisplayRange } from '../util';
 import Icon from './icons/Icon';
-import './LibraryItem.css';
+import './RecentUploads.css';
 
 class RecentItem extends Component {
   state = {
@@ -37,7 +37,7 @@ class RecentItem extends Component {
     const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
-        <div className="dataset recent">
+        <div className="item recent">
           <Image className="tabular-icon" src={tabular} />
           <div className="center-info">
             <div>
