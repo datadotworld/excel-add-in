@@ -107,7 +107,7 @@ class Insights extends Component {
               setErrorMessage={setErrorMessage}
               toggleShowProjects={this.toggleShowProjects}
               projectUrl={projectUrl}
-              handleUrlChange={this.handleUrlChange}
+              handleUrlChange={this.selectProject}
             />
           )}
 

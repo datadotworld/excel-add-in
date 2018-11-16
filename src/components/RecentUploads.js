@@ -24,17 +24,11 @@ class RecentItem extends Component {
   render() {
     const { filename, dataset, rangeAddress, worksheetId } = this.props;
 
-    const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/;
-    const filteredDataset = dataset
-      ? dataset.match(regexFilter)[1]
-      : 'Undefined';
-    const match = filteredDataset.split('/');
-    const datasetLocation = `${match[0]}/${match[1]}`;
+    const datasetLocation = `${dataset.owner}/${dataset.id}`;
 
     const tabular = require('./icons/icon-tabular.svg');
 
     const rangeToShow = getDisplayRange(rangeAddress);
-    const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
         <div className="item recent">
@@ -43,7 +37,7 @@ class RecentItem extends Component {
             <div>
               <div className="title">{filename}</div>
             </div>
-            <div className="info">{datasetSlug}</div>
+            <div className="info">{`=${rangeToShow}`}</div>
             <a
               href={`https://data.world/${datasetLocation}/workspace/file?filename=${filename}`}
               target="_blank"

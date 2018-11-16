@@ -17,7 +17,7 @@ import {
   MAX_COLUMNS,
   MAX_COLUMNS_ERROR
 } from '../constants';
-import { getDisplayRange } from '../util';
+import { getDisplayRange, getDestination } from '../util';
 import analytics from '../analytics';
 
 import WarningModal from './WarningModal';
@@ -103,11 +103,9 @@ export default class UploadModal extends Component {
       getSelectionRange
     } = this.props;
     const { filename, currentUrl } = this.state;
+    const dataset = getDestination(currentUrl);
 
-    const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
-    const matched = currentUrl.match(regexMatch);
-
-    if (matched) {
+    if (dataset) {
       try {
         const range = await getSelectionRange();
         const { columnCount } = range;
@@ -125,7 +123,7 @@ export default class UploadModal extends Component {
             await sync(
               `${filename}.csv`,
               rangeAddress.replace(/'/g, ''),
-              currentUrl,
+              dataset,
               range.worksheet.id
             );
             await close();

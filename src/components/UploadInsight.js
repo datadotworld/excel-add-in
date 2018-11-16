@@ -27,6 +27,7 @@ import {
   Row,
   HelpBlock
 } from 'react-bootstrap';
+import { getDestination } from '../util';
 import Published from './Published';
 
 import './UploadInsight.css';
@@ -55,39 +56,21 @@ class UploadInsight extends Component {
     this.setState({ [name]: value });
   };
 
-  onSelect = (eventKey) => {
-    const projects = this.props.projects;
-    const selected = {
-      owner: projects[eventKey].owner,
-      id: projects[eventKey].id,
-      title: projects[eventKey].title
-    };
-
-    this.setState({ project: selected });
-  };
-
   upload = async () => {
     analytics.track('exceladdin.create_project.ok.click');
     const { chart } = this.props;
     const { title, description } = this.state;
     const { projectUrl } = this.props;
+    const project = getDestination(projectUrl);
 
-    const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
-    const matched = projectUrl.match(regexMatch);
-
-    if (matched) {
-      const owner = matched[1];
-      const id = matched[2];
-
-      const project = { owner, id };
-
+    if (project) {
       try {
-        const res = await this.props.uploadChart(chart, {
+        const insightUri = await this.props.uploadChart(chart, {
           title,
           project,
           description
         });
-        this.setState({ uploadComplete: true, uri: res });
+        this.setState({ uploadComplete: true, uri: insightUri });
       } catch (uploadError) {
         this.props.setError(uploadError);
       }

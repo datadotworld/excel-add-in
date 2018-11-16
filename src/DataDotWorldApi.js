@@ -155,10 +155,7 @@ export default class DataDotWorldApi {
   uploadFile(options) {
     const { dataset, filename } = options;
 
-    const regexFilter = /^(?:https?:\/\/data\.world\/)?(.*)/;
-    const filteredDataset = dataset.match(regexFilter)[1];
-    const match = filteredDataset.split('/');
-    const datasetSlug = `${match[0]}/${match[1]}`;
+    const datasetSlug = `${dataset.owner}/${dataset.id}`;
 
     const csv = papa.unparse(options.data);
 
