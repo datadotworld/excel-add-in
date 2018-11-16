@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 import { Button, ControlLabel, Image } from 'react-bootstrap';
-import { getDisplayRange } from '../util';
 import Icon from './icons/Icon';
 import './RecentUploads.css';
 
 class RecentItem extends Component {
   state = {
-    loading: false
+    loading: false,
+    sheetName: ''
   };
 
   sync = async (filename, rangeAddress, dataset, worksheetId) => {
@@ -21,6 +21,12 @@ class RecentItem extends Component {
     }
   };
 
+  componentDidMount() {
+    this.props.getSheetName(this.props.worksheetId).then((sheetName) => {
+      this.setState({ sheetName });
+    });
+  }
+
   render() {
     const { filename, dataset, rangeAddress, worksheetId } = this.props;
 
@@ -28,7 +34,8 @@ class RecentItem extends Component {
 
     const tabular = require('./icons/icon-tabular.svg');
 
-    const rangeToShow = getDisplayRange(rangeAddress);
+    const rangeToShow = `${this.state.sheetName}!${rangeAddress.split('!')[1]}`;
+    const datasetSlug = `=${rangeToShow}`;
     return (
       <div>
         <div className="item recent">
@@ -68,7 +75,7 @@ class RecentItem extends Component {
 
 export default class RecentUploads extends Component {
   render() {
-    const { forceShowUpload, matchedFiles } = this.props;
+    const { forceShowUpload, matchedFiles, getSheetName } = this.props;
 
     let previousDate = '';
     let showDate;
@@ -102,6 +109,7 @@ export default class RecentUploads extends Component {
                 {...file}
                 sync={this.props.sync}
                 setError={this.props.setError}
+                getSheetName={getSheetName}
               />
             </div>
           );
