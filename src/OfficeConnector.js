@@ -468,4 +468,49 @@ export default class OfficeConnector {
       });
     });
   }
+
+  clearWorksheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        var sheet = ctx.workbook.worksheets.getItem(sheetName);
+        var range = sheet.getRange('A1:XFD1048576');
+
+        range.clear();
+
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  writeRangeValues(sheetName, rangeAddress, values) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      this.clearWorksheet(sheetName)
+        .then(() => {
+          Excel.run((ctx) => {
+            var sheet = ctx.workbook.worksheets.getItem(sheetName);
+
+            var range = sheet.getRange(rangeAddress);
+            range.values = values;
+            range.format.autofitColumns();
+
+            return ctx
+              .sync()
+              .then(resolve)
+              .catch(reject);
+          });
+        })
+        .catch(reject);
+    });
+  }
 }

@@ -212,4 +212,55 @@ export default class DataDotWorldApi {
         .catch(reject);
     });
   }
+
+  getQueries(dataset) {
+    return new Promise((resolve, reject) => {
+      this.api
+        .get(`/datasets/${dataset.owner}/${dataset.id}/queries`)
+        .then((result) => {
+          resolve(result.data.records);
+        })
+        .catch(reject);
+    });
+  }
+
+  executeQuery(dataset, query) {
+    return new Promise((resolve, reject) => {
+      this.api
+        .post(`/sql/${dataset.owner}/${dataset.id}/`, {
+          query
+        })
+        .then((result) => {
+          resolve(result.data);
+        })
+        .catch(reject);
+    });
+  }
+
+  getTables(dataset) {
+    return new Promise((resolve, reject) => {
+      this.executeQuery(dataset, 'SELECT * FROM Tables')
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  getTable(dataset, table) {
+    return new Promise((resolve, reject) => {
+      this.executeQuery(dataset, `SELECT * FROM ${table}`)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  getQuery(queryId) {
+    return new Promise((resolve, reject) => {
+      this.api
+        .get(`queries/${queryId}/results`)
+        .then((result) => {
+          resolve(result.data);
+        })
+        .catch(reject);
+    });
+  }
 }

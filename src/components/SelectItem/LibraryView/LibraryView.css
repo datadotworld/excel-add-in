@@ -1,0 +1,73 @@
+/*
+ * Copyright 2018 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+
+.library-view-container {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: white;
+}
+
+.library-view-container .item-selector .section-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.library-view-container .item-selector .section-header .add-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.library-view-container .item-selector .section-header .add-icon .stroke {
+  stroke: #4376b2;
+}
+
+.library-view-container .section-header .title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.library-view-container .loaderoverlay {
+  position: inherit;
+  top: initial;
+  bottom: initial;
+  left: initial;
+  right: initial;
+}
+
+.library-view-container .item-selector .section-header button {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: #4376b2;
+  float: right;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: -8px;
+  margin-bottom: 4px;
+}
+
+.message {
+  padding: 20px;
+}

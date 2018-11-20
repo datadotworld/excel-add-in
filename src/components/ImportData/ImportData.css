@@ -1,0 +1,79 @@
+/*
+ * Copyright 2018 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+
+.import-container {
+  padding: 15px;
+}
+
+.import-from {
+  border-bottom: 1px solid lightgray;
+}
+
+.import-into {
+  border-bottom: 1px solid lightgray;
+  margin-top: 16px;
+}
+
+.import-radio-container {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.import-radio-item {
+  display: flex;
+  align-items: baseline;
+  margin-right: 1rem;
+}
+
+.import-radio-label {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+.import-dropdown {
+  width: 100%;
+  height: 2rem;
+  background: white;
+  color: #5d6f85;
+}
+
+.projects-ab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  color: #5d6f85;
+  border: 1px solid #a3afbf;
+  box-shadow: none;
+}
+
+.import-container .btn-group {
+  width: 100%;
+}
+
+.import-button {
+  width: 100%;
+}
+
+.import-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
