@@ -362,7 +362,11 @@ export default class App extends Component {
 
     const fileIndex = recentUploads.findIndex((upload) => {
       // Same file uploaded to the same dataset
-      if (upload.filename === filename && upload.dataset === dataset) {
+      if (
+        upload.filename === filename &&
+        upload.dataset.owner === dataset.owner &&
+        upload.dataset.id === dataset.id
+      ) {
         // By the same user on the same workbook
         if (
           upload.userId === this.state.user.id &&

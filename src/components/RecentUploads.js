@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 
-import { Button, ControlLabel, Image } from 'react-bootstrap';
+import {
+  Button,
+  ControlLabel,
+  Image,
+  Tooltip,
+  OverlayTrigger
+} from 'react-bootstrap';
 import { getDisplayRange } from '../util';
-import Icon from './icons/Icon';
 import './RecentUploads.css';
+
+const upload = require('./icons/icon-upload-blue.svg');
 
 class RecentItem extends Component {
   state = {
@@ -33,25 +40,24 @@ class RecentItem extends Component {
 
     const datasetLocation = `${dataset.owner}/${dataset.id}`;
 
-    const tabular = require('./icons/icon-tabular.svg');
-
     const rangeToShow = getDisplayRange(rangeAddress, this.state.sheetName);
     return (
       <div>
         <div className="item recent">
-          <Image className="tabular-icon" src={tabular} />
-          <div className="center-info">
+          <div className="recents-item-text">
             <div>
-              <div className="title">{filename}</div>
+              <div className="recent-uploads-filename">{filename}</div>
             </div>
-            <div className="info">{`=${rangeToShow}`}</div>
             <a
               href={`https://data.world/${datasetLocation}/workspace/file?filename=${filename}`}
               target="_blank"
               className="link button-link"
             >
-              <div className="info">{datasetLocation}</div>
+              <div className="recent-uploads-dataset">{datasetLocation}</div>
             </a>
+            <div className="info">{`Upload from: ${
+              rangeToShow.split('!')[0]
+            }`}</div>
           </div>
           <div
             className="icon-border"
@@ -63,7 +69,12 @@ class RecentItem extends Component {
               {this.state.loading ? (
                 <div className="loader-icon" />
               ) : (
-                <Icon icon="sync" />
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={<Tooltip id="tooltip">Upload</Tooltip>}
+                >
+                  <Image className="icon-upload-blue" src={upload} />
+                </OverlayTrigger>
               )}
             </div>
           </div>
@@ -114,10 +125,6 @@ export default class RecentUploads extends Component {
             </div>
           );
         })}
-
-        <div className="category-reminder">
-          Showing {matchedFiles.length} most recent uploads
-        </div>
       </div>
     );
   }
