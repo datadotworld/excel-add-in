@@ -61,12 +61,12 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 0;
 }
 
 .selection .selection-info {
   display: flex;
-  padding: 12px;
-  color: #969696;
+  color: #8c9caf;
   font-size: 11px;
 }
 
@@ -74,21 +74,13 @@
   background-color: aliceblue;
 }
 
-.full-screen-modal .center-block .selection-form {
-  padding: 0;
-}
-
 .url {
   display: flex;
 }
 
 .url-group {
-  border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-}
-
-.url-group .body {
-  margin-top: 1rem;
+  margin-bottom: 24px;
 }
 
 .category-title {
@@ -114,11 +106,12 @@
 
 .browse-button {
   width: 25% !important;
-  margin-left: 0.625rem;
+  margin-left: 0 !important;
   padding: 0 0.625rem;
-  height: 2rem;
+  height: 40px;
   font-size: 0.8125rem;
   background: white;
+  border-radius: 0;
 }
 
 .help-block {
@@ -131,14 +124,105 @@
 }
 
 .upload-modal .form-control {
-  height: 2rem;
-  border-radius: 0.3125rem !important;
+  height: 40px;
+  border-radius: 0 !important;
 }
 
 .textField {
-  font-size: 0.875rem;
+  font-size: 14px;
+  border-right: 0;
+}
+
+.textField-file {
+  font-size: 14px;
+}
+
+.textField-file-error {
+  font-size: 14px;
+  border-color: red;
 }
 
 .cancel-button {
   margin-left: 0 !important;
+}
+
+.upload-form {
+  padding: 0 !important;
+}
+
+.upload-from {
+  padding: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #dfdfdf;
+  margin-bottom: 0;
+}
+
+.upload-from-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4e5057;
+}
+
+.upload-selection-form {
+  padding-left: 8px;
+}
+
+.selection-text {
+  color: #4e5057;
+}
+
+.upload-to {
+  padding: 16px;
+  padding-top: 24px;
+}
+
+.uplaod-data-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.upload-cancel-button {
+  margin: 0 !important;
+  width: 48% !important;
+}
+
+.upload-button-upload {
+  margin: 0 !important;
+  width: 48% !important;
+}
+
+.upload-button-upload-full {
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.upload-titleLimit {
+  color: #8c9caf;
+  font-size: 14px;
+}
+
+.upload-file-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filename-help {
+  font-size: 13px;
+}
+
+.filename-help-error {
+  color: red;
+  font-size: 14px;
+}
+
+.icon-upload-white {
+  width: 18px;
+  height: 18px;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+
+.upload-cancel-button:disabled {
+  box-shadow: none;
 }

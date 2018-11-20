@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import {
   Button,
   Grid,
+  Image,
   Row,
   HelpBlock,
   FormControl,
@@ -42,12 +43,12 @@ import analytics from '../analytics';
 import WarningModal from './WarningModal';
 import './UploadModal.css';
 
+const upload = require('./icons/icon-upload-white.svg');
+
 const getFilenameWithoutExtension = function(filename) {
   const dotPos = filename.lastIndexOf('.');
   return dotPos > -1 ? filename.slice(0, dotPos) : filename;
 };
-
-const filenameRegex = /^[^/]+$/;
 
 export default class UploadModal extends Component {
   static propTypes = {
@@ -57,6 +58,7 @@ export default class UploadModal extends Component {
 
   state = {
     filename: '',
+    fileNameValid: { errorMessage: '' },
     currentUrl: this.props.url,
     showWarningModal: false
   };
@@ -72,15 +74,37 @@ export default class UploadModal extends Component {
     }
   }
 
-  isFormValid = () => {
-    const { filename } = this.state;
-    const { excelApiSupported, range } = this.props;
-    if ((excelApiSupported && !range) || !filename) {
-      return false;
+  fileNameValid(filename) {
+    if (filename.indexOf('/') > -1) {
+      return {
+        valid: false,
+        errorMessage: 'Cannot use slashes in fie names.'
+      };
     }
-    return (
-      filename.match(filenameRegex) && filename.length < MAX_FILENAME_LENGTH
-    );
+
+    if (filename.length > MAX_FILENAME_LENGTH) {
+      return {
+        valid: false,
+        errorMessage: 'Filename cannot be longer than 128 characters'
+      };
+    }
+
+    return { valid: true };
+  }
+
+  handleFileChange = (event) => {
+    const { value } = event.currentTarget;
+
+    this.setState({
+      filename: value,
+      fileNameValid: this.fileNameValid(value)
+    });
+  };
+
+  isFormValid = () => {
+    const { fileNameValid, currentUrl } = this.state;
+
+    return fileNameValid.valid && currentUrl.length > 0;
   };
 
   getSelectionText(range) {
@@ -195,13 +219,11 @@ export default class UploadModal extends Component {
       excelApiSupported,
       range,
       numItemsInHistory,
-      selectSheet
+      selectSheet,
+      loading
     } = this.props;
-    const { filename } = this.state;
-    let validState, selection;
-    if (filename) {
-      validState = this.isFormValid() ? 'success' : 'warning';
-    }
+    const { filename, fileNameValid } = this.state;
+    let selection;
 
     if (selectSheet) {
       selection = range ? this.getSheetName(range) : '';
@@ -212,16 +234,18 @@ export default class UploadModal extends Component {
     return (
       <div>
         <div className="full-screen-modal category-title">
-          <ControlLabel>Upload to data.world</ControlLabel>
+          <ControlLabel>Upload data</ControlLabel>
         </div>
         <Grid className="upload-modal full-screen-modal  ">
           <Row className="center-block">
-            <form onSubmit={this.submit}>
+            <form className="upload-form" onSubmit={this.submit}>
               {excelApiSupported && (
-                <FormGroup>
-                  <ControlLabel>Select the area or sheet to save:</ControlLabel>
+                <FormGroup className="upload-from">
+                  <ControlLabel className="upload-from-title">
+                    Upload from:
+                  </ControlLabel>
                   <div
-                    className="selection-form"
+                    className="upload-selection-form"
                     onClick={this.props.changeSelection}
                   >
                     <div className="selection">
@@ -233,7 +257,9 @@ export default class UploadModal extends Component {
                           checked={!selectSheet}
                           readOnly
                         />
-                        <span>Selection</span>
+                        <span className="selection-text">
+                          Current selection
+                        </span>
                       </label>
                       <div className="selection-info">
                         {this.getSelectionText(range)}
@@ -248,7 +274,7 @@ export default class UploadModal extends Component {
                           checked={selectSheet}
                           readOnly
                         />
-                        <span>Sheet</span>
+                        <span className="selection-text">Current sheet</span>
                       </label>
                       <div className="selection-info">
                         {`(${this.getSheetName(range)})`}
@@ -257,90 +283,87 @@ export default class UploadModal extends Component {
                   </div>
                 </FormGroup>
               )}
-              <FormGroup className="url-group" validationState={validState}>
-                <div className="body">
-                  <ControlLabel>Dataset or project URL:</ControlLabel>
+              <div className="upload-to">
+                <FormGroup className="url-group">
+                  <div className="body">
+                    <ControlLabel>Save data to:</ControlLabel>
+                    <InputGroup>
+                      <div className="url">
+                        <FormControl
+                          className="textField"
+                          placeholder="Insert Dataset or Project URL"
+                          value={this.state.currentUrl}
+                          type="text"
+                          onChange={(event) => {
+                            this.handleUrlChange(event.target.value);
+                          }}
+                        />
+                        <Button
+                          className="browse-button"
+                          onClick={() => this.props.showDatasets()}
+                        >
+                          Browse
+                        </Button>
+                      </div>
+                    </InputGroup>
+                  </div>
+                </FormGroup>
+                <FormGroup>
+                  <div className="upload-file-title-container">
+                    <ControlLabel>File name:</ControlLabel>
+                    <div className="upload-titleLimit">128 char max</div>
+                  </div>
                   <InputGroup>
-                    <div className="url">
-                      <FormControl
-                        className="textField"
-                        placeholder="https://data.world/"
-                        value={this.state.currentUrl}
-                        type="text"
-                        onChange={(event) => {
-                          this.handleUrlChange(event.target.value);
-                        }}
-                      />
-                      <Button
-                        className="browse-button"
-                        onClick={() => this.props.showDatasets()}
-                      >
-                        Browse
-                      </Button>
-                    </div>
+                    <FormControl
+                      value={filename}
+                      className={
+                        fileNameValid.valid === false
+                          ? 'textField-file-error'
+                          : 'textField-file'
+                      }
+                      placeholder="Create new file name"
+                      type="text"
+                      onChange={this.handleFileChange}
+                    />
                   </InputGroup>
-                  <HelpBlock className="help-block">
-                    Copy/paste the URL of a dataset or project, or click
-                    "Browse"
-                  </HelpBlock>
+                  {!fileNameValid.errorMessage && (
+                    <HelpBlock className="filename-help">
+                      Your file will appear with the .csv extension. You can
+                      always change the name later.
+                    </HelpBlock>
+                  )}
+                  {fileNameValid.errorMessage && (
+                    <HelpBlock className="filename-help-error">
+                      {fileNameValid.errorMessage}
+                    </HelpBlock>
+                  )}
+                </FormGroup>
+
+                <div className="uplaod-data-buttons">
+                  {numItemsInHistory !== 0 && (
+                    <Button
+                      className="upload-cancel-button"
+                      onClick={this.cancelClicked}
+                      disabled={loading}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+
+                  <Button
+                    type="submit"
+                    bsStyle="primary"
+                    className={
+                      numItemsInHistory !== 0
+                        ? 'upload-button-upload'
+                        : 'upload-button-upload-full'
+                    }
+                    disabled={loading || !this.isFormValid()}
+                  >
+                    <Image className="icon-upload-white" src={upload} />
+                    {loading ? 'Uploading...' : 'Upload'}
+                  </Button>
                 </div>
-              </FormGroup>
-              <FormGroup validationState={validState}>
-                <ControlLabel>File name:</ControlLabel>
-                <InputGroup>
-                  <FormControl
-                    value={filename}
-                    className="textField"
-                    type="text"
-                    onChange={({ target }) => {
-                      this.setState({ filename: target.value });
-                    }}
-                  />
-                </InputGroup>
-                <HelpBlock>
-                  Must not include slashes, your file will be named{' '}
-                  <strong>
-                    {filename}
-                    .csv
-                  </strong>
-                  <div className="titleLimit">max. 128</div>
-                </HelpBlock>
-              </FormGroup>
-              <div className="button-group">
-                {numItemsInHistory !== 0 && (
-                  <Button
-                    className="cancel-button"
-                    onClick={this.cancelClicked}
-                  >
-                    Cancel
-                  </Button>
-                )}
-                {this.props.loading ? (
-                  <Button
-                    type="submit"
-                    className={
-                      numItemsInHistory !== 0
-                        ? 'submit-button'
-                        : 'full-submit-button'
-                    }
-                    disabled
-                    bsStyle="primary"
-                  >
-                    Saving...
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    className={
-                      numItemsInHistory !== 0
-                        ? 'submit-button'
-                        : 'full-submit-button'
-                    }
-                    bsStyle="primary"
-                  >
-                    Save file
-                  </Button>
-                )}
               </div>
             </form>
           </Row>

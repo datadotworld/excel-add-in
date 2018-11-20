@@ -21,9 +21,35 @@
   background-color: #fff;
   position: relative;
   border-bottom: 1px solid #dfe3e9;
-  padding: 10px 15px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   width: 100%;
   cursor: pointer;
+}
+
+.recents-item-text {
+  width: 100%;
+  overflow: hidden;
+}
+
+.recent-uploads-filename {
+  color: #4e5057;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.recent-uploads-dataset {
+  color: #4e5057;
+  font-size: 14px;
+}
+
+.recent-uploads-sheet {
+  color: #8c9caf;
+  font-size: 14px;
+}
+
+.icon-upload-blue {
+  width: 18px;
+  height: 18px;
 }
