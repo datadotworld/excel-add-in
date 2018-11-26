@@ -512,4 +512,36 @@ export default class OfficeConnector {
         .catch(reject);
     });
   }
+
+  sheetExists(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        ctx.workbook.worksheets.getItem(sheetName);
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  createWorksheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        ctx.workbook.worksheets.add(sheetName);
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
 }
