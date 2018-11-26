@@ -28,7 +28,7 @@ import {
   InputGroup,
   MenuItem
 } from 'react-bootstrap';
-import { getDestination } from '../../util';
+import { getDestination, getExcelColumn } from '../../util';
 
 import SelectItem from '../SelectItem';
 
@@ -48,30 +48,7 @@ export default class UploadModal extends Component {
   };
 
   writeData = async (sheetName, data) => {
-    var charCodeOfA = 'A'.charCodeAt(0),
-      alphabetLength = 'Z'.charCodeAt(0) - charCodeOfA + 1;
-
-    function numberToLetters(nNum) {
-      if (nNum <= alphabetLength) {
-        return convertNumberToLetter(nNum);
-      } else {
-        var firstNumber = Math.floor((nNum - 1) / alphabetLength);
-        var firstLetter = convertNumberToLetter(firstNumber);
-
-        var secondNumber = nNum % alphabetLength || alphabetLength;
-        var secondLetter = convertNumberToLetter(secondNumber);
-
-        return firstLetter + secondLetter;
-      }
-    }
-
-    function convertNumberToLetter(nNum) {
-      var charCode = charCodeOfA + nNum - 1;
-      return String.fromCharCode(charCode);
-    }
-
-    const numberOfColumns = data[0].length;
-    const excelColumn = numberToLetters(numberOfColumns);
+    const excelColumn = getExcelColumn(data[0].length);
     const range = `A1:${excelColumn}${data.length}`;
 
     return await this.props.office.writeRangeValues(sheetName, range, data);

@@ -476,8 +476,8 @@ export default class OfficeConnector {
       }
 
       Excel.run((ctx) => {
-        var sheet = ctx.workbook.worksheets.getItem(sheetName);
-        var range = sheet.getRange('A1:XFD1048576');
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
+        const range = sheet.getRange('A1:XFD1048576');
 
         range.clear();
 
@@ -498,9 +498,9 @@ export default class OfficeConnector {
       this.clearWorksheet(sheetName)
         .then(() => {
           Excel.run((ctx) => {
-            var sheet = ctx.workbook.worksheets.getItem(sheetName);
+            const sheet = ctx.workbook.worksheets.getItem(sheetName);
 
-            var range = sheet.getRange(rangeAddress);
+            const range = sheet.getRange(rangeAddress);
             range.values = values;
             range.format.autofitColumns();
 
