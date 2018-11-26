@@ -21,12 +21,17 @@
   padding: 15px;
 }
 
+.recent-item-text {
+  width: 85%;
+}
+
 .recent-import-item {
   display: flex;
   justify-content: space-between;
   padding-bottom: 12px;
   padding-top: 12px;
   border-bottom: 1px solid;
+  align-items: center;
 }
 
 .recent-text-title {

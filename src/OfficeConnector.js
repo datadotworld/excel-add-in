@@ -502,7 +502,6 @@ export default class OfficeConnector {
 
             const range = sheet.getRange(rangeAddress);
             range.values = values;
-            range.format.autofitColumns();
 
             return ctx
               .sync()

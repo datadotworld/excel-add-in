@@ -28,7 +28,7 @@ import {
   InputGroup,
   MenuItem
 } from 'react-bootstrap';
-import { getDestination, getExcelColumn } from '../../util';
+import { getDestination, getExcelColumn, parseData } from '../../util';
 
 import SelectItem from '../SelectItem';
 
@@ -47,13 +47,6 @@ export default class UploadModal extends Component {
     showForm: false
   };
 
-  writeData = async (sheetName, data) => {
-    const excelColumn = getExcelColumn(data[0].length);
-    const range = `A1:${excelColumn}${data.length}`;
-
-    return await this.props.office.writeRangeValues(sheetName, range, data);
-  };
-
   getTables = async (dataset) => {
     if (dataset) {
       try {
@@ -68,13 +61,6 @@ export default class UploadModal extends Component {
     } else {
       this.props.setErrorMessage('Invalid dataset/project URL');
     }
-  };
-
-  parseData = (data) => {
-    const columns = Object.keys(data[0]);
-    const values = data.map((row) => Object.values(row));
-
-    return [columns, ...values];
   };
 
   getQueries = async (dataset) => {
@@ -104,6 +90,13 @@ export default class UploadModal extends Component {
     });
   };
 
+  writeData = async (sheetName, data) => {
+    const excelColumn = getExcelColumn(data[0].length);
+    const range = `A1:${excelColumn}${data.length}`;
+
+    return await this.props.office.writeRangeValues(sheetName, range, data);
+  };
+
   import = async (sheetName, itemUrl, querySelected, table) => {
     this.setState({ importing: true });
 
@@ -130,7 +123,7 @@ export default class UploadModal extends Component {
       this.setErrorMessage('The specified selection does not have any data');
     } else {
       try {
-        const parsedData = this.parseData(data);
+        const parsedData = parseData(data);
         await this.writeData(sheetName, parsedData);
         this.pushToLocalStorage(
           sheetName,
@@ -207,7 +200,6 @@ export default class UploadModal extends Component {
       : {};
     let matchedFiles = [];
 
-    // all files which has the same username and workspace id as the current user
     if (recentImports) {
       const allImports = recentImports || [];
       matchedFiles = allImports
@@ -219,7 +211,6 @@ export default class UploadModal extends Component {
           );
         })
         .sort((a, b) => {
-          // Sort by date
           if (a.date < b.date) {
             return 1;
           }
