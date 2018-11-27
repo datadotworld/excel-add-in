@@ -737,6 +737,7 @@ export default class App extends Component {
               user={userId}
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
+              getSheetName={this.office.getSheetName}
             />
           )}
 
