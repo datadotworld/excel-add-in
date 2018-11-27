@@ -17,12 +17,9 @@
  * data.world, Inc. (http://data.world/).
  */
 
-.recent-items {
-  padding: 15px;
-}
-
 .recent-item-text {
   width: 85%;
+  font-size: 14px;
 }
 
 .recent-import-item {
@@ -30,8 +27,10 @@
   justify-content: space-between;
   padding-bottom: 12px;
   padding-top: 12px;
-  border-bottom: 1px solid;
+  padding: 12px 15px;
+  border-bottom: 1px solid #dfe3e9;
   align-items: center;
+  background-color: white;
 }
 
 .recent-text-title {
@@ -55,4 +54,8 @@
   display: flex;
   align-items: center;
   margin-right: 10px;
+}
+
+.recents-date {
+  padding: 8px 15px;
 }

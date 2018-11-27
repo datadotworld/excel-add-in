@@ -115,7 +115,7 @@ export default class RecentImports extends Component {
             }
             return (
               <div key={recentItem.date}>
-                {showDate && <div>{dateToShow}</div>}
+                {showDate && <div className="recents-date">{dateToShow}</div>}
                 <RecentItem
                   itemUrl={recentItem.itemUrl}
                   table={recentItem.table}
