@@ -80,7 +80,20 @@ export default class UploadModal extends Component {
     }
   };
 
-  handleUrlChange = (url) => {
+  handleUrlChange = (url, fetch) => {
+    if (fetch) {
+      if (this.state.querySelected) {
+        this.getQueries(getDestination(url));
+      } else {
+        this.getTables(getDestination(url));
+      }
+
+      return this.setState({
+        itemUrl: url,
+        tableSelected: !this.state.querySelected
+      });
+    }
+
     this.setState({
       itemUrl: url,
       tables: [],

@@ -36,8 +36,8 @@ export default class UploadModal extends Component {
     showLibrary: false
   };
 
-  onSelect = (url) => {
-    this.props.handleChange(url);
+  onSelect = (url, fetch) => {
+    this.props.handleChange(url, fetch);
     this.setState({ showLibrary: false });
   };
 
