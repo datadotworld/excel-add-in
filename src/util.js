@@ -18,11 +18,15 @@
  */
 import { SHEET_RANGE } from './constants';
 
-export function getDisplayRange(rangeAddress) {
+export function getDisplayRange(rangeAddress, sheetName) {
   if (rangeAddress) {
     const [sheet, range] = rangeAddress.split('!');
     if (range === SHEET_RANGE) {
-      return sheet.replace(/'/g, '');
+      return sheetName || sheet.replace(/'/g, '');
+    }
+
+    if (sheetName) {
+      return `${sheetName}!${range}`;
     }
 
     return rangeAddress.replace(/'/g, '');
