@@ -275,6 +275,19 @@ export default class OfficeConnector {
     });
   }
 
+  getSheetName(sheetId) {
+    return new Promise((resolve, reject) => {
+      Excel.run(function(ctx) {
+        const worksheet = ctx.workbook.worksheets.getItem(sheetId);
+        worksheet.load('name');
+        return ctx
+          .sync()
+          .then(() => resolve(worksheet.name))
+          .catch(reject);
+      });
+    });
+  }
+
   select(address = '') {
     const addressSections = address.split('!');
     return new Promise((resolve, reject) => {
