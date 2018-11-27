@@ -23,6 +23,7 @@ import { Button, Grid, Row, ControlLabel } from 'react-bootstrap';
 import './LibraryView.css';
 import LibraryItem from './LibraryItem';
 import LoadingAnimation from './LoadingAnimation';
+import { sortByOwnerAndTitle } from '../util';
 
 class LibraryView extends Component {
   static propTypes = {
@@ -43,27 +44,6 @@ class LibraryView extends Component {
     });
   }
 
-  sortItems = () => {
-    const sortedItems = this.state.items.slice();
-
-    // Sort by updated in descending order
-    sortedItems.sort((a, b) => {
-      const dateA = new Date(a.updated);
-      const dateB = new Date(b.updated);
-
-      if (dateA < dateB) {
-        return 1;
-      }
-      if (dateA > dateB) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    return sortedItems;
-  };
-
   render() {
     const {
       loading,
@@ -74,7 +54,7 @@ class LibraryView extends Component {
     } = this.props;
     const { items } = this.state;
 
-    const sortedItems = this.sortItems(items);
+    const sortedItems = sortByOwnerAndTitle(items);
     const entries = sortedItems.map((item) => {
       return (
         <LibraryItem

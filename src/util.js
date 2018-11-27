@@ -115,3 +115,27 @@ export function getDestination(url) {
 
   return null;
 }
+
+export function sortByOwnerAndTitle(datasets) {
+  return datasets.sort((a, b) => {
+    // First sort by owner
+    if (a.owner < b.owner) {
+      return -1;
+    }
+
+    if (a.owner > b.owner) {
+      return 1;
+    }
+
+    // Same owner, sort by title
+    if (a.title < b.title) {
+      return -1;
+    }
+
+    if (a.title > b.title) {
+      return 1;
+    }
+
+    return 0;
+  });
+}
