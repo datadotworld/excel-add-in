@@ -373,11 +373,14 @@ export default class App extends Component {
     };
 
     const fileIndex = recentUploads.findIndex((upload) => {
-      if (upload.filename === filename) {
+      // Same file uploaded to the same dataset
+      if (upload.filename === filename && upload.dataset === dataset) {
+        // By the same user on the same workbook
         if (
           upload.userId === this.state.user.id &&
           upload.workbook === this.state.workbookId
         ) {
+          // Return the index of the file
           return true;
         }
       }
@@ -388,6 +391,7 @@ export default class App extends Component {
     if (fileIndex === -1) {
       recentUploads.push(newUpload);
     } else {
+      // Replace duplicate file
       recentUploads[fileIndex] = newUpload;
     }
 
