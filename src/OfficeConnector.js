@@ -523,8 +523,12 @@ export default class OfficeConnector {
         ctx.workbook.worksheets.getItem(sheetName);
         return ctx
           .sync()
-          .then(resolve)
-          .catch(reject);
+          .then(() => {
+            resolve(true);
+          })
+          .catch(() => {
+            resolve(false);
+          });
       });
     });
   }

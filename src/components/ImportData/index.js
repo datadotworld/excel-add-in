@@ -138,33 +138,31 @@ export default class UploadModal extends Component {
     if (!data.length > 0) {
       this.setErrorMessage('The specified selection does not have any data');
     } else {
-      let sheetExists = true;
-      try {
-        await this.props.office.sheetExists(sheetName);
-      } catch (error) {
+      const sheetExists = await this.props.office.sheetExists(sheetName);
+
+      if (!sheetExists) {
         try {
           await this.props.office.createWorksheet(sheetName);
         } catch (createSheetError) {
-          sheetExists = false;
-          this.props.setError(createSheetError);
+          this.props.setErrorMessage(createSheetError.message);
+          this.setState({ importing: false });
+          return;
         }
       }
 
-      if (sheetExists) {
-        try {
-          const parsedData = parseData(data);
-          await this.writeData(sheetName, parsedData);
-          this.pushToLocalStorage(
-            sheetName,
-            itemUrl,
-            querySelected,
-            table,
-            new Date()
-          );
-          this.setState({ showForm: false });
-        } catch (writeDataError) {
-          this.props.setError(this.writeDataError);
-        }
+      try {
+        const parsedData = parseData(data);
+        await this.writeData(sheetName, parsedData);
+        this.pushToLocalStorage(
+          sheetName,
+          itemUrl,
+          querySelected,
+          table,
+          new Date()
+        );
+        this.setState({ showForm: false });
+      } catch (writeDataError) {
+        this.props.setError(this.writeDataError);
       }
     }
 
