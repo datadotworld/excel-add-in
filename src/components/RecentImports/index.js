@@ -70,10 +70,6 @@ export default class RecentImports extends Component {
               </div>
             );
           })}
-
-          <div className="category-reminder">
-            Showing {recentImports.length} most recent imports
-          </div>
         </div>
       </div>
     );
