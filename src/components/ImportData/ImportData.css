@@ -17,63 +17,94 @@
  * data.world, Inc. (http://data.world/).
  */
 
-.import-container {
-  padding: 15px;
+.import-title {
+  height: 49px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #aeb9c7;
+  display: flex;
+  align-items: center;
+}
+
+.import-title-text {
+  font-size: 18px;
+  padding-left: 16px;
 }
 
 .import-from {
-  border-bottom: 1px solid lightgray;
+  padding: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dfdfdf;
 }
 
-.import-into {
-  border-bottom: 1px solid lightgray;
-  margin-top: 16px;
+.import-sub-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4e5057;
 }
 
 .import-radio-container {
-  display: flex;
   margin-bottom: 16px;
 }
 
 .import-radio-item {
   display: flex;
   align-items: baseline;
-  margin-right: 1rem;
+  padding-left: 15px;
 }
 
 .import-radio-label {
   margin-left: 0.5rem;
-  font-weight: bold;
+  font-size: 14px;
+  color: #4e5057;
 }
 
 .import-dropdown {
-  width: 100%;
-  height: 2rem;
-  background: white;
-  color: #5d6f85;
-}
-
-.projects-ab {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 12px;
-  color: #5d6f85;
-  border: 1px solid #a3afbf;
+  border: 1px solid #aeb9c7;
   box-shadow: none;
+  font-size: 14px;
+  color: #8c9caf;
 }
 
 .import-container .btn-group {
   width: 100%;
 }
 
-.import-button {
-  width: 100%;
+.import-into {
+  padding: 16px;
+  padding-bottom: 24px;
 }
 
-.import-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.import-into-field {
+  font-size: 14px;
+  border-radius: 0;
+  margin: 6px 0;
+}
+
+.import-into-help {
+  color: #4e5057;
+  margin: 0;
+}
+
+.import-into-buttons {
+  color: #4e5057;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.import-button-cancel {
+  width: 48%;
+}
+
+.import-button-import {
+  width: 48%;
+}
+
+.icon-download {
+  padding-right: 4px;
 }

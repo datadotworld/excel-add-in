@@ -19,20 +19,27 @@
 
 .select-item-container {
   display: flex;
+  height: 40px;
+}
+
+.select-item-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4e5057;
+}
+
+.select-item-field {
+  font-size: 14px;
+  border-radius: 0;
+  border-right: 0;
 }
 
 .select-item-button {
   width: 25%;
-  height: 2rem;
-  margin-left: 0.625rem;
   padding: 0 0.625rem;
-  font-size: 0.8125rem;
+  font-size: 14px;
   background: white;
-}
-
-.select-item-text-field {
-  height: 2rem;
-  font-size: 0.875rem;
+  border-radius: 0;
 }
 
 .select-item-help-block {

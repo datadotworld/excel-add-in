@@ -25,6 +25,7 @@ import {
   FormControl,
   FormGroup,
   HelpBlock,
+  Image,
   InputGroup,
   MenuItem
 } from 'react-bootstrap';
@@ -34,6 +35,8 @@ import SelectItem from '../SelectItem';
 
 import './ImportData.css';
 import RecentImports from '../RecentImports';
+
+const download = require('../icons/icon-download.svg');
 
 export default class UploadModal extends Component {
   state = {
@@ -272,18 +275,22 @@ export default class UploadModal extends Component {
       <div>
         {showImportForm && (
           <div>
-            <div className="full-screen-modal category-title">
-              <ControlLabel>Import data</ControlLabel>
+            <div className="import-title">
+              <ControlLabel className="import-title-text">
+                Import data
+              </ControlLabel>
             </div>
             <div className="import-container">
               <div className="import-from">
-                <div className="import-title">From</div>
                 <SelectItem
                   itemUrl={this.state.itemUrl}
                   handleChange={this.handleUrlChange}
                   getItems={this.props.getDatasets}
+                  title="Import from:"
+                  placeholder="Insert Dataset or Project URL"
                 />
                 <div className="import-radio-container">
+                  <div className="import-sub-title">Source:</div>
                   <div className="import-radio-item">
                     <input
                       type="radio"
@@ -291,7 +298,6 @@ export default class UploadModal extends Component {
                       value="sheet"
                       checked={tableSelected}
                       readOnly
-                      disabled={!itemUrl}
                       onClick={(e) => {
                         this.setState({
                           querySelected: false,
@@ -310,7 +316,6 @@ export default class UploadModal extends Component {
                       value="sheet"
                       checked={querySelected}
                       readOnly
-                      disabled={!itemUrl}
                       onClick={(e) => {
                         this.setState({ querySelected: true, table: '' });
                         this.getQueries(getDestination(itemUrl));
@@ -323,12 +328,8 @@ export default class UploadModal extends Component {
                 <FormGroup>
                   <DropdownButton
                     id="tables-dropdown"
-                    className="projects-ab"
-                    title={
-                      table
-                        ? table.name
-                        : `Select ${querySelected ? 'query' : 'table'}`
-                    }
+                    className="import-dropdown"
+                    title={table ? table.name : 'Select the file to import'}
                     onSelect={(eventKey) => {
                       this.setState({ table: this.state.tables[eventKey] });
                     }}
@@ -343,41 +344,46 @@ export default class UploadModal extends Component {
                 </FormGroup>
               </div>
               <div className="import-into">
-                <div className="import-title">Into</div>
-                <FormGroup>
-                  <div>
-                    <ControlLabel>Sheet:</ControlLabel>
-                    <InputGroup>
-                      <div className="select-item-container">
-                        <FormControl
-                          className="select-item-text-field"
-                          placeholder="Enter sheet name"
-                          type="text"
-                          value={this.state.sheetName}
-                          onChange={(e) => {
-                            const { value } = e.currentTarget;
-                            this.setState({ sheetName: value });
-                          }}
-                        />
-                      </div>
-                    </InputGroup>
-                    <HelpBlock className="select-item-help-block">
-                      Existing data will be discarded and replaced
-                    </HelpBlock>
-                  </div>
-                </FormGroup>
+                <div className="import-sub-title">Save data to:</div>
+                <InputGroup>
+                  <FormControl
+                    className="import-into-field"
+                    placeholder="Insert Excel sheet name"
+                    type="text"
+                    value={this.state.sheetName}
+                    onChange={(e) => {
+                      const { value } = e.currentTarget;
+                      this.setState({ sheetName: value });
+                    }}
+                  />
+                  <HelpBlock className="import-into-help">
+                    Existing data will be discarded and replaced
+                  </HelpBlock>
+                </InputGroup>
               </div>
-              <Button
-                type="submit"
-                bsStyle="primary"
-                className="import-button"
-                disabled={!this.formValid() || importing}
-                onClick={() =>
-                  this.import(sheetName, itemUrl, querySelected, table)
-                }
-              >
-                {importing ? 'Importing...' : 'Import'}
-              </Button>
+              <div className="import-into-buttons">
+                <Button
+                  className="import-button-cancel"
+                  onClick={() =>
+                    this.import(sheetName, itemUrl, querySelected, table)
+                  }
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  bsStyle="primary"
+                  className="import-button-import"
+                  onClick={() =>
+                    this.import(sheetName, itemUrl, querySelected, table)
+                  }
+                >
+                  {!importing && (
+                    <Image className="icon-download" src={download} />
+                  )}
+                  {importing ? 'Importing...' : 'Import'}
+                </Button>
+              </div>
             </div>
           </div>
         )}

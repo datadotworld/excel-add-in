@@ -23,7 +23,6 @@ import {
   ControlLabel,
   FormControl,
   FormGroup,
-  HelpBlock,
   InputGroup
 } from 'react-bootstrap';
 
@@ -43,21 +42,19 @@ export default class UploadModal extends Component {
 
   render() {
     const { showLibrary } = this.state;
-    const { handleChange, isProjects } = this.props;
-
-    const title = isProjects ? 'Project URL' : 'Dataset or project URL:';
+    const { title, placeholder, handleChange } = this.props;
 
     return (
       <div>
         {!showLibrary && (
           <FormGroup>
             <div>
-              <ControlLabel>{title}</ControlLabel>
+              <ControlLabel className="select-item-title">{title}</ControlLabel>
               <InputGroup>
                 <div className="select-item-container">
                   <FormControl
-                    className="select-item-text-field"
-                    placeholder="https://data.world/"
+                    className="select-item-field"
+                    placeholder={placeholder}
                     value={this.props.itemUrl}
                     type="text"
                     onChange={(event) => {
@@ -74,9 +71,6 @@ export default class UploadModal extends Component {
                   </Button>
                 </div>
               </InputGroup>
-              <HelpBlock className="select-item-help-block">
-                Copy/paste the URL of a dataset or project, or click "Browse"
-              </HelpBlock>
             </div>
           </FormGroup>
         )}
