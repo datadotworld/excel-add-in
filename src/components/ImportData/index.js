@@ -210,7 +210,6 @@ export default class UploadModal extends Component {
 
     recents.recentImports = recentImports;
 
-    localStorage.removeItem('history');
     localStorage.setItem('history', JSON.stringify(recents));
   };
 

@@ -385,7 +385,6 @@ export default class App extends Component {
 
     recents.recentUploads = recentUploads;
 
-    localStorage.removeItem('history');
     localStorage.setItem('history', JSON.stringify(recents));
   };
 
