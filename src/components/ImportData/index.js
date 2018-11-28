@@ -275,8 +275,8 @@ export default class UploadModal extends Component {
       <div>
         {showImportForm && (
           <div>
-            <div className="import-title">
-              <ControlLabel className="import-title-text">
+            <div className="import-header">
+              <ControlLabel className="import-header-text">
                 Import data
               </ControlLabel>
             </div>

@@ -18,69 +18,10 @@
  */
 
 import React, { Component } from 'react';
-
 import { Button, ControlLabel } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { getDestination } from '../../util';
+
+import RecentItem from './RecentItem';
 import './RecentImports.css';
-
-class RecentItem extends Component {
-  state = {
-    loading: false
-  };
-
-  import = async () => {
-    this.setState({ loading: true });
-    const { sheetName, itemUrl, isQuery, table } = this.props;
-
-    try {
-      await this.props.import(sheetName, itemUrl, isQuery, table);
-      this.setState({ loading: false });
-    } catch (importError) {
-      this.props.setError(importError);
-    }
-  };
-
-  render() {
-    const { itemUrl, table, isQuery, sheetName } = this.props;
-    const { loading } = this.state;
-    const destination = getDestination(itemUrl);
-
-    return (
-      <div className="recent-import-item">
-        <div className="recent-item-text">
-          <div className="recent-item-from">
-            <span className="recent-text-title">From:</span>
-            {` ${destination.owner}/${destination.id} ${table.name} (${
-              isQuery ? 'query' : 'table'
-            })`}
-          </div>
-          <div className="recent-item-to">
-            <span className="recent-text-title">To:</span>
-            {` ${sheetName}`}
-          </div>
-        </div>
-        {loading && (
-          <div className="loader-container">
-            <div className="loader-icon" />
-          </div>
-        )}
-        {!loading && (
-          <div
-            className="recent-item-image"
-            onClick={() => {
-              this.import();
-            }}
-            title="Repeat import"
-          >
-            <FontAwesomeIcon icon={faArrowDown} size="2x" color="white" />
-          </div>
-        )}
-      </div>
-    );
-  }
-}
 
 export default class RecentImports extends Component {
   render() {
@@ -90,11 +31,13 @@ export default class RecentImports extends Component {
 
     return (
       <div>
-        <div className="full-screen-modal category-title">
-          <ControlLabel className="large-header">Recent Imports</ControlLabel>
+        <div className="recents-header">
+          <ControlLabel className="recents-header-text">
+            Recent Imports
+          </ControlLabel>
           <Button
-            bsStyle="link"
-            className="upload-button"
+            bsStyle="default"
+            className="recents-header-button"
             onClick={this.props.close}
           >
             + New import

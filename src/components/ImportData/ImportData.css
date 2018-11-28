@@ -17,7 +17,7 @@
  * data.world, Inc. (http://data.world/).
  */
 
-.import-title {
+.import-header {
   height: 49px;
   background-color: #ffffff;
   border-bottom: 1px solid #aeb9c7;
@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-.import-title-text {
+.import-header-text {
   font-size: 18px;
   padding-left: 16px;
 }
