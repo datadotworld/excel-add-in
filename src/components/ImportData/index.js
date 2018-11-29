@@ -198,7 +198,7 @@ export default class UploadModal extends Component {
     if (!sheetExists) {
       try {
         await this.props.office.createWorksheet(sheetName);
-        this.writeAndSave({ sheetName, itemUrl, querySelected, table });
+        await this.writeAndSave({ sheetName, itemUrl, querySelected, table });
       } catch (createSheetError) {
         this.props.setErrorMessage(createSheetError.message);
         this.setState({ importing: false });
@@ -458,6 +458,7 @@ export default class UploadModal extends Component {
             recentImports={recentImports}
             import={this.import}
             setError={this.props.setError}
+            importing={importing}
           />
         )}
         {showModal && (

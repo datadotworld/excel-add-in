@@ -38,14 +38,13 @@ export default class RecentItem extends Component {
 
     try {
       await this.props.import(sheetName, itemUrl, isQuery, table);
-      this.setState({ loading: false });
     } catch (importError) {
       this.props.setError(importError);
     }
   };
 
   render() {
-    const { itemUrl, table, isQuery, sheetName } = this.props;
+    const { itemUrl, table, isQuery, sheetName, importing } = this.props;
     const { loading } = this.state;
     const dataset = getDestination(itemUrl);
 
@@ -62,7 +61,7 @@ export default class RecentItem extends Component {
           </div>
           <div className="recent-item-sheet">{`Save to: ${sheetName}`}</div>
         </div>
-        {loading && (
+        {loading && importing && (
           <div className="loader-container">
             <div className="loader-icon" />
           </div>

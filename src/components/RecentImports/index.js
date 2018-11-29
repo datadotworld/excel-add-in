@@ -25,7 +25,7 @@ import './RecentImports.css';
 
 export default class RecentImports extends Component {
   render() {
-    const { recentImports } = this.props;
+    const { recentImports, importing } = this.props;
     let previousDate = '';
     let showDate;
 
@@ -66,6 +66,7 @@ export default class RecentImports extends Component {
                   sheetName={recentItem.sheetName}
                   setError={this.props.setError}
                   import={this.props.import}
+                  importing={importing}
                 />
               </div>
             );
