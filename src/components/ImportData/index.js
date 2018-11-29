@@ -131,12 +131,14 @@ export default class UploadModal extends Component {
           table.name
         );
       } catch (getTableError) {
-        this.setError(getTableError);
+        this.props.setError(getTableError);
       }
     }
 
     if (!data.length > 0) {
-      this.setErrorMessage('The specified selection does not have any data');
+      this.props.setErrorMessage(
+        'The specified selection does not have any data'
+      );
     } else {
       const sheetExists = await this.props.office.sheetExists(sheetName);
 
