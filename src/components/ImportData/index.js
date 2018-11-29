@@ -405,17 +405,24 @@ export default class UploadModal extends Component {
                 </InputGroup>
               </div>
               <div className="import-into-buttons">
-                <Button
-                  className="import-button-cancel"
-                  onClick={() => this.setState({ showForm: false })}
-                  disabled={recentImports.length === 0 || importing}
-                >
-                  Cancel
-                </Button>
+                {recentImports.length > 0 && (
+                  <Button
+                    className="import-button-cancel"
+                    onClick={() => this.setState({ showForm: false })}
+                    disabled={importing}
+                  >
+                    Cancel
+                  </Button>
+                )}
+
                 <Button
                   type="submit"
                   bsStyle="primary"
-                  className="import-button-import"
+                  className={
+                    recentImports.length > 0
+                      ? 'import-button-import'
+                      : 'import-button-import-full'
+                  }
                   onClick={() =>
                     this.import(sheetName, itemUrl, querySelected, table)
                   }

@@ -105,6 +105,10 @@
   width: 48%;
 }
 
+.import-button-import-full {
+  width: 100%;
+}
+
 .icon-download {
   padding-right: 4px;
 }
