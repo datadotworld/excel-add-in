@@ -406,7 +406,7 @@ export default class UploadModal extends Component {
                 <InputGroup>
                   <FormControl
                     className="import-into-field"
-                    placeholder="Insert Excel sheet name"
+                    placeholder="Insert existing or new sheet name"
                     type="text"
                     value={this.state.sheetName}
                     onChange={(e) => {
