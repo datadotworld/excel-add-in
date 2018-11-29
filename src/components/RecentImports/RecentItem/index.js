@@ -40,6 +40,7 @@ export default class RecentItem extends Component {
       await this.props.import(sheetName, itemUrl, isQuery, table);
     } catch (importError) {
       this.props.setError(importError);
+      this.setState({ loading: false });
     }
   };
 
@@ -47,6 +48,10 @@ export default class RecentItem extends Component {
     const { itemUrl, table, isQuery, sheetName, importing } = this.props;
     const { loading } = this.state;
     const dataset = getDestination(itemUrl);
+
+    if (loading && !importing) {
+      this.setState({ loading: false });
+    }
 
     return (
       <div className="recent-import-item">
@@ -61,7 +66,7 @@ export default class RecentItem extends Component {
           </div>
           <div className="recent-item-sheet">{`Save to: ${sheetName}`}</div>
         </div>
-        {loading && importing && (
+        {loading && (
           <div className="loader-container">
             <div className="loader-icon" />
           </div>
@@ -69,9 +74,7 @@ export default class RecentItem extends Component {
         {!loading && (
           <div
             className="recent-item-image"
-            onClick={() => {
-              this.import();
-            }}
+            onClick={this.import}
             title="Repeat import"
           >
             <Image className="icon-download" src={downloadIcon} />
