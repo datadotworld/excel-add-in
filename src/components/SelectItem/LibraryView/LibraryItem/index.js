@@ -19,11 +19,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedDate } from 'react-intl';
-import { Image } from 'react-bootstrap';
 
 import './LibraryItem.css';
 import Icon from '../../../icons/Icon';
-const add = require('../../../icons/icon-add.svg');
 
 class LibraryItem extends Component {
   static propTypes = {
@@ -47,7 +45,7 @@ class LibraryItem extends Component {
     if (item.isCreate) {
       return (
         <div className="item" onClick={this.buttonClick}>
-          <Image className="add-icon" src={add} />
+          <Icon icon="datasetSchema" />
           <div className="center-info">
             <div className="title">
               {`Create a new ${isProject ? 'project' : 'dataset'}`}
