@@ -29,7 +29,12 @@ import {
   InputGroup,
   MenuItem
 } from 'react-bootstrap';
-import { getDestination, getExcelColumn, parseData } from '../../util';
+import {
+  getDestination,
+  getExcelColumn,
+  parseData,
+  createSubArrays
+} from '../../util';
 
 import SelectItem from '../SelectItem';
 
@@ -106,11 +111,25 @@ export default class UploadModal extends Component {
     });
   };
 
-  writeData = async (sheetName, data) => {
-    const excelColumn = getExcelColumn(data[0].length);
-    const range = `A1:${excelColumn}${data.length}`;
+  writeData = async (sheetName, dataBlocks, blockSize) => {
+    await this.props.office.clearWorksheet(sheetName);
 
-    return await this.props.office.writeRangeValues(sheetName, range, data);
+    const lastExcelColumn = getExcelColumn(dataBlocks[0][0].length);
+
+    dataBlocks.forEach(async (block, index) => {
+      let range;
+
+      if (block.length === blockSize) {
+        range = `A${index * blockSize + 1}:${lastExcelColumn}${(index + 1) *
+          blockSize}`;
+      } else {
+        range = `A${index * blockSize + 1}:${lastExcelColumn}${index *
+          blockSize +
+          block.length}`;
+      }
+
+      await this.props.office.writeRangeValues(sheetName, range, block);
+    });
   };
 
   import = async (sheetName, itemUrl, querySelected, table) => {
@@ -154,7 +173,7 @@ export default class UploadModal extends Component {
 
       try {
         const parsedData = parseData(data);
-        await this.writeData(sheetName, parsedData);
+        this.writeData(sheetName, createSubArrays(parsedData, 10000), 10000);
         this.pushToLocalStorage(
           sheetName,
           itemUrl,

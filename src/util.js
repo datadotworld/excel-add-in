@@ -178,3 +178,12 @@ export function parseData(data) {
 
   return [columns, ...values];
 }
+
+export function createSubArrays(array, subArrayLength) {
+  const result = [];
+
+  while (array.length > 0) {
+    result.push(array.splice(0, subArrayLength));
+  }
+  return result;
+}

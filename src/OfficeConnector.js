@@ -495,21 +495,17 @@ export default class OfficeConnector {
         return resolve();
       }
 
-      this.clearWorksheet(sheetName)
-        .then(() => {
-          Excel.run((ctx) => {
-            const sheet = ctx.workbook.worksheets.getItem(sheetName);
+      Excel.run((ctx) => {
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
 
-            const range = sheet.getRange(rangeAddress);
-            range.values = values;
+        const range = sheet.getRange(rangeAddress);
+        range.values = values;
 
-            return ctx
-              .sync()
-              .then(resolve)
-              .catch(reject);
-          });
-        })
-        .catch(reject);
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
     });
   }
 

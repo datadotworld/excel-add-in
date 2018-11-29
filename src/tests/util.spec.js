@@ -16,7 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import { sortByOwnerAndTitle } from '../util';
+import { sortByOwnerAndTitle, createSubArrays } from '../util';
 
 describe('util functions', () => {
   describe('sortByOwnerAndTitle', () => {
@@ -82,6 +82,24 @@ describe('util functions', () => {
         { owner: 'charles', title: 'horses' }
       ];
       const actual = sortByOwnerAndTitle(datasets);
+
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('createSubArrays ', () => {
+    it('should create subarrays when specified length fits array', () => {
+      const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const expected = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]];
+      const actual = createSubArrays(array, 2);
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('should create subarrays when specified length does not fit array length', () => {
+      const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      const expected = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11]];
+      const actual = createSubArrays(array, 2);
 
       expect(actual).toEqual(expected);
     });
