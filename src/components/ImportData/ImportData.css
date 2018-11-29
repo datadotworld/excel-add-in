@@ -70,6 +70,10 @@
   color: #8c9caf;
 }
 
+.import-dropdown:disabled {
+  box-shadow: none;
+}
+
 .import-container .btn-group {
   width: 100%;
 }
@@ -99,6 +103,10 @@
 
 .import-button-cancel {
   width: 48%;
+}
+
+.import-button-cancel:disabled {
+  box-shadow: none;
 }
 
 .import-button-import {
