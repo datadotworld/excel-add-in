@@ -162,7 +162,17 @@ export default class UploadModal extends Component {
           table,
           new Date()
         );
-        this.setState({ showForm: false });
+
+        // Reset form after successful import
+        this.setState({
+          showForm: false,
+          itemUrl: '',
+          querySelected: false,
+          tableSelected: false,
+          tables: [],
+          table: '',
+          sheetName: ''
+        });
       } catch (writeDataError) {
         this.props.setError(this.writeDataError);
       }
