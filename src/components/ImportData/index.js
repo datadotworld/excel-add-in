@@ -104,24 +104,32 @@ export default class UploadModal extends Component {
   };
 
   writeData = async (sheetName, dataBlocks, blockSize) => {
-    await this.props.office.clearWorksheet(sheetName);
+    try {
+      await this.props.office.clearWorksheet(sheetName);
 
-    const lastExcelColumn = getExcelColumn(dataBlocks[0][0].length);
+      const lastExcelColumn = getExcelColumn(dataBlocks[0][0].length);
 
-    dataBlocks.forEach(async (block, index) => {
-      let range;
+      dataBlocks.forEach(async (block, index) => {
+        let range;
 
-      if (block.length === blockSize) {
-        range = `A${index * blockSize + 1}:${lastExcelColumn}${(index + 1) *
-          blockSize}`;
-      } else {
-        range = `A${index * blockSize + 1}:${lastExcelColumn}${index *
-          blockSize +
-          block.length}`;
-      }
+        if (block.length === blockSize) {
+          range = `A${index * blockSize + 1}:${lastExcelColumn}${(index + 1) *
+            blockSize}`;
+        } else {
+          range = `A${index * blockSize + 1}:${lastExcelColumn}${index *
+            blockSize +
+            block.length}`;
+        }
 
-      await this.props.office.writeRangeValues(sheetName, range, block);
-    });
+        try {
+          await this.props.office.writeRangeValues(sheetName, range, block);
+        } catch (writeValuesError) {
+          this.setError(writeValuesError);
+        }
+      });
+    } catch (clearWorksheetError) {
+      this.setError(clearWorksheetError);
+    }
   };
 
   import = async (sheetName, itemUrl, querySelected, table) => {
@@ -166,6 +174,8 @@ export default class UploadModal extends Component {
       try {
         const parsedData = parseData(data);
         this.writeData(sheetName, createSubArrays(parsedData, 10000), 10000);
+        await this.props.office.selectSheet(sheetName);
+
         this.pushToLocalStorage(
           sheetName,
           itemUrl,
@@ -184,8 +194,8 @@ export default class UploadModal extends Component {
           table: '',
           sheetName: ''
         });
-      } catch (writeDataError) {
-        this.props.setError(this.writeDataError);
+      } catch (selectSheetError) {
+        this.props.setErrorMessage(selectSheetError);
       }
     }
 
@@ -297,7 +307,7 @@ export default class UploadModal extends Component {
     if (table) {
       dropdownText = table.name;
     } else if (tablesLoading) {
-      dropdownText = 'Loading';
+      dropdownText = 'Loading...';
     } else if (querySelected) {
       dropdownText = tables.length > 0 ? 'Select query' : 'No queries found';
     } else if (tableSelected) {

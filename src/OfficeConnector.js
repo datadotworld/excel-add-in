@@ -489,6 +489,26 @@ export default class OfficeConnector {
     });
   }
 
+  selectSheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
+
+        const range = sheet.getRange('A1');
+        range.select();
+
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
   writeRangeValues(sheetName, rangeAddress, values) {
     return new Promise((resolve, reject) => {
       if (!this.isExcelApiSupported()) {
