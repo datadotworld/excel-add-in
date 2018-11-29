@@ -49,6 +49,7 @@ export default class UploadModal extends Component {
     querySelected: false,
     tableSelected: false,
     tables: [],
+    tablesLoading: false,
     table: '',
     sheetName: '',
     importing: false,
@@ -56,22 +57,25 @@ export default class UploadModal extends Component {
   };
 
   getTables = async (dataset) => {
+    this.setState({ tablesLoading: true });
     if (dataset) {
       try {
         const tables = await this.props.api.getTables(dataset);
         const tableNames = tables.map((table) => ({
           name: table.tableName
         }));
-        this.setState({ tables: tableNames, table: tableNames[0] });
+        this.setState({ tables: tableNames });
       } catch (getTablesError) {
         this.props.setErrorMessage('Unable to retrieve specified selection');
       }
     } else {
       this.props.setErrorMessage('Invalid dataset/project URL');
     }
+    this.setState({ tablesLoading: false });
   };
 
   getQueries = async (dataset) => {
+    this.setState({ tablesLoading: true });
     if (dataset) {
       try {
         const queries = await this.props.api.getQueries(dataset);
@@ -79,29 +83,17 @@ export default class UploadModal extends Component {
           name: query.name,
           id: query.id
         }));
-        this.setState({ tables: queryNames, table: queryNames[0] });
+        this.setState({ tables: queryNames });
       } catch (getTablesError) {
         this.props.setErrorMessage('Unable to retrieve specified selection');
       }
     } else {
       this.props.setErrorMessage('Invalid dataset/project URL');
     }
+    this.setState({ tablesLoading: false });
   };
 
-  handleUrlChange = (url, fetch) => {
-    if (fetch) {
-      if (this.state.querySelected) {
-        this.getQueries(getDestination(url));
-      } else {
-        this.getTables(getDestination(url));
-      }
-
-      return this.setState({
-        itemUrl: url,
-        tableSelected: !this.state.querySelected
-      });
-    }
-
+  handleUrlChange = (url) => {
     this.setState({
       itemUrl: url,
       tables: [],
@@ -289,6 +281,7 @@ export default class UploadModal extends Component {
       querySelected,
       tableSelected,
       tables,
+      tablesLoading,
       table,
       importing,
       showForm,
@@ -298,6 +291,18 @@ export default class UploadModal extends Component {
     const recentImports = this.getRecentImports();
 
     const showImportForm = recentImports.length === 0 || showForm;
+
+    let dropdownText = 'Select the file to import';
+
+    if (table) {
+      dropdownText = table.name;
+    } else if (tablesLoading) {
+      dropdownText = 'Loading';
+    } else if (querySelected) {
+      dropdownText = tables.length > 0 ? 'Select query' : 'No queries found';
+    } else if (tableSelected) {
+      dropdownText = tables.length > 0 ? 'Select table' : 'No tables found';
+    }
 
     return (
       <div>
@@ -357,7 +362,7 @@ export default class UploadModal extends Component {
                   <DropdownButton
                     id="tables-dropdown"
                     className="import-dropdown"
-                    title={table ? table.name : 'Select the file to import'}
+                    title={dropdownText}
                     onSelect={(eventKey) => {
                       this.setState({ table: this.state.tables[eventKey] });
                     }}
@@ -393,7 +398,7 @@ export default class UploadModal extends Component {
                 <Button
                   className="import-button-cancel"
                   onClick={() => this.setState({ showForm: false })}
-                  disabled={recentImports.length === 0}
+                  disabled={recentImports.length === 0 || importing}
                 >
                   Cancel
                 </Button>
