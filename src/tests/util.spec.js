@@ -16,7 +16,11 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
-import { sortByOwnerAndTitle, createSubArrays } from '../util';
+import {
+  sortByOwnerAndTitle,
+  createSubArrays,
+  hasDuplicateName
+} from '../util';
 
 describe('util functions', () => {
   describe('sortByOwnerAndTitle', () => {
@@ -87,7 +91,7 @@ describe('util functions', () => {
     });
   });
 
-  describe('createSubArrays ', () => {
+  describe('createSubArrays', () => {
     it('should create subarrays when specified length fits array', () => {
       const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       const expected = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]];
@@ -100,6 +104,39 @@ describe('util functions', () => {
       const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       const expected = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11]];
       const actual = createSubArrays(array, 2);
+
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('hasDuplicateName', () => {
+    it('should return true if there is a clash', () => {
+      const array = [
+        { name: 'foo', dataset: 'sparkle' },
+        { name: 'bar', dataset: 'sparkle' },
+        { name: 'baz', dataset: 'sparkle' },
+        { name: 'foo', dataset: 'squad' }
+      ];
+      const expected = true;
+      const actual = hasDuplicateName(
+        { name: 'foo', dataset: 'sparkle' },
+        array
+      );
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('should return false if there is no clash', () => {
+      const array = [
+        { name: 'foo', dataset: 'sparkle' },
+        { name: 'bar', dataset: 'sparkle' },
+        { name: 'baz', dataset: 'sparkle' }
+      ];
+      const expected = false;
+      const actual = hasDuplicateName(
+        { name: 'foo', dataset: 'sparkle' },
+        array
+      );
 
       expect(actual).toEqual(expected);
     });

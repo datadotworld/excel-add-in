@@ -34,7 +34,8 @@ import {
   getDestination,
   getExcelColumn,
   parseData,
-  createSubArrays
+  createSubArrays,
+  hasDuplicateName
 } from '../../util';
 
 import SelectItem from '../SelectItem';
@@ -55,7 +56,8 @@ export default class UploadModal extends Component {
     sheetName: '',
     importing: false,
     showForm: false,
-    showModal: false
+    showModal: false,
+    selectedItem: ''
   };
 
   getTables = async (dataset) => {
@@ -63,9 +65,13 @@ export default class UploadModal extends Component {
     if (dataset) {
       try {
         const tables = await this.props.api.getTables(dataset);
-        const tableNames = tables.map((table) => ({
-          name: table.tableName
-        }));
+        const tableNames = tables.map((table) => {
+          return {
+            name: table.tableName,
+            owner: table.owner,
+            dataset: table.dataset
+          };
+        });
         this.setState({ tables: tableNames });
       } catch (getTablesError) {
         this.props.setErrorMessage('Unable to retrieve specified selection');
@@ -310,7 +316,8 @@ export default class UploadModal extends Component {
       importing,
       showForm,
       sheetName,
-      showModal
+      showModal,
+      selectedItem
     } = this.state;
 
     const recentImports = this.getRecentImports();
@@ -319,8 +326,8 @@ export default class UploadModal extends Component {
 
     let dropdownText = 'Select the file to import';
 
-    if (table) {
-      dropdownText = table.name;
+    if (selectedItem) {
+      dropdownText = selectedItem;
     } else if (tablesLoading) {
       dropdownText = 'Loading...';
     } else if (querySelected) {
@@ -393,11 +400,31 @@ export default class UploadModal extends Component {
                     }}
                     disabled={!tables.length > 0}
                   >
-                    {this.state.tables.map((table, index) => (
-                      <MenuItem eventKey={index} key={index}>
-                        {table.name}
-                      </MenuItem>
-                    ))}
+                    {this.state.tables.map((table, index) => {
+                      const duplicateName = hasDuplicateName(
+                        { name: table.name, dataset: table.dataset },
+                        this.state.tables
+                      );
+
+                      const itemText = duplicateName
+                        ? `${table.name} (${table.owner}.${table.dataset})`
+                        : table.name;
+
+                      return (
+                        <MenuItem
+                          eventKey={index}
+                          key={index}
+                          name={itemText}
+                          onClick={(event) => {
+                            this.setState({
+                              selectedItem: event.currentTarget.name
+                            });
+                          }}
+                        >
+                          {itemText}
+                        </MenuItem>
+                      );
+                    })}
                   </DropdownButton>
                 </FormGroup>
               </div>

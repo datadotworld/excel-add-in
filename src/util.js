@@ -187,3 +187,11 @@ export function createSubArrays(array, subArrayLength) {
   }
   return result;
 }
+
+export function hasDuplicateName({ name, dataset }, array) {
+  const withSameName = array.filter(
+    (element) => element.name === name && element.dataset !== dataset
+  ).length;
+
+  return withSameName > 0;
+}
