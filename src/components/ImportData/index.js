@@ -375,7 +375,7 @@ export default class UploadModal extends Component {
                   onClick={() =>
                     this.import(sheetName, itemUrl, querySelected, table)
                   }
-                  disabled={!(sheetName && table)}
+                  disabled={!(sheetName && table) || importing}
                 >
                   {!importing && (
                     <Image className="icon-download" src={download} />
