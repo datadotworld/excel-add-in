@@ -125,3 +125,8 @@
 .icon-download {
   padding-right: 4px;
 }
+
+.import-warning-modal {
+  padding-top: 50%;
+  background-color: rgba(202, 203, 205, 0.9);
+}

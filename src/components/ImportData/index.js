@@ -27,7 +27,8 @@ import {
   HelpBlock,
   Image,
   InputGroup,
-  MenuItem
+  MenuItem,
+  Modal
 } from 'react-bootstrap';
 import {
   getDestination,
@@ -53,7 +54,8 @@ export default class UploadModal extends Component {
     table: '',
     sheetName: '',
     importing: false,
-    showForm: false
+    showForm: false,
+    showModal: false
   };
 
   getTables = async (dataset) => {
@@ -132,9 +134,7 @@ export default class UploadModal extends Component {
     }
   };
 
-  import = async (sheetName, itemUrl, querySelected, table) => {
-    this.setState({ importing: true });
-
+  writeAndSave = async ({ sheetName, itemUrl, querySelected, table }) => {
     let data;
 
     if (querySelected) {
@@ -159,18 +159,6 @@ export default class UploadModal extends Component {
         'The specified selection does not have any data'
       );
     } else {
-      const sheetExists = await this.props.office.sheetExists(sheetName);
-
-      if (!sheetExists) {
-        try {
-          await this.props.office.createWorksheet(sheetName);
-        } catch (createSheetError) {
-          this.props.setErrorMessage(createSheetError.message);
-          this.setState({ importing: false });
-          return;
-        }
-      }
-
       try {
         const parsedData = parseData(data);
         this.writeData(sheetName, createSubArrays(parsedData, 10000), 10000);
@@ -200,6 +188,32 @@ export default class UploadModal extends Component {
     }
 
     this.setState({ importing: false });
+  };
+
+  import = async (sheetName, itemUrl, querySelected, table) => {
+    this.setState({ importing: true });
+
+    const sheetExists = await this.props.office.sheetExists(sheetName);
+
+    if (!sheetExists) {
+      try {
+        await this.props.office.createWorksheet(sheetName);
+        this.writeAndSave({ sheetName, itemUrl, querySelected, table });
+      } catch (createSheetError) {
+        this.props.setErrorMessage(createSheetError.message);
+        this.setState({ importing: false });
+        return;
+      }
+    } else {
+      this.setState({
+        showModal: true,
+        importArgs: { sheetName, itemUrl, querySelected, table }
+      });
+    }
+  };
+
+  cancelShowModal = () => {
+    this.setState({ showModal: false, importing: false });
   };
 
   pushToLocalStorage = async (sheetName, itemUrl, isQuery, table, date) => {
@@ -295,7 +309,8 @@ export default class UploadModal extends Component {
       table,
       importing,
       showForm,
-      sheetName
+      sheetName,
+      showModal
     } = this.state;
 
     const recentImports = this.getRecentImports();
@@ -444,6 +459,28 @@ export default class UploadModal extends Component {
             import={this.import}
             setError={this.props.setError}
           />
+        )}
+        {showModal && (
+          <div className="static-modal">
+            <Modal.Dialog className="import-warning-modal">
+              <Modal.Body>
+                Existing data will be discarded and replaced
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button onClick={this.cancelShowModal}>Cancel</Button>
+                <Button
+                  bsStyle="primary"
+                  onClick={() => {
+                    this.setState({ showModal: false });
+                    this.writeAndSave(this.state.importArgs);
+                  }}
+                >
+                  Continue
+                </Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          </div>
         )}
       </div>
     );
