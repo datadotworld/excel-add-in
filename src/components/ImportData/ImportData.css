@@ -74,6 +74,11 @@
   box-shadow: none;
 }
 
+.dropdown-menu {
+  max-height: 160px;
+  overflow: scroll;
+}
+
 .import-container .btn-group {
   width: 100%;
 }
