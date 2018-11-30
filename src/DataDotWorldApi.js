@@ -184,7 +184,6 @@ export default class DataDotWorldApi {
   }
 
   async executeQuery(dataset, query) {
-    console.log('This is the query', query);
     const { data } = await this.api.post(
       `/sql/${dataset.owner}/${dataset.id}/`,
       {
