@@ -137,3 +137,7 @@
   padding-top: 50%;
   background-color: rgba(202, 203, 205, 0.9);
 }
+
+.import-warning-modal-footer {
+  padding-right: 10px;
+}

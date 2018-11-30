@@ -531,14 +531,19 @@ export default class UploadModal extends Component {
         {showModal && (
           <div className="static-modal">
             <Modal.Dialog className="import-warning-modal">
+              <Modal.Header>
+                <Modal.Title>Replace sheet data?</Modal.Title>
+              </Modal.Header>
               <Modal.Body>
                 Existing data will be discarded and replaced
               </Modal.Body>
-
-              <Modal.Footer>
-                <Button onClick={this.cancelShowModal}>Cancel</Button>
+              <Modal.Footer className="import-warning-modal-footer">
+                <Button bsSize="small" onClick={this.cancelShowModal}>
+                  Cancel
+                </Button>
                 <Button
                   bsStyle="primary"
+                  bsSize="small"
                   onClick={() => {
                     this.setState({ showModal: false });
                     this.writeAndSave(this.state.importArgs);
