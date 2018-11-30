@@ -360,7 +360,7 @@ export default class UploadModal extends Component {
 
     const showImportForm = recentImports.length === 0 || showForm;
 
-    let dropdownText = 'Select the file to import';
+    let dropdownText = '';
 
     if (selectedItem) {
       dropdownText = selectedItem;
@@ -426,43 +426,45 @@ export default class UploadModal extends Component {
                   </div>
                 </div>
 
-                <FormGroup>
-                  <DropdownButton
-                    id="tables-dropdown"
-                    className="import-dropdown"
-                    title={dropdownText}
-                    onSelect={(eventKey) => {
-                      this.setState({ table: this.state.tables[eventKey] });
-                    }}
-                    disabled={!tables.length > 0}
-                  >
-                    {this.state.tables.map((table, index) => {
-                      const duplicateName = hasDuplicateName(
-                        { name: table.name, dataset: table.dataset },
-                        this.state.tables
-                      );
+                {dropdownText && (
+                  <FormGroup>
+                    <DropdownButton
+                      id="tables-dropdown"
+                      className="import-dropdown"
+                      title={dropdownText}
+                      onSelect={(eventKey) => {
+                        this.setState({ table: this.state.tables[eventKey] });
+                      }}
+                      disabled={!tables.length > 0}
+                    >
+                      {this.state.tables.map((table, index) => {
+                        const duplicateName = hasDuplicateName(
+                          { name: table.name, dataset: table.dataset },
+                          this.state.tables
+                        );
 
-                      const itemText = duplicateName
-                        ? `${table.name} (${table.owner}.${table.dataset})`
-                        : table.name;
+                        const itemText = duplicateName
+                          ? `${table.name} (${table.owner}.${table.dataset})`
+                          : table.name;
 
-                      return (
-                        <MenuItem
-                          eventKey={index}
-                          key={index}
-                          name={itemText}
-                          onClick={(event) => {
-                            this.setState({
-                              selectedItem: event.currentTarget.name
-                            });
-                          }}
-                        >
-                          {itemText}
-                        </MenuItem>
-                      );
-                    })}
-                  </DropdownButton>
-                </FormGroup>
+                        return (
+                          <MenuItem
+                            eventKey={index}
+                            key={index}
+                            name={itemText}
+                            onClick={(event) => {
+                              this.setState({
+                                selectedItem: event.currentTarget.name
+                              });
+                            }}
+                          >
+                            {itemText}
+                          </MenuItem>
+                        );
+                      })}
+                    </DropdownButton>
+                  </FormGroup>
+                )}
               </div>
               <div className="import-into">
                 <div className="import-sub-title">Save data to:</div>
