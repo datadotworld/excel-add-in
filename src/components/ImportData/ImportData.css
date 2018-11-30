@@ -97,6 +97,13 @@
 .import-into-help {
   color: #4e5057;
   margin: 0;
+  font-size: 13px !important;
+}
+
+.import-into-help-error {
+  color: red;
+  margin: 0;
+  font-size: 13px !important;
 }
 
 .import-into-buttons {

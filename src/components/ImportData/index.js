@@ -54,6 +54,7 @@ export default class UploadModal extends Component {
     tablesLoading: false,
     table: '',
     sheetName: '',
+    sheetValidtion: {},
     importing: false,
     showForm: false,
     showModal: false,
@@ -305,6 +306,40 @@ export default class UploadModal extends Component {
     return !!itemUrl && !!sheetName && !!table;
   };
 
+  validateSheetName = (sheetName) => {
+    const invalidChars = ['\\', '/', '*', '?', ':', '[', ']'];
+
+    const hasInvalidCharacter = (char) => sheetName.indexOf(char) > -1;
+
+    if (invalidChars.some(hasInvalidCharacter)) {
+      return {
+        valid: false,
+        erroMessage: `Sheet name cannot contain: ${invalidChars.join(', ')}`
+      };
+    }
+
+    if (sheetName.length > 31) {
+      return {
+        valid: false,
+        erroMessage: `Sheet name cannot contain more than 31 characters`
+      };
+    }
+
+    return { valid: true };
+  };
+
+  handleSheetNameChange = (e) => {
+    const { value } = e.currentTarget;
+    const validationState = this.validateSheetName(value);
+
+    this.setState({ sheetName: value, sheetValidtion: validationState });
+  };
+
+  formValid = () => {
+    const { sheetValidtion, table } = this.state;
+    return sheetValidtion.valid && table;
+  };
+
   render() {
     const {
       itemUrl,
@@ -316,6 +351,7 @@ export default class UploadModal extends Component {
       importing,
       showForm,
       sheetName,
+      sheetValidtion,
       showModal,
       selectedItem
     } = this.state;
@@ -436,14 +472,18 @@ export default class UploadModal extends Component {
                     placeholder="Insert existing or new sheet name"
                     type="text"
                     value={this.state.sheetName}
-                    onChange={(e) => {
-                      const { value } = e.currentTarget;
-                      this.setState({ sheetName: value });
-                    }}
+                    onChange={this.handleSheetNameChange}
                   />
-                  <HelpBlock className="import-into-help">
-                    Existing data will be discarded and replaced
-                  </HelpBlock>
+                  {!sheetValidtion.erroMessage && (
+                    <HelpBlock className="import-into-help">
+                      Existing data will be discarded and replaced
+                    </HelpBlock>
+                  )}
+                  {sheetValidtion.erroMessage && (
+                    <HelpBlock className="import-into-help-error">
+                      {sheetValidtion.erroMessage}
+                    </HelpBlock>
+                  )}
                 </InputGroup>
               </div>
               <div className="import-into-buttons">
@@ -468,7 +508,7 @@ export default class UploadModal extends Component {
                   onClick={() =>
                     this.import(sheetName, itemUrl, querySelected, table)
                   }
-                  disabled={!(sheetName && table) || importing}
+                  disabled={!this.formValid() || importing}
                 >
                   {!importing && (
                     <Image className="icon-download" src={download} />
