@@ -57,7 +57,8 @@ export default class UploadModal extends Component {
     sheetValidtion: {},
     importing: false,
     showForm: false,
-    showModal: false,
+    showWarningModal: false,
+    show404Modal: false,
     selectedItem: ''
   };
 
@@ -148,6 +149,14 @@ export default class UploadModal extends Component {
       try {
         data = await this.props.api.getQuery(table.id);
       } catch (getQueryError) {
+        if (getQueryError.response && getQueryError.response.status) {
+          if (
+            getQueryError.response.status === 404 ||
+            getQueryError.response.status === 400
+          ) {
+            return this.setState({ show404Modal: true, importing: false });
+          }
+        }
         this.props.setError(getQueryError);
       }
     } else {
@@ -157,6 +166,15 @@ export default class UploadModal extends Component {
           table.name
         );
       } catch (getTableError) {
+        if (getTableError.response && getTableError.response.status) {
+          if (
+            getTableError.response.status === 404 ||
+            getTableError.response.status === 400
+          ) {
+            return this.setState({ show404Modal: true, importing: false });
+          }
+        }
+
         this.props.setError(getTableError);
       }
     }
@@ -198,7 +216,10 @@ export default class UploadModal extends Component {
   };
 
   import = async (sheetName, itemUrl, querySelected, table) => {
-    this.setState({ importing: true });
+    this.setState({
+      importing: true,
+      importArgs: { sheetName, itemUrl, querySelected, table }
+    });
 
     const sheetExists = await this.props.office.sheetExists(sheetName);
 
@@ -213,14 +234,13 @@ export default class UploadModal extends Component {
       }
     } else {
       this.setState({
-        showModal: true,
-        importArgs: { sheetName, itemUrl, querySelected, table }
+        showWarningModal: true
       });
     }
   };
 
-  cancelShowModal = () => {
-    this.setState({ showModal: false, importing: false });
+  cancelshowWarningModal = () => {
+    this.setState({ showWarningModal: false, importing: false });
   };
 
   pushToLocalStorage = async (sheetName, itemUrl, isQuery, table, date) => {
@@ -352,7 +372,9 @@ export default class UploadModal extends Component {
       showForm,
       sheetName,
       sheetValidtion,
-      showModal,
+      showWarningModal,
+      show404Modal,
+      importArgs,
       selectedItem
     } = this.state;
 
@@ -530,7 +552,7 @@ export default class UploadModal extends Component {
             importing={importing}
           />
         )}
-        {showModal && (
+        {showWarningModal && (
           <div className="static-modal">
             <Modal.Dialog className="import-warning-modal">
               <Modal.Header>
@@ -540,18 +562,42 @@ export default class UploadModal extends Component {
                 Existing data will be discarded and replaced
               </Modal.Body>
               <Modal.Footer className="import-warning-modal-footer">
-                <Button bsSize="small" onClick={this.cancelShowModal}>
+                <Button bsSize="small" onClick={this.cancelshowWarningModal}>
                   Cancel
                 </Button>
                 <Button
                   bsStyle="primary"
                   bsSize="small"
                   onClick={() => {
-                    this.setState({ showModal: false });
+                    this.setState({ showWarningModal: false });
                     this.writeAndSave(this.state.importArgs);
                   }}
                 >
                   Continue
+                </Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          </div>
+        )}
+        {show404Modal && (
+          <div className="static-modal">
+            <Modal.Dialog className="import-warning-modal">
+              <Modal.Header>
+                <Modal.Title>Not found</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {`This ${
+                  importArgs.querySelected ? 'query' : 'table'
+                } can no longer be found`}
+              </Modal.Body>
+              <Modal.Footer className="import-warning-modal-footer">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    this.setState({ show404Modal: false });
+                  }}
+                >
+                  Close
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>

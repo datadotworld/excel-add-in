@@ -184,6 +184,7 @@ export default class DataDotWorldApi {
   }
 
   async executeQuery(dataset, query) {
+    console.log('This is the query', query);
     const { data } = await this.api.post(
       `/sql/${dataset.owner}/${dataset.id}/`,
       {
@@ -201,7 +202,10 @@ export default class DataDotWorldApi {
   }
 
   async getTable(dataset, table) {
-    const result = await this.executeQuery(dataset, `SELECT * FROM ${table}`);
+    const result = await this.executeQuery(
+      dataset,
+      `SELECT * FROM \`${dataset.owner}\`.\`${dataset.id}\`.\`${table}\``
+    );
 
     return result;
   }
