@@ -417,15 +417,14 @@ export default class UploadModal extends Component {
                   <div className="import-radio-item">
                     <input
                       type="radio"
-                      name="selection"
-                      value="sheet"
                       checked={tableSelected}
                       readOnly
                       onClick={(e) => {
                         this.setState({
                           querySelected: false,
                           tableSelected: true,
-                          table: ''
+                          table: '',
+                          tables: []
                         });
                         this.getTables(getDestination(itemUrl));
                       }}
@@ -435,12 +434,15 @@ export default class UploadModal extends Component {
                   <div className="import-radio-item">
                     <input
                       type="radio"
-                      name="selection"
-                      value="sheet"
                       checked={querySelected}
                       readOnly
                       onClick={(e) => {
-                        this.setState({ querySelected: true, table: '' });
+                        this.setState({
+                          querySelected: true,
+                          tableSelected: false,
+                          table: '',
+                          tables: []
+                        });
                         this.getQueries(getDestination(itemUrl));
                       }}
                     />
