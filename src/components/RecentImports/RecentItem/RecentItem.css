@@ -62,3 +62,11 @@
   align-items: center;
   background-color: white;
 }
+
+.recent-item-link {
+  color: inherit;
+}
+
+.recent-item-link:hover {
+  color: inherit;
+}

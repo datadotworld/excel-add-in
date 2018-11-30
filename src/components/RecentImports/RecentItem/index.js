@@ -62,7 +62,12 @@ export default class RecentItem extends Component {
             {table.name}
           </div>
           <div className="recent-item-dataset">
-            {`${dataset.owner}/${dataset.id}`}
+            <a
+              className="recent-item-link"
+              href={`https://data.world/${dataset.owner}/${dataset.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{`${dataset.owner}/${dataset.id}`}</a>
           </div>
           <div className="recent-item-sheet">{`Save to: ${sheetName}`}</div>
         </div>

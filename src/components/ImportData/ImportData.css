@@ -67,7 +67,8 @@
   border: 1px solid #aeb9c7;
   box-shadow: none;
   font-size: 14px;
-  color: #8c9caf;
+  color: #5d6f85;
+  background-color: white;
 }
 
 .import-dropdown:disabled {
