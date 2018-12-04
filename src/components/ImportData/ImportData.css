@@ -71,6 +71,19 @@
   background-color: white;
 }
 
+.import-dropdown:focus {
+  box-shadow: none !important;
+  background-color: white !important;
+  border: 1px solid #aeb9c7 !important;
+  color: #5d6f85;
+}
+
+.btn-group.open .dropdown-toggle {
+  box-shadow: none !important;
+  background-color: white !important;
+  border: 1px solid #aeb9c7 !important;
+}
+
 .import-dropdown:disabled {
   box-shadow: none;
 }

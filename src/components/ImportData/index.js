@@ -108,6 +108,7 @@ export default class UploadModal extends Component {
       itemUrl: url,
       tables: [],
       table: '',
+      selectedItem: '',
       querySelected: false,
       tableSelected: false
     });
@@ -516,7 +517,18 @@ export default class UploadModal extends Component {
                 {recentImports.length > 0 && (
                   <Button
                     className="import-button-cancel"
-                    onClick={() => this.setState({ showForm: false })}
+                    onClick={() =>
+                      this.setState({
+                        showForm: false,
+                        itemUrl: '',
+                        tables: [],
+                        table: '',
+                        selectedItem: '',
+                        querySelected: false,
+                        tableSelected: false,
+                        sheetName: ''
+                      })
+                    }
                     disabled={importing}
                   >
                     Cancel
