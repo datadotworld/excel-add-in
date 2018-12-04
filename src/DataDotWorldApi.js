@@ -203,7 +203,7 @@ export default class DataDotWorldApi {
   async getTable(dataset, table) {
     const result = await this.executeQuery(
       dataset,
-      `SELECT * FROM \`${dataset.owner}\`.\`${dataset.id}\`.\`${table}\``
+      `SELECT * FROM \`${table.owner}\`.\`${table.dataset}\`.\`${table.name}\``
     );
 
     return result;

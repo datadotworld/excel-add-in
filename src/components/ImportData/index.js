@@ -162,10 +162,7 @@ export default class UploadModal extends Component {
       }
     } else {
       try {
-        data = await this.props.api.getTable(
-          getDestination(itemUrl),
-          table.name
-        );
+        data = await this.props.api.getTable(getDestination(itemUrl), table);
       } catch (getTableError) {
         if (getTableError.response && getTableError.response.status) {
           if (
