@@ -572,7 +572,7 @@ export default class UploadModal extends Component {
                 <Modal.Title>Replace sheet data?</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                Existing data will be discarded and replaced
+                Existing data will be discarded and replaced.
               </Modal.Body>
               <Modal.Footer className="import-warning-modal-footer">
                 <Button bsSize="small" onClick={this.cancelshowWarningModal}>
