@@ -18,7 +18,7 @@
  */
 
 import React, { Component } from 'react';
-import { Image } from 'react-bootstrap';
+import { Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { getDestination } from '../../../util';
 import './RecentItem.css';
@@ -82,7 +82,12 @@ export default class RecentItem extends Component {
             onClick={this.import}
             title="Repeat import"
           >
-            <Image className="icon-download" src={downloadIcon} />
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="tooltip">Import</Tooltip>}
+            >
+              <Image className="icon-download" src={downloadIcon} />
+            </OverlayTrigger>
           </div>
         )}
       </div>
