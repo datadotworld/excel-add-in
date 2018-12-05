@@ -1,0 +1,106 @@
+/*
+ * Copyright 2017 data.world, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This product includes software developed at
+ * data.world, Inc. (http://data.world/).
+ */
+.item {
+  background-color: #fff;
+  position: relative;
+  border-bottom: 1px solid #dfe3e9;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.recent {
+  cursor: default;
+}
+
+.date {
+  font-size: 0.9375rem;
+  color: gray;
+  padding: 0.5rem;
+  padding-left: 1rem;
+}
+
+.item .center-info {
+  margin-left: 15px;
+  max-width: 210px;
+}
+
+.item .title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item .info {
+  font-size: 12px;
+  color: #8c9caf;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item .add-icon {
+  height: 0.9375rem;
+}
+.tabular-icon {
+  height: 1.25rem;
+}
+
+.link-icon {
+  justify-self: flex-end;
+  margin-left: auto;
+}
+
+.link-icon .stroke {
+  fill: #c1c1c1;
+}
+
+.resync-icon {
+  fill: #517fb8;
+  margin-top: 0.125rem;
+  margin-left: 0.25rem;
+}
+
+.loading-border {
+  width: 10px;
+  height: 10px;
+}
+
+.icon-border {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.upload-button {
+  font-size: 15px;
+  color: #517fb8;
+  padding-right: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.large-header {
+  margin-right: auto;
+}

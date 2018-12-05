@@ -32,8 +32,8 @@ import LibraryView from './components/LibraryView';
 import LoadingAnimation from './components/LoadingAnimation';
 import LoginHeader from './components/LoginHeader';
 import Insights from './components/Insights';
-import ImportData from './components/ImportData';
 import NotOfficeView from './components/NotOfficeView';
+import ImportData from './components/ImportData';
 
 import OfficeConnector from './OfficeConnector';
 import DataDotWorldApi from './DataDotWorldApi';
@@ -45,7 +45,6 @@ import migrations from './migrations';
 
 const DW_API_TOKEN = 'DW_API_TOKEN';
 const DW_APP_VERSION = 'DW_APP_VERSION';
-const DW_PREFERENCES = 'DW_PREFERENCES';
 const INSIGHTS_ROUTE = 'insights';
 const IMPORT_ROUTE = 'import';
 const { localStorage } = window;
@@ -63,17 +62,6 @@ export default class App extends Component {
       analytics.identify(token);
     } else {
       token = localStorage.getItem(DW_API_TOKEN);
-    }
-
-    let preferences;
-    try {
-      preferences = JSON.parse(localStorage.getItem(DW_PREFERENCES));
-    } catch (e) {
-      // ignore error
-    } finally {
-      if (!preferences) {
-        preferences = { dismissals: [] };
-      }
     }
 
     // To be used for rendering the respective pages and header styling
@@ -104,7 +92,6 @@ export default class App extends Component {
     this.state = {
       error: null,
       token,
-      preferences,
       loadingDatasets: false,
       loadingProjects: false,
       loggedIn: !!token,
@@ -356,9 +343,10 @@ export default class App extends Component {
     worksheetId,
     date
   ) => {
-    const recentUploads = localStorage.getItem('history')
+    const recents = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
-      : [];
+      : {};
+    const { recentUploads = [] } = recents;
     const workbook =
       this.state.workbookId || (await this.office.getWorkbookId());
 
@@ -395,7 +383,9 @@ export default class App extends Component {
       recentUploads[fileIndex] = newUpload;
     }
 
-    localStorage.setItem('history', JSON.stringify(recentUploads));
+    recents.recentUploads = recentUploads;
+
+    localStorage.setItem('history', JSON.stringify(recents));
   };
 
   getRangeValues = async (rangeAddress) => {
@@ -547,12 +537,6 @@ export default class App extends Component {
     return fileExists;
   };
 
-  hasBeenDismissed = (key) => {
-    return this.state.preferences.dismissals.find((dismissal) => {
-      return dismissal === key;
-    });
-  };
-
   getCharts = async () => {
     try {
       const worksheets = await this.office.getWorksheets();
@@ -646,20 +630,20 @@ export default class App extends Component {
       !showDatasets;
     const userId = user ? user.id : 'Undefined';
     const renderInsights = !showStartPage && insights;
-    const renderImportData = !showStartPage && importData;
+    const renderImportData = !showStartPage && officeInitialized && importData;
 
     if (!insideOffice) {
       return <NotOfficeView />;
     }
 
-    const recentUploads = localStorage.getItem('history');
+    const recents = localStorage.getItem('history');
     let matchedFiles = [];
 
     // all files which has the same username and workspace id as the current user
-    if (recentUploads) {
+    if (recents) {
       try {
-        const allFiles = JSON.parse(recentUploads);
-        matchedFiles = allFiles
+        const allUploads = JSON.parse(recents).recentUploads || [];
+        matchedFiles = allUploads
           .filter((file) => {
             return (
               this.state.user &&
@@ -778,7 +762,17 @@ export default class App extends Component {
           />
         )}
 
-        {renderImportData && <ImportData />}
+        {renderImportData && (
+          <ImportData
+            getDatasets={this.getDatasets}
+            api={this.api}
+            office={this.office}
+            user={this.state.user}
+            workbookId={this.state.workbookId}
+            setError={this.setError}
+            setErrorMessage={this.setErrorMessage}
+          />
+        )}
       </div>
     );
   }

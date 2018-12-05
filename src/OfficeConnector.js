@@ -468,4 +468,100 @@ export default class OfficeConnector {
       });
     });
   }
+
+  clearWorksheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
+        const range = sheet.getRange('A1:XFD1048576');
+
+        range.clear();
+
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  selectSheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
+
+        const range = sheet.getRange('A1');
+        range.select();
+
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  writeRangeValues(sheetName, rangeAddress, values) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        const sheet = ctx.workbook.worksheets.getItem(sheetName);
+
+        const range = sheet.getRange(rangeAddress);
+        range.values = values;
+
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  sheetExists(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        ctx.workbook.worksheets.getItem(sheetName);
+        return ctx
+          .sync()
+          .then(() => {
+            resolve(true);
+          })
+          .catch(() => {
+            resolve(false);
+          });
+      });
+    });
+  }
+
+  createWorksheet(sheetName) {
+    return new Promise((resolve, reject) => {
+      if (!this.isExcelApiSupported()) {
+        return resolve();
+      }
+
+      Excel.run((ctx) => {
+        ctx.workbook.worksheets.add(sheetName);
+        return ctx
+          .sync()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
 }

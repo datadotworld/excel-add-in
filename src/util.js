@@ -16,6 +16,7 @@
  * This product includes software developed at
  * data.world, Inc. (http://data.world/).
  */
+
 import { SHEET_RANGE } from './constants';
 
 export function getDisplayRange(rangeAddress, sheetName) {
@@ -142,4 +143,55 @@ export function sortByOwnerAndTitle(datasets) {
 
     return 0;
   });
+}
+
+export function getExcelColumn(number) {
+  // TODO: Make recursive and support 3 letters
+  const charCodeOfA = 'A'.charCodeAt(0),
+    alphabetLength = 'Z'.charCodeAt(0) - charCodeOfA + 1;
+
+  const numberToLetters = (num) => {
+    if (num <= alphabetLength) {
+      return convertNumberToLetter(num);
+    } else {
+      const firstNumber = Math.floor((num - 1) / alphabetLength);
+      const firstLetter = convertNumberToLetter(firstNumber);
+
+      const secondNumber = num % alphabetLength || alphabetLength;
+      const secondLetter = convertNumberToLetter(secondNumber);
+
+      return firstLetter + secondLetter;
+    }
+  };
+
+  const convertNumberToLetter = (num) => {
+    const charCode = charCodeOfA + num - 1;
+    return String.fromCharCode(charCode);
+  };
+
+  return numberToLetters(number);
+}
+
+export function parseData(data) {
+  const columns = Object.keys(data[0]);
+  const values = data.map((row) => Object.values(row));
+
+  return [columns, ...values];
+}
+
+export function createSubArrays(array, subArrayLength) {
+  const result = [];
+
+  while (array.length > 0) {
+    result.push(array.splice(0, subArrayLength));
+  }
+  return result;
+}
+
+export function hasDuplicateName({ name, dataset }, array) {
+  const withSameName = array.filter(
+    (element) => element.name === name && element.dataset !== dataset
+  ).length;
+
+  return withSameName > 0;
 }

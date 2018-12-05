@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 data.world, Inc.
+ * Copyright 2018 data.world, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,32 @@
  * data.world, Inc. (http://data.world/).
  */
 
-@font-face {
-  font-family: 'Lato';
-  src: local('Lato'), url(./static/fonts/Lato.woff) format('woff');
+.select-item-container {
+  display: flex;
+  height: 40px;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Lato';
+.select-item-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4e5057;
+}
+
+.select-item-field {
+  font-size: 14px;
+  border-radius: 0;
+  border-right: 0;
+}
+
+.select-item-button {
+  width: 25%;
+  padding: 0 0.625rem;
+  font-size: 14px;
+  background: white;
+  border-radius: 0;
+}
+
+.select-item-help-block {
+  font-size: 0.6875rem;
+  margin-top: 0.3125rem;
 }

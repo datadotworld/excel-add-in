@@ -20,8 +20,6 @@ import axios from 'axios';
 import papa from 'papaparse';
 import { b64toBlob, groupAndSortProjects } from './util';
 
-const datasetRegex = /^https?:\/\/data\.world\/(.+\/.+)$/;
-
 export default class DataDotWorldApi {
   constructor(token) {
     this.api = axios.create({
@@ -32,25 +30,9 @@ export default class DataDotWorldApi {
     });
   }
 
-  getDataset(dataset) {
-    let slug = dataset;
-    if (dataset.indexOf('http') >= 0) {
-      slug = dataset.match(datasetRegex)[1];
-    }
-    return new Promise((resolve, reject) => {
-      const timestamp = new Date().getTime();
-      this.api
-        .get(`/datasets/${slug}?ts=${timestamp}`)
-        .then((result) => {
-          resolve(result.data);
-        })
-        .catch(reject);
-    });
-  }
-
-  getLibraryRecursive(endpoint, partial = [], next) {
+  async getLibraryRecursive(endpoint, partial = [], next) {
     if (next === -1) {
-      return Promise.resolve(partial);
+      return partial;
     }
 
     let params = {
@@ -61,95 +43,80 @@ export default class DataDotWorldApi {
       }
     };
 
-    return this.api
-      .get(endpoint, params)
-      .then((result) =>
-        this.getLibraryRecursive(
-          endpoint,
-          partial.concat(result.data.records),
-          result.data['nextPageToken'] || -1
-        )
-      );
+    const result = await this.api.get(endpoint, params);
+
+    return this.getLibraryRecursive(
+      endpoint,
+      partial.concat(result.data.records),
+      result.data['nextPageToken'] || -1
+    );
   }
 
-  getDatasets() {
-    return new Promise((resolve, reject) => {
-      let datasets = [];
-      Promise.all([
-        this.getLibraryRecursive('/user/datasets/own'),
-        this.getLibraryRecursive('/user/datasets/contributing')
-      ])
-        .then((results) => {
-          results.forEach((result) => {
-            datasets = datasets.concat(result);
-          });
-          resolve(datasets);
-        })
-        .catch(reject);
+  async getDatasets() {
+    let datasets = [];
+
+    const results = await Promise.all([
+      this.getLibraryRecursive('/user/datasets/own'),
+      this.getLibraryRecursive('/user/datasets/contributing')
+    ]);
+
+    results.forEach((result) => {
+      datasets = datasets.concat(result);
     });
+
+    return datasets;
   }
 
-  getProjects() {
-    return new Promise((resolve, reject) => {
-      let projects = [];
-      Promise.all([
-        this.getLibraryRecursive('/user/projects/own'),
-        this.getLibraryRecursive('/user/projects/contributing')
-      ])
-        .then((results) => {
-          results.forEach((result) => {
-            projects = projects.concat(result);
-          });
+  async getProjects() {
+    let projects = [];
+    const results = await Promise.all([
+      this.getLibraryRecursive('/user/projects/own'),
+      this.getLibraryRecursive('/user/projects/contributing')
+    ]);
 
-          // Only display projects for which the user has write rights
-          projects = projects.filter((project) => {
-            const { accessLevel } = project;
-            if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
-              return true;
-            }
-
-            return false;
-          });
-
-          // Sort the projects before resolving
-          projects = groupAndSortProjects(projects);
-          resolve(projects);
-        })
-        .catch(reject);
+    results.forEach((result) => {
+      projects = projects.concat(result);
     });
+
+    // Only display projects for which the user has write rights
+    projects = projects.filter((project) => {
+      const { accessLevel } = project;
+      if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
+        return true;
+      }
+
+      return false;
+    });
+
+    // Sort the projects before resolving
+    projects = groupAndSortProjects(projects);
+
+    return projects;
   }
 
-  getUser() {
-    return new Promise((resolve, reject) => {
-      this.api
-        .get('/user')
-        .then((result) => {
-          resolve(result.data);
-        })
-        .catch(reject);
-    });
+  async getUser() {
+    const { data } = await this.api.get('/user');
+
+    return data;
   }
 
-  createDataset(userId, { title, visibility }) {
-    return new Promise((resolve, reject) => {
-      this.api
-        .post(`/datasets/${userId}`, { title, visibility })
-        .then((result) => {
-          resolve(result.data);
-        })
-        .catch(reject);
+  async createDataset(userId, { title, visibility }) {
+    const { data } = await this.api.post(`/datasets/${userId}`, {
+      title,
+      visibility
     });
+
+    return data;
   }
 
-  createProject(userId, { title, visibility, objective }) {
-    return new Promise((resolve, reject) => {
-      this.api
-        .post(`/projects/${userId}`, { title, visibility, objective })
-        .then((result) => {
-          resolve(result.data);
-        })
-        .catch(reject);
+  async createProject(userId, { title, visibility, objective }) {
+    const { data } = await this.api.post(`/projects/${userId}`, {
+      title,
+      visibility,
+      objective
     });
+
+    return data;
   }
 
   uploadFile(options) {
@@ -168,48 +135,83 @@ export default class DataDotWorldApi {
     return this.api.post(`/uploads/${datasetSlug}/files`, formData);
   }
 
-  uploadInsight(options) {
+  async uploadInsight(options) {
     const { title, project, description } = options;
-    return new Promise((resolve, reject) => {
-      const uriTitle = encodeURIComponent(title);
-      this.api
-        .post(`/insights/${project.owner}/${project.id}`, {
-          title,
-          description,
-          body: {
-            imageUrl: `https://data.world/api/${project.owner}/dataset/${
-              project.id
-            }/file/raw/${uriTitle}.png`
-          }
-        })
-        .then((result) => {
-          // Return the URL to the newly created insight
-          resolve(result.data.uri);
-        })
-        .catch(reject);
+    const uriTitle = encodeURIComponent(title);
+    const {
+      data: { uri }
+    } = await this.api.post(`/insights/${project.owner}/${project.id}`, {
+      title,
+      description,
+      body: {
+        imageUrl: `https://data.world/api/${project.owner}/dataset/${
+          project.id
+        }/file/raw/${uriTitle}.png`
+      }
     });
+
+    return uri;
   }
 
-  uploadChart(imageString, options) {
+  async uploadChart(imageString, options) {
     const { title, project } = options;
-    return new Promise((resolve, reject) => {
-      // Convert base64 string into a binary large object
-      const blob = b64toBlob(imageString);
 
-      // Add blob to a FormData object for uploading
-      var formData = new FormData();
-      formData.append('file', blob, `${title}.png`);
+    // Convert base64 string into a binary large object
+    const blob = b64toBlob(imageString);
 
-      // First upload the image
-      return this.api
-        .post(`/uploads/${project.owner}/${project.id}/files`, formData)
-        .then((res) => {
-          // Then use the uploaded image to create an insight
-          this.uploadInsight(options).then((url) => {
-            resolve(url);
-          });
-        })
-        .catch(reject);
-    });
+    // Add blob to a FormData object for uploading
+    var formData = new FormData();
+    formData.append('file', blob, `${title}.png`);
+
+    // First upload the image
+    await this.api.post(
+      `/uploads/${project.owner}/${project.id}/files`,
+      formData
+    );
+
+    // Then use the uploaded image to create an insight
+    const url = await this.uploadInsight(options);
+
+    return url;
+  }
+
+  async getQueries(dataset) {
+    const {
+      data: { records }
+    } = await this.api.get(`/datasets/${dataset.owner}/${dataset.id}/queries`);
+
+    return records;
+  }
+
+  async executeQuery(dataset, query) {
+    const { data } = await this.api.post(
+      `/sql/${dataset.owner}/${dataset.id}/`,
+      {
+        query
+      }
+    );
+
+    return data;
+  }
+
+  async getTables(dataset) {
+    const result = await this.executeQuery(dataset, 'SELECT * FROM Tables');
+
+    return result;
+  }
+
+  async getTable(dataset, table) {
+    const result = await this.executeQuery(
+      dataset,
+      `SELECT * FROM \`${table.owner}\`.\`${table.dataset}\`.\`${table.name}\``
+    );
+
+    return result;
+  }
+
+  async getQuery(queryId) {
+    const { data } = await this.api.get(`queries/${queryId}/results`);
+
+    return data;
   }
 }
