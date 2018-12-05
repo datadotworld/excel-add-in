@@ -54,7 +54,7 @@ export default class UploadModal extends Component {
     tablesLoading: false,
     table: '',
     sheetName: '',
-    sheetValidtion: {},
+    sheetValidation: {},
     importing: false,
     showForm: false,
     showWarningModal: false,
@@ -350,12 +350,12 @@ export default class UploadModal extends Component {
     const { value } = e.currentTarget;
     const validationState = this.validateSheetName(value);
 
-    this.setState({ sheetName: value, sheetValidtion: validationState });
+    this.setState({ sheetName: value, sheetValidation: validationState });
   };
 
   formValid = () => {
-    const { sheetValidtion, table } = this.state;
-    return sheetValidtion.valid && table;
+    const { sheetValidation, table } = this.state;
+    return sheetValidation.valid && table;
   };
 
   render() {
@@ -369,7 +369,7 @@ export default class UploadModal extends Component {
       importing,
       showForm,
       sheetName,
-      sheetValidtion,
+      sheetValidation,
       showWarningModal,
       show404Modal,
       importArgs,
@@ -417,6 +417,7 @@ export default class UploadModal extends Component {
                       type="radio"
                       checked={tableSelected}
                       readOnly
+                      disabled={!itemUrl}
                       onClick={(e) => {
                         this.setState({
                           querySelected: false,
@@ -434,6 +435,7 @@ export default class UploadModal extends Component {
                       type="radio"
                       checked={querySelected}
                       readOnly
+                      disabled={!itemUrl}
                       onClick={(e) => {
                         this.setState({
                           querySelected: true,
@@ -498,14 +500,14 @@ export default class UploadModal extends Component {
                     value={this.state.sheetName}
                     onChange={this.handleSheetNameChange}
                   />
-                  {!sheetValidtion.erroMessage && (
+                  {!sheetValidation.erroMessage && (
                     <HelpBlock className="import-into-help">
                       Existing data will be discarded and replaced
                     </HelpBlock>
                   )}
-                  {sheetValidtion.erroMessage && (
+                  {sheetValidation.erroMessage && (
                     <HelpBlock className="import-into-help-error">
-                      {sheetValidtion.erroMessage}
+                      {sheetValidation.erroMessage}
                     </HelpBlock>
                   )}
                 </InputGroup>
