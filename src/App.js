@@ -101,7 +101,7 @@ export default class App extends Component {
       charts: [],
       version: localStorage.getItem(DW_APP_VERSION, version),
       insideOffice,
-      showDatasets: false,
+      showDatasets: { show: false },
       url: '',
       forceShowUpload: false,
       loadingSync: false,
@@ -225,10 +225,10 @@ export default class App extends Component {
     )}`;
   };
 
-  getDatasets = async () => {
+  getDatasets = async (writeAccess) => {
     try {
       this.setState({ loadingDatasets: true });
-      const datasets = await this.api.getDatasets();
+      const datasets = await this.api.getDatasets(writeAccess);
       this.setState({ loadingDatasets: false });
       return datasets;
     } catch (getDatasetsError) {
@@ -255,7 +255,7 @@ export default class App extends Component {
   };
 
   selectDataset = (dataset) => {
-    this.setState({ url: dataset, showDatasets: false });
+    this.setState({ url: dataset, showDatasets: { show: false } });
   };
 
   addUrl = (url) => {
@@ -473,8 +473,13 @@ export default class App extends Component {
     this.setState({ showCreateDataset: true });
   };
 
-  toggleShowDatasets = () => {
-    this.setState({ showDatasets: !this.state.showDatasets });
+  toggleShowDatasets = (writeAccess) => {
+    this.setState({
+      showDatasets: {
+        show: !this.state.showDatasets.show,
+        writeAccess
+      }
+    });
   };
 
   closeAddData = () => {
@@ -631,7 +636,7 @@ export default class App extends Component {
       !showCreateDataset &&
       !insights &&
       !importData &&
-      !showDatasets;
+      !showDatasets.show;
     const userId = user ? user.id : 'Undefined';
     const renderInsights = !showStartPage && insights;
     const renderImportData = !showStartPage && officeInitialized && importData;
@@ -691,7 +696,7 @@ export default class App extends Component {
           <WelcomePage dataset={dataset} page={page} version={version} />
         )}
 
-        {((forceShowUpload && !showDatasets && !showCreateDataset) ||
+        {((forceShowUpload && !showDatasets.show && !showCreateDataset) ||
           (uploadDataView && numItemsInHistory === 0)) && (
           <UploadModal
             excelApiSupported={excelApiSupported}
@@ -740,13 +745,14 @@ export default class App extends Component {
           />
         )}
 
-        {!showStartPage && showDatasets && !showCreateDataset && (
+        {!showStartPage && showDatasets.show && !showCreateDataset && (
           <LibraryView
             onSelect={this.selectDataset}
             loading={loadingDatasets}
             toggleList={this.toggleShowDatasets}
             toggleShowForm={this.showCreateDataset}
             getItems={this.getDatasets}
+            writeAccess={showDatasets.writeAccess}
           />
         )}
 

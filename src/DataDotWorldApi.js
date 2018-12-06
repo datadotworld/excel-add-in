@@ -52,7 +52,7 @@ export default class DataDotWorldApi {
     );
   }
 
-  async getDatasets() {
+  async getDatasets(writeAccess) {
     let datasets = [];
 
     const results = await Promise.all([
@@ -63,6 +63,17 @@ export default class DataDotWorldApi {
     results.forEach((result) => {
       datasets = datasets.concat(result);
     });
+
+    if (writeAccess) {
+      datasets = datasets.filter((dataset) => {
+        const { accessLevel } = dataset;
+        if (accessLevel === 'ADMIN' || accessLevel === 'WRITE') {
+          return true;
+        }
+
+        return false;
+      });
+    }
 
     return datasets;
   }

@@ -300,7 +300,7 @@ export default class UploadModal extends Component {
                         />
                         <Button
                           className="browse-button"
-                          onClick={() => this.props.showDatasets()}
+                          onClick={() => this.props.showDatasets(true)}
                         >
                           Browse
                         </Button>
