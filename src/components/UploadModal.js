@@ -78,7 +78,7 @@ export default class UploadModal extends Component {
     if (filename.indexOf('/') > -1) {
       return {
         valid: false,
-        errorMessage: 'Cannot use slashes in fie names.'
+        errorMessage: 'Cannot use slashes in file names.'
       };
     }
 
