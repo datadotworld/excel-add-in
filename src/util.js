@@ -195,3 +195,25 @@ export function hasDuplicateName({ name, dataset }, array) {
 
   return withSameName > 0;
 }
+
+export function createWorkspaceLink(dataset) {
+  return `https://data.world/${dataset.owner}/${dataset.id}/workspace/`;
+}
+
+export function createItemLink(dataset, item, isQuery) {
+  const base = `https://data.world/${dataset.owner}/${
+    dataset.id
+  }/workspace/query?`;
+
+  if (isQuery) {
+    return `${base}queryid=${item.id}`;
+  }
+
+  const query = `newQueryContent=${encodeURIComponent(
+    `SELECT * FROM ${item.name}`
+  )}`;
+
+  const queryType = 'newQueryType=SQL';
+
+  return `${base}${query}&&${queryType}`;
+}

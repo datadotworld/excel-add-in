@@ -20,7 +20,11 @@
 import React, { Component } from 'react';
 import { Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import { getDestination } from '../../../util';
+import {
+  getDestination,
+  createItemLink,
+  createWorkspaceLink
+} from '../../../util';
 import './RecentItem.css';
 
 const tableIcon = require('../../icons/icon-table.svg');
@@ -59,12 +63,19 @@ export default class RecentItem extends Component {
           <div className="recent-item-file">
             {!isQuery && <Image className="icon-download" src={tableIcon} />}
             {isQuery && <Image className="icon-download" src={queryIcon} />}
-            {table.name}
+            <a
+              className="recent-item-link"
+              href={createItemLink(dataset, table, isQuery)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {table.name}
+            </a>
           </div>
           <div className="recent-item-dataset">
             <a
               className="recent-item-link"
-              href={`https://data.world/${dataset.owner}/${dataset.id}`}
+              href={createWorkspaceLink(dataset)}
               target="_blank"
               rel="noopener noreferrer"
             >{`${dataset.owner}/${dataset.id}`}</a>
