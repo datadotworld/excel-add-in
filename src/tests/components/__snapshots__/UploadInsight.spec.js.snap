@@ -49,7 +49,7 @@ exports[`renders upload insight view 1`] = `
                 value="sampleProject"
               />
               <button
-                className="browse-button btn btn-default"
+                className="browse-button-projects btn btn-default"
                 disabled={false}
                 onClick={[Function]}
                 type="button"
