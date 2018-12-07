@@ -225,10 +225,10 @@ export default class App extends Component {
     )}`;
   };
 
-  getDatasets = async () => {
+  getDatasets = async (onlyShowWritableDatasets) => {
     try {
       this.setState({ loadingDatasets: true });
-      const datasets = await this.api.getDatasets();
+      const datasets = await this.api.getDatasets(onlyShowWritableDatasets);
       this.setState({ loadingDatasets: false });
       return datasets;
     } catch (getDatasetsError) {
@@ -362,7 +362,11 @@ export default class App extends Component {
 
     const fileIndex = recentUploads.findIndex((upload) => {
       // Same file uploaded to the same dataset
-      if (upload.filename === filename && upload.dataset === dataset) {
+      if (
+        upload.filename === filename &&
+        upload.dataset.owner === dataset.owner &&
+        upload.dataset.id === dataset.id
+      ) {
         // By the same user on the same workbook
         if (
           upload.userId === this.state.user.id &&
@@ -469,8 +473,11 @@ export default class App extends Component {
     this.setState({ showCreateDataset: true });
   };
 
-  toggleShowDatasets = () => {
-    this.setState({ showDatasets: !this.state.showDatasets });
+  toggleList = (onlyShowWritableDatasets = false) => {
+    this.setState({
+      showDatasets: !this.state.showDatasets,
+      onlyShowWritableDatasets
+    });
   };
 
   closeAddData = () => {
@@ -613,7 +620,8 @@ export default class App extends Component {
       url,
       forceShowUpload,
       selectSheet,
-      errorMessage
+      errorMessage,
+      onlyShowWritableDatasets
     } = this.state;
 
     const showStartPage = officeInitialized && !loggedIn;
@@ -692,7 +700,7 @@ export default class App extends Component {
           <UploadModal
             excelApiSupported={excelApiSupported}
             range={currentSelectedRange}
-            showDatasets={this.toggleShowDatasets}
+            toggleList={this.toggleList}
             url={url}
             doesFileExist={this.doesFileExist}
             sync={this.sync}
@@ -731,7 +739,6 @@ export default class App extends Component {
             createItem={this.createDataset}
             close={() => this.setState({ showCreateDataset: false })}
             selectItem={this.selectDataset}
-            showItems={this.toggleShowDatasets}
             itemType="dataset"
           />
         )}
@@ -740,9 +747,10 @@ export default class App extends Component {
           <LibraryView
             onSelect={this.selectDataset}
             loading={loadingDatasets}
-            toggleList={this.toggleShowDatasets}
+            toggleList={this.toggleList}
             toggleShowForm={this.showCreateDataset}
             getItems={this.getDatasets}
+            onlyShowWritableDatasets={onlyShowWritableDatasets}
           />
         )}
 

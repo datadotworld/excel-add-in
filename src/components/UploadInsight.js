@@ -126,7 +126,7 @@ class UploadInsight extends Component {
                         }}
                       />
                       <Button
-                        className="browse-button"
+                        className="browse-button-projects"
                         onClick={() => this.props.toggleShowProjects()}
                       >
                         Browse

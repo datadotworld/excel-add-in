@@ -96,5 +96,14 @@
 
 .insight-upload .form-control {
   height: 2rem;
-  border-radius: 0.3125rem !important;
+}
+
+.browse-button-projects {
+  width: 25% !important;
+  margin-left: 0 !important;
+  padding: 0 0.625rem;
+  height: 2rem;
+  font-size: 0.8125rem;
+  background: white;
+  border-radius: 0;
 }

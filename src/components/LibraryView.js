@@ -39,7 +39,8 @@ class LibraryView extends Component {
   };
 
   componentDidMount() {
-    this.props.getItems().then((items) => {
+    const { onlyShowWritableDatasets } = this.props;
+    this.props.getItems(onlyShowWritableDatasets).then((items) => {
       this.setState({ items });
     });
   }

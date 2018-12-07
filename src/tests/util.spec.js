@@ -21,7 +21,8 @@ import {
   createSubArrays,
   hasDuplicateName,
   createWorkspaceLink,
-  createItemLink
+  createItemLink,
+  withWriteAccess
 } from '../util';
 
 describe('util functions', () => {
@@ -179,6 +180,68 @@ describe('util functions', () => {
       const actual = createItemLink(dataset, item, true);
 
       expect(expected).toEqual(actual);
+    });
+  });
+
+  describe('withWriteAccess', () => {
+    it('should return datasets with ADMIN or WRITE accessLevel', () => {
+      const datasets = [
+        {
+          accessLevel: 'ADMIN',
+          id: 'foo',
+          owner: 'tom'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'far',
+          owner: 'dick'
+        },
+        {
+          accessLevel: 'READ',
+          id: 'baz',
+          owner: 'harry'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'foo',
+          owner: 'tom'
+        },
+        {
+          accessLevel: 'READ',
+          id: 'far',
+          owner: 'dick'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'baz',
+          owner: 'harry'
+        }
+      ];
+      const expected = [
+        {
+          accessLevel: 'ADMIN',
+          id: 'foo',
+          owner: 'tom'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'far',
+          owner: 'dick'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'foo',
+          owner: 'tom'
+        },
+        {
+          accessLevel: 'WRITE',
+          id: 'baz',
+          owner: 'harry'
+        }
+      ];
+      const actual = withWriteAccess(datasets);
+
+      expect(actual).toEqual(expected);
     });
   });
 });

@@ -9,7 +9,7 @@ exports[`renders modal - with options 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload data
     </label>
   </div>
   <div
@@ -19,19 +19,20 @@ exports[`renders modal - with options 1`] = `
       className="center-block row"
     >
       <form
+        className="upload-form"
         onSubmit={[Function]}
       >
         <div
-          className="form-group"
+          className="upload-from form-group"
         >
           <label
-            className="control-label"
+            className="upload-from-title control-label"
             htmlFor={undefined}
           >
-            Select the area or sheet to save:
+            Upload from:
           </label>
           <div
-            className="selection-form"
+            className="upload-selection-form"
             onClick={undefined}
           >
             <div
@@ -47,8 +48,10 @@ exports[`renders modal - with options 1`] = `
                   type="radio"
                   value="selection"
                 />
-                <span>
-                  Selection
+                <span
+                  className="selection-text"
+                >
+                  Current selection
                 </span>
               </label>
               <div
@@ -70,8 +73,10 @@ exports[`renders modal - with options 1`] = `
                   type="radio"
                   value="sheet"
                 />
-                <span>
-                  Sheet
+                <span
+                  className="selection-text"
+                >
+                  Current sheet
                 </span>
               </label>
               <div
@@ -83,102 +88,106 @@ exports[`renders modal - with options 1`] = `
           </div>
         </div>
         <div
-          className="url-group form-group"
+          className="upload-to"
         >
           <div
-            className="body"
+            className="url-group form-group"
           >
-            <label
-              className="control-label"
-              htmlFor={undefined}
+            <div
+              className="body"
             >
-              Dataset or project URL:
-            </label>
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                Save data to:
+              </label>
+              <span
+                className="input-group"
+              >
+                <div
+                  className="url"
+                >
+                  <input
+                    className="textField form-control"
+                    id={undefined}
+                    onChange={[Function]}
+                    placeholder="Insert Dataset or Project URL"
+                    type="text"
+                    value={undefined}
+                  />
+                  <button
+                    className="browse-button btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Browse
+                  </button>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="form-group"
+          >
+            <div
+              className="upload-file-title-container"
+            >
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                File name:
+              </label>
+              <div
+                className="upload-titleLimit"
+              >
+                128 char max
+              </div>
+            </div>
             <span
               className="input-group"
             >
-              <div
-                className="url"
-              >
-                <input
-                  className="textField form-control"
-                  id={undefined}
-                  onChange={[Function]}
-                  placeholder="https://data.world/"
-                  type="text"
-                  value={undefined}
-                />
-                <button
-                  className="browse-button btn btn-default"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Browse
-                </button>
-              </div>
+              <input
+                className="textField-file form-control"
+                id={undefined}
+                onChange={[Function]}
+                placeholder="Create new file name"
+                type="text"
+                value=""
+              />
             </span>
             <span
-              className="help-block help-block"
+              className="filename-help help-block"
             >
-              Copy/paste the URL of a dataset or project, or click "Browse"
+              Your file will appear with the .csv extension. You can always change the name later.
             </span>
+            
           </div>
-        </div>
-        <div
-          className="form-group"
-        >
-          <label
-            className="control-label"
-            htmlFor={undefined}
+          <div
+            className="uplaod-data-buttons"
           >
-            File name:
-          </label>
-          <span
-            className="input-group"
-          >
-            <input
-              className="textField form-control"
-              id={undefined}
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
-          </span>
-          <span
-            className="help-block"
-          >
-            Must not include slashes, your file will be named
-             
-            <strong>
-              
-              .csv
-            </strong>
-            <div
-              className="titleLimit"
+            <button
+              className="upload-cancel-button btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
             >
-              max. 128
-            </div>
-          </span>
-        </div>
-        <div
-          className="button-group"
-        >
-          <button
-            className="cancel-button btn btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            className="submit-button btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Save file
-          </button>
+              Cancel
+            </button>
+            <button
+              className="upload-button-upload btn btn-primary"
+              disabled={true}
+              type="submit"
+            >
+              <img
+                className="icon-upload-white"
+                src="icon-upload-white.svg"
+              />
+              Upload
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -198,7 +207,7 @@ exports[`renders modal - with range 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload data
     </label>
   </div>
   <div
@@ -208,19 +217,20 @@ exports[`renders modal - with range 1`] = `
       className="center-block row"
     >
       <form
+        className="upload-form"
         onSubmit={[Function]}
       >
         <div
-          className="form-group"
+          className="upload-from form-group"
         >
           <label
-            className="control-label"
+            className="upload-from-title control-label"
             htmlFor={undefined}
           >
-            Select the area or sheet to save:
+            Upload from:
           </label>
           <div
-            className="selection-form"
+            className="upload-selection-form"
             onClick={undefined}
           >
             <div
@@ -236,8 +246,10 @@ exports[`renders modal - with range 1`] = `
                   type="radio"
                   value="selection"
                 />
-                <span>
-                  Selection
+                <span
+                  className="selection-text"
+                >
+                  Current selection
                 </span>
               </label>
               <div
@@ -259,8 +271,10 @@ exports[`renders modal - with range 1`] = `
                   type="radio"
                   value="sheet"
                 />
-                <span>
-                  Sheet
+                <span
+                  className="selection-text"
+                >
+                  Current sheet
                 </span>
               </label>
               <div
@@ -272,102 +286,106 @@ exports[`renders modal - with range 1`] = `
           </div>
         </div>
         <div
-          className="url-group form-group"
+          className="upload-to"
         >
           <div
-            className="body"
+            className="url-group form-group"
           >
-            <label
-              className="control-label"
-              htmlFor={undefined}
+            <div
+              className="body"
             >
-              Dataset or project URL:
-            </label>
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                Save data to:
+              </label>
+              <span
+                className="input-group"
+              >
+                <div
+                  className="url"
+                >
+                  <input
+                    className="textField form-control"
+                    id={undefined}
+                    onChange={[Function]}
+                    placeholder="Insert Dataset or Project URL"
+                    type="text"
+                    value={undefined}
+                  />
+                  <button
+                    className="browse-button btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Browse
+                  </button>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="form-group"
+          >
+            <div
+              className="upload-file-title-container"
+            >
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                File name:
+              </label>
+              <div
+                className="upload-titleLimit"
+              >
+                128 char max
+              </div>
+            </div>
             <span
               className="input-group"
             >
-              <div
-                className="url"
-              >
-                <input
-                  className="textField form-control"
-                  id={undefined}
-                  onChange={[Function]}
-                  placeholder="https://data.world/"
-                  type="text"
-                  value={undefined}
-                />
-                <button
-                  className="browse-button btn btn-default"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Browse
-                </button>
-              </div>
+              <input
+                className="textField-file form-control"
+                id={undefined}
+                onChange={[Function]}
+                placeholder="Create new file name"
+                type="text"
+                value=""
+              />
             </span>
             <span
-              className="help-block help-block"
+              className="filename-help help-block"
             >
-              Copy/paste the URL of a dataset or project, or click "Browse"
+              Your file will appear with the .csv extension. You can always change the name later.
             </span>
+            
           </div>
-        </div>
-        <div
-          className="form-group"
-        >
-          <label
-            className="control-label"
-            htmlFor={undefined}
+          <div
+            className="uplaod-data-buttons"
           >
-            File name:
-          </label>
-          <span
-            className="input-group"
-          >
-            <input
-              className="textField form-control"
-              id={undefined}
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
-          </span>
-          <span
-            className="help-block"
-          >
-            Must not include slashes, your file will be named
-             
-            <strong>
-              
-              .csv
-            </strong>
-            <div
-              className="titleLimit"
+            <button
+              className="upload-cancel-button btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
             >
-              max. 128
-            </div>
-          </span>
-        </div>
-        <div
-          className="button-group"
-        >
-          <button
-            className="cancel-button btn btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            className="submit-button btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Save file
-          </button>
+              Cancel
+            </button>
+            <button
+              className="upload-button-upload btn btn-primary"
+              disabled={true}
+              type="submit"
+            >
+              <img
+                className="icon-upload-white"
+                src="icon-upload-white.svg"
+              />
+              Upload
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -387,7 +405,7 @@ exports[`renders modal 1`] = `
       className="control-label"
       htmlFor={undefined}
     >
-      Upload to data.world
+      Upload data
     </label>
   </div>
   <div
@@ -397,105 +415,110 @@ exports[`renders modal 1`] = `
       className="center-block row"
     >
       <form
+        className="upload-form"
         onSubmit={[Function]}
       >
         <div
-          className="url-group form-group"
+          className="upload-to"
         >
           <div
-            className="body"
+            className="url-group form-group"
           >
-            <label
-              className="control-label"
-              htmlFor={undefined}
+            <div
+              className="body"
             >
-              Dataset or project URL:
-            </label>
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                Save data to:
+              </label>
+              <span
+                className="input-group"
+              >
+                <div
+                  className="url"
+                >
+                  <input
+                    className="textField form-control"
+                    id={undefined}
+                    onChange={[Function]}
+                    placeholder="Insert Dataset or Project URL"
+                    type="text"
+                    value={undefined}
+                  />
+                  <button
+                    className="browse-button btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Browse
+                  </button>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="form-group"
+          >
+            <div
+              className="upload-file-title-container"
+            >
+              <label
+                className="control-label"
+                htmlFor={undefined}
+              >
+                File name:
+              </label>
+              <div
+                className="upload-titleLimit"
+              >
+                128 char max
+              </div>
+            </div>
             <span
               className="input-group"
             >
-              <div
-                className="url"
-              >
-                <input
-                  className="textField form-control"
-                  id={undefined}
-                  onChange={[Function]}
-                  placeholder="https://data.world/"
-                  type="text"
-                  value={undefined}
-                />
-                <button
-                  className="browse-button btn btn-default"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Browse
-                </button>
-              </div>
+              <input
+                className="textField-file form-control"
+                id={undefined}
+                onChange={[Function]}
+                placeholder="Create new file name"
+                type="text"
+                value=""
+              />
             </span>
             <span
-              className="help-block help-block"
+              className="filename-help help-block"
             >
-              Copy/paste the URL of a dataset or project, or click "Browse"
+              Your file will appear with the .csv extension. You can always change the name later.
             </span>
+            
           </div>
-        </div>
-        <div
-          className="form-group"
-        >
-          <label
-            className="control-label"
-            htmlFor={undefined}
+          <div
+            className="uplaod-data-buttons"
           >
-            File name:
-          </label>
-          <span
-            className="input-group"
-          >
-            <input
-              className="textField form-control"
-              id={undefined}
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
-          </span>
-          <span
-            className="help-block"
-          >
-            Must not include slashes, your file will be named
-             
-            <strong>
-              
-              .csv
-            </strong>
-            <div
-              className="titleLimit"
+            <button
+              className="upload-cancel-button btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
             >
-              max. 128
-            </div>
-          </span>
-        </div>
-        <div
-          className="button-group"
-        >
-          <button
-            className="cancel-button btn btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            className="submit-button btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Save file
-          </button>
+              Cancel
+            </button>
+            <button
+              className="upload-button-upload btn btn-primary"
+              disabled={true}
+              type="submit"
+            >
+              <img
+                className="icon-upload-white"
+                src="icon-upload-white.svg"
+              />
+              Upload
+            </button>
+          </div>
         </div>
       </form>
     </div>

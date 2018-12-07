@@ -32,10 +32,10 @@
 }
 
 .date {
-  font-size: 0.9375rem;
+  font-size: 14px;
   color: gray;
   padding: 0.5rem;
-  padding-left: 1rem;
+  padding-left: 16px;
 }
 
 .item .center-info {
@@ -94,7 +94,7 @@
 }
 
 .upload-button {
-  font-size: 15px;
+  font-size: 13px;
   color: #517fb8;
   padding-right: 0.9375rem;
   font-weight: 700;
