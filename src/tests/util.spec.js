@@ -20,12 +20,9 @@ import {
   sortByOwnerAndTitle,
   createSubArrays,
   hasDuplicateName,
-<<<<<<< HEAD
   createWorkspaceLink,
-  createItemLink
-=======
-  hasWriteAccess
->>>>>>> Simplify filter function and add test
+  createItemLink,
+  withWriteAccess
 } from '../util';
 
 describe('util functions', () => {
@@ -183,7 +180,10 @@ describe('util functions', () => {
       const actual = createItemLink(dataset, item, true);
 
       expect(expected).toEqual(actual);
-  describe('hasWriteAccess', () => {
+    });
+  });
+
+  describe('withWriteAccess', () => {
     it('should return datasets with ADMIN or WRITE accessLevel', () => {
       const datasets = [
         {
@@ -239,7 +239,7 @@ describe('util functions', () => {
           owner: 'harry'
         }
       ];
-      const actual = hasWriteAccess(datasets);
+      const actual = withWriteAccess(datasets);
 
       expect(actual).toEqual(expected);
     });

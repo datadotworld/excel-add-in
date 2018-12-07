@@ -18,7 +18,7 @@
  */
 import axios from 'axios';
 import papa from 'papaparse';
-import { b64toBlob, groupAndSortProjects, hasWriteAccess } from './util';
+import { b64toBlob, groupAndSortProjects, withWriteAccess } from './util';
 
 export default class DataDotWorldApi {
   constructor(token) {
@@ -65,7 +65,7 @@ export default class DataDotWorldApi {
     });
 
     if (onlyShowWritableDatasets) {
-      datasets = hasWriteAccess(datasets);
+      datasets = withWriteAccess(datasets);
     }
 
     return datasets;
@@ -83,7 +83,7 @@ export default class DataDotWorldApi {
     });
 
     // Only display projects for which the user has write rights
-    projects = hasWriteAccess(projects);
+    projects = withWriteAccess(projects);
 
     // Sort the projects before resolving
     projects = groupAndSortProjects(projects);
