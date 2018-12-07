@@ -473,7 +473,7 @@ export default class App extends Component {
     this.setState({ showCreateDataset: true });
   };
 
-  toggleShowDatasets = (onlyShowWritableDatasets = false) => {
+  toggleList = (onlyShowWritableDatasets = false) => {
     this.setState({
       showDatasets: !this.state.showDatasets,
       onlyShowWritableDatasets
@@ -700,7 +700,7 @@ export default class App extends Component {
           <UploadModal
             excelApiSupported={excelApiSupported}
             range={currentSelectedRange}
-            showDatasets={this.toggleShowDatasets}
+            toggleList={this.toggleList}
             url={url}
             doesFileExist={this.doesFileExist}
             sync={this.sync}
@@ -739,7 +739,6 @@ export default class App extends Component {
             createItem={this.createDataset}
             close={() => this.setState({ showCreateDataset: false })}
             selectItem={this.selectDataset}
-            showItems={this.toggleShowDatasets}
             itemType="dataset"
           />
         )}
@@ -748,7 +747,7 @@ export default class App extends Component {
           <LibraryView
             onSelect={this.selectDataset}
             loading={loadingDatasets}
-            toggleList={this.toggleShowDatasets}
+            toggleList={this.toggleList}
             toggleShowForm={this.showCreateDataset}
             getItems={this.getDatasets}
             onlyShowWritableDatasets={onlyShowWritableDatasets}
