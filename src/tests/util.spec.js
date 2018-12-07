@@ -161,7 +161,7 @@ describe('util functions', () => {
       const item = { name: 'data' };
 
       const expected =
-        'https://data.world/owner/dataset/workspace/query?newQueryContent=SELECT%20*%20FROM%20data&&newQueryType=SQL';
+        'https://data.world/owner/dataset/workspace/query?autorunQuery=true&newQueryContent=SELECT%20%2A%20FROM%20data&newQueryType=SQL';
       const actual = createItemLink(dataset, item);
 
       expect(expected).toEqual(actual);

@@ -18,6 +18,7 @@
  */
 
 import { SHEET_RANGE } from './constants';
+import queryString from 'query-string';
 
 export function getDisplayRange(rangeAddress, sheetName) {
   if (rangeAddress) {
@@ -205,15 +206,17 @@ export function createItemLink(dataset, item, isQuery) {
     dataset.id
   }/workspace/query?`;
 
+  let query;
+
   if (isQuery) {
-    return `${base}queryid=${item.id}`;
+    query = queryString.stringify({ queryid: item.id });
+  } else {
+    query = queryString.stringify({
+      newQueryContent: `SELECT * FROM ${item.name}`,
+      newQueryType: 'SQL',
+      autorunQuery: 'true'
+    });
   }
 
-  const query = `newQueryContent=${encodeURIComponent(
-    `SELECT * FROM ${item.name}`
-  )}`;
-
-  const queryType = 'newQueryType=SQL';
-
-  return `${base}${query}&&${queryType}`;
+  return base + query;
 }
