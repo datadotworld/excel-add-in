@@ -18,6 +18,7 @@
  */
 
 import { SHEET_RANGE } from './constants';
+import queryString from 'query-string';
 
 export function getDisplayRange(rangeAddress, sheetName) {
   if (rangeAddress) {
@@ -194,4 +195,28 @@ export function hasDuplicateName({ name, dataset }, array) {
   ).length;
 
   return withSameName > 0;
+}
+
+export function createWorkspaceLink(dataset) {
+  return `https://data.world/${dataset.owner}/${dataset.id}/workspace/`;
+}
+
+export function createItemLink(dataset, item, isQuery) {
+  const base = `https://data.world/${dataset.owner}/${
+    dataset.id
+  }/workspace/query?`;
+
+  let query;
+
+  if (isQuery) {
+    query = queryString.stringify({ queryid: item.id });
+  } else {
+    query = queryString.stringify({
+      newQueryContent: `SELECT * FROM ${item.name}`,
+      newQueryType: 'SQL',
+      autorunQuery: 'true'
+    });
+  }
+
+  return base + query;
 }

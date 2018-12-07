@@ -19,7 +19,9 @@
 import {
   sortByOwnerAndTitle,
   createSubArrays,
-  hasDuplicateName
+  hasDuplicateName,
+  createWorkspaceLink,
+  createItemLink
 } from '../util';
 
 describe('util functions', () => {
@@ -139,6 +141,44 @@ describe('util functions', () => {
       );
 
       expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('createWorkspaceLink', () => {
+    it('should return a workspace link', () => {
+      const dataset = { owner: 'owner', id: 'dataset' };
+
+      const expected = 'https://data.world/owner/dataset/workspace/';
+      const actual = createWorkspaceLink(dataset);
+
+      expect(expected).toEqual(actual);
+    });
+  });
+
+  describe('createItemLink', () => {
+    it('should return a table link', () => {
+      const dataset = { owner: 'owner', id: 'dataset' };
+      const item = { name: 'data' };
+
+      const expected =
+        'https://data.world/owner/dataset/workspace/query?autorunQuery=true&newQueryContent=SELECT%20%2A%20FROM%20data&newQueryType=SQL';
+      const actual = createItemLink(dataset, item);
+
+      expect(expected).toEqual(actual);
+    });
+
+    it('should return a query link', () => {
+      const dataset = { owner: 'owner', id: 'dataset' };
+      const item = {
+        name: 'aQuery',
+        id: '1234-5678'
+      };
+
+      const expected =
+        'https://data.world/owner/dataset/workspace/query?queryid=1234-5678';
+      const actual = createItemLink(dataset, item, true);
+
+      expect(expected).toEqual(actual);
     });
   });
 });
