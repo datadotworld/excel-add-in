@@ -336,13 +336,7 @@ export default class App extends Component {
     return result;
   };
 
-  pushToLocalStorage = async (
-    dataset,
-    filename,
-    rangeAddress,
-    worksheetId,
-    date
-  ) => {
+  pushToLocalStorage = (dataset, filename, rangeAddress, worksheetId, date) => {
     const recents = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
       : {};

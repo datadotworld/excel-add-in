@@ -55,9 +55,7 @@ class RecentItem extends Component {
             >
               <div className="recent-uploads-dataset">{datasetLocation}</div>
             </a>
-            <div className="info">{`Upload from: ${
-              rangeToShow.split('!')[0]
-            }`}</div>
+            <div className="info">{`Upload from: ${rangeToShow}`}</div>
           </div>
           <div
             className="icon-border"

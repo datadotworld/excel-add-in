@@ -18,7 +18,7 @@ const migrateBindings = async ({
     const worksheetId = worksheetIds[index];
 
     if (datasetFiles.includes(fileName)) {
-      await pushToLocalStorage(
+      pushToLocalStorage(
         { owner: dataset.owner, id: dataset.id },
         fileName,
         binding.rangeAddress,
