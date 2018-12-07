@@ -219,4 +219,8 @@ export function createItemLink(dataset, item, isQuery) {
   }
 
   return base + query;
+export function hasWriteAccess(datasets) {
+  return datasets.filter(
+    ({ accessLevel }) => accessLevel === 'ADMIN' || accessLevel === 'WRITE'
+  );
 }
