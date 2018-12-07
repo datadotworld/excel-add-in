@@ -52,7 +52,7 @@ export default class DataDotWorldApi {
     );
   }
 
-  async getDatasets(writeAccess) {
+  async getDatasets(onlyShowWritableDatasets) {
     let datasets = [];
 
     const results = await Promise.all([
@@ -64,7 +64,7 @@ export default class DataDotWorldApi {
       datasets = datasets.concat(result);
     });
 
-    if (writeAccess) {
+    if (onlyShowWritableDatasets) {
       datasets = hasWriteAccess(datasets);
     }
 
