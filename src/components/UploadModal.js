@@ -58,7 +58,7 @@ export default class UploadModal extends Component {
 
   state = {
     filename: '',
-    fileNameValid: { errorMessage: '' },
+    isFileNameValid: { errorMessage: '' },
     currentUrl: this.props.url,
     showWarningModal: false
   };
@@ -74,7 +74,7 @@ export default class UploadModal extends Component {
     }
   }
 
-  fileNameValid(filename) {
+  isFileNameValid(filename) {
     if (filename.indexOf('/') > -1) {
       return {
         valid: false,
@@ -97,14 +97,14 @@ export default class UploadModal extends Component {
 
     this.setState({
       filename: value,
-      fileNameValid: this.fileNameValid(value)
+      isFileNameValid: this.isFileNameValid(value)
     });
   };
 
   isFormValid = () => {
-    const { fileNameValid, currentUrl } = this.state;
+    const { isFileNameValid, currentUrl } = this.state;
 
-    return fileNameValid.valid && currentUrl.length > 0;
+    return isFileNameValid.valid && currentUrl.length > 0;
   };
 
   getSelectionText(range) {
@@ -222,7 +222,7 @@ export default class UploadModal extends Component {
       selectSheet,
       loading
     } = this.props;
-    const { filename, fileNameValid } = this.state;
+    const { filename, isFileNameValid } = this.state;
     let selection;
 
     if (selectSheet) {
@@ -317,7 +317,7 @@ export default class UploadModal extends Component {
                     <FormControl
                       value={filename}
                       className={
-                        fileNameValid.valid === false
+                        isFileNameValid.valid === false
                           ? 'textField-file-error'
                           : 'textField-file'
                       }
@@ -326,15 +326,15 @@ export default class UploadModal extends Component {
                       onChange={this.handleFileChange}
                     />
                   </InputGroup>
-                  {!fileNameValid.errorMessage && (
+                  {!isFileNameValid.errorMessage && (
                     <HelpBlock className="filename-help">
                       Your file will appear with the .csv extension. You can
                       always change the name later.
                     </HelpBlock>
                   )}
-                  {fileNameValid.errorMessage && (
+                  {isFileNameValid.errorMessage && (
                     <HelpBlock className="filename-help-error">
-                      {fileNameValid.errorMessage}
+                      {isFileNameValid.errorMessage}
                     </HelpBlock>
                   )}
                 </FormGroup>
