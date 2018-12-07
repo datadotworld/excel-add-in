@@ -17,18 +17,18 @@
  * data.world, Inc. (http://data.world/).
  */
 
-import { SHEET_RANGE } from './constants';
+import { SHEET_RANGE, SHEET_RANGE_COLUMNS } from './constants';
 import queryString from 'query-string';
 
 export function getDisplayRange(rangeAddress, sheetName) {
   if (rangeAddress) {
     const [sheet, range] = rangeAddress.split('!');
-    if (range === SHEET_RANGE) {
+    if (range === SHEET_RANGE || range === SHEET_RANGE_COLUMNS) {
       return sheetName || sheet.replace(/'/g, '');
     }
 
     if (sheetName) {
-      return `${sheetName}!${range}`;
+      return `${sheetName}, ${range}`;
     }
 
     return rangeAddress.replace(/'/g, '');

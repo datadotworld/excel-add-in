@@ -148,6 +148,7 @@ export default class App extends Component {
     try {
       this.office = new OfficeConnector();
       await this.office.initialize();
+      await this.getWorkbookId();
       if (page === INSIGHTS_ROUTE) {
         await this.initializeInsights();
       } else if (page === IMPORT_ROUTE) {
@@ -155,7 +156,6 @@ export default class App extends Component {
       } else {
         await this.initializeDatasets();
       }
-      await this.getWorkbookId();
     } catch (error) {
       this.setError(error);
     }
@@ -174,9 +174,9 @@ export default class App extends Component {
     const bindings = await this.office.getBindings();
 
     if (dataset) {
-      migrations.slice(nextMigrationIndex).forEach((migrationFn, idx) => {
+      migrations.slice(nextMigrationIndex).forEach(async (migrationFn, idx) => {
         try {
-          migrationFn({
+          await migrationFn({
             bindings,
             pushToLocalStorage,
             dataset,
@@ -336,19 +336,12 @@ export default class App extends Component {
     return result;
   };
 
-  pushToLocalStorage = async (
-    dataset,
-    filename,
-    rangeAddress,
-    worksheetId,
-    date
-  ) => {
+  pushToLocalStorage = (dataset, filename, rangeAddress, worksheetId, date) => {
     const recents = localStorage.getItem('history')
       ? JSON.parse(localStorage.getItem('history'))
       : {};
     const { recentUploads = [] } = recents;
-    const workbook =
-      this.state.workbookId || (await this.office.getWorkbookId());
+    const workbook = this.state.workbookId;
 
     const newUpload = {
       dataset,
