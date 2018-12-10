@@ -30,6 +30,7 @@ import {
   MenuItem,
   Modal
 } from 'react-bootstrap';
+import { findIndex } from 'lodash';
 import {
   getDestination,
   getExcelColumn,
@@ -256,7 +257,7 @@ export default class UploadModal extends Component {
       date
     };
 
-    const fileIndex = recentImports.findIndex((recentImport) => {
+    const fileIndex = findIndex(recentImports, (recentImport) => {
       if (
         recentImport.table.name === table.name &&
         recentImport.sheetName === sheetName
