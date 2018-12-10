@@ -18,7 +18,7 @@
  */
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { flatten } from 'lodash';
+import { flatten, findIndex } from 'lodash';
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -352,7 +352,7 @@ export default class App extends Component {
       date
     };
 
-    const fileIndex = recentUploads.findIndex((upload) => {
+    const fileIndex = findIndex(recentUploads, (upload) => {
       // Same file uploaded to the same dataset
       if (
         upload.filename === filename &&
