@@ -116,7 +116,7 @@ export default class App extends Component {
       await this.getUser();
     }
 
-    this.initializeOffice();
+    await this.initializeOffice();
   }
 
   getSelectionRange = async () => {
