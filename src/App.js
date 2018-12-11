@@ -107,17 +107,16 @@ export default class App extends Component {
       loadingSync: false,
       selectSheet: false
     };
+  }
 
+  async componentDidMount() {
+    const { token } = this.state;
     if (token) {
       this.api = new DataDotWorldApi(token);
-      this.getUser().catch((error) => {
-        this.setError(error);
-      });
+      await this.getUser();
     }
 
-    this.initializeOffice().catch((error) => {
-      this.setError(error);
-    });
+    await this.initializeOffice();
   }
 
   getSelectionRange = async () => {
