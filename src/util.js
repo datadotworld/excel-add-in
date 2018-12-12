@@ -19,6 +19,7 @@
 
 import { SHEET_RANGE, SHEET_RANGE_COLUMNS } from './constants';
 import queryString from 'query-string';
+import { values } from 'lodash';
 
 export function getDisplayRange(rangeAddress, sheetName) {
   if (rangeAddress) {
@@ -175,9 +176,9 @@ export function getExcelColumn(number) {
 
 export function parseData(data) {
   const columns = Object.keys(data[0]);
-  const values = data.map((row) => Object.values(row));
+  const dataValues = data.map((row) => values(row));
 
-  return [columns, ...values];
+  return [columns, ...dataValues];
 }
 
 export function createSubArrays(array, subArrayLength) {
