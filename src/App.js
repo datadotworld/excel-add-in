@@ -107,9 +107,11 @@ export default class App extends Component {
       loadingSync: false,
       selectSheet: false
     };
+
+    this.initializeUserAndOffice();
   }
 
-  async componentDidMount() {
+  initializeUserAndOffice = async () => {
     const { token } = this.state;
     if (token) {
       this.api = new DataDotWorldApi(token);
@@ -117,7 +119,7 @@ export default class App extends Component {
     }
 
     await this.initializeOffice();
-  }
+  };
 
   getSelectionRange = async () => {
     try {
@@ -629,7 +631,7 @@ export default class App extends Component {
       !importData &&
       !showDatasets;
     const userId = user ? user.id : 'Undefined';
-    const renderInsights = !showStartPage && insights;
+    const renderInsights = !showStartPage && insights && this.office;
     const renderImportData = !showStartPage && officeInitialized && importData;
 
     if (!insideOffice) {
