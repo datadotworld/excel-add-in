@@ -99,9 +99,9 @@
 }
 
 .browse-button-projects {
-  width: 25% !important;
+  width: 30% !important;
   margin-left: 0 !important;
-  padding: 0 0.625rem;
+  padding: 0;
   height: 2rem;
   font-size: 0.8125rem;
   background: white;

@@ -58,7 +58,13 @@ export default class LibraryView extends Component {
   };
 
   render() {
-    const { isProjects, toggleShowForm, onSelect, close } = this.props;
+    const {
+      isProjects,
+      toggleShowForm,
+      onSelect,
+      close,
+      hideCreateNew
+    } = this.props;
     const { loading, items } = this.state;
 
     const sortedItems = this.sortItems(items);
@@ -88,13 +94,15 @@ export default class LibraryView extends Component {
           {!!items.length && !loading && (
             <Row className="center-block">
               <div>
-                <LibraryItem
-                  buttonText="Link"
-                  item={{ isCreate: true }}
-                  buttonHandler={toggleShowForm}
-                  isProject={isProjects}
-                  close={close}
-                />
+                {!hideCreateNew && (
+                  <LibraryItem
+                    buttonText="Link"
+                    item={{ isCreate: true }}
+                    buttonHandler={toggleShowForm}
+                    isProject={isProjects}
+                    close={close}
+                  />
+                )}
                 {entries}
               </div>
             </Row>
