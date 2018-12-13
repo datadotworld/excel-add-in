@@ -28,12 +28,12 @@ class Published extends Component {
     chart: PropTypes.string,
     uri: PropTypes.string,
     title: PropTypes.string
-  }
+  };
 
-  componentDidMount () {
+  componentDidMount() {
     // User will have scrolled to the bottom of the add in when filling in the form
     // Ensure the header is visible when this page is loaded
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }
 
   viewClicked() {
@@ -42,13 +42,13 @@ class Published extends Component {
 
   newInsightClicked() {
     analytics.track('exceladdin.published.new_button.click');
-    window.location.pathname = '/insights'
+    window.location.pathname = '/insights';
   }
 
   render() {
     const { title, chart, uri } = this.props;
     return (
-      <div className="published">
+      <div className="w-100">
         <div className="published-container">
           <h3 className="published-title">{`${title} was published!`}</h3>
           <img
@@ -57,7 +57,7 @@ class Published extends Component {
             alt="chart"
           />
 
-          <div className='published-buttons'>
+          <div className="published-buttons">
             <Button
               className="published-back-button"
               bsSize="xsmall"
@@ -65,10 +65,15 @@ class Published extends Component {
             >
               Publish new insight
             </Button>
-            <a className="published-link" href={uri} target="_blank" rel="noopener noreferrer">
+            <a
+              className="published-link"
+              href={uri}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button
                 className="published-link-button"
-                bsStyle='primary'
+                bsStyle="primary"
                 bsSize="xsmall"
                 onClick={this.viewClicked}
               >

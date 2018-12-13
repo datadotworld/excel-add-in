@@ -108,7 +108,9 @@ export default class App extends Component {
       selectSheet: false
     };
 
-    this.initializeUserAndOffice();
+    this.initializeUserAndOffice().catch((error) => {
+      this.setError(error);
+    });
   }
 
   initializeUserAndOffice = async () => {

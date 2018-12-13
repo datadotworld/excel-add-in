@@ -2,7 +2,7 @@
 
 exports[`renders published insight 1`] = `
 <div
-  className="published"
+  className="w-100"
 >
   <div
     className="published-container"
