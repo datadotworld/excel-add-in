@@ -203,6 +203,7 @@ class CreateItemModal extends Component {
             <div className="button-group">
               <Button onClick={this.cancelClicked}>Cancel</Button>
               <Button
+                className="p-0"
                 type="submit"
                 disabled={
                   this.state.isSubmitting || itemValidState !== 'success'

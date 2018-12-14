@@ -410,6 +410,7 @@ export default class UploadModal extends Component {
                   getItems={this.props.getDatasets}
                   title="Import from:"
                   placeholder="Insert Dataset or Project URL"
+                  hideCreateNew
                 />
                 <div className="import-radio-container">
                   <div className="import-sub-title">Source:</div>

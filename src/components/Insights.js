@@ -31,7 +31,6 @@ class Insights extends Component {
     user: PropTypes.object,
     getImageAndTitle: PropTypes.func,
     charts: PropTypes.array,
-    officeInitialized: PropTypes.bool,
     projects: PropTypes.array,
     createProject: PropTypes.func,
     uploadChart: PropTypes.func,
@@ -77,66 +76,61 @@ class Insights extends Component {
       uploadChart,
       user,
       createProject,
-      officeInitialized,
       setError,
       setErrorMessage,
       getProjects,
       loadingProjects
     } = this.props;
 
-    if (officeInitialized) {
-      return (
-        <Grid className="insights-container">
-          {!selectedChart && (
-            <Charts
-              charts={charts}
-              getImageAndTitle={getImageAndTitle}
-              createProject={createProject}
-              selectChart={this.selectChart}
-              setError={setError}
-            />
-          )}
+    return (
+      <Grid className="insights-container">
+        {!selectedChart && (
+          <Charts
+            charts={charts}
+            getImageAndTitle={getImageAndTitle}
+            createProject={createProject}
+            selectChart={this.selectChart}
+            setError={setError}
+          />
+        )}
 
-          {selectedChart && !showProjects && (
-            <UploadInsight
-              getImageAndTitle={getImageAndTitle}
-              chart={selectedChart.imageString}
-              title={selectedChart.title}
-              uploadChart={uploadChart}
-              setError={setError}
-              setErrorMessage={setErrorMessage}
-              toggleShowProjects={this.toggleShowProjects}
-              projectUrl={projectUrl}
-              handleUrlChange={this.selectProject}
-            />
-          )}
+        {selectedChart && !showProjects && (
+          <UploadInsight
+            getImageAndTitle={getImageAndTitle}
+            chart={selectedChart.imageString}
+            title={selectedChart.title}
+            uploadChart={uploadChart}
+            setError={setError}
+            setErrorMessage={setErrorMessage}
+            toggleShowProjects={this.toggleShowProjects}
+            projectUrl={projectUrl}
+            handleUrlChange={this.selectProject}
+          />
+        )}
 
-          {selectedChart && !showCreateProject && showProjects && (
-            <LibraryView
-              onSelect={this.selectProject}
-              loading={loadingProjects}
-              toggleList={this.toggleShowProjects}
-              toggleShowForm={this.toggleShowCreateProject}
-              getItems={getProjects}
-              isProjects
-            />
-          )}
+        {selectedChart && !showCreateProject && showProjects && (
+          <LibraryView
+            onSelect={this.selectProject}
+            loading={loadingProjects}
+            toggleList={this.toggleShowProjects}
+            toggleShowForm={this.toggleShowCreateProject}
+            getItems={getProjects}
+            isProjects
+          />
+        )}
 
-          {selectedChart && showCreateProject && (
-            <CreateItemModal
-              user={user}
-              createItem={createProject}
-              close={() => this.setState({ showCreateProject: false })}
-              selectItem={this.selectProject}
-              showItems={this.toggleShowDatasets}
-              itemType="project"
-            />
-          )}
-        </Grid>
-      );
-    } else {
-      return <div />;
-    }
+        {selectedChart && showCreateProject && (
+          <CreateItemModal
+            user={user}
+            createItem={createProject}
+            close={() => this.setState({ showCreateProject: false })}
+            selectItem={this.selectProject}
+            showItems={this.toggleShowDatasets}
+            itemType="project"
+          />
+        )}
+      </Grid>
+    );
   }
 }
 

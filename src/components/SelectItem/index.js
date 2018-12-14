@@ -79,6 +79,7 @@ export default class UploadModal extends Component {
             close={() => this.setState({ showLibrary: false })}
             getItems={this.props.getItems}
             onSelect={this.onSelect}
+            hideCreateNew={this.props.hideCreateNew}
           />
         )}
       </div>

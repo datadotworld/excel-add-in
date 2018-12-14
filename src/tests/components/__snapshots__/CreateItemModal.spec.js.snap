@@ -144,7 +144,7 @@ exports[`renders modal 1`] = `
           Cancel
         </button>
         <button
-          className="btn btn-primary"
+          className="p-0 btn btn-primary"
           disabled={true}
           type="submit"
         >

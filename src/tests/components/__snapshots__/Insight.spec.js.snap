@@ -116,4 +116,42 @@ exports[`renders charts view - no charts 1`] = `
 </div>
 `;
 
-exports[`renders no projects view 1`] = `<div />`;
+exports[`renders no projects view 1`] = `
+<div
+  className="insights-container container"
+>
+  <div>
+    <div
+      className="center-block section-header insight-header row"
+    >
+      <div
+        className="insight-title"
+      >
+        New Insight
+      </div>
+    </div>
+    <div
+      className="charts-container row"
+    >
+      <div
+        className="no-chart"
+      >
+        <div>
+          Insert a chart to get started.
+        </div>
+        <button
+          className="no-chart-button btn btn-primary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+</div>
+`;
