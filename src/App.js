@@ -108,8 +108,10 @@ export default class App extends Component {
       selectSheet: false
     };
 
-    this.initializeUserAndOffice().catch((error) => {
-      this.setError(error);
+    this.initializeUserAndOffice().then(() => {
+      this.setState({
+        officeInitialized: true,
+      });
     });
   }
 
@@ -154,9 +156,7 @@ export default class App extends Component {
       await this.getWorkbookId();
       if (page === INSIGHTS_ROUTE) {
         await this.initializeInsights();
-      } else if (page === IMPORT_ROUTE) {
-        this.setState({ officeInitialized: true });
-      } else {
+      } else if (page !== IMPORT_ROUTE) {
         await this.initializeDatasets();
       }
     } catch (error) {
@@ -165,41 +165,37 @@ export default class App extends Component {
   };
 
   initializeDatasets = async () => {
-    if (!this.state.loggedIn) {
-      return this.setState({ officeInitialized: true, outsideOffice: false });
-    }
+    if (this.state.loggedIn) {
+      const { pushToLocalStorage, office } = this;
+      const settings = this.office.getSettings();
 
-    const { pushToLocalStorage, office } = this;
-    const settings = this.office.getSettings();
+      let { dataset, nextMigrationIndex } = settings;
+      nextMigrationIndex = nextMigrationIndex || 0;
+      const bindings = await this.office.getBindings();
 
-    let { dataset, nextMigrationIndex } = settings;
-    nextMigrationIndex = nextMigrationIndex || 0;
-    const bindings = await this.office.getBindings();
+      if (dataset) {
+        migrations.slice(nextMigrationIndex).forEach(async (migrationFn, idx) => {
+          try {
+            await migrationFn({
+              bindings,
+              pushToLocalStorage,
+              dataset,
+              getSheetId: office.getSheetId
+            });
+            office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
 
-    if (dataset) {
-      migrations.slice(nextMigrationIndex).forEach(async (migrationFn, idx) => {
-        try {
-          await migrationFn({
-            bindings,
-            pushToLocalStorage,
-            dataset,
-            getSheetId: office.getSheetId
-          });
-          office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+            // To show migrated files
+            window.location.reload();
+          } catch (migrationError) {
+            this.setError(migrationError);
+          }
+        });
+      }
 
-          // To show migrated files
-          window.location.reload();
-        } catch (migrationError) {
-          this.setError(migrationError);
-        }
+      this.setState({
+        excelApiSupported: this.office.isExcelApiSupported(),
       });
     }
-
-    this.setState({
-      excelApiSupported: this.office.isExcelApiSupported(),
-      officeInitialized: true,
-      outsideOffice: false
-    });
   };
 
   initializeInsights = async () => {
@@ -207,12 +203,10 @@ export default class App extends Component {
       try {
         // All the charts in the workbook
         const charts = await this.getCharts();
-        this.setState({ charts, officeInitialized: true });
+        this.setState({ charts });
       } catch (getChartsError) {
         this.setError(getChartsError);
       }
-    } else {
-      this.setState({ officeInitialized: true });
     }
   };
 
@@ -386,15 +380,6 @@ export default class App extends Component {
     recents.recentUploads = recentUploads;
 
     localStorage.setItem('history', JSON.stringify(recents));
-  };
-
-  getRangeValues = async (rangeAddress) => {
-    try {
-      const values = await this.office.getRangeValues(rangeAddress);
-      return values;
-    } catch (rangeValuesError) {
-      this.setError(rangeValuesError);
-    }
   };
 
   createBinding = async (worksheetId, range, filename) => {
@@ -620,13 +605,19 @@ export default class App extends Component {
       onlyShowWritableDatasets
     } = this.state;
 
-    const showStartPage = officeInitialized && !loggedIn;
+    if (!insideOffice) {
+      return <NotOfficeView />;
+    }
 
+    if (!officeInitialized) {
+      return <LoadingAnimation />;
+    }
+
+    const showStartPage = !loggedIn;
     const insights = page === 'insights';
-    const importData = page === 'import';
 
+    const importData = page === 'import';
     const uploadDataView =
-      officeInitialized &&
       !showStartPage &&
       !showCreateDataset &&
       !insights &&
@@ -634,11 +625,8 @@ export default class App extends Component {
       !showDatasets;
     const userId = user ? user.id : 'Undefined';
     const renderInsights = !showStartPage && insights && this.office;
-    const renderImportData = !showStartPage && officeInitialized && importData;
 
-    if (!insideOffice) {
-      return <NotOfficeView />;
-    }
+    const renderImportData = !showStartPage && importData;
 
     const recents = localStorage.getItem('history');
     let matchedFiles = [];
@@ -683,7 +671,6 @@ export default class App extends Component {
             {errorMessage}
           </Alert>
         )}
-        {!officeInitialized && !error && <LoadingAnimation />}
         {loggedIn && (
           <LoginHeader user={user} logout={this.logout} page={page} />
         )}
@@ -755,7 +742,6 @@ export default class App extends Component {
             getImageAndTitle={this.office.getImageAndTitle}
             charts={charts}
             user={user}
-            officeInitialized={officeInitialized}
             projects={projects}
             createProject={this.createProject}
             uploadChart={this.uploadChart}
