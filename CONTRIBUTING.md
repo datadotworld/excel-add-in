@@ -16,7 +16,7 @@ issues and propose changes to the current or next version of the data.world Exce
 
 ### Review Relevant Docs
 
-* [data.world API](https://docs.data.world/documentation/api)
+* [data.world API](https://apidocs.data.world)
 * https://dev.office.com/reference/add-ins/excel/application
 * https://dev.office.com/docs/add-ins/excel/excel-add-ins-javascript-programming-overview?product=excel
 * https://dev.office.com/docs/add-ins/overview/add-in-manifests
