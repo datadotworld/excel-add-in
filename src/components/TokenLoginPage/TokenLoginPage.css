@@ -10,3 +10,46 @@
   margin: 1em auto;
   width: 50%;
 }
+
+.token-login .auth-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.excel-logo {
+  width: 72px;
+  height: 72px;
+}
+
+.token-login .svg-icon {
+  background-color: #7ed321;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  width: 32px;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.token-login .stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3px;
+}
+
+.divider {
+  border-bottom: 1px dashed #8b9cb0;
+  height: 1px;
+  margin: 0 5px;
+  position: absolute;
+  vertical-align: middle;
+  width: 125px;
+  top: 16%;
+  left: 31%;
+  z-index: 1;
+}
