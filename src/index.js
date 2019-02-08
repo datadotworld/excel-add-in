@@ -19,6 +19,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import load from 'little-loader';
 import * as Sentry from '@sentry/browser';
 
@@ -36,7 +37,16 @@ function loadApp() {
   ReactDOM.render(
     <ErrorBoundary>
       <IntlProvider locale="en">
-        <App />
+        <Router>
+          <div>
+            <Route
+              exact
+              path="/token-login"
+              component={() => <div>Token Login</div>}
+            />
+            <Route component={App} />
+          </div>
+        </Router>
       </IntlProvider>
     </ErrorBoundary>,
     document.getElementById('root')
