@@ -25,6 +25,7 @@ import * as Sentry from '@sentry/browser';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './App';
+import TokenLoginPage from './components/TokenLoginPage'
 
 import './index.css';
 import './analytics-head';
@@ -40,9 +41,8 @@ function loadApp() {
         <Router>
           <div>
             <Route
-              exact
               path="/token-login"
-              component={() => <div>Token Login</div>}
+              component={TokenLoginPage}
             />
             <Route component={App} />
           </div>
