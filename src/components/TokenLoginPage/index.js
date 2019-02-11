@@ -18,7 +18,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, FormControl, Glyphicon, InputGroup } from 'react-bootstrap';
 import dwLogo from '../../static/img/logo-inline.svg';
 import excelLogo from '../../static/img/excel-logo.png';
 import sparkleLogo from '../../static/img/new-sparkle-logo.png';
@@ -63,7 +63,12 @@ export default class TokenLogin extends Component {
               </a>
             </div>
             <div>
-              <input />
+              <InputGroup>
+                <InputGroup.Addon>
+                  <Glyphicon glyph="lock" />
+                </InputGroup.Addon>
+                <FormControl type="text" placeholder="Access code" />
+              </InputGroup>
             </div>
             <Button bsStyle="primary" className="continue-button">
               Continue
