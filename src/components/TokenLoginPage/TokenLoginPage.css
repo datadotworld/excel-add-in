@@ -3,7 +3,6 @@
   height: 100%;
   position: absolute;
   background-color: #f6f6f6;
-  padding: 0 2em;
 }
 
 .token-login .header-logo {
@@ -16,6 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 2em;
 }
 
 .excel-logo {
@@ -50,7 +50,35 @@
   position: absolute;
   vertical-align: middle;
   width: 125px;
-  top: 14%;
+  top: 7em;
   left: 31%;
   z-index: 1;
+}
+
+.form-container {
+  background-color: white;
+  margin-top: 2em;
+  padding: 1.5em 1em;
+}
+
+.form-header {
+  font-size: 1.25em;
+}
+
+.form {
+  padding-top: 1em;
+}
+
+.continue-button {
+  width: 100%;
+  margin-top: 1em;
+}
+
+.help-text {
+  font-size: 0.8em;
+}
+
+.sign-up {
+  margin-top: 1em;
+  text-align: center
 }

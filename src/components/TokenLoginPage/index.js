@@ -18,6 +18,7 @@
  */
 
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 import dwLogo from '../../static/img/logo-inline.svg';
 import excelLogo from '../../static/img/excel-logo.png';
 import sparkleLogo from '../../static/img/new-sparkle-logo.png';
@@ -46,9 +47,39 @@ export default class TokenLogin extends Component {
             </svg>
           </span>
           <img src={sparkleLogo} alt="data world logo" className="excel-logo" />
-          
         </div>
-        <div className="divider"></div>
+        <div className="divider" />
+        <div className="form-container">
+          <div className="form-header">Enter your data.world access code</div>
+          <div className="form">
+            <div className="help-text">
+              Need help locating your access code?{' '}
+              <a
+                href="https://help.data.world/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                See FAQ
+              </a>
+            </div>
+            <div>
+              <input />
+            </div>
+            <Button bsStyle="primary" className="continue-button">
+              Continue
+            </Button>
+          </div>
+        </div>
+        <div className="sign-up">
+          New to data.world?{' '}
+          <a
+            href="https://data.world/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Sign up now
+          </a>
+        </div>
       </div>
     );
   }
