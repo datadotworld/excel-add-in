@@ -3,6 +3,7 @@
   height: 100%;
   position: absolute;
   background-color: #f6f6f6;
+  padding: 0 2em;
 }
 
 .token-login .header-logo {
@@ -49,7 +50,7 @@
   position: absolute;
   vertical-align: middle;
   width: 125px;
-  top: 16%;
+  top: 14%;
   left: 31%;
   z-index: 1;
 }
