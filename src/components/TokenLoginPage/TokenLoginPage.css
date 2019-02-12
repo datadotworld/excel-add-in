@@ -18,7 +18,7 @@
   padding: 0 2em;
 }
 
-.excel-logo {
+.token-login .excel-logo {
   width: 72px;
   height: 72px;
 }
@@ -43,7 +43,7 @@
   stroke-width: 1.3px;
 }
 
-.divider {
+.token-login .divider {
   border-bottom: 1px dashed #8b9cb0;
   height: 1px;
   margin: 0 5px;
@@ -55,30 +55,30 @@
   z-index: 1;
 }
 
-.form-container {
+.token-login .form-container {
   background-color: white;
   margin-top: 2em;
   padding: 1.5em 1em;
 }
 
-.form-header {
+.token-login .form-header {
   font-size: 1.25em;
 }
 
-.form {
+.token-login .form {
   padding-top: 1em;
 }
 
-.continue-button {
+.token-login .continue-button {
   width: 100%;
   margin-top: 1em;
 }
 
-.help-text {
+.token-login .help-text {
   font-size: 0.8em;
 }
 
-.sign-up {
+.token-login .sign-up {
   margin-top: 1em;
-  text-align: center
+  text-align: center;
 }

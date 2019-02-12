@@ -18,7 +18,15 @@
  */
 
 import React, { Component } from 'react';
-import { Button, FormControl, Glyphicon, InputGroup } from 'react-bootstrap';
+import {
+  Button,
+  FormControl,
+  FormGroup,
+  Glyphicon,
+  HelpBlock,
+  InputGroup
+} from 'react-bootstrap';
+import DataDotWorldApi from '../../DataDotWorldApi';
 import dwLogo from '../../static/img/logo-inline.svg';
 import excelLogo from '../../static/img/excel-logo.png';
 import sparkleLogo from '../../static/img/new-sparkle-logo.png';
@@ -26,6 +34,28 @@ import sparkleLogo from '../../static/img/new-sparkle-logo.png';
 import './TokenLoginPage.css';
 
 export default class TokenLogin extends Component {
+  state = { code: '', validation: null };
+
+  handleChange = (e) => {
+    this.setState({ code: e.target.value, validation: null });
+  };
+
+  submit = async () => {
+    const { code } = this.state;
+    this.setState({ submitting: true });
+
+    const api = new DataDotWorldApi(code);
+
+    try {
+      await api.getUser();
+
+      // Code valid, redirect user to app
+      window.location.assign(`https://localhost:3000/?token=${code}`);
+    } catch (error) {
+      this.setState({ submitting: false, validation: 'error' });
+    }
+  };
+
   render() {
     return (
       <div className="token-login">
@@ -42,7 +72,7 @@ export default class TokenLogin extends Component {
               <path
                 className="stroke"
                 d="M1 7.2L5.9 12.1 15 3"
-                stroke-width="2"
+                strokeWidth="2"
               />
             </svg>
           </span>
@@ -63,15 +93,27 @@ export default class TokenLogin extends Component {
               </a>
             </div>
             <div>
-              <InputGroup>
-                <InputGroup.Addon>
-                  <Glyphicon glyph="lock" />
-                </InputGroup.Addon>
-                <FormControl type="text" placeholder="Access code" />
-              </InputGroup>
+              <FormGroup validationState={this.state.validation}>
+                <InputGroup>
+                  <InputGroup.Addon>
+                    <Glyphicon glyph="lock" />
+                  </InputGroup.Addon>
+                  <FormControl
+                    type="text"
+                    placeholder="Access code"
+                    value={this.state.code}
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+                {this.state.validation && <HelpBlock>Invalid code</HelpBlock>}
+              </FormGroup>
             </div>
-            <Button bsStyle="primary" className="continue-button">
-              Continue
+            <Button
+              bsStyle="primary"
+              className="continue-button"
+              onClick={this.submit}
+            >
+              {this.state.submitting ? 'Submitting...' : 'Continue'}
             </Button>
           </div>
         </div>
