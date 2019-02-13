@@ -50,7 +50,7 @@ export default class TokenLogin extends Component {
       await api.getUser();
 
       // Code valid, redirect user to app
-      window.location.assign(`https://localhost:3000/?token=${code}`);
+      window.location.assign(`${window.location.origin}/?token=${code}`);
     } catch (error) {
       this.setState({ submitting: false, validation: 'error' });
     }
@@ -67,7 +67,7 @@ export default class TokenLogin extends Component {
               width="16"
               height="16"
               viewBox="0 0 16 16"
-              xmlns="http://www.w3.orgg/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 className="stroke"

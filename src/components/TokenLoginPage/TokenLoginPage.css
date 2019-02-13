@@ -76,6 +76,8 @@
 
 .token-login .help-text {
   font-size: 0.8em;
+  /* Hide help text until we have the doc page */
+  display: none;
 }
 
 .token-login .sign-up {
