@@ -1,0 +1,86 @@
+.token-login {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #f6f6f6;
+}
+
+.token-login .header-logo {
+  display: block;
+  margin: 1em auto;
+  width: 50%;
+}
+
+.token-login .auth-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2em;
+}
+
+.token-login .excel-logo {
+  width: 72px;
+  height: 72px;
+}
+
+.token-login .svg-icon {
+  background-color: #7ed321;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  width: 32px;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.token-login .stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3px;
+}
+
+.token-login .divider {
+  border-bottom: 1px dashed #8b9cb0;
+  height: 1px;
+  margin: 0 5px;
+  position: absolute;
+  vertical-align: middle;
+  width: 125px;
+  top: 7em;
+  left: 31%;
+  z-index: 1;
+}
+
+.token-login .form-container {
+  background-color: white;
+  margin-top: 2em;
+  padding: 1.5em 1em;
+}
+
+.token-login .form-header {
+  font-size: 1.25em;
+}
+
+.token-login .form {
+  padding-top: 1em;
+}
+
+.token-login .continue-button {
+  width: 100%;
+  margin-top: 1em;
+}
+
+.token-login .help-text {
+  font-size: 0.8em;
+  /* Hide help text until we have the doc page */
+  display: none;
+}
+
+.token-login .sign-up {
+  margin-top: 1em;
+  text-align: center;
+}

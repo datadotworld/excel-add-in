@@ -154,13 +154,22 @@ class WelcomePage extends Component {
             Sign in
           </Button>
           <div>
+            <span>Or use an </span>
+            <a
+              href="/token-login"
+              className="link"
+            >
+              access code
+            </a>
+          </div>
+          <div>
             {`New to data.world? `}
             <a
               href="https://data.world/"
               target="_blank"
               rel="noopener noreferrer"
               onClick={this.signUpClick}
-              className="sign-up-link"
+              className="link"
             >
               Sign up now
             </a>
