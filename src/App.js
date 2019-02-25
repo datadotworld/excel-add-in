@@ -18,7 +18,7 @@
  */
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { flatten, findIndex } from 'lodash';
+import { flatten, findIndex, isEqual, remove } from 'lodash';
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -197,7 +197,8 @@ export default class App extends Component {
       }
 
       this.setState({
-        excelApiSupported: this.office.isExcelApiSupported()
+        excelApiSupported: this.office.isExcelApiSupported(),
+        recents: localStorage.getItem('history')
       });
     }
   };
@@ -384,6 +385,7 @@ export default class App extends Component {
     recents.recentUploads = recentUploads;
 
     localStorage.setItem('history', JSON.stringify(recents));
+    this.setState({ recents: JSON.stringify(recents) });
   };
 
   createBinding = async (worksheetId, range, filename) => {
@@ -452,6 +454,23 @@ export default class App extends Component {
         });
       }
     }
+  };
+
+  deleteRecentUpload = async (recentUpload) => {
+    const { recents } = this.state;
+
+    const recentsObject = JSON.parse(recents);
+
+    const { recentUploads = [] } = recentsObject;
+
+    const updatedRecentUploads = remove(recentUploads, (recent) => {
+      return !isEqual(recent, recentUpload);
+    });
+
+    recentsObject.recentUploads = updatedRecentUploads;
+
+    localStorage.setItem('history', JSON.stringify(recentsObject));
+    this.setState({ recents: JSON.stringify(recentsObject) });
   };
 
   showCreateDataset = () => {
@@ -606,7 +625,8 @@ export default class App extends Component {
       forceShowUpload,
       selectSheet,
       errorMessage,
-      onlyShowWritableDatasets
+      onlyShowWritableDatasets,
+      recents
     } = this.state;
 
     if (!insideOffice) {
@@ -632,7 +652,6 @@ export default class App extends Component {
 
     const renderImportData = !showStartPage && importData;
 
-    const recents = localStorage.getItem('history');
     let matchedFiles = [];
 
     // all files which has the same username and workspace id as the current user
@@ -717,6 +736,7 @@ export default class App extends Component {
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
               getSheetName={this.office.getSheetName}
+              deleteRecentUpload={this.deleteRecentUpload}
             />
           )}
 
