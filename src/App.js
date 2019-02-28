@@ -110,7 +110,7 @@ export default class App extends Component {
 
     this.initializeUserAndOffice().then(() => {
       this.setState({
-        officeInitialized: true,
+        officeInitialized: true
       });
     });
   }
@@ -126,16 +126,18 @@ export default class App extends Component {
   };
 
   getSelectionRange = async () => {
+    this.office.listenForSelectionChanges((newSelectedRange) => {
+      this.setState({ currentSelectedRange: newSelectedRange });
+    });
+
     try {
       const currentSelectedRange = await this.office.getCurrentlySelectedRange();
-      this.office.listenForSelectionChanges((newSelectedRange) => {
-        this.setState({ currentSelectedRange: newSelectedRange });
-      });
 
       this.setState({ currentSelectedRange });
       return currentSelectedRange;
-    } catch (selectionRangeError) {
-      this.setError(selectionRangeError);
+    } catch (e) {
+      this.setState({ currentSelectedRange: null });
+      return null;
     }
   };
 
@@ -174,26 +176,28 @@ export default class App extends Component {
       const bindings = await this.office.getBindings();
 
       if (dataset) {
-        migrations.slice(nextMigrationIndex).forEach(async (migrationFn, idx) => {
-          try {
-            await migrationFn({
-              bindings,
-              pushToLocalStorage,
-              dataset,
-              getSheetId: office.getSheetId
-            });
-            office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+        migrations
+          .slice(nextMigrationIndex)
+          .forEach(async (migrationFn, idx) => {
+            try {
+              await migrationFn({
+                bindings,
+                pushToLocalStorage,
+                dataset,
+                getSheetId: office.getSheetId
+              });
+              office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
 
-            // To show migrated files
-            window.location.reload();
-          } catch (migrationError) {
-            this.setError(migrationError);
-          }
-        });
+              // To show migrated files
+              window.location.reload();
+            } catch (migrationError) {
+              this.setError(migrationError);
+            }
+          });
       }
 
       this.setState({
-        excelApiSupported: this.office.isExcelApiSupported(),
+        excelApiSupported: this.office.isExcelApiSupported()
       });
     }
   };
