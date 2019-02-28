@@ -175,7 +175,7 @@ export default class RecentUploads extends Component {
                   <Modal.Title>Delete Recent Upload?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <p>Synced data will be unaffected</p>
+                  <p>Uploaded data will be unaffected.</p>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button bsSize="small" onClick={this.toggleShowModal}>

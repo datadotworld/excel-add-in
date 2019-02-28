@@ -18,7 +18,7 @@
  */
 
 import React, { Component } from 'react';
-import { Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Glyphicon, Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import {
   getDestination,
@@ -49,7 +49,16 @@ export default class RecentItem extends Component {
   };
 
   render() {
-    const { itemUrl, table, isQuery, sheetName, importing } = this.props;
+    const {
+      itemUrl,
+      table,
+      isQuery,
+      sheetName,
+      importing,
+      index,
+      toggleDeleteModal,
+      setItemitemIndexToDelete
+    } = this.props;
     const { loading } = this.state;
     const dataset = getDestination(itemUrl);
 
@@ -88,14 +97,24 @@ export default class RecentItem extends Component {
           </div>
         )}
         {!loading && (
-          <div
-            className="recent-item-image"
-            onClick={this.import}
-            title="Repeat import"
-          >
+          <div className="recent-item-image" title="Repeat import">
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="tooltip">Delete</Tooltip>}
+            >
+              <Glyphicon
+                glyph="trash"
+                className="icon-delete"
+                onClick={() => {
+                  setItemitemIndexToDelete(index);
+                  toggleDeleteModal();
+                }}
+              />
+            </OverlayTrigger>
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip id="tooltip">Import</Tooltip>}
+              onClick={this.import}
             >
               <Image className="icon-download" src={downloadIcon} />
             </OverlayTrigger>

@@ -18,14 +18,30 @@
  */
 
 import React, { Component } from 'react';
-import { Button, ControlLabel } from 'react-bootstrap';
+import { Button, ControlLabel, Modal } from 'react-bootstrap';
 
 import RecentItem from './RecentItem';
 import './RecentImports.css';
 
 export default class RecentImports extends Component {
+  state = {
+    showDeleteModal: false,
+    itemIndexToDelete: null
+  };
+
+  toggleDeleteModal = () => {
+    const { showDeleteModal } = this.state;
+
+    this.setState({ showDeleteModal: !showDeleteModal });
+  };
+
+  setItemitemIndexToDelete = (index) => {
+    this.setState({ itemIndexToDelete: index });
+  };
+
   render() {
-    const { recentImports, importing } = this.props;
+    const { recentImports, importing, deleteRecentImport } = this.props;
+    const { showDeleteModal } = this.state;
     let previousDate = '';
     let showDate;
 
@@ -45,7 +61,7 @@ export default class RecentImports extends Component {
         </div>
 
         <div className="recent-items">
-          {recentImports.map((recentItem) => {
+          {recentImports.map((recentItem, index) => {
             const dateArray = new Date(recentItem.date)
               .toDateString()
               .split(' ');
@@ -67,7 +83,36 @@ export default class RecentImports extends Component {
                   setError={this.props.setError}
                   import={this.props.import}
                   importing={importing}
+                  toggleDeleteModal={this.toggleDeleteModal}
+                  index={index}
+                  setItemitemIndexToDelete={this.setItemitemIndexToDelete}
                 />
+                <Modal show={showDeleteModal} onHide={this.toggleDeleteModal}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Delete Recent Import?</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <p>Imported data will be unaffected.</p>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button bsSize="small" onClick={this.toggleDeleteModal}>
+                      Cancel
+                    </Button>
+                    <Button
+                      bsSize="small"
+                      onClick={() => {
+                        const { itemIndexToDelete } = this.state;
+
+                        deleteRecentImport(recentImports[itemIndexToDelete]);
+
+                        this.toggleDeleteModal();
+                      }}
+                      bsStyle="danger"
+                    >
+                      Delete
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             );
           })}

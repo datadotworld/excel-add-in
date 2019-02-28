@@ -105,7 +105,8 @@ export default class App extends Component {
       url: '',
       forceShowUpload: false,
       loadingSync: false,
-      selectSheet: false
+      selectSheet: false,
+      recents: localStorage.getItem('history')
     };
 
     this.initializeUserAndOffice().then(() => {
@@ -197,8 +198,7 @@ export default class App extends Component {
       }
 
       this.setState({
-        excelApiSupported: this.office.isExcelApiSupported(),
-        recents: localStorage.getItem('history')
+        excelApiSupported: this.office.isExcelApiSupported()
       });
     }
   };
@@ -468,6 +468,24 @@ export default class App extends Component {
     });
 
     recentsObject.recentUploads = updatedRecentUploads;
+
+    localStorage.setItem('history', JSON.stringify(recentsObject));
+    this.setState({ recents: JSON.stringify(recentsObject) });
+  };
+
+  deleteRecentImport = async (recentImport) => {
+    const { recents } = this.state;
+    const recentsObject = JSON.parse(recents);
+    const { recentImports = [] } = recentsObject;
+
+
+    const updatedRecentImports = remove(recentImports, (recent) => {
+      return !isEqual(recent, recentImport);
+    });
+
+
+    recentsObject.recentImports = updatedRecentImports;
+
 
     localStorage.setItem('history', JSON.stringify(recentsObject));
     this.setState({ recents: JSON.stringify(recentsObject) });
@@ -785,6 +803,7 @@ export default class App extends Component {
             workbookId={this.state.workbookId}
             setError={this.setError}
             setErrorMessage={this.setErrorMessage}
+            deleteRecentImport={this.deleteRecentImport}
           />
         )}
       </div>
