@@ -456,36 +456,24 @@ export default class App extends Component {
     }
   };
 
-  deleteRecentUpload = async (recentUpload) => {
-    const { recents } = this.state;
-
-    const recentsObject = JSON.parse(recents);
-
-    const { recentUploads = [] } = recentsObject;
-
-    const updatedRecentUploads = remove(recentUploads, (recent) => {
-      return !isEqual(recent, recentUpload);
-    });
-
-    recentsObject.recentUploads = updatedRecentUploads;
-
-    localStorage.setItem('history', JSON.stringify(recentsObject));
-    this.setState({ recents: JSON.stringify(recentsObject) });
-  };
-
-  deleteRecentImport = async (recentImport) => {
+  deleteRecentItem = async (type, item) => {
     const { recents } = this.state;
     const recentsObject = JSON.parse(recents);
-    const { recentImports = [] } = recentsObject;
+    let allItems;
 
+    if (type === 'recentImports') {
+      const { recentImports = [] } = recentsObject;
+      allItems = recentImports;
+    } else {
+      const { recentUploads = [] } = recentsObject;
+      allItems = recentUploads;
+    }
 
-    const updatedRecentImports = remove(recentImports, (recent) => {
-      return !isEqual(recent, recentImport);
+    const updatedRecentItems = remove(allItems, (recent) => {
+      return !isEqual(recent, item);
     });
 
-
-    recentsObject.recentImports = updatedRecentImports;
-
+    recentsObject[type] = updatedRecentItems;
 
     localStorage.setItem('history', JSON.stringify(recentsObject));
     this.setState({ recents: JSON.stringify(recentsObject) });
@@ -754,7 +742,7 @@ export default class App extends Component {
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
               getSheetName={this.office.getSheetName}
-              deleteRecentUpload={this.deleteRecentUpload}
+              deleteRecentItem={this.deleteRecentItem}
             />
           )}
 
@@ -803,7 +791,7 @@ export default class App extends Component {
             workbookId={this.state.workbookId}
             setError={this.setError}
             setErrorMessage={this.setErrorMessage}
-            deleteRecentImport={this.deleteRecentImport}
+            deleteRecentItem={this.deleteRecentItem}
           />
         )}
       </div>

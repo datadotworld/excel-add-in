@@ -40,3 +40,7 @@
 .recents-date {
   padding: 8px 15px;
 }
+
+.delete-warning-modal {
+  padding-top: 50%;
+}

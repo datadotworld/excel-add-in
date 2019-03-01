@@ -62,3 +62,7 @@
   color: red;
   margin-right: 1rem;
 }
+
+.delete-warning-modal {
+  padding-top: 50%;
+}

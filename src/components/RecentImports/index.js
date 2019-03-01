@@ -40,7 +40,7 @@ export default class RecentImports extends Component {
   };
 
   render() {
-    const { recentImports, importing, deleteRecentImport } = this.props;
+    const { recentImports, importing, deleteRecentItem } = this.props;
     const { showDeleteModal } = this.state;
     let previousDate = '';
     let showDate;
@@ -87,7 +87,11 @@ export default class RecentImports extends Component {
                   index={index}
                   setItemitemIndexToDelete={this.setItemitemIndexToDelete}
                 />
-                <Modal show={showDeleteModal} onHide={this.toggleDeleteModal}>
+                <Modal
+                  show={showDeleteModal}
+                  onHide={this.toggleDeleteModal}
+                  className="delete-warning-modal"
+                >
                   <Modal.Header closeButton>
                     <Modal.Title>Delete Recent Import?</Modal.Title>
                   </Modal.Header>
@@ -103,7 +107,10 @@ export default class RecentImports extends Component {
                       onClick={() => {
                         const { itemIndexToDelete } = this.state;
 
-                        deleteRecentImport(recentImports[itemIndexToDelete]);
+                        deleteRecentItem(
+                          'recentImports',
+                          recentImports[itemIndexToDelete]
+                        );
 
                         this.toggleDeleteModal();
                       }}

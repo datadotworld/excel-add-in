@@ -129,7 +129,7 @@ export default class RecentUploads extends Component {
       forceShowUpload,
       matchedFiles,
       getSheetName,
-      deleteRecentUpload
+      deleteRecentItem,
     } = this.props;
     const { showDeleteModal } = this.state;
 
@@ -170,7 +170,11 @@ export default class RecentUploads extends Component {
                 toggleShowModal={this.toggleShowModal}
                 setItemitemIndexToDelete={this.setItemitemIndexToDelete}
               />
-              <Modal show={showDeleteModal} onHide={this.toggleShowModal}>
+              <Modal
+                show={showDeleteModal}
+                onHide={this.toggleShowModal}
+                className="delete-warning-modal"
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>Delete Recent Upload?</Modal.Title>
                 </Modal.Header>
@@ -185,7 +189,10 @@ export default class RecentUploads extends Component {
                     bsSize="small"
                     onClick={() => {
                       const { itemIndexToDelete } = this.state;
-                      deleteRecentUpload(matchedFiles[itemIndexToDelete]);
+                      deleteRecentItem(
+                        'recentUploads',
+                        matchedFiles[itemIndexToDelete]
+                      );
 
                       this.toggleShowModal();
                     }}
