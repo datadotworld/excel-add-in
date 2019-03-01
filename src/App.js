@@ -457,7 +457,7 @@ export default class App extends Component {
   };
 
   deleteRecentItem = async (type, item) => {
-    const { recents } = this.state;
+    const recents = localStorage.getItem('history') || {};
     const recentsObject = JSON.parse(recents);
     let allItems;
 
