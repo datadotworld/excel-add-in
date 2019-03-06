@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import {
   Button,
   ControlLabel,
+  Glyphicon,
   Image,
+  Modal,
   Tooltip,
   OverlayTrigger
 } from 'react-bootstrap';
@@ -36,7 +38,15 @@ class RecentItem extends Component {
   }
 
   render() {
-    const { filename, dataset, rangeAddress, worksheetId } = this.props;
+    const {
+      filename,
+      dataset,
+      rangeAddress,
+      worksheetId,
+      toggleShowModal,
+      index,
+      setItemIndexToClear
+    } = this.props;
 
     const datasetLocation = `${dataset.owner}/${dataset.id}`;
 
@@ -57,22 +67,38 @@ class RecentItem extends Component {
             </a>
             <div className="info">{`Upload from: ${rangeToShow}`}</div>
           </div>
-          <div
-            className="icon-border"
-            onClick={() =>
-              this.sync(filename, rangeAddress, dataset, worksheetId)
-            }
-          >
+          <div className="icon-border">
             <div className="resync-icon">
               {this.state.loading ? (
                 <div className="loader-icon" />
               ) : (
-                <OverlayTrigger
-                  placement="bottom"
-                  overlay={<Tooltip id="tooltip">Upload</Tooltip>}
-                >
-                  <Image className="icon-upload-blue" src={upload} />
-                </OverlayTrigger>
+                <div className="actions-container">
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id="tooltip">Clear</Tooltip>}
+                  >
+                    <Glyphicon
+                      glyph="remove"
+                      className="icon-clear"
+                      onClick={() => {
+                        setItemIndexToClear(index);
+                        toggleShowModal();
+                      }}
+                    />
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id="tooltip">Upload</Tooltip>}
+                  >
+                    <Image
+                      className="icon-upload-blue"
+                      src={upload}
+                      onClick={() =>
+                        this.sync(filename, rangeAddress, dataset, worksheetId)
+                      }
+                    />
+                  </OverlayTrigger>
+                </div>
               )}
             </div>
           </div>
@@ -83,8 +109,29 @@ class RecentItem extends Component {
 }
 
 export default class RecentUploads extends Component {
+  state = {
+    showClearModal: false,
+    itemIndexToClear: null
+  };
+
+  toggleShowModal = () => {
+    const { showClearModal } = this.state;
+
+    this.setState({ showClearModal: !showClearModal });
+  };
+
+  setItemIndexToClear = (index) => {
+    this.setState({ itemIndexToClear: index });
+  };
+
   render() {
-    const { forceShowUpload, matchedFiles, getSheetName } = this.props;
+    const {
+      forceShowUpload,
+      matchedFiles,
+      getSheetName,
+      clearRecentItem,
+    } = this.props;
+    const { showClearModal } = this.state;
 
     let previousDate = '';
     let showDate;
@@ -101,7 +148,7 @@ export default class RecentUploads extends Component {
             + New upload{' '}
           </Button>
         </div>
-        {matchedFiles.map((file) => {
+        {matchedFiles.map((file, index) => {
           const dateArray = new Date(file.date).toDateString().split(' ');
           let dateToShow = dateArray[1] + ' ' + dateArray[2];
           if (dateToShow !== previousDate) {
@@ -116,10 +163,45 @@ export default class RecentUploads extends Component {
               {showDate && <div className="date">{dateToShow}</div>}
               <RecentItem
                 {...file}
+                index={index}
                 sync={this.props.sync}
                 setError={this.props.setError}
                 getSheetName={getSheetName}
+                toggleShowModal={this.toggleShowModal}
+                setItemIndexToClear={this.setItemIndexToClear}
               />
+              <Modal
+                show={showClearModal}
+                onHide={this.toggleShowModal}
+                className="clear-warning-modal"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Clear Recent Upload?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>Uploaded data will be unaffected.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button bsSize="small" onClick={this.toggleShowModal}>
+                    Cancel
+                  </Button>
+                  <Button
+                    bsSize="small"
+                    onClick={() => {
+                      const { itemIndexToClear } = this.state;
+                      clearRecentItem(
+                        'recentUploads',
+                        matchedFiles[itemIndexToClear]
+                      );
+
+                      this.toggleShowModal();
+                    }}
+                    bsStyle="danger"
+                  >
+                    Clear
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
           );
         })}

@@ -18,14 +18,30 @@
  */
 
 import React, { Component } from 'react';
-import { Button, ControlLabel } from 'react-bootstrap';
+import { Button, ControlLabel, Modal } from 'react-bootstrap';
 
 import RecentItem from './RecentItem';
 import './RecentImports.css';
 
 export default class RecentImports extends Component {
+  state = {
+    showClearModal: false,
+    itemIndexToClear: null
+  };
+
+  toggleClearModal = () => {
+    const { showClearModal } = this.state;
+
+    this.setState({ showClearModal: !showClearModal });
+  };
+
+  setItemIndexToClear = (index) => {
+    this.setState({ itemIndexToClear: index });
+  };
+
   render() {
-    const { recentImports, importing } = this.props;
+    const { recentImports, importing, clearRecentItem } = this.props;
+    const { showClearModal } = this.state;
     let previousDate = '';
     let showDate;
 
@@ -45,7 +61,7 @@ export default class RecentImports extends Component {
         </div>
 
         <div className="recent-items">
-          {recentImports.map((recentItem) => {
+          {recentImports.map((recentItem, index) => {
             const dateArray = new Date(recentItem.date)
               .toDateString()
               .split(' ');
@@ -67,7 +83,43 @@ export default class RecentImports extends Component {
                   setError={this.props.setError}
                   import={this.props.import}
                   importing={importing}
+                  toggleClearModal={this.toggleClearModal}
+                  index={index}
+                  setItemIndexToClear={this.setItemIndexToClear}
                 />
+                <Modal
+                  show={showClearModal}
+                  onHide={this.toggleClearModal}
+                  className="clear-warning-modal"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Clear Recent Import?</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <p>Imported data will be unaffected.</p>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button bsSize="small" onClick={this.toggleClearModal}>
+                      Cancel
+                    </Button>
+                    <Button
+                      bsSize="small"
+                      onClick={() => {
+                        const { itemIndexToClear } = this.state;
+
+                        clearRecentItem(
+                          'recentImports',
+                          recentImports[itemIndexToClear]
+                        );
+
+                        this.toggleClearModal();
+                      }}
+                      bsStyle="danger"
+                    >
+                      Clear
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             );
           })}
