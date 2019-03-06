@@ -56,8 +56,8 @@ export default class RecentItem extends Component {
       sheetName,
       importing,
       index,
-      toggleDeleteModal,
-      setItemitemIndexToDelete
+      toggleClearModal,
+      setItemIndexToClear
     } = this.props;
     const { loading } = this.state;
     const dataset = getDestination(itemUrl);
@@ -100,14 +100,14 @@ export default class RecentItem extends Component {
           <div className="recent-item-image" title="Repeat import">
             <OverlayTrigger
               placement="bottom"
-              overlay={<Tooltip id="tooltip">Delete</Tooltip>}
+              overlay={<Tooltip id="tooltip">Clear</Tooltip>}
             >
               <Glyphicon
-                glyph="trash"
-                className="icon-delete"
+                glyph="remove"
+                className="icon-clear"
                 onClick={() => {
-                  setItemitemIndexToDelete(index);
-                  toggleDeleteModal();
+                  setItemIndexToClear(index);
+                  toggleClearModal();
                 }}
               />
             </OverlayTrigger>

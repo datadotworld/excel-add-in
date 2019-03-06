@@ -58,11 +58,11 @@
   height: 18px;
 }
 
-.icon-delete {
-  color: red;
+.icon-clear {
+  color: #8c9caf;
   margin-right: 1rem;
 }
 
-.delete-warning-modal {
+.clear-warning-modal {
   padding-top: 50%;
 }

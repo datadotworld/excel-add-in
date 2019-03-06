@@ -360,7 +360,7 @@ export default class UploadModal extends Component {
   };
 
   render() {
-    const { deleteRecentItem } = this.props;
+    const { clearRecentItem } = this.props;
     const {
       itemUrl,
       querySelected,
@@ -566,7 +566,7 @@ export default class UploadModal extends Component {
             import={this.import}
             setError={this.props.setError}
             importing={importing}
-            deleteRecentItem={deleteRecentItem}
+            clearRecentItem={clearRecentItem}
           />
         )}
         {showWarningModal && (

@@ -25,23 +25,23 @@ import './RecentImports.css';
 
 export default class RecentImports extends Component {
   state = {
-    showDeleteModal: false,
-    itemIndexToDelete: null
+    showClearModal: false,
+    itemIndexToClear: null
   };
 
-  toggleDeleteModal = () => {
-    const { showDeleteModal } = this.state;
+  toggleClearModal = () => {
+    const { showClearModal } = this.state;
 
-    this.setState({ showDeleteModal: !showDeleteModal });
+    this.setState({ showClearModal: !showClearModal });
   };
 
-  setItemitemIndexToDelete = (index) => {
-    this.setState({ itemIndexToDelete: index });
+  setItemIndexToClear = (index) => {
+    this.setState({ itemIndexToClear: index });
   };
 
   render() {
-    const { recentImports, importing, deleteRecentItem } = this.props;
-    const { showDeleteModal } = this.state;
+    const { recentImports, importing, clearRecentItem } = this.props;
+    const { showClearModal } = this.state;
     let previousDate = '';
     let showDate;
 
@@ -83,40 +83,40 @@ export default class RecentImports extends Component {
                   setError={this.props.setError}
                   import={this.props.import}
                   importing={importing}
-                  toggleDeleteModal={this.toggleDeleteModal}
+                  toggleClearModal={this.toggleClearModal}
                   index={index}
-                  setItemitemIndexToDelete={this.setItemitemIndexToDelete}
+                  setItemIndexToClear={this.setItemIndexToClear}
                 />
                 <Modal
-                  show={showDeleteModal}
-                  onHide={this.toggleDeleteModal}
-                  className="delete-warning-modal"
+                  show={showClearModal}
+                  onHide={this.toggleClearModal}
+                  className="clear-warning-modal"
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title>Delete Recent Import?</Modal.Title>
+                    <Modal.Title>Clear Recent Import?</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <p>Imported data will be unaffected.</p>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button bsSize="small" onClick={this.toggleDeleteModal}>
+                    <Button bsSize="small" onClick={this.toggleClearModal}>
                       Cancel
                     </Button>
                     <Button
                       bsSize="small"
                       onClick={() => {
-                        const { itemIndexToDelete } = this.state;
+                        const { itemIndexToClear } = this.state;
 
-                        deleteRecentItem(
+                        clearRecentItem(
                           'recentImports',
-                          recentImports[itemIndexToDelete]
+                          recentImports[itemIndexToClear]
                         );
 
-                        this.toggleDeleteModal();
+                        this.toggleClearModal();
                       }}
                       bsStyle="danger"
                     >
-                      Delete
+                      Clear
                     </Button>
                   </Modal.Footer>
                 </Modal>

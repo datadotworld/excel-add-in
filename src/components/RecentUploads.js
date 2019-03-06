@@ -45,7 +45,7 @@ class RecentItem extends Component {
       worksheetId,
       toggleShowModal,
       index,
-      setItemitemIndexToDelete
+      setItemIndexToClear
     } = this.props;
 
     const datasetLocation = `${dataset.owner}/${dataset.id}`;
@@ -75,13 +75,13 @@ class RecentItem extends Component {
                 <div className="actions-container">
                   <OverlayTrigger
                     placement="bottom"
-                    overlay={<Tooltip id="tooltip">Delete</Tooltip>}
+                    overlay={<Tooltip id="tooltip">Clear</Tooltip>}
                   >
                     <Glyphicon
-                      glyph="trash"
-                      className="icon-delete"
+                      glyph="remove"
+                      className="icon-clear"
                       onClick={() => {
-                        setItemitemIndexToDelete(index);
+                        setItemIndexToClear(index);
                         toggleShowModal();
                       }}
                     />
@@ -110,18 +110,18 @@ class RecentItem extends Component {
 
 export default class RecentUploads extends Component {
   state = {
-    showDeleteModal: false,
-    itemIndexToDelete: null
+    showClearModal: false,
+    itemIndexToClear: null
   };
 
   toggleShowModal = () => {
-    const { showDeleteModal } = this.state;
+    const { showClearModal } = this.state;
 
-    this.setState({ showDeleteModal: !showDeleteModal });
+    this.setState({ showClearModal: !showClearModal });
   };
 
-  setItemitemIndexToDelete = (index) => {
-    this.setState({ itemIndexToDelete: index });
+  setItemIndexToClear = (index) => {
+    this.setState({ itemIndexToClear: index });
   };
 
   render() {
@@ -129,9 +129,9 @@ export default class RecentUploads extends Component {
       forceShowUpload,
       matchedFiles,
       getSheetName,
-      deleteRecentItem,
+      clearRecentItem,
     } = this.props;
-    const { showDeleteModal } = this.state;
+    const { showClearModal } = this.state;
 
     let previousDate = '';
     let showDate;
@@ -168,15 +168,15 @@ export default class RecentUploads extends Component {
                 setError={this.props.setError}
                 getSheetName={getSheetName}
                 toggleShowModal={this.toggleShowModal}
-                setItemitemIndexToDelete={this.setItemitemIndexToDelete}
+                setItemIndexToClear={this.setItemIndexToClear}
               />
               <Modal
-                show={showDeleteModal}
+                show={showClearModal}
                 onHide={this.toggleShowModal}
-                className="delete-warning-modal"
+                className="clear-warning-modal"
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Delete Recent Upload?</Modal.Title>
+                  <Modal.Title>Clear Recent Upload?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <p>Uploaded data will be unaffected.</p>
@@ -188,17 +188,17 @@ export default class RecentUploads extends Component {
                   <Button
                     bsSize="small"
                     onClick={() => {
-                      const { itemIndexToDelete } = this.state;
-                      deleteRecentItem(
+                      const { itemIndexToClear } = this.state;
+                      clearRecentItem(
                         'recentUploads',
-                        matchedFiles[itemIndexToDelete]
+                        matchedFiles[itemIndexToClear]
                       );
 
                       this.toggleShowModal();
                     }}
                     bsStyle="danger"
                   >
-                    Delete
+                    Clear
                   </Button>
                 </Modal.Footer>
               </Modal>

@@ -456,7 +456,7 @@ export default class App extends Component {
     }
   };
 
-  deleteRecentItem = async (type, item) => {
+  clearRecentItem = async (type, item) => {
     const recents = localStorage.getItem('history') || {};
     const recentsObject = JSON.parse(recents);
     let allItems;
@@ -742,7 +742,7 @@ export default class App extends Component {
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
               getSheetName={this.office.getSheetName}
-              deleteRecentItem={this.deleteRecentItem}
+              clearRecentItem={this.clearRecentItem}
             />
           )}
 
@@ -791,7 +791,7 @@ export default class App extends Component {
             workbookId={this.state.workbookId}
             setError={this.setError}
             setErrorMessage={this.setErrorMessage}
-            deleteRecentItem={this.deleteRecentItem}
+            clearRecentItem={this.clearRecentItem}
           />
         )}
       </div>
