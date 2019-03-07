@@ -49,7 +49,20 @@
   font-size: 14px;
 }
 
+.actions-container {
+  display: flex;
+}
+
 .icon-upload-blue {
   width: 18px;
   height: 18px;
+}
+
+.icon-clear {
+  color: #8c9caf;
+  margin-right: 1rem;
+}
+
+.clear-warning-modal {
+  padding-top: 50%;
 }

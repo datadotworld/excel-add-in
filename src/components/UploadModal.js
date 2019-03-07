@@ -103,8 +103,11 @@ export default class UploadModal extends Component {
 
   isFormValid = () => {
     const { isFileNameValid, currentUrl } = this.state;
+    const { range } = this.props;
 
-    return isFileNameValid.valid && currentUrl.length > 0;
+    const formFieldsValid = isFileNameValid.valid && currentUrl.length > 0;
+
+    return range && formFieldsValid;
   };
 
   getSelectionText(range) {
@@ -244,43 +247,47 @@ export default class UploadModal extends Component {
                   <ControlLabel className="upload-from-title">
                     Upload from:
                   </ControlLabel>
-                  <div
-                    className="upload-selection-form"
-                    onClick={this.props.changeSelection}
-                  >
-                    <div className="selection">
-                      <label className="radio-button">
-                        <input
-                          type="radio"
-                          name="selection"
-                          value="selection"
-                          checked={!selectSheet}
-                          readOnly
-                        />
-                        <span className="selection-text">
-                          Current selection
-                        </span>
-                      </label>
-                      <div className="selection-info">
-                        {this.getSelectionText(range)}
+                  {range ? (
+                    <div
+                      className="upload-selection-form"
+                      onClick={this.props.changeSelection}
+                    >
+                      <div className="selection">
+                        <label className="radio-button">
+                          <input
+                            type="radio"
+                            name="selection"
+                            value="selection"
+                            checked={!selectSheet}
+                            readOnly
+                          />
+                          <span className="selection-text">
+                            Current selection
+                          </span>
+                        </label>
+                        <div className="selection-info">
+                          {this.getSelectionText(range)}
+                        </div>
+                      </div>
+                      <div className="selection">
+                        <label className="radio-button">
+                          <input
+                            type="radio"
+                            name="selection"
+                            value="sheet"
+                            checked={selectSheet}
+                            readOnly
+                          />
+                          <span className="selection-text">Current sheet</span>
+                        </label>
+                        <div className="selection-info">
+                          {`(${this.getSheetName(range)})`}
+                        </div>
                       </div>
                     </div>
-                    <div className="selection">
-                      <label className="radio-button">
-                        <input
-                          type="radio"
-                          name="selection"
-                          value="sheet"
-                          checked={selectSheet}
-                          readOnly
-                        />
-                        <span className="selection-text">Current sheet</span>
-                      </label>
-                      <div className="selection-info">
-                        {`(${this.getSheetName(range)})`}
-                      </div>
-                    </div>
-                  </div>
+                  ) : (
+                    <div className="selection-prompt">Select data to upload from the sheet</div>
+                  )}
                 </FormGroup>
               )}
               <div className="upload-to">

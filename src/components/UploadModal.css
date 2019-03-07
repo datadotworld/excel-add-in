@@ -226,3 +226,8 @@
 .upload-cancel-button:disabled {
   box-shadow: none;
 }
+
+.selection-prompt {
+  text-align: center;
+  font-weight: bold;
+}

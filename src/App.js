@@ -18,7 +18,7 @@
  */
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { flatten, findIndex } from 'lodash';
+import { flatten, findIndex, isEqual, remove } from 'lodash';
 
 import { Alert } from 'react-bootstrap';
 import find from 'array.prototype.find';
@@ -105,12 +105,13 @@ export default class App extends Component {
       url: '',
       forceShowUpload: false,
       loadingSync: false,
-      selectSheet: false
+      selectSheet: false,
+      recents: localStorage.getItem('history')
     };
 
     this.initializeUserAndOffice().then(() => {
       this.setState({
-        officeInitialized: true,
+        officeInitialized: true
       });
     });
   }
@@ -126,16 +127,18 @@ export default class App extends Component {
   };
 
   getSelectionRange = async () => {
+    this.office.listenForSelectionChanges((newSelectedRange) => {
+      this.setState({ currentSelectedRange: newSelectedRange });
+    });
+
     try {
       const currentSelectedRange = await this.office.getCurrentlySelectedRange();
-      this.office.listenForSelectionChanges((newSelectedRange) => {
-        this.setState({ currentSelectedRange: newSelectedRange });
-      });
 
       this.setState({ currentSelectedRange });
       return currentSelectedRange;
-    } catch (selectionRangeError) {
-      this.setError(selectionRangeError);
+    } catch (e) {
+      this.setState({ currentSelectedRange: null });
+      return null;
     }
   };
 
@@ -174,26 +177,28 @@ export default class App extends Component {
       const bindings = await this.office.getBindings();
 
       if (dataset) {
-        migrations.slice(nextMigrationIndex).forEach(async (migrationFn, idx) => {
-          try {
-            await migrationFn({
-              bindings,
-              pushToLocalStorage,
-              dataset,
-              getSheetId: office.getSheetId
-            });
-            office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
+        migrations
+          .slice(nextMigrationIndex)
+          .forEach(async (migrationFn, idx) => {
+            try {
+              await migrationFn({
+                bindings,
+                pushToLocalStorage,
+                dataset,
+                getSheetId: office.getSheetId
+              });
+              office.setNextMigrationIndex(nextMigrationIndex + idx + 1);
 
-            // To show migrated files
-            window.location.reload();
-          } catch (migrationError) {
-            this.setError(migrationError);
-          }
-        });
+              // To show migrated files
+              window.location.reload();
+            } catch (migrationError) {
+              this.setError(migrationError);
+            }
+          });
       }
 
       this.setState({
-        excelApiSupported: this.office.isExcelApiSupported(),
+        excelApiSupported: this.office.isExcelApiSupported()
       });
     }
   };
@@ -380,6 +385,7 @@ export default class App extends Component {
     recents.recentUploads = recentUploads;
 
     localStorage.setItem('history', JSON.stringify(recents));
+    this.setState({ recents: JSON.stringify(recents) });
   };
 
   createBinding = async (worksheetId, range, filename) => {
@@ -448,6 +454,29 @@ export default class App extends Component {
         });
       }
     }
+  };
+
+  clearRecentItem = async (type, item) => {
+    const recents = localStorage.getItem('history') || {};
+    const recentsObject = JSON.parse(recents);
+    let allItems;
+
+    if (type === 'recentImports') {
+      const { recentImports = [] } = recentsObject;
+      allItems = recentImports;
+    } else {
+      const { recentUploads = [] } = recentsObject;
+      allItems = recentUploads;
+    }
+
+    const updatedRecentItems = remove(allItems, (recent) => {
+      return !isEqual(recent, item);
+    });
+
+    recentsObject[type] = updatedRecentItems;
+
+    localStorage.setItem('history', JSON.stringify(recentsObject));
+    this.setState({ recents: JSON.stringify(recentsObject) });
   };
 
   showCreateDataset = () => {
@@ -602,7 +631,8 @@ export default class App extends Component {
       forceShowUpload,
       selectSheet,
       errorMessage,
-      onlyShowWritableDatasets
+      onlyShowWritableDatasets,
+      recents
     } = this.state;
 
     if (!insideOffice) {
@@ -628,7 +658,6 @@ export default class App extends Component {
 
     const renderImportData = !showStartPage && importData;
 
-    const recents = localStorage.getItem('history');
     let matchedFiles = [];
 
     // all files which has the same username and workspace id as the current user
@@ -713,6 +742,7 @@ export default class App extends Component {
               workbook={this.state.workbookId}
               matchedFiles={matchedFiles}
               getSheetName={this.office.getSheetName}
+              clearRecentItem={this.clearRecentItem}
             />
           )}
 
@@ -761,6 +791,7 @@ export default class App extends Component {
             workbookId={this.state.workbookId}
             setError={this.setError}
             setErrorMessage={this.setErrorMessage}
+            clearRecentItem={this.clearRecentItem}
           />
         )}
       </div>
