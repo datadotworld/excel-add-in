@@ -120,7 +120,7 @@
         <bt:String id="dw.DatasetsButton.Label" DefaultValue="Sync Data" />
         <bt:String id="dw.InsightsButton.Label" DefaultValue="Publish Insights" />
         <bt:String id="dw.ImportButton.Label" DefaultValue="Import Data" />
-        <bt:String id="dw.Group1Label" DefaultValue="data.world" />
+        <bt:String id="dw.Group1Label" DefaultValue="data.world, Inc." />
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="dw.DatasetsButton.Tooltip" DefaultValue="Click to sync with data.world" />
