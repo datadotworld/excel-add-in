@@ -5,7 +5,7 @@
   "dependencies": {
     "@sentry/browser": "4.3.0",
     "array.prototype.find": "2.0.4",
-    "axios": "0.15.3",
+    "axios": "0.18.1",
     "classnames": "2.2.5",
     "hapi": "16.5.2",
     "inert": "4.2.1",
