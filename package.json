@@ -10,7 +10,7 @@
     "hapi": "16.5.2",
     "inert": "4.2.1",
     "little-loader": "0.2.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.12",
     "office-ui-fabric-js": "1.4.0",
     "papaparse": "4.3.6",
     "query-string": "4.3.4",
