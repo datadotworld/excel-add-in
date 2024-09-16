@@ -48,6 +48,8 @@ const download = require('../icons/icon-download.svg');
 
 export default class UploadModal extends Component {
   state = {
+    query: '',
+    owner: '',
     itemUrl: '',
     querySelected: false,
     tableSelected: false,
@@ -61,6 +63,19 @@ export default class UploadModal extends Component {
     showWarningModal: false,
     show404Modal: false,
     selectedItem: ''
+  };
+
+  handleQueryChange = (event) => {
+    this.setState({ query: event.target.value });
+  };
+
+  handleOwnerChange = (event) => {
+    this.setState({ owner: event.target.value });
+  };
+
+  handleBrowseClick = () => {
+    const { query, owner } = this.state;
+    this.props.getDatasets(query, owner);
   };
 
   getTables = async (dataset) => {
@@ -362,6 +377,8 @@ export default class UploadModal extends Component {
   render() {
     const { clearRecentItem } = this.props;
     const {
+      query,
+      owner,
       itemUrl,
       querySelected,
       tableSelected,
@@ -399,20 +416,39 @@ export default class UploadModal extends Component {
         {showImportForm && (
           <div>
             <div className="import-header">
-              <ControlLabel className="import-header-text">
-                Import data
-              </ControlLabel>
+              <ControlLabel className="import-header-text">Import data</ControlLabel>
             </div>
             <div className="import-container">
               <div className="import-from">
+                <FormGroup>
+                  <ControlLabel>Search for a Project or Dataset</ControlLabel>
+                  <FormControl
+                    type="text"
+                    placeholder="Enter Project or Dataset name"
+                    value={query}
+                    onChange={this.handleQueryChange}
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <ControlLabel>Organization ID</ControlLabel>
+                  <FormControl
+                    type="text"
+                    placeholder="Enter Organization ID"
+                    value={owner}
+                    onChange={this.handleOwnerChange}
+                  />
+                </FormGroup>
+
                 <SelectItem
-                  itemUrl={this.state.itemUrl}
+                  itemUrl={itemUrl}
                   handleChange={this.handleUrlChange}
                   getItems={this.props.getDatasets}
-                  title="Import from:"
-                  placeholder="Insert Dataset or Project URL"
                   hideCreateNew
+                  query={query}
+                  owner={owner}
                 />
+                
                 <div className="import-radio-container">
                   <div className="import-sub-title">Source:</div>
                   <div className="import-radio-item">

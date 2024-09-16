@@ -34,7 +34,7 @@ class LibraryItem extends Component {
   buttonClick = () => {
     if (this.props.buttonHandler) {
       const { item } = this.props;
-      const uri = `https://data.world/${item.owner}/${item.id}`;
+      const uri = `${item.owner}/${item.id}`;
       this.props.buttonHandler(uri);
     }
   };

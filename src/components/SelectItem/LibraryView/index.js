@@ -25,19 +25,9 @@ import LoadingAnimation from '../../LoadingAnimation';
 import './LibraryView.css';
 
 export default class LibraryView extends Component {
-  state = {
-    items: [],
-    loading: true
-  };
-
-  componentDidMount() {
-    this.props.getItems().then((items) => {
-      this.setState({ items, loading: false });
-    });
-  }
 
   sortItems = () => {
-    const sortedItems = this.state.items.slice();
+    const sortedItems = this.props.items.slice();
 
     // Sort by updated in descending order
     sortedItems.sort((a, b) => {
@@ -63,19 +53,22 @@ export default class LibraryView extends Component {
       toggleShowForm,
       onSelect,
       close,
-      hideCreateNew
+      hideCreateNew,
+      loading,
+      items
     } = this.props;
-    const { loading, items } = this.state;
 
     const sortedItems = this.sortItems(items);
     const entries = sortedItems.map((item) => {
+      const isProject = item.category === 'project' || isProjects;
+
       return (
         <LibraryItem
           item={item}
           key={`${item.owner}/${item.id}`}
           buttonText="Link"
           buttonHandler={onSelect}
-          isProject={isProjects || item.isProject}
+          isProject={isProject}
         />
       );
     });
@@ -108,20 +101,11 @@ export default class LibraryView extends Component {
             </Row>
           )}
           {!items.length && !loading && (
-            <Row className="center-block no-datasets">
-              <div className="message">
-                {isProjects
-                  ? "You haven't created any projects to upload the insight to."
-                  : "You haven't created any datasets to link data to."}
-              </div>
-              <Button
-                className="bottom-button"
-                bsStyle="primary"
-                onClick={toggleShowForm}
-              >
-                {isProjects ? 'Create a new project' : 'Create a new dataset'}
-              </Button>
-            </Row>
+             <Row className="center-block no-datasets">
+             <div className="message">
+               No results found, please refine your search.
+             </div>
+           </Row>
           )}
         </div>
       </Grid>
