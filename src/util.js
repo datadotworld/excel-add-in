@@ -101,15 +101,32 @@ export function generateChartError(charts, failedToLoad) {
 }
 
 export function getDestination(url) {
-  const regexMatch = /^(?:https:\/\/(?:[a-zA-Z0-9-]+\.)?(?:app\.)?data\.world\/)?([^/?#]+)\/([^/?#]+)$/;
+  // Regular expression to match full URLs with the format:
+  // https://*app.data.world/owner/id
+  // https://*.data.world/owner/id
+  // https://data.world/owner/id
+  const regexMatch = /^(?:https:\/\/(?:[a-zA-Z0-9-]+\.)?(?:app\.)?data\.world\/)([^/?#]+)\/([^/?#]+)(?:[/?#]|$)/;
   const parsedUrl = url.match(regexMatch);
 
   if (parsedUrl) {
+    // Matches full URL format
     return {
       owner: parsedUrl[1],
       id: parsedUrl[2]
-    }
-  };
+    };
+  }
+
+  // Regular expression to match 'owner/id' format
+  const partialRegex = /^([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/;
+  const partialMatch = url.match(partialRegex);
+
+  if (partialMatch) {
+    return {
+      owner: partialMatch[1],
+      id: partialMatch[2]
+    };
+  }
+
   return null;
 }
 

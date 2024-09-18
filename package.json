@@ -48,5 +48,8 @@
     "url": "git+https://github.com/datadotworld/excel-add-in.git"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3001",
+  "engines": {
+    "node": "6.17.1"
+  }
 }

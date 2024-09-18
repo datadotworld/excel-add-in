@@ -22,8 +22,41 @@ import {
   hasDuplicateName,
   createWorkspaceLink,
   createItemLink,
-  withWriteAccess
+  withWriteAccess,
+  getDestination
 } from '../util';
+
+describe('getDestination', () => {
+  it('should return dataset details given a URL or slug', () => {
+    const dataset = { owner: 'owner', id: 'dataset' };
+
+    const slug = 'owner/dataset';
+    const singleTenantUrl = 'https://customer.data.world/owner/dataset';
+    const singleTenantUrlWithParams =
+      'https://customer.data.world/owner/dataset/?first=foo&second=bar';
+    const multiTenantUrl = 'https://data.world/owner/dataset';
+    const multiTenantUrlWithParams =
+      'https://data.world/owner/dataset/?first=foo&second=bar';
+    const privateInstanceUrl =
+      'https://internal.app.data.world/owner/dataset';
+    const privateInstanceUrlWithParams =
+      'https://internal.app.data.world/owner/dataset/?first=foo&second=bar';
+
+    const invalidSlug = 'invalid/dataset/slug';
+    const invalidUrl = 'https://randomwebsite.com/owner/dataset';
+
+    expect(getDestination(slug)).toEqual(dataset);
+    expect(getDestination(singleTenantUrl)).toEqual(dataset);
+    expect(getDestination(singleTenantUrlWithParams)).toEqual(dataset);
+    expect(getDestination(multiTenantUrl)).toEqual(dataset);
+    expect(getDestination(multiTenantUrlWithParams)).toEqual(dataset);
+    expect(getDestination(privateInstanceUrl)).toEqual(dataset);
+    expect(getDestination(privateInstanceUrlWithParams)).toEqual(dataset);
+
+    expect(getDestination(invalidSlug)).toEqual(null);
+    expect(getDestination(invalidUrl)).toEqual(null);
+  });
+});
 
 describe('util functions', () => {
   describe('sortByOwnerAndTitle', () => {
