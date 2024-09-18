@@ -74,7 +74,9 @@ We definitely appreciate pull requests that highlight or reproduce a problem, ev
 
 #### Run locally
 
-##### `yarn start`
+`nvm use 6.17.1`
+
+`npm start`
 
 Runs the react app and server component in development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view the front end UI in the browser.
@@ -98,7 +100,9 @@ Server Side Optional Environment Variables
 
 When testing locally `HTTPS=true` must be set as the Office online site will not load an add-in via http.
 
-`HTTPS=true REACT_APP_OAUTH_URI=https://localhost:3001/authorize OAUTH_REDIRECT_URI=https://localhost:3001/callback OAUTH_CLIENT_ID=excel-add-in-local OAUTH_CLIENT_SECRET=XXXX yarn start`
+```
+HTTPS=true REACT_APP_OAUTH_URI=https://localhost:3001/authorize OAUTH_REDIRECT_URI=https://localhost:3001/callback OAUTH_CLIENT_ID=excel-add-in-local OAUTH_CLIENT_SECRET=XXXX npm start
+```
 
 #### Testing against Office Online
 
