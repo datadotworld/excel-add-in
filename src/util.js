@@ -101,25 +101,16 @@ export function generateChartError(charts, failedToLoad) {
 }
 
 export function getDestination(url) {
-  const parsedPartialUrl = url.split('/');
+  // Regex to handle MT, PI, and VPC domains
+  const regexMatch = /^(?:https:\/\/(?:[a-zA-Z0-9-]+\.)?(?:app\.)?data\.world\/)?([^/?#]+)\/([^/?#]+)$/;
+  const parsedUrl = url.match(regexMatch);
 
-  if (parsedPartialUrl.length === 2) {
+  if (parsedUrl) {
     return {
-      owner: parsedPartialUrl[0],
-      id: parsedPartialUrl[1]
+      owner: parsedUrl[1],
+      id: parsedUrl[2]
     };
   }
-
-  const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
-  const parsedFullUrl = url.match(regexMatch);
-
-  if (parsedFullUrl) {
-    return {
-      owner: parsedFullUrl[1],
-      id: parsedFullUrl[2]
-    };
-  }
-
   return null;
 }
 

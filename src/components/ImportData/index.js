@@ -421,10 +421,10 @@ export default class UploadModal extends Component {
             <div className="import-container">
               <div className="import-from">
                 <FormGroup>
-                  <ControlLabel>Search for a Project or Dataset</ControlLabel>
+                  <ControlLabel>Search for a dataset or project</ControlLabel>
                   <FormControl
                     type="text"
-                    placeholder="Enter Project or Dataset name"
+                    placeholder="Enter dataset or project name"
                     value={query}
                     onChange={this.handleQueryChange}
                   />
@@ -434,7 +434,7 @@ export default class UploadModal extends Component {
                   <ControlLabel>Organization ID</ControlLabel>
                   <FormControl
                     type="text"
-                    placeholder="Enter Organization ID"
+                    placeholder="Enter organization ID"
                     value={owner}
                     onChange={this.handleOwnerChange}
                   />

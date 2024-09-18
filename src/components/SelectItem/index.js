@@ -22,6 +22,8 @@ import {
   Button,
   ControlLabel,
   FormGroup,
+  InputGroup,
+  FormControl
 } from 'react-bootstrap';
 
 import LibraryView from './LibraryView';
@@ -75,11 +77,22 @@ export default class UploadModal extends Component {
 
             <div>
               <ControlLabel className="select-item-title">{title}</ControlLabel>    
-              {itemUrl && (
-                <FormGroup>
-                  Loaded: <ControlLabel>{itemUrl}</ControlLabel>
-                </FormGroup>
-              )}
+              <InputGroup>
+                <div className="import-sub-title">
+                  (Optional) Import from a data.world URL:
+                </div>              
+                  <div className="select-item-container">
+                    <FormControl
+                      className="select-item-field"
+                      placeholder={"Enter dataset or project URL"}
+                      value={itemUrl}
+                      type="text"
+                      onChange={(event) => {
+                        this.props.handleChange(event.target.value);
+                      }}
+                    />
+                  </div>
+              </InputGroup>
             </div>
           </FormGroup>
         )}                  
