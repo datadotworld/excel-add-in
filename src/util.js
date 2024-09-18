@@ -100,28 +100,42 @@ export function generateChartError(charts, failedToLoad) {
   }
 }
 
+// NEW
 export function getDestination(url) {
-  const parsedPartialUrl = url.split('/');
+  const regexMatch = /^(?:https:\/\/(?:[a-zA-Z0-9-]+\.)?(?:app\.)?data\.world\/)?([^/?#]+)\/([^/?#]+)$/;
+  const parsedUrl = url.match(regexMatch);
 
-  if (parsedPartialUrl.length === 2) {
+  if (parsedUrl) {
     return {
-      owner: parsedPartialUrl[0],
-      id: parsedPartialUrl[1]
-    };
-  }
-
-  const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
-  const parsedFullUrl = url.match(regexMatch);
-
-  if (parsedFullUrl) {
-    return {
-      owner: parsedFullUrl[1],
-      id: parsedFullUrl[2]
-    };
-  }
-
+      owner: parsedUrl[1],
+      id: parsedUrl[2]
+    }
+  };
   return null;
 }
+
+// export function getDestination(url) {
+//   const parsedPartialUrl = url.split('/');
+
+//   if (parsedPartialUrl.length === 2) {
+//     return {
+//       owner: parsedPartialUrl[0],
+//       id: parsedPartialUrl[1]
+//     };
+//   }
+
+//   const regexMatch = /https:\/\/data\.world\/([^/?#]*)\/([^/?#]*)?/;
+//   const parsedFullUrl = url.match(regexMatch);
+
+//   if (parsedFullUrl) {
+//     return {
+//       owner: parsedFullUrl[1],
+//       id: parsedFullUrl[2]
+//     };
+//   }
+
+//   return null;
+// }
 
 export function sortByOwnerAndTitle(datasets) {
   return datasets.sort((a, b) => {
