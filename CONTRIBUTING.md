@@ -74,7 +74,9 @@ We definitely appreciate pull requests that highlight or reproduce a problem, ev
 
 #### Run locally
 
-##### `npm start`
+`nvm use 6.17.1`
+
+`npm start`
 
 Runs the react app and server component in development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view the front end UI in the browser.
