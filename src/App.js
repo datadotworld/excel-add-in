@@ -227,12 +227,12 @@ export default class App extends Component {
     )}`;
   };
 
-  getDatasets = async (onlyShowWritableDatasets) => {
+  getDatasets = async (query, owner) => {
     try {
       this.setState({ loadingDatasets: true });
-      const datasets = await this.api.getDatasets(onlyShowWritableDatasets);
+      const datasets = await this.api.searchDatasetsAndProjects(query, owner);
       this.setState({ loadingDatasets: false });
-      return datasets;
+      return datasets
     } catch (getDatasetsError) {
       this.setState({
         error: getDatasetsError,
@@ -631,7 +631,6 @@ export default class App extends Component {
       forceShowUpload,
       selectSheet,
       errorMessage,
-      onlyShowWritableDatasets,
       recents
     } = this.state;
 
@@ -763,7 +762,7 @@ export default class App extends Component {
             toggleList={this.toggleList}
             toggleShowForm={this.showCreateDataset}
             getItems={this.getDatasets}
-            onlyShowWritableDatasets={onlyShowWritableDatasets}
+            // onlyShowWritableDatasets={onlyShowWritableDatasets}
           />
         )}
 

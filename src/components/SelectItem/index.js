@@ -21,9 +21,9 @@ import React, { Component } from 'react';
 import {
   Button,
   ControlLabel,
-  FormControl,
   FormGroup,
-  InputGroup
+  InputGroup,
+  FormControl
 } from 'react-bootstrap';
 
 import LibraryView from './LibraryView';
@@ -32,7 +32,26 @@ import './SelectItem.css';
 
 export default class UploadModal extends Component {
   state = {
-    showLibrary: false
+    showLibrary: false,
+    items: [],
+    loading: true
+  };
+
+  handleBrowseClick = () => {
+    const { getItems, query, owner } = this.props;
+
+    this.setState({ loading: true });
+
+    if (!query || !owner) {
+      this.setState({ loading: false });
+      return;
+    }
+
+    getItems(query, owner).then((items) => {
+      this.setState({ items, loading: false, showLibrary: true });
+    }).catch(() => {
+      this.setState({ loading: false });
+    });
   };
 
   onSelect = (url) => {
@@ -41,43 +60,47 @@ export default class UploadModal extends Component {
   };
 
   render() {
-    const { showLibrary } = this.state;
-    const { title, placeholder, handleChange } = this.props;
+    const { showLibrary, items, loading } = this.state;
+    const { title, query, owner, itemUrl } = this.props;
 
     return (
       <div>
         {!showLibrary && (
           <FormGroup>
+            <Button
+              bsStyle="primary"
+              onClick={this.handleBrowseClick}
+              disabled={!query || !owner}
+            >
+              Search
+            </Button>
+
             <div>
-              <ControlLabel className="select-item-title">{title}</ControlLabel>
+              <ControlLabel className="select-item-title">{title}</ControlLabel>    
               <InputGroup>
-                <div className="select-item-container">
-                  <FormControl
-                    className="select-item-field"
-                    placeholder={placeholder}
-                    value={this.props.itemUrl}
-                    type="text"
-                    onChange={(event) => {
-                      handleChange(event.target.value);
-                    }}
-                  />
-                  <Button
-                    className="select-item-button"
-                    onClick={() => {
-                      this.setState({ showLibrary: true });
-                    }}
-                  >
-                    Browse
-                  </Button>
-                </div>
+                <div className="import-sub-title">
+                  (Optional) Import from a data.world URL:
+                </div>              
+                  <div className="select-item-container">
+                    <FormControl
+                      className="select-item-field"
+                      placeholder={"Enter dataset or project URL"}
+                      value={itemUrl}
+                      type="text"
+                      onChange={(event) => {
+                        this.props.handleChange(event.target.value);
+                      }}
+                    />
+                  </div>
               </InputGroup>
             </div>
           </FormGroup>
-        )}
+        )}                  
         {showLibrary && (
           <LibraryView
             close={() => this.setState({ showLibrary: false })}
-            getItems={this.props.getItems}
+            items={items}       
+            loading={loading}
             onSelect={this.onSelect}
             hideCreateNew={this.props.hideCreateNew}
           />

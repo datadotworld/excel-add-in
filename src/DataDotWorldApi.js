@@ -30,6 +30,25 @@ export default class DataDotWorldApi {
     });
   }
 
+  async searchDatasetsAndProjects(query, owner) {
+    const { data } = await this.api.post('/search/resources', {
+      category: ['dataset', 'project'],
+      query: query,
+      owner: [owner]
+    });
+
+    const datasets = data.records.map(record => ({
+      owner: record.owner,
+      id: record.id,
+      title: record.title,
+      created: record.created,
+      updated: record.updated,
+      category: record.category,
+    }));
+
+    return datasets;
+  }
+  
   async getLibraryRecursive(endpoint, partial = [], next) {
     if (next === -1) {
       return partial;
