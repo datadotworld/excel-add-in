@@ -151,7 +151,6 @@ export default class DataDotWorldApi {
         imageUrl: imageUrl
       }
     });
-  
     return uri;
   }
 
