@@ -99,7 +99,7 @@ class UploadInsight extends Component {
     return (
       <div>
         <Row className="center-block section-header insight-header">
-          <div className="insight-title">New Insighst</div>
+          <div className="insight-title">New Insight</div>
         </Row>
         <Row className="upload-row">
           {!uploadComplete && (
