@@ -135,18 +135,22 @@ export default class DataDotWorldApi {
   async uploadInsight(options) {
     const { title, project, description } = options;
     const uriTitle = encodeURIComponent(title);
+  
+    const user = await this.getUser();
+    const baseUrl = user.baseUrl;
+  
+    // Dynamically construct imageUrl based on the User object
+    const imageUrl = `${baseUrl}/api/${project.owner}/dataset/${project.id}/file/raw/${uriTitle}.png`;
+  
     const {
       data: { uri }
     } = await this.api.post(`/insights/${project.owner}/${project.id}`, {
       title,
       description,
       body: {
-        imageUrl: `https://data.world/api/${project.owner}/dataset/${
-          project.id
-        }/file/raw/${uriTitle}.png`
+        imageUrl: imageUrl
       }
     });
-
     return uri;
   }
 

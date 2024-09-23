@@ -8,7 +8,7 @@ exports[`renders upload insight view 1`] = `
     <div
       className="insight-title"
     >
-      New Insighst
+      New Insight
     </div>
   </div>
   <div
