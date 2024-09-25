@@ -22,6 +22,7 @@ import { b64toBlob, groupAndSortProjects, withWriteAccess } from './util';
 
 export default class DataDotWorldApi {
   constructor(token) {
+    const baseURL = process.env.API_BASE_URL || 'https://api.data.world/v0';
     this.api = axios.create({
       baseURL: 'https://api.data.world/v0',
       headers: {
