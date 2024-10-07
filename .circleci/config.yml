@@ -42,7 +42,7 @@ workflows:
       - build
 
       - trigger-wrapper-build-deploy:
-          filters:
-            branches:
-              only:
-                - main
+          # filters:
+          #   branches:
+          #     only:
+          #       - main
