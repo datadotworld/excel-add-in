@@ -41,7 +41,10 @@ workflows:
     jobs:
       - build
 
-      - trigger-wrapper-build-deploy:
+  trigger-predeploy:
+    jobs:
+      - trigger-wrapper-build-deploy
+      # - trigger-wrapper-build-deploy:
           # filters:
           #   branches:
           #     only:
