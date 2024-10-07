@@ -23,29 +23,7 @@ jobs:
           path: build
           prefix: build
 
-  trigger-wrapper-build-deploy:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - run:
-          name: Trigger build-deploy in excel-add-in-private
-          command: |
-            curl -X POST https://circleci.com/api/v2/project/github/datadotworld/excel-add-in-private/pipeline \
-              -H "Circle-Token: $CIRCLE_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d '{"branch":"main"}'
-
 workflows:
   build:
     jobs:
       - build
-
-  trigger-predeploy:
-    jobs:
-      - trigger-wrapper-build-deploy
-      # - trigger-wrapper-build-deploy:
-          # filters:
-          #   branches:
-          #     only:
-          #       - main

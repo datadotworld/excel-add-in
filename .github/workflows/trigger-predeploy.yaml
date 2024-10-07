@@ -1,0 +1,42 @@
+name: trigger build and deploy in excel-add-in-private on version bump
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'package.json'
+
+# Uncomment to enable manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  trigger_excel_add_in_private_PR:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch version from package.json
+        id: fetch_version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create PR in excel-add-in-private
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "build: bump version to ${{ steps.fetch_version.outputs.VERSION }}"
+          title: "build-and-deploy: version ${{ steps.fetch_version.outputs.VERSION }}"
+          body: |
+            This PR  was triggered by a version bump to ${{ steps.fetch_version.outputs.VERSION }} in
+            [datadotworld/excel-add-in](https://github.com/datadotworld/excel-add-in) for which this repo
+            is a deployment wrapper.
+            If you would like to trigger a build and deploy of this version, please review and merge this PR.
+            Then, request a `/deploy excel-add-in-private` in the #release channel.
+          branch: "build-and-deploy/v${{ steps.fetch_version.outputs.VERSION }}"
+          base: "main"
+          delete-branch: true
+          labels: |
+            automation-task
