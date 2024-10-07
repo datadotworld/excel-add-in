@@ -14,7 +14,7 @@ jobs:
   trigger_excel_add_in_private_PR:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout excel-add-in
         uses: actions/checkout@v4
 
       - name: Fetch version from package.json
@@ -22,6 +22,13 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Checkout excel-add-in-private
+        uses: actions/checkout@v4
+        with:
+          repository: datadotworld/excel-add-in-private
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR in excel-add-in-private
         uses: peter-evans/create-pull-request@v6
