@@ -32,7 +32,7 @@ jobs:
           name: Trigger build-deploy in excel-add-in-private
           command: |
             curl -X POST https://circleci.com/api/v2/project/github/datadotworld/excel-add-in-private/pipeline \
-              -H "Circle-Token: $CIRCLE_OIDC_TOKEN_V2" \
+              -H "Circle-Token: $CIRCLE_TOKEN" \
               -H "Content-Type: application/json" \
               -d '{"branch":"main"}'
 
