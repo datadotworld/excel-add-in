@@ -12,7 +12,7 @@
     "little-loader": "0.2.0",
     "lodash": "4.17.4",
     "office-ui-fabric-js": "1.4.0",
-    "papaparse": "4.3.6",
+    "papaparse": "5.2.0",
     "query-string": "4.3.4",
     "react": "16.6.0",
     "react-bootstrap": "0.32.4",
