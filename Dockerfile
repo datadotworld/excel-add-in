@@ -17,19 +17,33 @@
 
 FROM node:boron
 
-# Create an app directory
+ARG segment_id
+
+ENV REACT_APP_ENABLE_ANALYTICS=true
+ENV REACT_APP_OAUTH_URI=/authorize
+ENV REACT_APP_SEGMENT_ID=$segment_id
+ENV REACT_APP_SENTRY_DSN="https://811b61389fba4f0ab15fffe055c477f9@o35227.ingest.us.sentry.io/1293911"
+
+RUN mkdir -p  /var/log/nginx && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log
+
+ADD etc/nginx/ /etc/nginx/
+RUN chown -R root:root /etc/nginx/ \
+    && chmod 644 -R /etc/nginx/**/*.conf
+VOLUME "/etc/nginx/conf.d"
+
 WORKDIR /usr/src/app
 
-# Install app depdencies
 COPY package.json .
 COPY yarn.lock .
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 RUN npm install -g nodemon
 
 COPY . .
 
-RUN REACT_APP_OAUTH_URI=/authorize yarn build
+RUN yarn build
 
 EXPOSE 3001
+
 CMD [ "yarn", "run", "prod" ]
