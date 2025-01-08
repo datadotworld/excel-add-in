@@ -1,4 +1,30 @@
-version: 2
+version: 2.1
+
+resources:
+  defaults: &defaults
+    working_directory: /root/datadotworld-excel-addin
+    environment:
+      BASH_ENV: ~/.env
+      AWS_DEFAULT_REGION: "us-east-1"
+      DW_PROJECT_HOME: /root
+      ECR_ACCOUNT: "621799806001"
+      PRERELEASE_PREFIX: prerelease
+      RELEASE_PREFIX: release
+      STACKER_REVISION: 1
+    docker:
+      - image: dataworld/circle-ui-deps@sha256:384ba32f62e53ded05038d0a02539b647b91f6550c6536e1f198e3addf8502ab
+
+  download_stacker: &download_stacker
+    run:
+      name: Download stacker cli
+      command: $HOME/build-scripts/cicd/download_stacker.sh
+
+  setup_path: &setup_path
+    run:
+      name: Setup PATH
+      command: |
+        echo 'export PATH=$PATH:${HOME}/bin' >> ~/.env
+
 jobs:
   build:
     docker:
@@ -21,3 +47,85 @@ jobs:
       - store_artifacts:
           path: build
           prefix: build
+      - *setup_path
+      - setup_remote_docker
+      - run: ./deploy_setup.sh
+      - run:
+          name: Set EXCELADDIN_APPVERSION
+          command: |
+            echo EXCELADDIN_APPVERSION="$(./generate_app_version.sh)" | tee -a ~/.env
+      - run:
+          name: docker_build
+          command: |
+            ./docker_build.sh ${EXCELADDIN_APPVERSION}
+      - run:
+          name: Tag prerelease
+          command: |
+            ./tag_prerelease.sh ${PRERELEASE_PREFIX} ${EXCELADDIN_APPVERSION}
+
+  prerelease:
+    <<: *defaults
+    steps:
+      - checkout
+      - *setup_path
+      - setup_remote_docker
+      - run: ./deploy_setup.sh
+      - *download_stacker
+      - run:
+          name: Get EXCELADDIN_APPVERSION
+          command: |
+            COMMIT_TAG=$(git describe --tags --match ${PRERELEASE_PREFIX}-* --exact-match HEAD 2>/dev/null) || true
+            EXCELADDIN_APPVERSION="${COMMIT_TAG/${PRERELEASE_PREFIX}-/}"
+            echo EXCELADDIN_APPVERSION=${EXCELADDIN_APPVERSION} | tee -a ~/.env
+      - run:
+          name: Deploy to ddw
+          command: |
+            ./deploy.sh ${EXCELADDIN_APPVERSION} ddw stacker
+
+  prod_release:
+    <<: *defaults
+    steps:
+      - checkout
+      - *setup_path
+      - setup_remote_docker
+      - run: ./deploy_setup.sh
+      - *download_stacker
+      - run:
+          name: Get EXCELADDIN_APPVERSION
+          command: |
+            COMMIT_TAG=$(git describe --tags --match ${RELEASE_PREFIX}-* --exact-match HEAD 2>/dev/null) || true
+            EXCELADDIN_APPVERSION="${COMMIT_TAG/${RELEASE_PREFIX}-/}"
+            echo EXCELADDIN_APPVERSION=${EXCELADDIN_APPVERSION} | tee -a ~/.env
+      - run:
+          name: Deploy to pdw
+          command: |
+            ./deploy.sh ${EXCELADDIN_APPVERSION} pdw stacker
+
+workflows:
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
+          context:
+            - aws-dev
+      - prerelease:
+          context:
+            - aws-dev
+            - artifactory
+          requires:
+            - build
+
+  release:
+    jobs:
+      - prod_release:
+          context:
+            - aws-dev
+            - aws-prod
+            - artifactory
+          filters:
+            tags:
+              only: /^release-.*/
+            branches:
+              ignore: /.*/

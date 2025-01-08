@@ -1,0 +1,3 @@
+-e git+ssh://git@github.com/datadotworld/stacker-blueprints@main#egg=dw-stacker-blueprints
+-e git://github.com/datadotworld/stacker/@main#egg=stacker
+-e git://github.com/datadotworld/troposphere/@main#egg=troposphere
