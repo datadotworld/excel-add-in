@@ -1,0 +1,22 @@
+namespace: ${stacker_env}${stacker_owner}
+namespace_delimiter: ''
+sys_path: ./
+stacker_bucket: dataworld-stackertemplates-${stacker_env}-${region}
+
+common_variables: &common_variables
+  Environment:                ${stacker_env}
+  Owner:                      ${stacker_owner}
+  VPC:                        ${xref ${stacker_env}VPC::VPC}
+  DefaultSecurityGroup:       ${xref ${stacker_env}VPC::DefaultSecurityGroup}
+  PublicSubnets:              ${xref ${stacker_env}VPC::PublicSubnets}
+  PrivateSubnets:             ${xref ${stacker_env}VPC::PrivateSubnets}
+  PublicELBSecurityGroup:     ${xref ${stacker_env}VPC::PublicELBSecurityGroup}
+  InternalELBSecurityGroup:   ${xref ${stacker_env}VPC::InternalELBSecurityGroup}
+  DatadogApiKey:              ${DatadogApiKey}
+
+stacks:
+  - name: ExcelAddInEcsService
+    class_path: blueprints.exceladdin.excel_add_in.ExcelAddInEcsService
+    variables:
+      << : *common_variables
+      VersionLabel:     "${VersionLabel}"

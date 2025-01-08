@@ -15,9 +15,6 @@ git clone git@github.com:datadotworld/dev-tools.git /root/dev-tools
 echo "Cloning build-scripts repo"
 git clone git@github.com:datadotworld/build-scripts.git /root/build-scripts
 
-echo "Cloning excel-add-in repo"
-git clone git@github.com:datadotworld/excel-add-in.git /root/datadotworld-excel-addin/excel-add-in
-
 echo "Setting up AWS credentials"
 /root/build-scripts/cicd/setup_aws_credentials.sh
 
